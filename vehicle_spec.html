@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vehicle Information API</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
+            class='remove'></script>
+    <script class="remove">
+      var respecConfig = {
+          specStatus:           "unofficial",
+          shortName:            "vehicle-information-api",
+          publishDate:          "",
+          previousPublishDate:  "",
+          previousMaturity:     "",
+          edDraftURI:           "",
+          // lcEnd:                "",
+          crEnd:                "",
+          editors:  [
+              { name: "Kevron Rees", company: "Intel",
+                      companyURL: "http://www.intel.com" }
+         ],
+          inlineCSS:    true,
+          noIDLIn:      true,
+          extraCSS:     ["http://dev.w3.org/2009/dap/ReSpec.js/css/respec.css"],
+          wg:           "",
+          wgURI:        "http://",
+          wgPublicList: "",
+          wgPatentURI:  "",
+      };
+    </script> 
+  </head>
+
+  <body>
+
+<!------------------------------ Abstract ------------------------------------>    
+<section id="abstract">
+  This specification defines a Vehicle Information API which offers a simple interface
+  to get access to vehicle data. A typical use case of the Vehicle Information is the
+  implementation of a tachometer application that allows view inforomation from the
+  vehicle such as speed, tire pressure, and engine rotation speed (RPMs).
+</section>
+
+<!----------------------- Status of this document ---------------------------->    
+<section id="sotd">
+</section>
+    
+<!----------------------------- Introduction --------------------------------->
+<section class="informative">
+  <h2>Introduction</h2>
+  <p>
+    The Vehicle Information API provides operations to get access to the vehicle data
+    (henceforth "properties") available from vehicle systems and also to change (write) a number of
+    properties.  The API also allows users to request data that has been logged previously.
+  <p>
+    An example of use is provided below:
+  
+  <pre class="example highlight">
+        /// TODO: example of usage here
+  </pre>
+</section>
+    
+<!---------------------------- Conformance ----------------------------------->
+<section id="conformance">
+  <p>This specification defines conformance criteria that apply to a single
+  product: the <dfn>user agent</dfn> that implements the interfaces that it
+  contains.
+  
+  <p>Implementations that use ECMAScript to implement the APIs defined in this
+  specification MUST implement them in a manner consistent with the ECMAScript
+  Bindings defined in the Web IDL specification [[!WEBIDL]], as this
+  specification uses that specification and terminology.
+</section>
+    
+<!----------------------------- Terminology ---------------------------------->
+<section>
+  <h2>Terminology</h2> <p>The <code><a
+  href="http://dev.w3.org/html5/spec/webappapis.html#eventhandler">
+  EventHandler</a></code> interface represents a callback used for event
+  handlers as defined in [[!HTML5]].
+  
+  <p>The concepts <dfn><a
+  href="http://dev.w3.org/html5/spec/webappapis.html#queue-a-task"> queue a
+  task</a></dfn> and <dfn><a
+  href="http://dev.w3.org/html5/spec/webappapis.html#fire-a-simple-event">
+  fire a simple event</a></dfn> are defined in [[!HTML5]].
+  
+  <p>The terms <a
+  href="http://dev.w3.org/html5/spec/webappapis.html#event-handlers"><dfn
+  id="dfn-eventhandler">event handler</dfn></a> and <a
+  href="http://dev.w3.org/html5/spec/webappapis.html#event-handler-event-type">
+  <dfn id="dfn-eventtypes"> event handler event types</dfn></a> are defined in
+  [[!HTML5]]. 
+</section>
+
+<!------------------------ Security and privacy ------------------------------>
+<section>
+      <h2>Security and privacy considerations</h2>
+      <p>This API must be only exposed to trusted content
+</section>
+
+<!---------------------- Extended interface Navigator ------------------------>
+<section>
+  <h2><a>Navigator</a> Interface</h2>
+    <dl title="partial interface Navigator" class="idl">
+      <dt>readonly attribute Vehicle vehicle</dt>
+      <dd>
+      The object that exposes the interface to vehicle information services.
+      </dd>
+  </dl>
+</section>
+    
+<!------------------------ Interface Vehicle ------------------------------->
+<section>
+  <h2><a>Vehicle Information</a> Interface</h2> <p>The <a>Vehicle Infomration</a> interface
+  represents the initial entry point for getting access to the vehicle information
+  services, i.e. Engine Speed and Tire Pressure.
+  
+  <dl title="[NoInterfaceObject] interface Vehicle" class="idl">  
+    
+  </dl>
+   
+
+</section>
+
+  </body>
+</html>
