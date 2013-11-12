@@ -1,0 +1,2173 @@
+[
+    {
+        "ocid": 3,
+        "name": "GpsLatitude",
+        "label": "Latitude",
+        "category": "Location",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 360,
+            "resolution": 1.0e-6,
+            "unit": "Angular Degrees"
+        }
+    },
+    {
+        "ocid": 4,
+        "name": "GpsLongitude",
+        "label": "Longitude",
+        "category": "Location",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 360,
+            "resolution": 1.0e-6,
+            "unit": "Angular Degrees"
+        }
+    },
+    {
+        "ocid": 256,
+        "name": "Rpm",
+        "label": "Rotations Per Minute",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 16383.75,
+            "resolution": 0.25,
+            "unit": "Rotations Per Minute"
+        }
+    },
+    {
+        "ocid": 304,
+        "name": "EngineCoolantTemp",
+        "label": "Coolant Temperature",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": -40,
+            "max": 215,
+            "resolution": 1,
+            "unit": "Degrees Celsius"
+        }
+    },
+    {
+        "ocid": 336,
+        "name": "FuelLevel",
+        "label": "Fuel Level",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 0.392157,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 337,
+        "name": "FuelType",
+        "label": "Fuel Type Currently being Used By Vehicle",
+        "category": "Vehicle Information",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Not available": 0,
+            "Gasoline\/petrol": 1,
+            "Methanol": 2,
+            "Ethanol": 3,
+            "Diesel": 4,
+            "Liquefied Petroleum Gas (LPG)": 5,
+            "Compressed Natural Gas (CNG)": 6,
+            "Propane": 7,
+            "Battery\/electric": 8,
+            "Bi-fuel vehicle using gasoline": 9,
+            "Bi-fuel vehicle using methanol": 10,
+            "Bi-fuel vehicle using ethanol": 11,
+            "Bi-fuel vehicle using LPG": 12,
+            "Bi-fuel vehicle using CNG": 13,
+            "Bi-fuel vehicle using propane": 14,
+            "Bi-fuel vehicle using battery": 15,
+            "Bi-fuel vehicle using battery and combustion engine": 16,
+            "Hybrid vehicle using gasoline engine": 17,
+            "Hybrid vehicle using gasoline engine on ethanol": 18,
+            "Hybrid vehicle using diesel engine": 19,
+            "Hybrid vehicle using battery": 20,
+            "Hybrid vehicle using battery and combustion engine": 21,
+            "Hybrid vehicle in regeneration mode": 22,
+            "Bi-fuel vehicle using diesel": 23
+        }
+    },
+    {
+        "ocid": 345,
+        "name": "EngineOilTemp",
+        "label": "Engine Oil Temperature",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": -40,
+            "max": 215,
+            "resolution": 1,
+            "unit": "Degrees Celsius"
+        }
+    },
+    {
+        "ocid": 368,
+        "name": "FuelConsumption",
+        "label": "Fuel Consumption",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 327.67,
+            "resolution": 5,
+            "unit": "Meters Per Liter"
+        }
+    },
+    {
+        "ocid": 383,
+        "name": "TotalFuelConsumptionDrive",
+        "label": "Fuel Consumption - Drive - Total",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 335.54,
+            "resolution": 0.02,
+            "unit": "Meters Per Liter"
+        }
+    },
+    {
+        "ocid": 393,
+        "name": "FuelEfficiencyTotal",
+        "label": "Fuel Efficiency - Total",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 65535,
+            "resolution": 1,
+            "unit": "Meters Per Liter"
+        }
+    },
+    {
+        "ocid": 529,
+        "name": "ThrottlePosition",
+        "label": "Throttle Position",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 0.392157,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 600,
+        "name": "AccelPedalPosition",
+        "label": "Accelerator Pedal Position",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 0.392157,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 601,
+        "name": "AirConditionerOn",
+        "label": "Air Conditioner On",
+        "category": "Climate",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 603,
+        "name": "BatteryCurrentConsumption",
+        "label": "Battery Current Consumption",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 255,
+            "resolution": 1,
+            "unit": "Ampere"
+        }
+    },
+    {
+        "ocid": 604,
+        "name": "BlowerFanSpeed",
+        "label": "Blower Fan Speed",
+        "category": "Climate",
+        "type": "Bytes",
+        "valueSymbols": {
+            "inactive": 0,
+            "Speed 0": 1,
+            "Speed 1": 2,
+            "Speed 2": 3,
+            "Speed 3": 4,
+            "Speed 4": 5,
+            "Speed 5": 6,
+            "Speed 6": 7,
+            "Speed 7": 8,
+            "Active": 9
+        }
+    },
+    {
+        "ocid": 605,
+        "name": "BrakeFluidLevelLow",
+        "label": "Brake Fuel Level Low",
+        "category": "Maintenance",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 613,
+        "name": "Direction",
+        "label": "Direction of Travel",
+        "category": "Location",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 360,
+            "resolution": 1.0e-6,
+            "unit": "Angular Degrees"
+        }
+    },
+    {
+        "ocid": 617,
+        "name": "FrontDefroster",
+        "label": "Front Defroster On",
+        "category": "Climate",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 618,
+        "name": "FrontFogLightOn",
+        "label": "Front Fog Light on",
+        "category": "Climate",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 619,
+        "name": "FrontWiperStatus",
+        "label": "Front Wiper Status",
+        "category": "Climate",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Off": 0,
+            "Front Wiping with slow speed": 1,
+            "Front Wiping with fast speed": 2
+        }
+    },
+    {
+        "ocid": 620,
+        "name": "GearPosition",
+        "label": "Gear Position",
+        "category": "Running Status",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Park\/Neutral": 0,
+            "1st": 1,
+            "2nd": 2,
+            "3rd": 3,
+            "4th": 4,
+            "5th": 5,
+            "6th": 6,
+            "7th": 7,
+            "8th": 8,
+            "Reverse": 15,
+            "Unknown": 16
+        }
+    },
+    {
+        "ocid": 621,
+        "name": "GpsAltitude",
+        "label": "GPS - Altitude",
+        "category": "Location",
+        "type": "Number",
+        "value": {
+            "min": -1024,
+            "max": 7168,
+            "resolution": 1,
+            "unit": "Meter"
+        }
+    },
+    {
+        "ocid": 630,
+        "name": "LateralAcceleration",
+        "label": "Acceleration - Lateral",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": -40,
+            "max": 40,
+            "resolution": 1,
+            "unit": "Meters Per Second Squared"
+        }
+    },
+    {
+        "ocid": 632,
+        "name": "LongitudinalAcceleration",
+        "label": "Acceleration - Longitudinal",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": -40,
+            "max": 40,
+            "resolution": 1,
+            "unit": "Meters Per Second Squared"
+        }
+    },
+    {
+        "ocid": 633,
+        "name": "Odometer",
+        "label": "Odometer",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 16777215,
+            "resolution": 1,
+            "unit": "Kilometer"
+        }
+    },
+    {
+        "ocid": 634,
+        "name": "ParkingBrakeOn",
+        "label": "Parking Brake On",
+        "category": "Parking",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 635,
+        "name": "RearFogLightOn",
+        "label": "Rear Fog Light On",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 636,
+        "name": "CruiseControlSettingSpeed",
+        "label": "Cruise Control Speed Setting",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 255,
+            "resolution": 1,
+            "unit": "Kilometers Per Hour"
+        }
+    },
+    {
+        "ocid": 637,
+        "name": "SteeringWheelAngle",
+        "label": "Steering Angle",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": -1600,
+            "max": 1600,
+            "resolution": 1,
+            "unit": "Angular Degrees"
+        }
+    },
+    {
+        "ocid": 638,
+        "name": "SteeringWheelRotationDirection",
+        "label": "Steering Rotation Direction",
+        "category": "Running Status",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Turn OFF": 0,
+            "Turn Left": 1,
+            "Turn Right": 2
+        }
+    },
+    {
+        "ocid": 642,
+        "name": "VehicleKeyPosition",
+        "label": "Vehicle Key Positioin (Power Status)",
+        "category": "Running Status",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Off": 0,
+            "Accessory (ACC)": 1,
+            "On": 2,
+            "Cranking": 3
+        }
+    },
+    {
+        "ocid": 643,
+        "name": "VehicleSpeed",
+        "label": "Vehicle Speed",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 255,
+            "resolution": 0.01,
+            "unit": "Kilometers Per Hour"
+        }
+    },
+    {
+        "ocid": 650,
+        "name": "WorldManufacturerIdentifier",
+        "label": "World Manufacturer Identifier",
+        "category": "Vehicle Information",
+        "type": "String"
+    },
+    {
+        "ocid": 651,
+        "name": "VehicleIdentificationNumber",
+        "label": "Vehicle Identification Number",
+        "category": "Vehicle Information",
+        "type": "String"
+    },
+    {
+        "ocid": 652,
+        "name": "VehicleType",
+        "label": "Vehicle Type",
+        "category": "Vehicle Information",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Sedan": 1,
+            "Coupe": 2,
+            "Cabriole": 3,
+            "Roadster": 4,
+            "SUV": 5,
+            "Truck": 6
+        }
+    },
+    {
+        "ocid": 653,
+        "name": "VehicleWidth",
+        "label": "Vehicle Width",
+        "category": "Vehicle Information",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 65535,
+            "resolution": 0.01,
+            "unit": "Meter"
+        }
+    },
+    {
+        "ocid": 654,
+        "name": "VehicleHeight",
+        "label": "Vehicle Height",
+        "category": "Vehicle Information",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 65535,
+            "resolution": 0.01,
+            "unit": "Meter"
+        }
+    },
+    {
+        "ocid": 655,
+        "name": "VehicleLength",
+        "label": "Vehicle Length",
+        "category": "Vehicle Information",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 65535,
+            "resolution": 0.01,
+            "unit": "Meter"
+        }
+    },
+    {
+        "ocid": 656,
+        "name": "NumberofDoors1stRow",
+        "label": "Number of Doors 1st Row",
+        "category": "Vehicle Information",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 2,
+            "resolution": 1,
+            "unit": "Door"
+        }
+    },
+    {
+        "ocid": 657,
+        "name": "NumberofDoors2ndRow",
+        "label": "Number of Doors 2nd Row",
+        "category": "Vehicle Information",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 2,
+            "resolution": 1,
+            "unit": "Door"
+        }
+    },
+    {
+        "ocid": 658,
+        "name": "NumberofDoorsin3rdRow",
+        "label": "Number of Doors in 3rd Row",
+        "category": "Vehicle Information",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 2,
+            "resolution": 1,
+            "unit": "Door"
+        }
+    },
+    {
+        "ocid": 659,
+        "name": "NumberofDoorsPerRow",
+        "label": "Number of Doors Per Row",
+        "category": "Vehicle Information",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 2,
+            "resolution": 1,
+            "unit": "Door"
+        }
+    },
+    {
+        "ocid": 660,
+        "name": "TransmissionGearType",
+        "label": "Transmission Gear Type",
+        "category": "Vehicle Information",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Auto": 1,
+            "Manual": 2,
+            "CVT": 3
+        }
+    },
+    {
+        "ocid": 661,
+        "name": "WheelRadius",
+        "label": "Wheel Radius",
+        "category": "Vehicle Information",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 65.535,
+            "resolution": 0.001,
+            "unit": "Meter"
+        }
+    },
+    {
+        "ocid": 662,
+        "name": "FrontWheelRadius",
+        "label": "Front Wheel Radius",
+        "category": "Vehicle Information",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 65.535,
+            "resolution": 0.001,
+            "unit": "Meter"
+        }
+    },
+    {
+        "ocid": 663,
+        "name": "RearWheelRadius",
+        "label": "Rear Wheel Radius",
+        "category": "Vehicle Information",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 65.535,
+            "resolution": 0.001,
+            "unit": "Meter"
+        }
+    },
+    {
+        "ocid": 664,
+        "name": "VehicleBrandOrMake",
+        "label": "Vehicle Brand Or Make",
+        "category": "Vehicle Information",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Mazda": 1,
+            "Chevrolet": 2,
+            "GMC": 3,
+            "Ford": 4,
+            "Toyota": 5,
+            "Subaru": 6
+        }
+    },
+    {
+        "ocid": 665,
+        "name": "VehicleModel",
+        "label": "Vehicle Model",
+        "category": "Vehicle Information",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Mazda 3": 1,
+            "Mazda 6": 2,
+            "Tahoe": 3,
+            "Forester": 4,
+            "Focus": 5
+        }
+    },
+    {
+        "ocid": 666,
+        "name": "VehicleModelYear",
+        "label": "Vehicle Model Year",
+        "category": "Vehicle Information",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 65535,
+            "resolution": 1,
+            "unit": "Year"
+        }
+    },
+    {
+        "ocid": 667,
+        "name": "HybridType",
+        "label": "Hybrid Type",
+        "category": "Vehicle Information",
+        "type": "Bytes",
+        "valueSymbols": {
+            "None": 1,
+            "Mild": 2,
+            "Full": 3
+        }
+    },
+    {
+        "ocid": 668,
+        "name": "PowertrainTorque",
+        "label": "Powertrain Torque",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": -500,
+            "max": 1500,
+            "resolution": 1,
+            "unit": "Newton Meter"
+        }
+    },
+    {
+        "ocid": 669,
+        "name": "TripMeter1Distance",
+        "label": "Trip Meter 1 Distance",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 6553.5,
+            "resolution": 0.1,
+            "unit": "Kilometer"
+        }
+    },
+    {
+        "ocid": 670,
+        "name": "TripMeter2Distance",
+        "label": "Trip Meter 2 Distance",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 6553.5,
+            "resolution": 0.1,
+            "unit": "Kilometer"
+        }
+    },
+    {
+        "ocid": 671,
+        "name": "TripMeter1AverageSpeed",
+        "label": "Trip Meter 1 Average Speed",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 255,
+            "resolution": 0.01,
+            "unit": "Kilometers Per Hour"
+        }
+    },
+    {
+        "ocid": 672,
+        "name": "TripMeter2AverageSpeed",
+        "label": "Trip Meter 2 Average Speed",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 255,
+            "resolution": 0.01,
+            "unit": "Kilometers Per Hour"
+        }
+    },
+    {
+        "ocid": 673,
+        "name": "TripMeter1FuelConsumption",
+        "label": "Trip Meter 1 Fuel Consumption",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 655.35,
+            "resolution": 0.01,
+            "unit": "Kilometers Per Liter"
+        }
+    },
+    {
+        "ocid": 674,
+        "name": "TripMeter2FuelConsumption",
+        "label": "Trip Meter 2 Fuel Consumption",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 655.35,
+            "resolution": 0.01,
+            "unit": "Kilometers Per Liter"
+        }
+    },
+    {
+        "ocid": 675,
+        "name": "AccumulatedEngineRunTime",
+        "label": "Accumulated Engine Run Time",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 4294967295,
+            "resolution": 1,
+            "unit": "Second"
+        }
+    },
+    {
+        "ocid": 676,
+        "name": "TransmissionMode",
+        "label": "Transmission Mode",
+        "category": "Running Status",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Normal": 1,
+            "Sport": 2,
+            "Economy": 3,
+            "OEM Custom 1": 4,
+            "OEM Custom 2": 5
+        }
+    },
+    {
+        "ocid": 677,
+        "name": "CruiseControlActive",
+        "label": "Cruise Control Active",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 678,
+        "name": "AdaptiveCruiseControlActive",
+        "label": "Adaptive Cruise Control Active",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 679,
+        "name": "TargetVehicleDetected",
+        "label": "Target Vehicle Detected",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 680,
+        "name": "WheelBrake",
+        "label": "Wheel Brake",
+        "category": "Running Status",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Idle": 1,
+            "Engaged": 2,
+            "Malfunction": 3
+        }
+    },
+    {
+        "ocid": 681,
+        "name": "HeadlightOn",
+        "label": "Headlight On",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 682,
+        "name": "TaillightOn",
+        "label": "Taillight On",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 683,
+        "name": "HighbeamOn",
+        "label": "Highbeam On",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 684,
+        "name": "RightTurnSignalOn",
+        "label": "Right Turn Signal On",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 685,
+        "name": "LeftTurnSignalOn",
+        "label": "Left Turn Signal On",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 686,
+        "name": "BrakeLightOn",
+        "label": "Brake Light On",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 687,
+        "name": "HazardLightOn",
+        "label": "Hazard Light On",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 688,
+        "name": "ParkingLightOn",
+        "label": "Parking Light On",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 689,
+        "name": "DriverLightOn",
+        "label": "Driver Light On",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 690,
+        "name": "PassengerLightOn",
+        "label": "Passenger Light On",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 691,
+        "name": "CenterLightOn",
+        "label": "Center Light On",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 692,
+        "name": "AutomaticHeadlightActive",
+        "label": "Automatic Headlight Active",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 693,
+        "name": "DynamicHighBeamActive",
+        "label": "Dynamic High Beam Active",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 694,
+        "name": "HornOn",
+        "label": "Horn On",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 695,
+        "name": "ChimeOn",
+        "label": "Chime On",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 696,
+        "name": "FuelEconomyInstant",
+        "label": "Fuel Economy Instant",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 0,
+            "resolution": 0,
+            "unit": "Kilometers Per Liter"
+        }
+    },
+    {
+        "ocid": 697,
+        "name": "EstimatedRangeRemaining",
+        "label": "Estimated Range Remaining",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 655.35,
+            "resolution": 0.01,
+            "unit": "Kilometer"
+        }
+    },
+    {
+        "ocid": 698,
+        "name": "VehicleTimeSinceRestart",
+        "label": "Vehicle Time Since Restart",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 65535,
+            "resolution": 1,
+            "unit": "Second"
+        }
+    },
+    {
+        "ocid": 699,
+        "name": "EngineOilRemaining",
+        "label": "Engine Oil Remaining",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 700,
+        "name": "ChangeEngineOil",
+        "label": "Change Engine Oil",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 701,
+        "name": "EngineOilPressure",
+        "label": "Engine Oil Pressure",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 765,
+            "resolution": 3,
+            "unit": "Kilopascal"
+        }
+    },
+    {
+        "ocid": 702,
+        "name": "EngineCoolantLevel",
+        "label": "Engine Coolant Level",
+        "category": "Running Status",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 703,
+        "name": "EngineCoolantLevelLow",
+        "label": "Engine Coolant Level Low",
+        "category": "Running Status",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 704,
+        "name": "OdometerSinceRestart",
+        "label": "Odometer Since Restart",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 6553.5,
+            "resolution": 0.1,
+            "unit": "Kilometer"
+        }
+    },
+    {
+        "ocid": 705,
+        "name": "OilLevelLow",
+        "label": "Oil Level Low",
+        "category": "Maintenance",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 706,
+        "name": "TransmissionOilTemperature",
+        "label": "Transmission Oil Temperature",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": -40,
+            "max": 215,
+            "resolution": 1,
+            "unit": "Degrees Celsius"
+        }
+    },
+    {
+        "ocid": 707,
+        "name": "ClutchWearLevel",
+        "label": "Clutch Wear Level",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 708,
+        "name": "BrakePadWearFrontLeft",
+        "label": "Brake Pad Wear Front Left",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 709,
+        "name": "BrakePadWearFrontRight",
+        "label": "Brake Pad Wear Front Right",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 710,
+        "name": "BrakePadWearRearLeft",
+        "label": "Brake Pad Wear Rear Left",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 711,
+        "name": "BrakePadWearRearRight",
+        "label": "Brake Pad Wear Rear Right",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 712,
+        "name": "WasherFluidLevel",
+        "label": "Washer Fluid Level",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 713,
+        "name": "MalfunctionLampIndicatorOn",
+        "label": "Malfunction Lamp Indicator On",
+        "category": "Maintenance",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 714,
+        "name": "BatteryVoltage",
+        "label": "Battery Voltage",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 0,
+            "resolution": 0,
+            "unit": "Volt"
+        }
+    },
+    {
+        "ocid": 715,
+        "name": "TirePressureFrontLeft",
+        "label": "Tire Pressure Front Left",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 765,
+            "resolution": 3,
+            "unit": "Kilopascal"
+        }
+    },
+    {
+        "ocid": 716,
+        "name": "TirePressureFrontRight",
+        "label": "Tire Pressure Front Right",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 765,
+            "resolution": 3,
+            "unit": "Kilopascal"
+        }
+    },
+    {
+        "ocid": 717,
+        "name": "TirePressureRearLeft",
+        "label": "Tire Pressure Rear Left",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 765,
+            "resolution": 3,
+            "unit": "Kilopascal"
+        }
+    },
+    {
+        "ocid": 718,
+        "name": "TirePressureRearRight",
+        "label": "Tire Pressure Rear Right",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 765,
+            "resolution": 3,
+            "unit": "Kilopascal"
+        }
+    },
+    {
+        "ocid": 719,
+        "name": "TirePressureStatusFrontLeft",
+        "label": "Tire Pressure Status Front Left",
+        "category": "Maintenance",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Normal": 1,
+            "Low": 2,
+            "High": 3
+        }
+    },
+    {
+        "ocid": 720,
+        "name": "TirePressureStatusFrontRight",
+        "label": "Tire Pressure Status Front Right",
+        "category": "Maintenance",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Normal": 1,
+            "Low": 2,
+            "High": 3
+        }
+    },
+    {
+        "ocid": 721,
+        "name": "TirePressureStatusRearLeft",
+        "label": "Tire Pressure Status Rear Left",
+        "category": "Maintenance",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Normal": 1,
+            "Low": 2,
+            "High": 3
+        }
+    },
+    {
+        "ocid": 722,
+        "name": "TirePressureStatusRearRight",
+        "label": "Tire Pressure Status Rear Right",
+        "category": "Maintenance",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Normal": 1,
+            "Low": 2,
+            "High": 3
+        }
+    },
+    {
+        "ocid": 723,
+        "name": "TireWearFrontLeft",
+        "label": "Tire Wear Front Left",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 724,
+        "name": "TireWearFrontRight",
+        "label": "Tire Wear Front Right",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 725,
+        "name": "TireWearRearLeft",
+        "label": "Tire Wear Rear Left",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 726,
+        "name": "TireWearRearRight",
+        "label": "Tire Wear Rear Right",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 727,
+        "name": "MaxWheelSpeedExceeded",
+        "label": "Max Wheel Speed Exceeded",
+        "category": "Maintenance",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 728,
+        "name": "TireTemperatureFrontLeft",
+        "label": "Tire Temperature Front Left",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": -40,
+            "max": 215,
+            "resolution": 1,
+            "unit": "Degrees Celsius"
+        }
+    },
+    {
+        "ocid": 729,
+        "name": "TireTemperatureFrontRight",
+        "label": "Tire Temperature Front Right",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": -40,
+            "max": 215,
+            "resolution": 1,
+            "unit": "Degrees Celsius"
+        }
+    },
+    {
+        "ocid": 730,
+        "name": "TireTemperatureRearLeft",
+        "label": "Tire Temperature Rear Left",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": -40,
+            "max": 215,
+            "resolution": 1,
+            "unit": "Degrees Celsius"
+        }
+    },
+    {
+        "ocid": 731,
+        "name": "TireTemperatureRearRight",
+        "label": "Tire Temperature Rear Right",
+        "category": "Maintenance",
+        "type": "Number",
+        "value": {
+            "min": -40,
+            "max": 215,
+            "resolution": 1,
+            "unit": "Degrees Celsius"
+        }
+    },
+    {
+        "ocid": 732,
+        "name": "Language",
+        "label": "Language",
+        "category": "Personalization",
+        "type": "Bytes",
+        "valueSymbols": {
+            "English": 1,
+            "Spanish": 2,
+            "French": 3
+        }
+    },
+    {
+        "ocid": 733,
+        "name": "MeasurementSystem",
+        "label": "Measurement System",
+        "category": "Personalization",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Metric": 1,
+            "English": 2
+        }
+    },
+    {
+        "ocid": 734,
+        "name": "MeasurementSystemFuel",
+        "label": "Measurement System Fuel",
+        "category": "Personalization",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Liter": 1,
+            "Gallon": 2
+        }
+    },
+    {
+        "ocid": 735,
+        "name": "MeasurementSystemStringDistance",
+        "label": "Measurement System String Distance",
+        "category": "Personalization",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Kilometer": 1,
+            "Mile": 2
+        }
+    },
+    {
+        "ocid": 736,
+        "name": "MeasurementSystemStringSpeed",
+        "label": "Measurement System String Speed",
+        "category": "Personalization",
+        "type": "Bytes",
+        "valueSymbols": {
+            "km\/h": 1,
+            "mph": 2
+        }
+    },
+    {
+        "ocid": 737,
+        "name": "MeasurementSystemStringConsumption",
+        "label": "Measurement System String Consumption",
+        "category": "Personalization",
+        "type": "Bytes",
+        "valueSymbols": {
+            "l\/100km": 1,
+            "km\/l": 2,
+            "mpg": 3
+        }
+    },
+    {
+        "ocid": 738,
+        "name": "InsideMirrorAutomaticTintingStatus",
+        "label": "Inside Mirror Automatic Tinting Status",
+        "category": "Personalization",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Inactive": 1,
+            "Active": 2,
+            "Error": 3
+        }
+    },
+    {
+        "ocid": 739,
+        "name": "DrivingMode",
+        "label": "Driving Mode",
+        "category": "Personalization",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Comfort": 1,
+            "Auto": 2,
+            "Sport": 3,
+            "Eco": 4,
+            "Manual": 5
+        }
+    },
+    {
+        "ocid": 740,
+        "name": "SeatPositionPresetRecall",
+        "label": "Seat Position Preset Recall",
+        "category": "Personalization",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Position 0": 1,
+            "Position 1": 2,
+            "Position 2": 3,
+            "Position 3": 4,
+            "Position 4": 5,
+            "Position 5": 6
+        }
+    },
+    {
+        "ocid": 741,
+        "name": "GeneratedVehicleSoundMode",
+        "label": "Generated Vehicle Sound Mode",
+        "category": "Personalization",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Normal": 1,
+            "Quiet": 2,
+            "Sportive": 3
+        }
+    },
+    {
+        "ocid": 742,
+        "name": "AntilockBrakingSystemEnabled",
+        "label": "Antilock Braking System Enabled",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 743,
+        "name": "AntilockBrakingSystemEngaged",
+        "label": "Antilock Braking System Engaged",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 744,
+        "name": "TractionControlSystem",
+        "label": "Traction Control System",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 745,
+        "name": "ElectronicStabilityControl",
+        "label": "Electronic Stability Control",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 746,
+        "name": "VehicleTopSpeedLimit",
+        "label": "Vehicle Top Speed Limit",
+        "category": "Driver Safety",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 655.35,
+            "resolution": 0.01,
+            "unit": "Kilometers Per Hour"
+        }
+    },
+    {
+        "ocid": 747,
+        "name": "AirbagStatusDriver",
+        "label": "Airbag Status Driver",
+        "category": "Driver Safety",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Not Active": 1,
+            "Active ": 2,
+            "Deployed": 3
+        }
+    },
+    {
+        "ocid": 748,
+        "name": "AirbagStatusPassenger",
+        "label": "Airbag Status Passenger",
+        "category": "Driver Safety",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Not Active": 1,
+            "Active ": 2,
+            "Deployed": 3
+        }
+    },
+    {
+        "ocid": 749,
+        "name": "AirbagStatusSide",
+        "label": "Airbag Status Side",
+        "category": "Driver Safety",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Not Active": 1,
+            "Active ": 2,
+            "Deployed": 3
+        }
+    },
+    {
+        "ocid": 750,
+        "name": "DoorOpenStatusDriver",
+        "label": "Door Open Status Driver",
+        "category": "Driver Safety",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Open": 1,
+            "Closed ": 2,
+            "Ajar": 3
+        }
+    },
+    {
+        "ocid": 751,
+        "name": "DoorOpenStatusPassenger",
+        "label": "Door Open Status Passenger",
+        "category": "Driver Safety",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Open": 1,
+            "Closed ": 2,
+            "Ajar": 3
+        }
+    },
+    {
+        "ocid": 752,
+        "name": "DoorOpenStatusRearLeft",
+        "label": "Door Open Status Rear Left",
+        "category": "Driver Safety",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Open": 1,
+            "Closed ": 2,
+            "Ajar": 3
+        }
+    },
+    {
+        "ocid": 753,
+        "name": "DoorOpenStatusRearRight",
+        "label": "Door Open Status Rear Right",
+        "category": "Driver Safety",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Open": 1,
+            "Closed ": 2,
+            "Ajar": 3
+        }
+    },
+    {
+        "ocid": 754,
+        "name": "DoorOpenStatusTrunk",
+        "label": "Door Open Status Trunk",
+        "category": "Driver Safety",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Open": 1,
+            "Closed ": 2,
+            "Ajar": 3
+        }
+    },
+    {
+        "ocid": 755,
+        "name": "DoorOpenStatusFuelFillerCap",
+        "label": "Door Open Status Fuel Filler Cap",
+        "category": "Driver Safety",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Open": 1,
+            "Closed ": 2,
+            "Ajar": 3
+        }
+    },
+    {
+        "ocid": 756,
+        "name": "DoorOpenStatusHood",
+        "label": "Door Open Status Hood",
+        "category": "Driver Safety",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Open": 1,
+            "Closed ": 2,
+            "Ajar": 3
+        }
+    },
+    {
+        "ocid": 757,
+        "name": "TrunkDeck",
+        "label": "Trunk Deck",
+        "category": "Driver Safety",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Open": 1,
+            "Closed ": 2,
+            "Ajar": 3
+        }
+    },
+    {
+        "ocid": 758,
+        "name": "DoorLockedDriver",
+        "label": "Door Locked Driver",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 759,
+        "name": "DoorLockedPassenger",
+        "label": "Door Locked Passenger",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 760,
+        "name": "DoorLockedRearLeft",
+        "label": "Door Locked Rear Left",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 761,
+        "name": "DoorLockedRearRight",
+        "label": "Door Locked Rear Right",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 762,
+        "name": "TrunkLocked",
+        "label": "Trunk Locked",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 763,
+        "name": "FuelCapLocked",
+        "label": "Fuel Cap Locked",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 764,
+        "name": "HoodLocked",
+        "label": "Hood Locked",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 765,
+        "name": "ChildSafetyLockOn",
+        "label": "Child Safety Lock On",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 766,
+        "name": "OccupantsStatusDriver",
+        "label": "Occupants Status Driver",
+        "category": "Driver Safety",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Adult": 1,
+            "Child": 2,
+            "Vacant": 3
+        }
+    },
+    {
+        "ocid": 767,
+        "name": "OccupantsStatusPassenger",
+        "label": "Occupants Status Passenger",
+        "category": "Driver Safety",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Adult": 1,
+            "Child": 2,
+            "Vacant": 3
+        }
+    },
+    {
+        "ocid": 768,
+        "name": "OccupantsStatusRearLeft",
+        "label": "Occupants Status Rear Left",
+        "category": "Driver Safety",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Adult": 1,
+            "Child": 2,
+            "Vacant": 3
+        }
+    },
+    {
+        "ocid": 769,
+        "name": "OccupantsStatusRearRight",
+        "label": "Occupants Status Rear Right",
+        "category": "Driver Safety",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Adult": 1,
+            "Child": 2,
+            "Vacant": 3
+        }
+    },
+    {
+        "ocid": 770,
+        "name": "SeatBeltDriverFastened",
+        "label": "Seat Belt Driver Fastened",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 771,
+        "name": "SeatBeltPassengerFastened",
+        "label": "Seat Belt Passenger Fastened",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 772,
+        "name": "SeatBeltRearLeftFastened",
+        "label": "Seat Belt Rear Left Fastened",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 773,
+        "name": "SeatBeltRearRightFastened",
+        "label": "Seat Belt Rear Right Fastened",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 774,
+        "name": "WindowLockedDriver",
+        "label": "Window Locked Driver",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 775,
+        "name": "WindowLockedPassenger",
+        "label": "Window Locked Passenger",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 776,
+        "name": "WindowLockedRearLeft",
+        "label": "Window Locked Rear Left",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 777,
+        "name": "WindowLockedRearRight",
+        "label": "Window Locked Rear Right",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 778,
+        "name": "ObstacleDistanceSensorActive",
+        "label": "Obstacle Distance Sensor Active",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 779,
+        "name": "FrontCollisionDetectionActive",
+        "label": "Front Collision Detection Active",
+        "category": "Driver Safety",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 780,
+        "name": "FrontCollisionDetectionDistance",
+        "label": "Front Collision Detection Distance",
+        "category": "Driver Safety",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 25.5,
+            "resolution": 0.1,
+            "unit": "Meter"
+        }
+    },
+    {
+        "ocid": 781,
+        "name": "FrontCollisionDetectionTime",
+        "label": "Front Collision Detection Time",
+        "category": "Driver Safety",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 65.535,
+            "resolution": 0.001,
+            "unit": "Second"
+        }
+    },
+    {
+        "ocid": 782,
+        "name": "LaneDepartureDetectionActive",
+        "label": "Lane Departure Detection Active",
+        "category": "Vision System",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 783,
+        "name": "LaneDeparted",
+        "label": "Lane Departed",
+        "category": "Vision System",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 784,
+        "name": "SecurityAlert",
+        "label": "Security Alert",
+        "category": "Parking",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Idle": 1,
+            "Activated": 2,
+            "Alarm Detected": 3
+        }
+    },
+    {
+        "ocid": 785,
+        "name": "ParkingLightsOn",
+        "label": "Parking Lights On",
+        "category": "Parking",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 786,
+        "name": "HazardLightsOn",
+        "label": "Hazard Lights On",
+        "category": "Parking",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 787,
+        "name": "InsideTemperature",
+        "label": "Inside Temperature",
+        "category": "Climate",
+        "type": "Number",
+        "value": {
+            "min": -40,
+            "max": 215,
+            "resolution": 1,
+            "unit": "Degrees Celsius"
+        }
+    },
+    {
+        "ocid": 788,
+        "name": "ExteriorTemperature",
+        "label": "Exterior Temperature",
+        "category": "Climate",
+        "type": "Number",
+        "value": {
+            "min": -40,
+            "max": 215,
+            "resolution": 1,
+            "unit": "Degrees Celsius"
+        }
+    },
+    {
+        "ocid": 789,
+        "name": "ExteriorBrightness",
+        "label": "Exterior Brightness",
+        "category": "Climate",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 167772.15,
+            "resolution": 0.01,
+            "unit": "Lux"
+        }
+    },
+    {
+        "ocid": 790,
+        "name": "RainSensor",
+        "label": "Rain Sensor",
+        "category": "Climate",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 791,
+        "name": "RearWiper",
+        "label": "Rear Wiper",
+        "category": "Climate",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Off": 1,
+            "Slowest": 2,
+            "Fastest": 3,
+            "Auto": 4
+        }
+    },
+    {
+        "ocid": 792,
+        "name": "HVACFanDirection",
+        "label": "HVAC Fan Direction",
+        "category": "Climate",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Front Panel": 1,
+            "Floor Duct": 2,
+            "Front + Floor": 3,
+            "Defroster + Floor": 4
+        }
+    },
+    {
+        "ocid": 793,
+        "name": "HVACFanTargetTemp",
+        "label": "HVAC Fan Target Temp",
+        "category": "Climate",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 30,
+            "resolution": 1,
+            "unit": "Degrees Celsius"
+        }
+    },
+    {
+        "ocid": 794,
+        "name": "AirRecirculationOn",
+        "label": "Air Recirculation On",
+        "category": "Climate",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 795,
+        "name": "HeaterOn",
+        "label": "Heater On",
+        "category": "Climate",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 796,
+        "name": "DefrostRearWindshieldOn",
+        "label": "Defrost Rear Windshield On",
+        "category": "Climate",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 797,
+        "name": "DefrostSideMirrorsOn",
+        "label": "Defrost Side Mirrors On",
+        "category": "Climate",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 798,
+        "name": "SteeringWheelHeaterOn",
+        "label": "Steering Wheel Heater On",
+        "category": "Climate",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 799,
+        "name": "SeatHeaterOn",
+        "label": "Seat Heater On",
+        "category": "Climate",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 800,
+        "name": "SeatCoolerOn",
+        "label": "Seat Cooler On",
+        "category": "Climate",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 801,
+        "name": "SideWindowDriver",
+        "label": "Side Window Driver",
+        "category": "Climate",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 802,
+        "name": "SideWindowPassenger",
+        "label": "Side Window Passenger",
+        "category": "Climate",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 803,
+        "name": "SideWindowRearLeft",
+        "label": "Side Window Rear Left",
+        "category": "Climate",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 804,
+        "name": "SideWindowRearRight",
+        "label": "Side Window Rear Right",
+        "category": "Climate",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 805,
+        "name": "RearWindow",
+        "label": "Rear Window",
+        "category": "Climate",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 806,
+        "name": "SunroofOpenness",
+        "label": "Sunroof Openness",
+        "category": "Climate",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 807,
+        "name": "SunroofTilt",
+        "label": "Sunroof Tilt",
+        "category": "Climate",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 808,
+        "name": "ConvertibleRoofon",
+        "label": "Convertible Roof on",
+        "category": "Climate",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 809,
+        "name": "HybridPowerStatus",
+        "label": "Hybrid Power Status",
+        "category": "Electric Vehicle",
+        "type": "Bytes",
+        "valueSymbols": {
+            "Idle": 1,
+            "Battery Mode": 2,
+            "Engine Mode": 3,
+            "Hybrid Mode": 4
+        }
+    },
+    {
+        "ocid": 810,
+        "name": "ChargingStatusOn",
+        "label": "Charging Status On",
+        "category": "Electric Vehicle",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 811,
+        "name": "LevelofCharge",
+        "label": "Level of Charge",
+        "category": "Electric Vehicle",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 812,
+        "name": "BatteryChargeCordConnected",
+        "label": "Battery Charge Cord Connected",
+        "category": "Electric Vehicle",
+        "type": "Boolean"
+    },
+    {
+        "ocid": 813,
+        "name": "TargetChargeLevel",
+        "label": "Target Charge Level",
+        "category": "Electric Vehicle",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 100,
+            "resolution": 1,
+            "unit": "Percentage"
+        }
+    },
+    {
+        "ocid": 814,
+        "name": "TimetoFullCharge",
+        "label": "Time to Full Charge",
+        "category": "Electric Vehicle",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 65535,
+            "resolution": 1,
+            "unit": "Second"
+        }
+    },
+    {
+        "ocid": 815,
+        "name": "TimetoTargetCharge",
+        "label": "Time to Target Charge",
+        "category": "Electric Vehicle",
+        "type": "Number",
+        "value": {
+            "min": 0,
+            "max": 65535,
+            "resolution": 1,
+            "unit": "Second"
+        }
+    }
+]
