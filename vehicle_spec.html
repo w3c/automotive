@@ -17,7 +17,9 @@
           crEnd:                "",
           editors:  [
               { name: "Kevron Rees", company: "Intel",
-                      companyURL: "http://www.intel.com" }
+                      companyURL: "http://www.intel.com" },
+              { name: "Justin Park", company: "LGE",
+                      companyURL: "http://www.lg.com"}
          ],
           inlineCSS:    true,
           noIDLIn:      true,
@@ -55,7 +57,34 @@
     An example of use is provided below:
   
   <pre class="example highlight">
-        /// TODO: example of usage here
+        var vehicle = navigator.vehicle;
+        
+        vehicle.vehicleSpeed.get().then(function(vehicleSpeed) {
+          console.log("vehicle speed: " + vehicleSpeed.speed);
+        },
+        function(error) {
+          console.log("There was an error");
+        });
+        
+        var vehicleSpeedSub = vehicle.vehicleSpeed.subscribe(function(vehicleSpeed) {
+          console.log("vehicle speed changed to: " + vehicleSpeed.speed);
+          vehicle.vehicleSpeed.unsubscribe(vehicleSpeedSub);
+        });
+        
+        var i = vehicle.climateControl.zones.indexOf(Zone.Driver);
+        
+        if(i != -1)
+        {
+          var value = {};
+          value["acStatus"] = true;
+          vehicle.climateControl.set(value, Zone.Driver).then(function(){
+            console.log("successfully set acStatus");
+          },
+          function(error) {
+            console.log("there was an error");
+          });
+        }
+        
   </pre>
 </section>
     
@@ -95,7 +124,7 @@
 <!------------------------ Security and privacy ------------------------------>
 <section>
       <h2>Security and privacy considerations</h2>
-      <p>This API must be only exposed to trusted content
+      <p>This API must be only exposed to trusted content</p>
 </section>
 
 <!---------------------- Extended interface Navigator ------------------------>
@@ -113,13 +142,115 @@
 <section>
   <h2><a>Vehicle Information</a> Interface</h2> <p>The <a>Vehicle Infomration</a> interface
   represents the initial entry point for getting access to the vehicle information
-  services, i.e. Engine Speed and Tire Pressure.
+  services, i.e. Engine Speed and Tire Pressure. </p>
   
   <dl title="[NoInterfaceObject] interface Vehicle" class="idl">  
-    
+    <dt>readonly attribute VehicleInterface vehicleSpeed</dt>
+    <dd>Must return VehicleInterface for vehicleSpeed or undefined if not supported</dd>
+    <dt>readonly attribute VehicleInterface climateControl</dt>
+    <dd>Must return VehicleInterface for climateControl or undefined if not supported</dd>
   </dl>
    
 
+</section>
+
+<!------------------------ Interface Zone ------------------------>
+<section>
+  <h2><a>Zone</a> Interface</h2> <p>The <a>Zone</a>
+  interface contains the constants that represent physical zones and logical zones</p>
+  
+  <dl title="[NoInterfaceObject] interface Zone"
+  class="idl">
+    <dt>const short Front = 0x01</dt>
+    <dt>const short Middle = 0x02</dt>
+    <dt>const short Right = 0x04</dt>
+    <dt>const short Left = 0x08</dt>
+    <dt>const short Rear = 0x10</dt>
+    <dt>const short Center = 0x20</dt>
+    <dt>const short FrontLeft = Front | Left</dt>
+    <dt>const short FrontRight = Front | Right</dt>
+    <dt>const short RearLeft = Rear | Left</dt>
+    <dt>const short RearRight = Rear | Right</dt>
+    
+    <dt>readonly attribute short Driver</dt><dd>Must return physical zone for logical driver</dd>
+    <dt>readonly attribute short Passenger</dt><dd>Must return physical zone for logical passenger</dd>
+    
+  </dl>
+</section>
+
+<!------------------------ Interface DOMFuture ------------------------>
+<section>
+  <h2><a>DOMFuture</a> Interface</h2> <p>The <a>DOMFuture</a>
+  interface contains the constants that represent physical zones and logical zones</p>
+  
+  <dl title="[NoInterfaceObject] interface DOMFuture"
+  class="idl">
+    <dt> void then(VehicleIntefaceCallback successCb, VehicleInterfaceErrorCallback errorCb)</dt>
+  </dl>
+</section>
+
+<!------------------------ Callback VehicleInterfaceCallback------------------------------>
+<section>
+  <h2><a>VehicleInterfaceCallback</a> Callback</h2>
+  <p>The <a>VehicleInterfaceCallback</a> </p>
+  <dl title="callback VehicleInterfaceCallback = void (object value)"></dl>
+</section> 
+
+<!------------------------ Callback VehicleInterfaceErrorCallback------------------------------>
+<section>
+  <h2><a>VehicleInterfaceErrorCallback</a> Callback</h2>
+  <p>The <a>VehicleInterfaceErrorCallback</a> </p>
+  <dl title="callback VehicleInterfaceErrorCallback = void (VehicleInterfaceError error); "></dl>
+</section> 
+
+<!------------------------ Interface VehicleInterface ------------------------>
+<section>
+  <h2><a>VehicleInterface</a> Interface</h2> <p>The <a>VehicleInterface</a>
+  interface represents the base interface to get and set all vehicle properties.</p>
+  
+  <dl title="[NoInterfaceObject] interface VehicleInterface"
+  class="idl">
+
+    <dt>DOMFuture get(optional Zone zone)</dt> <dd>MUST return the DOMFuture.</dd>
+    <dt>DOMFuture set(object value, optional Zone zone)</dt><dd>MUST return DOMFuture</dd>
+    <dt>readonly attribute sequence<Zone> zones</dt><dd>must return available zones</dd>
+    <dt>short subscribe(VehicleInterfaceCallback callback, optional Zone zone)</dt><dd>must return handle to subscription or 0 if error</dd>
+    <dt>void unsubscribe(short handle)</dt><dd>must return void.  unsubscribes to value changes on this interface.</dd>
+  </dl>
+</section>
+
+<!------------------------ Interface CommonDataType ------------------------>
+<section>
+  <h2><a>CommonDataType</a> Interface</h2> <p>The <a>CommonDataType</a>
+  interface represents the common data type for all vehicle data types</p>
+  
+  <dl title="[NoInterfaceObject] interface CommonDataType"
+  class="idl">
+    <dt>readonly attribute Zone zone</dt><dd>must return zone for this data type or undefined if there is no zone associated with this data type</dd>
+    <dt>readonly attribute Date time</dt><dd>must return timestamp when this data was received on the system</dd>
+  </dl>
+</section>
+
+<!------------------------ Interface VehicleSpeedType ------------------------>
+<section>
+  <h2><a>VehicleSpeedType</a> Interface</h2> <p>The <a>VehicleSpeedType</a>
+  represents vehicle speed interface</p>
+  
+  <dl title="[NoInterfaceObject] interface VehicleSpeedType : CommonDataType"
+  class="idl">
+    <dt>readonly attribute unsigned short speed</dt><dd>must return vehicle speed in k/h</dd>
+  </dl>
+</section>
+
+<!------------------------ Interface ClimateControlType ------------------------>
+<section>
+  <h2><a>ClimateControlType</a> Interface</h2> <p>The <a>ClimateControlType</a>
+  represents the climate control interface</p>
+  
+  <dl title="[NoInterfaceObject] interface ClimateControlType : CommonDataType"
+  class="idl">
+    <dt>readonly attribute boolean acStatus</dt><dd>must return air conditioning status, on=true, off=false or undefined if not supported</dd>
+  </dl>
 </section>
 
   </body>
