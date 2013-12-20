@@ -219,12 +219,12 @@
   </dl>
 </section>
 
-<!------------------------ Interface CommonDataType ------------------------>
+<!------------------------ Interface VehicleCommonDataType ------------------------>
 <section>
-  <h2><a>CommonDataType</a> Interface</h2> <p>The <a>CommonDataType</a>
+  <h2><a>VehicleCommonDataType</a> Interface</h2> <p>The <a>VehicleCommonDataType</a>
   interface represents the common data type for all vehicle data types</p>
   
-  <dl title="[NoInterfaceObject] interface CommonDataType"
+  <dl title="[NoInterfaceObject] interface VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute Zone zone</dt><dd>must return zone for this data type or undefined if there is no zone associated with this data type</dd>
     <dt>readonly attribute Date time</dt><dd>must return timestamp when this data was received on the system</dd>
@@ -236,7 +236,7 @@
   <h2><a>VehicleSpeedType</a> Interface</h2> <p>The <a>VehicleSpeedType</a>
   represents vehicle speed interface</p>
   
-  <dl title="[NoInterfaceObject] interface VehicleSpeedType : CommonDataType"
+  <dl title="[NoInterfaceObject] interface VehicleSpeedType : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned short speed</dt><dd>must return vehicle speed in k/h</dd>
   </dl>
@@ -247,7 +247,7 @@
   <h2><a>ClimateControlType</a> Interface</h2> <p>The <a>ClimateControlType</a>
   represents the climate control interface</p>
   
-  <dl title="[NoInterfaceObject] interface ClimateControlType : CommonDataType"
+  <dl title="[NoInterfaceObject] interface ClimateControlType : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute boolean acStatus</dt><dd>must return air conditioning status, on=true, off=false or undefined if not supported</dd>
   </dl>
