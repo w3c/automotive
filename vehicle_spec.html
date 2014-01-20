@@ -38,7 +38,7 @@
 <section id="abstract">
   This specification defines a Vehicle Information API which offers a simple interface
   to get access to vehicle data. A typical use case of the Vehicle Information is the
-  implementation of a tachometer application that allows view inforomation from the
+  implementation of a tachometer application that allows view information from the
   vehicle such as speed, tire pressure, and engine rotation speed (RPMs).
 </section>
 
@@ -71,20 +71,24 @@
           vehicle.vehicleSpeed.unsubscribe(vehicleSpeedSub);
         });
         
-        var i = vehicle.climateControl.zones.indexOf(Zone.Driver);
+        var zone = new Zone;
         
-        if(i != -1)
+        var zones = vehicle.climateControl.zones;
+        
+        for(var i in zones)
         {
-          var value = {};
-          value["acStatus"] = true;
-          vehicle.climateControl.set(value, Zone.Driver).then(function(){
-            console.log("successfully set acStatus");
-          },
-          function(error) {
-            console.log("there was an error");
-          });
-        }
-        
+           if(i.equals(zone.driver))
+           {
+              var value = {};
+              value["acStatus"] = true;
+              vehicle.climateControl.set(value, zone.driver).then(function(){
+                console.log("successfully set acStatus");
+             },
+             function(error) {
+               console.log("there was an error");
+             });
+           }        
+        }        
   </pre>
 </section>
     
@@ -140,7 +144,7 @@
     
 <!------------------------ Interface Vehicle ------------------------------->
 <section>
-  <h2><a>Vehicle Information</a> Interface</h2> <p>The <a>Vehicle Infomration</a> interface
+  <h2><a>Vehicle Information</a> Interface</h2> <p>The <a>Vehicle Information</a> interface
   represents the initial entry point for getting access to the vehicle information
   services, i.e. Engine Speed and Tire Pressure. </p>
   
@@ -161,31 +165,22 @@
   
   <dl title="[NoInterfaceObject] interface Zone"
   class="idl">
-    <dt>const short Front = 0x01</dt>
-    <dt>const short Middle = 0x02</dt>
-    <dt>const short Right = 0x04</dt>
-    <dt>const short Left = 0x08</dt>
-    <dt>const short Rear = 0x10</dt>
-    <dt>const short Center = 0x20</dt>
-    <dt>const short FrontLeft = Front | Left</dt>
-    <dt>const short FrontRight = Front | Right</dt>
-    <dt>const short RearLeft = Rear | Left</dt>
-    <dt>const short RearRight = Rear | Right</dt>
-    
-    <dt>readonly attribute short Driver</dt><dd>Must return physical zone for logical driver</dd>
-    <dt>readonly attribute short Passenger</dt><dd>Must return physical zone for logical passenger</dd>
-    
-  </dl>
-</section>
+    <dt>const DOMString Front = "Front"</dt>
+    <dt>const DOMString Middle = "Middle"</dt>
+    <dt>const DOMString Right = "Right"</dt>
+    <dt>const DOMString Left = "Left"</dt>
+    <dt>const DOMString Rear = "Rear"</dt>
+    <dt>const DOMString Center = "Center"</dt>
 
-<!------------------------ Interface DOMFuture ------------------------>
-<section>
-  <h2><a>DOMFuture</a> Interface</h2> <p>The <a>DOMFuture</a>
-  interface contains the constants that represent physical zones and logical zones</p>
-  
-  <dl title="[NoInterfaceObject] interface DOMFuture"
-  class="idl">
-    <dt> void then(VehicleIntefaceCallback successCb, VehicleInterfaceErrorCallback errorCb)</dt>
+    <dt>attribute DOMString value[]</dt<dd>Must return array of physical zones</dd>
+    <dt>readonly attribute DOMString driver[]</dt><dd>Must return physical zone array for logical driver</dd>
+    <dt>readonly attribute DOMString passenger[]</dt><dd>Must return physical zone array for logical passenger</dd>
+    
+    <dt>boolean equals(DOMString values[])</dt><dd>Must return true if values[] matches the contents of Zone.value.  
+    Ordering of elements within the arrays values and Zone.value do not matter.</dd>
+    
+    <dt>boolean contains(DOMString value)</dt><dd>Must return true if value can be found within Zone.value</dd>
+    
   </dl>
 </section>
 
@@ -211,10 +206,10 @@
   <dl title="[NoInterfaceObject] interface VehicleInterface"
   class="idl">
 
-    <dt>DOMFuture get(optional Zone zone)</dt> <dd>MUST return the DOMFuture.</dd>
-    <dt>DOMFuture set(object value, optional Zone zone)</dt><dd>MUST return DOMFuture</dd>
-    <dt>readonly attribute sequence<Zone> zones</dt><dd>must return available zones</dd>
-    <dt>short subscribe(VehicleInterfaceCallback callback, optional Zone zone)</dt><dd>must return handle to subscription or 0 if error</dd>
+    <dt>Promise get(optional Zone zone)</dt> <dd>MUST return the Promise.</dd>
+    <dt>Promise set(object value, optional Zone zone)</dt><dd>MUST return Promise</dd>
+    <dt>readonly attribute Zone zones[]</dt><dd>must return available zones</dd>
+    <dt>unsigned short subscribe(VehicleInterfaceCallback callback, optional Zone zone)</dt><dd>must return handle to subscription or 0 if error</dd>
     <dt>void unsubscribe(short handle)</dt><dd>must return void.  unsubscribes to value changes on this interface.</dd>
   </dl>
 </section>
@@ -226,7 +221,7 @@
   
   <dl title="[NoInterfaceObject] interface VehicleCommonDataType"
   class="idl">
-    <dt>readonly attribute Zone zone</dt><dd>must return zone for this data type or undefined if there is no zone associated with this data type</dd>
+    <dt>readonly attribute Zone zone[]</dt><dd>must return zone for this data type or null if there is no zone associated with this data type</dd>
     <dt>readonly attribute DOMTimeStamp timeStamp</dt><dd>must return timestamp when this data was received on the system</dd>
   </dl>
 </section>
