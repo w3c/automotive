@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vehicle Information API - Vision - Parking - Electric vehicle</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
+            class='remove'></script>
+    <script class="remove">
+      var respecConfig = {
+          specStatus:           "unofficial",
+          shortName:            "vehicle-information-api",
+          publishDate:          "",
+          previousPublishDate:  "",
+          previousMaturity:     "",
+          edDraftURI:           "",
+          // lcEnd:                "",
+          crEnd:                "",
+          editors:  [
+              { name: "Aldric Loyer", company: "PSA",
+                      companyURL: "http://www.PSA.com" },
+         ],
+          inlineCSS:    true,
+          noIDLIn:      true,
+          extraCSS:     ["http://dev.w3.org/2009/dap/ReSpec.js/css/respec.css"],
+          wg:           "",
+          wgURI:        "http://",
+          wgPublicList: "",
+          wgPatentURI:  "",
+      };
+    </script> 
+  </head>
+
+  <body>
+
+<!------------------------------ Abstract ------------------------------------>    
+<section id="abstract">
+  This specification defines the APIs for three domains: Vision, Parking and Electric/hybrid vehicle. 
+  Use cases of the vision and the parking interfaces are not defined currently.
+  A use case of the electric vehicle is the implementation of applications that show information such 
+  as battery level or that manages the charging, the preconditioning, ... 
+</section>
+
+<!----------------------- Status of this document ---------------------------->    
+<section id="sotd">
+</section>
+
+<!----------------------------- Introduction --------------------------------->
+<section class="informative">
+  <h2>Introduction</h2>
+  <p>
+		TBD
+  </p>
+
+	<div class='note'>
+	<p>
+	Those three categories need to be more clearly defined. It will help determine data elements fall within them. 
+	Vision system and parking seems not very clear in regards with Driving safety where some functions are also related to parking and vision.
+	It is clear that certain elements could fall within multiple categories depending on how one might want to classify them.
+	Vision is much more than only lane departure warning.
+	Electric vehicle category should be renamed in order to cover alternate power trains (hybrid, range extenders,etc)
+	</p>
+  	</div>
+
+
+	<section class="use-cases">
+	<h3>Use Cases for Vision interfaces</h3>
+    <ul>
+			<li>
+			To warn when the vehicle goes on another lane (Lane departure warning function)
+			</li>
+			<li>
+			To warn in case of an danger (vehicle, pedestrian, animals, stop sign, red light, ...)
+			</li>
+			<li>
+			To record the scene before and after an accident (for insurance or testimony)
+			</li>
+			<li>
+			To improve vision in the dark
+			</li>
+	  </ul>
+	<h3>Use Cases for Parking interfaces</h3>
+    <ul>
+			<li>
+			To be informed in case of intrusion in or around the vehicle.
+			</li>
+			<li>
+			To be informed of the parking brake status.
+			</li>
+	  </ul>	  
+	<h3>Use Cases for Electric Vehicle interfaces</h3>
+    <ul>
+			<li>
+			To see current state of the battery level, remaining time before full charging, ...
+			</li>
+			<li>
+			To check if the charging is plugged or unplugged.
+			</li>
+	  </ul>
+	</section>
+
+</section>
+
+<!-------------------- API Description & Properties -------------------------->
+
+<section class="api-properties">
+<h2>API Description & Properties</h2>
+
+<!------------------------ Interface LaneDepartureDetection (Vision) ------------------------------>
+<section>
+  <h3><a>LaneDepartureDetection</a> Interface</h3>
+  <p>The <a>LaneDepartureDetection</a> interface represents the current status of the lane departure warning function.
+
+  <dl title="enum LaneDepartureStatus" class="idl">
+  	<dt>off</dt>
+  	<dd>The function is not running</dd>
+  	<dt>pause</dt>
+  	<dd>The function has been paused (running, but inactive) </dd>
+  	<dt>running</dt>
+  	<dd>The function is in its operational mode</dd>
+  </dl>
+
+  <dl title="[NoInterfaceObject] interface LaneDepartureDetection : VehiclePropertyType" class="idl">
+     <dt>attribute LaneDepartureStatus status</dt>
+     <dd>current status of Lane departure warning function.</dd>
+  </dl>
+ </section>
+
+<!------------------------ Interface Alarm (Parking)------------------------------>
+<section>
+  <h3><a>Alarm</a> Interface</h3>
+  <p>The <a>Alarm</a> interface represents the current status of the in vehicle Alarm system.
+
+  <dl title="enum AlarmStatus" class="idl">
+  	<dt>Disarmed</dt>
+  	<dd>0 = The alarm is not armed</dd>
+  	<dt>PreArmed</dt>
+  	<dd>1 = The function is temporary not active</dd>
+  	<dt>Armed</dt>
+  	<dd>2 = The function is active</dd>
+	<dt>Alarmed</dt>
+  	<dd>3 = The Alarm is screaming </dd>
+  </dl>
+
+  <dl title="[NoInterfaceObject] interface Alarm : VehiclePropertyType" class="idl">
+     <dt>attribute AlarmStatus status</dt>
+     <dd>current status of In vehicle Alarm System.</dd>
+  </dl>
+ </section> 
+ 
+ <!------------------------ Interface ParkingBrake (Parking)------------------------------>
+<section>
+  <h3><a>ParkingBrake</a> Interface</h3>
+  <p>The <a>ParkingBrake</a> interface represents the current status of the parking brake.
+
+  <dl title="enum ParkingBrakeStatus" class="idl">
+  	<dt>Inactive</dt>
+  	<dd>0 = Parking brake is not engaged (driving position)</dd>
+  	<dt>Active</dt>
+  	<dd>1 = Parking brake is engaged (parking position)</dd>
+  	<dt>Error</dt>
+  	<dd>2 = There is a problem with the parking brake system</dd>
+  </dl>
+
+  <dl title="[NoInterfaceObject] interface ParkingBrake : VehiclePropertyType" class="idl">
+     <dt>attribute ParkingBrakeStatus status</dt>
+     <dd>current status of parking brake.</dd>
+  </dl>
+ </section> 
+ 
+  <!------------------------ Interface ParkingLights (Parking)------------------------------>
+<section>
+  <h3><a>ParkingLights</a> Interface</h3>
+  <p>The <a>ParkingLights</a> interface represents the current status of the parking Lights.
+
+  <dl title="enum ParkingLightsStatus" class="idl">
+  	<dt>Off</dt>
+  	<dd>0 = Parking assistance light is disabled</dd>
+  	<dt>On</dt>
+  	<dd>1 = Parking assistance light is enabled</dd>
+  </dl>
+
+  <dl title="[NoInterfaceObject] interface ParkingLights : VehiclePropertyType" class="idl">
+     <dt>attribute ParkingLightsStatus status</dt>
+     <dd>current status of parking Lights.</dd>
+  </dl>
+ </section> 
+ 
+ <!------------------------ Interface ParkingLightsSettings (Parking) ------------------------------>
+<section>
+  <h3><a>ParkingLightsSettings</a> Interface</h3>
+  <p>The <a>ParkingLightsSettings</a> interface represents the current setting of the parking light.
+
+	<dl title="enum ParkingLightsControl" class="idl">
+		<dt>Off</dt>
+		<dd>Disable parking lights</dd>
+		<dt>On</dt>
+		<dd>Enable parking lights</dd>
+	</dl>
+
+  <dl title="[NoInterfaceObject] interface ParkingLightsSettings : VehiclePropertyType" class="idl">
+     <dt>attribute ParkingLightsControl	settings</dt>
+     <dd>current setting of the parking lights. It can be used to send user's request for changing setting.</dd>
+  </dl>
+</section>
+ 
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+<!---------------------------------------------------------------------------------->
+
+</section>
+  </body>
+</html>
