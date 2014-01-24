@@ -172,14 +172,14 @@
     <dt>const DOMString Rear = "Rear"</dt>
     <dt>const DOMString Center = "Center"</dt>
 
-    <dt>attribute DOMString value[]</dt<dd>Must return array of physical zones</dd>
-    <dt>readonly attribute DOMString driver[]</dt><dd>Must return physical zone array for logical driver</dd>
-    <dt>readonly attribute DOMString passenger[]</dt><dd>Must return physical zone array for logical passenger</dd>
+    <dt>attribute unsigned DOMString value[]</dt<dd>Must return array of physical zones</dd>
+    <dt>readonly attribute Zone driver</dt><dd>Must return physical zone array for logical driver</dd>
+    <dt>readonly attribute Zone passenger[]</dt><dd>Must return physical zone array for logical passenger</dd>
     
-    <dt>boolean equals(DOMString values[])</dt><dd>Must return true if values[] matches the contents of Zone.value.  
-    Ordering of elements within the arrays values and Zone.value do not matter.</dd>
+    <dt>boolean equals(Zone zone)</dt><dd>Must return true if zone.value matches the contents of this.value.  
+    Ordering of elements within Zone.value does not matter.</dd>
     
-    <dt>boolean contains(DOMString value)</dt><dd>Must return true if value can be found within Zone.value</dd>
+    <dt>boolean contains(Zone zone)</dt><dd>Must return true if zone.value can be found within this.value</dd>
     
   </dl>
 </section>
@@ -221,7 +221,7 @@
   
   <dl title="[NoInterfaceObject] interface VehicleCommonDataType"
   class="idl">
-    <dt>readonly attribute Zone zone[]</dt><dd>must return zone for this data type or null if there is no zone associated with this data type</dd>
+    <dt>readonly attribute Zone zone</dt><dd>must return zone for this data type or null if there is no zone associated with this data type</dd>
     <dt>readonly attribute DOMTimeStamp timeStamp</dt><dd>must return timestamp when this data was received on the system</dd>
   </dl>
 </section>
