@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vehicle Information API</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
+            class='remove'></script>
+    <script class="remove">
+      var respecConfig = {
+          specStatus:           "unofficial",
+          shortName:            "vehicle-information-api",
+          publishDate:          "",
+          previousPublishDate:  "",
+          previousMaturity:     "",
+          edDraftURI:           "",
+          // lcEnd:                "",
+          crEnd:                "",
+          editors:  [
+              { name: "Kevron Rees", company: "Intel",
+                      companyURL: "http://www.intel.com" },
+              { name: "Justin (Jong Seon) Park", company: "LG Electronics",
+                      companyURL: "http://www.lge.com" }
+         ],
+          inlineCSS:    true,
+          noIDLIn:      true,
+          extraCSS:     ["http://dev.w3.org/2009/dap/ReSpec.js/css/respec.css"],
+          wg:           "",
+          wgURI:        "http://",
+          wgPublicList: "",
+          wgPatentURI:  "",
+      };
+    </script> 
+  </head>
+
+  <body>
+
+<!------------------------------ Abstract ------------------------------------>    
+<section id="abstract">
+  This specification defines a Vehicle Information API which offers a simple interface
+  to get access to vehicle data. A typical use case of the Vehicle Information is the
+  implementation of a tachometer application that allows view information from the
+  vehicle such as speed, tire pressure, and engine rotation speed (RPMs).
+</section>
+
+<!----------------------- Status of this document ---------------------------->    
+<section id="sotd">
+</section>
+
+<!----------------------------- Introduction --------------------------------->
+<section class="informative">
+  <h2>Introduction</h2>
+  <p>
+		TBW
+  </p>
+
+	<section class="use-cases">
+	  <h3>Use Cases for climate/environment interfaces</h3>
+    <ul>
+			<li>
+			IVI system shows the status of various climate control equipments as GUI and lets a user control it via touch screen.
+			</li>
+			<li>
+			A user uses his smart devices to remotely check whether side windows of his parked car are closed or not, and to send a request to the car for closing it if opened.
+			</li>
+			<li>
+			A user uses his smart devices to start his car remotely, and turns heaters on to warm up the car inside before getting in the car.
+			</li>
+			<li>
+	    If users agree to provide vehicle information to the weather station, many cars can be used to get weather information such as amounts of rain and ambient temperatures.
+			</li>
+	  </ul>
+	</section>
+
+</section>
+
+<!-------------------- API Description & Properties -------------------------->
+
+<section class="common-api">
+<h2>Common Vehicle API & Properties</h2>
+
+<!------------------------ Interface Temperature ------------------------------>
+<section>
+  <h3><a>VehicleZone</a> type</h3>
+  <p>The <a>VehicleZone</a> type represents the zone of the vehicle</p>
+	<dl title="enum VehicleZone" class="idl">
+		<dt>all</dt>
+		<dd></dd>
+		<dt>row1</dt>
+		<dd></dd>
+		<dt>row2</dt>
+		<dd></dd>
+		<dt>row3</dt>
+		<dd></dd>
+		<dt>row1left</dt>
+		<dd></dd>
+		<dt>row1center</dt>
+		<dd></dd>
+		<dt>row1right</dt>
+		<dd></dd>
+		<dt>row2left</dt>
+		<dd></dd>
+		<dt>row2center</dt>
+		<dd></dd>
+		<dt>row2right</dt>
+		<dd></dd>
+		<dt>row3left</dt>
+		<dd></dd>
+		<dt>row3center</dt>
+		<dd></dd>
+		<dt>row3right</dt>
+		<dd></dd>
+	</dl>
+	
+	<p>Some vehicle data types exist per seats or locations. Thus, it make sense to handle those as a set by identifiers.<br>
+	<a>VehicleZone</a> type is used to specify the scope of the data.</p>
+
+</section>
+  <p class="note">
+It needs to be clarified how to use vehicle zone type in method and event handler.<br>
+	It’s useful for ‘getter’ and ‘setter’ method because those require handling data to specific zone or all zones.<br>
+	Using zone identifier, single common ‘getter’ and ‘setter’ can handle all cases.<br>
+	However, we should investigate whether it works well with DOM event.
+  </p>
+
+</section>
+
+
+<!-------------------- API Description & Properties -------------------------->
+
+<section class="api-properties">
+<h2>API Description & Properties</h2>
+
+<!------------------------ Interface Temperature ------------------------------>
+<section>
+  <h3><a>Temperature</a> Interface</h3>
+  <p>The <a>Temperature</a> interface provides information about the current temperature of outside or inside vehicle.
+  <dl title="[NoInterfaceObject] interface Temperature : VehiclePropertyType" class="idl">
+     <dt>readonly attribute short interiorTemperature</dt>
+     <dd>the current temperature of the air inside of the vehicle. </dd>
+     <dt>readonly attribute short exteriorTemperature</dt>
+     <dd>the current temperature of the air around the vehicle</dd>
+  </dl>
+
+  <p>Unit is deg. of Celsius<br>
+Resolution is 0.5<br>
+Range is -70 to 125<br>
+This interface is optional
+  </p>
+  <p class="note">There's relevant exploratory work in W3C.<br>
+<a href="https://dvcs.w3.org/hg/dap/raw-file/default/temperature/Overview.html">https://dvcs.w3.org/hg/dap/raw-file/default/temperature/Overview.html</a></br>
+However, interior or exterior temperature must be distinguished in vehicles.
+  </p>
+</section>
+
+<!------------------------ Interface ExteriorBrightness ------------------------------>
+<section>
+  <h3><a>ExteriorBrightness</a> Interface</h3>
+  <p>The <a>ExteriorBrightness</a> interface provides information about ambient light levels.
+  <dl title="[NoInterfaceObject] interface ExteriorBrightness : VehiclePropertyType" class="idl">
+  </dl>
+  <p class="note">There's relevant draft specification. There is no reason not to use it.<br>
+<a href="http://www.w3.org/TR/2013/CR-ambient-light-20131001/">http://www.w3.org/TR/2013/CR-ambient-light-20131001/</a>
+  </p>
+</section>
+
+<!------------------------ Interface RainSensor ------------------------------>
+<section>
+  <h3><a>RainSensor</a> Interface</h3>
+  <p>The <a>RainSensor</a> interface provides information about ambient light levels.
+  <dl title="[NoInterfaceObject] interface RainSensor : VehiclePropertyType" class="idl">
+     <dt>readonly attribute unsigned short rain</dt>
+     <dd>the amount of rain detected by the rain sensor. level of rain intensity ( 0: No Rain ~ 10: Heaviest Rain)</dd>
+  </dl>
+</section>
+
+<!------------------------ Interface WiperStatus ------------------------------>
+<section>
+  <h3><a>WiperStatus</a> Interface</h3>
+  <p>The <a>WiperStatus</a> interface represents the status of wiper operation.
+  <dl title="[NoInterfaceObject] interface WiperStatus : VehiclePropertyType" class="idl">
+     <dt>readonly attribute unsigned short frontWiperSpeed</dt>
+     <dd>current speed interval of wiping windshield ( 0: off, 1: Slowest ~ 10: Fastest )</dd>
+     <dt>readonly attribute unsigned short? rearWiperSpeed</dt>
+     <dd>current speed interval of wiping rear window ( 0: off, 1: Slowest ~ 10: Fastest )</dd>
+  </dl>
+  <p>rearWiperSpeed is optional depending on vehicle type.</p>
+</section>
+
+<!------------------------ Interface WiperSetting ------------------------------>
+<section>
+  <h3><a>WiperSetting</a> Interface</h3>
+  <p>The <a>WiperSetting</a> interface represents the current setting of the wiper controller.
+
+	<dl title="enum WiperControl" class="idl">
+		<dt>off</dt>
+		<dd>Wiper is not in operation</dd>
+		<dt>once</dt>
+		<dd>Wipe single. It's a transient state and goes to the off mode</dd>
+		<dt>slowest</dt>
+		<dd>Wiper is on mode with the slowest speed</dd>
+		<dt>slow</dt>
+		<dd>Wiper is on mode with slow speed</dd>
+		<dt>middle</dt>
+		<dd>Wiper is on mode with middle speed</dd>
+		<dt>fast</dt>
+		<dd>Wiper is on mode with fast speed</dd>
+		<dt>fastest</dt>
+		<dd>Wiper is on mode with the fastest speed</dd>
+		<dt>auto</dt>
+		<dd>Wiper is on the automatic mode which controls wiping speed with accordance with the amount of rain</dd>
+	</dl>
+
+  <dl title="[NoInterfaceObject] interface WiperSetting : VehiclePropertyType" class="idl">
+     <dt>attribute WiperControl	frontWiperControl</dt>
+     <dd>current setting of the front wiper controller. It can be used to send user's request for changing setting.</dd>
+     <dt>attribute WiperControl?	rearWiperControl</dt>
+     <dd>current setting of the rear wiper controller. It can be used to send user's request for changing setting.</dd>
+  </dl>
+  <p>rearWiperControl is optional depending on vehicle type.</p>
+</section>
+
+<!------------------------ Interface Defrost ------------------------------>
+<section>
+  <h3><a>Defrost</a> Interface</h3>
+  <p>The <a>Defrost</a> interface represents the status of wiper operation.
+  <dl title="[NoInterfaceObject] interface Defrost : VehiclePropertyType" class="idl">
+     <dt>attribute boolean defrostWindShield</dt>
+     <dd>current status of the defrost switch for WindShield. It can be used to send user's request for changing setting.</dd>
+     <dt>attribute boolean? defrostRearWindow</dt>
+     <dd>current status of the defrost switch for rear window. It can be used to send user's request for changing setting.</dd>
+     <dt>attribute boolean? defrostSideMirrors</dt>
+     <dd>current status of the defrost switch for side mirrors. It can be used to send user's request for changing setting.</dd>
+  </dl>
+  <p>defrostRearWindow, defrostSideMirrors are optional depending on vehicle type.</p>
+</section>
+
+<!------------------------ Interface Sunroof ------------------------------>
+<section>
+  <h3><a>Sunroof</a> Interface</h3>
+  <p>The <a>Sunroof</a> interface represents the current status of Sunroof.
+  <dl title="[NoInterfaceObject] interface Sunroof : VehiclePropertyType" class="idl">
+     <dt>attribute unsigned short openness</dt>
+     <dd>current status of Sunroof as a percentage of openness ( 0: Closed, 100: Fully Opened).</dd>
+     <dt>attribute unsigned short tilt</dt>
+     <dd>current status of Sunroof as a percentage of tilted ( 0: Closed, 100: Maximum Tilted).</dd>
+  </dl>
+  <p>Both can be used to send user's request for changing setting.</p>
+</section>
+
+<!------------------------ Interface ConvertibleRoof ------------------------------>
+<section>
+  <h3><a>ConvertibleRoof</a> Interface</h3>
+  <p>The <a>ConvertibleRoof</a> interface represents the current status of Convertible Roof.
+
+  <dl title="enum ConvertibleRoofStatus" class="idl">
+  	<dt>closed</dt>
+  	<dd>The convertible roof is closed</dd>
+  	<dt>closing</dt>
+  	<dd>The convertible roof is closing</dd>
+  	<dt>opening</dt>
+  	<dd>The convertible roof is opening</dd>
+  	<dt>opened</dt>
+  	<dd>The convertible roof is opened</dd>
+  </dl>
+
+  <dl title="[NoInterfaceObject] interface ConvertibleRoof : VehiclePropertyType" class="idl">
+     <dt>attribute ConvertibleRoofStatus status</dt>
+     <dd>current status of Convertible Roof.</dd>
+  </dl>
+  <p>It can be used to send user's request for changing setting. "closed" is used to close and "opened" is used to open.</p>
+</section>
+
+<!------------------------ Interface SideWindow ------------------------------>
+<section>
+  <h3><a>SideWindow</a> Interface</h3>
+  <p>The <a>SideWindow</a> interface represents the current status of openness of side windows.
+
+  <dl title="dictionary WindowOpenness" class="idl">
+  	<dt>attribute VehicleZone zone</dt>
+  	<dd>indicate which vehicle zone the current side window openness corresponds to</dd>
+  	<dt>attribute unsigned short openness</dt>
+  	<dd>current status of the side window as a percentage of openness. (0:Closed, 100:Fully Opened)</dd>
+  </dl>
+
+  <dl title="[NoInterfaceObject] interface SideWindow : VehiclePropertyType" class="idl">
+     <dt>attribute WindowOpenness[] window</dt>
+     <dd>current statuss of the number of each side windows as an array.</dd>
+  </dl>
+  <p>zone attribute of WindowOpenness can have only row#left and row#right values. row# center is not applicable here.<br>
+  	It can be used to send user's request for changing setting.</p>
+</section>
+
+<!------------------------ Interface ClimateControl ------------------------------>
+<section>
+  <h3><a>ClimateControl</a> Interface</h3>
+  <p>The <a>ClimateControl</a> interface represents the current setting of the climate control equipments such as heater and air conditioner.
+
+	<dl title="enum AirflowDirection" class="idl">
+		<dt>frontpanel</dt>
+		<dd>Air flow is directed to the instrument panel outlets</dd>
+		<dt>floorduct</dt>
+		<dd>Air flow is directed to the floor outlets</dd>
+		<dt>bilevel</dt>
+		<dd>Air flow is directed to the instrument panel outlets and the floor outlets</dd>
+		<dt>defrostfloor</dt>
+		<dd>Air flow is directed to the floor outlets and the windshield</dd>
+	</dl>
+
+	<dl title="dictionary HVAC" class="idl">
+		<dt>attribute VehicleZone zone</dt>
+		<dd>indicate which vehicle zone the current HVAC information corresponds to</dd>
+		<dt>attribute AirflowDirection airflowDirection</dt>
+		<dd>current status of the direction of the air flow through the ventilation system</dd>
+		<dt>attribute unsigned short fanSpeedLevel</dt>
+		<dd>current status of the fan speed of the air flowing</dd>
+		<dt>attribute short? targetTemperature</dt>
+		<dd>current setting of the desired temperature</dd>
+		<dt>attribute boolean airConditioning</dt>
+		<dd>current status of the air conditioning system (true: working, false: off)</dd>
+		<dt>attribute boolean heater</dt>
+		<dd>current status of the heating system</dd>
+		<dt>attribute unsigned short? seatHeater</dt>
+		<dd>current status of the seat warmer ( 0: off, 1: least warm ~ 10: warmest )</dd>
+		<dt>attribute unsigned short? seatCooler</dt>
+		<dd>current status of the seat ventilation ( 0: off, 1: least warm ~ 10: warmest )</dd>
+	</dl>
+
+  <dl title="[NoInterfaceObject] interface ClimateControl : VehiclePropertyType" class="idl">
+     <dt>attribute HVAC[] hvac</dt>
+     <dd>current setting of HVAC per each zone.</dd>
+     <dt>attribute boolean airRecirculation</dt>
+     <dd>current setting of air recirculation. (true : on, false : pulling in outside air)</dd>
+     <dt>attribute unsigned short? steeringWheelHeater</dt>
+     <dd>current status of steering wheel heater ( 0: off, 1: least warm ~ 10: warmest )</dd>
+  </dl>
+  <p><a>ClimateControl</a> can be used to send user's request for changing setting.</p>
+</section>
+
+<!---------------------------------------------------------------------------------->
+
+</section>
+  </body>
+</html>
