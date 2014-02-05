@@ -17,7 +17,9 @@
           crEnd:                "",
           editors:  [
               { name: "Kevron Rees", company: "Intel",
-                      companyURL: "http://www.intel.com" }
+                      companyURL: "http://www.intel.com" },
+              { name: "Justin Park", company: "LGE",
+                      companyURL: "http://www.lg.com"}
          ],
           inlineCSS:    true,
           noIDLIn:      true,
@@ -36,7 +38,7 @@
 <section id="abstract">
   This specification defines a Vehicle Information API which offers a simple interface
   to get access to vehicle data. A typical use case of the Vehicle Information is the
-  implementation of a tachometer application that allows view inforomation from the
+  implementation of a tachometer application that allows view information from the
   vehicle such as speed, tire pressure, and engine rotation speed (RPMs).
 </section>
 
@@ -55,7 +57,38 @@
     An example of use is provided below:
   
   <pre class="example highlight">
-        /// TODO: example of usage here
+        var vehicle = navigator.vehicle;
+        
+        vehicle.vehicleSpeed.get().then(function(vehicleSpeed) {
+          console.log("vehicle speed: " + vehicleSpeed.speed);
+        },
+        function(error) {
+          console.log("There was an error");
+        });
+        
+        var vehicleSpeedSub = vehicle.vehicleSpeed.subscribe(function(vehicleSpeed) {
+          console.log("vehicle speed changed to: " + vehicleSpeed.speed);
+          vehicle.vehicleSpeed.unsubscribe(vehicleSpeedSub);
+        });
+        
+        var zone = new Zone;
+        
+        var zones = vehicle.climateControl.zones;
+        
+        for(var i in zones)
+        {
+           if(i.equals(zone.driver))
+           {
+              var value = {};
+              value["acStatus"] = true;
+              vehicle.climateControl.set(value, zone.driver).then(function(){
+                console.log("successfully set acStatus");
+             },
+             function(error) {
+               console.log("there was an error");
+             });
+           }        
+        }        
   </pre>
 </section>
     
@@ -95,7 +128,7 @@
 <!------------------------ Security and privacy ------------------------------>
 <section>
       <h2>Security and privacy considerations</h2>
-      <p>This API must be only exposed to trusted content
+      <p>This API must be only exposed to trusted content</p>
 </section>
 
 <!---------------------- Extended interface Navigator ------------------------>
@@ -111,15 +144,108 @@
     
 <!------------------------ Interface Vehicle ------------------------------->
 <section>
-  <h2><a>Vehicle Information</a> Interface</h2> <p>The <a>Vehicle Infomration</a> interface
+  <h2><a>Vehicle Information</a> Interface</h2> <p>The <a>Vehicle Information</a> interface
   represents the initial entry point for getting access to the vehicle information
-  services, i.e. Engine Speed and Tire Pressure.
+  services, i.e. Engine Speed and Tire Pressure. </p>
   
   <dl title="[NoInterfaceObject] interface Vehicle" class="idl">  
-    
+    <dt>readonly attribute VehicleInterface vehicleSpeed</dt>
+    <dd>Must return VehicleInterface for vehicleSpeed or undefined if not supported</dd>
+    <dt>readonly attribute VehicleInterface climateControl</dt>
+    <dd>Must return VehicleInterface for climateControl or undefined if not supported</dd>
   </dl>
    
 
+</section>
+
+<!------------------------ Interface Zone ------------------------>
+<section>
+  <h2><a>Zone</a> Interface</h2> <p>The <a>Zone</a>
+  interface contains the constants that represent physical zones and logical zones</p>
+  
+  <dl title="[NoInterfaceObject] interface Zone"
+  class="idl">
+    <dt>const DOMString Front = "Front"</dt>
+    <dt>const DOMString Middle = "Middle"</dt>
+    <dt>const DOMString Right = "Right"</dt>
+    <dt>const DOMString Left = "Left"</dt>
+    <dt>const DOMString Rear = "Rear"</dt>
+    <dt>const DOMString Center = "Center"</dt>
+
+    <dt>attribute unsigned DOMString value[]</dt<dd>Must return array of physical zones</dd>
+    <dt>readonly attribute Zone driver</dt><dd>Must return physical zone array for logical driver</dd>
+    <dt>readonly attribute Zone passenger[]</dt><dd>Must return physical zone array for logical passenger</dd>
+    
+    <dt>boolean equals(Zone zone)</dt><dd>Must return true if zone.value matches the contents of this.value.  
+    Ordering of elements within Zone.value does not matter.</dd>
+    
+    <dt>boolean contains(Zone zone)</dt><dd>Must return true if zone.value can be found within this.value</dd>
+    
+  </dl>
+</section>
+
+<!------------------------ Callback VehicleInterfaceCallback------------------------------>
+<section>
+  <h2><a>VehicleInterfaceCallback</a> Callback</h2>
+  <p>The <a>VehicleInterfaceCallback</a> </p>
+  <dl title="callback VehicleInterfaceCallback = void (object value)"></dl>
+</section> 
+
+<!------------------------ Callback VehicleInterfaceErrorCallback------------------------------>
+<section>
+  <h2><a>VehicleInterfaceErrorCallback</a> Callback</h2>
+  <p>The <a>VehicleInterfaceErrorCallback</a> </p>
+  <dl title="callback VehicleInterfaceErrorCallback = void (VehicleInterfaceError error); "></dl>
+</section> 
+
+<!------------------------ Interface VehicleInterface ------------------------>
+<section>
+  <h2><a>VehicleInterface</a> Interface</h2> <p>The <a>VehicleInterface</a>
+  interface represents the base interface to get and set all vehicle properties.</p>
+  
+  <dl title="[NoInterfaceObject] interface VehicleInterface"
+  class="idl">
+
+    <dt>Promise get(optional Zone zone)</dt> <dd>MUST return the Promise.</dd>
+    <dt>Promise set(object value, optional Zone zone)</dt><dd>MUST return Promise</dd>
+    <dt>readonly attribute Zone zones[]</dt><dd>must return available zones</dd>
+    <dt>unsigned short subscribe(VehicleInterfaceCallback callback, optional Zone zone)</dt><dd>must return handle to subscription or 0 if error</dd>
+    <dt>void unsubscribe(short handle)</dt><dd>must return void.  unsubscribes to value changes on this interface.</dd>
+  </dl>
+</section>
+
+<!------------------------ Interface VehicleCommonDataType ------------------------>
+<section>
+  <h2><a>VehicleCommonDataType</a> Interface</h2> <p>The <a>VehicleCommonDataType</a>
+  interface represents the common data type for all vehicle data types</p>
+  
+  <dl title="[NoInterfaceObject] interface VehicleCommonDataType"
+  class="idl">
+    <dt>readonly attribute Zone zone</dt><dd>must return zone for this data type or null if there is no zone associated with this data type</dd>
+    <dt>readonly attribute DOMTimeStamp timeStamp</dt><dd>must return timestamp when this data was received on the system</dd>
+  </dl>
+</section>
+
+<!------------------------ Interface VehicleSpeedType ------------------------>
+<section>
+  <h2><a>VehicleSpeedType</a> Interface</h2> <p>The <a>VehicleSpeedType</a>
+  represents vehicle speed interface</p>
+  
+  <dl title="[NoInterfaceObject] interface VehicleSpeedType : VehicleCommonDataType"
+  class="idl">
+    <dt>readonly attribute unsigned short speed</dt><dd>must return vehicle speed in k/h</dd>
+  </dl>
+</section>
+
+<!------------------------ Interface ClimateControlType ------------------------>
+<section>
+  <h2><a>ClimateControlType</a> Interface</h2> <p>The <a>ClimateControlType</a>
+  represents the climate control interface</p>
+  
+  <dl title="[NoInterfaceObject] interface ClimateControlType : VehicleCommonDataType"
+  class="idl">
+    <dt>readonly attribute boolean acStatus</dt><dd>must return air conditioning status, on=true, off=false or undefined if not supported</dd>
+  </dl>
 </section>
 
   </body>
