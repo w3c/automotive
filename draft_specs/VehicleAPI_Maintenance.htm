@@ -123,17 +123,17 @@
   <h3><a>Odometer</a> Interface</h3>
   <p>The <a>Odometer</a> interface provides information about the distance that the 
   vehicle has traveled.
-  <dl title="[NoInterfaceObject] interface Odometer : VehiclePropertyType" class="idl">
-     <dt>readonly attribute unsigned short distanceSinceStart</dt>
+  <dl title="[NoInterfaceObject] interface Odometer : VehicleCommonDataType" class="idl">
+     <dt>readonly attribute unsigned short? distanceSinceStart</dt>
      <dd>the distance traveled by vehicle since start (Unit: kilometer, Resolution: 0.1, 
-     Min: 0, Max: 6553.5).
+     Min: 0, Max: 6553.5).<br>Available Zone: None
      <div class="issue">Keep or remove?  From experience, this is a useful element. I
      Is it covered elsewhere by trip meter or similar?
      </div>
      </dd>     
      <dt>readonly attribute unsigned long distanceTotal</dt>
      <dd>the total distance traveled by the vehicle (Unit: kilometer, Resolution: 0.1, 
-     Min: 0, Max: 429496729.5). </dd>
+     Min: 0, Max: 429496729.5).<br>Available Zone: None</dd>
   </dl>
 </section>
 
@@ -142,14 +142,14 @@
   <h3><a>TransmissionOil</a> Interface [OPTIONAL]</h3>
   <p>The <a>TransmissionOil</a> interface provides information about the state of a 
   vehicles transmission oil.
-  <dl title="[NoInterfaceObject] interface TransmissionOil : VehiclePropertyType" 
+  <dl title="[NoInterfaceObject] interface TransmissionOil : VehicleCommonDataType" 
   class="idl">
-     <dt>readonly attribute byte wear</dt>
+     <dt>readonly attribute byte? wear</dt>
      <dd>transmission oil wear (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: no wear, 100: completely worn).</dd>
-     <dt>readonly attribute short temperature</dt>
+     Max: 100, 0: no wear, 100: completely worn).<br>Available Zone: None</dd>
+     <dt>readonly attribute short? temperature</dt>
      <dd>current temperature of the transmission oil(Unit: Celsius, Resolution: 1, 
-     Min: -40, Max: 215). </dd>
+     Min: -40, Max: 215).<br>Available Zone: None</dd>
   </dl>
   <p class="issue">Keep or remove interface?  This interface seems fairly esoteric, 
   but could be useful.  I am not certain how man vehicles will be equiped with this, or 
@@ -162,11 +162,11 @@
   <h3><a>TransmissionClutch</a> Interface [OPTIONAL]</h3>
   <p>The <a>TransmissionClutch</a> interface provides information about the state of a 
   vehicles transmission clutch.
-  <dl title="[NoInterfaceObject] interface TransmissionClutch : VehiclePropertyType" 
+  <dl title="[NoInterfaceObject] interface TransmissionClutch : VehicleCommonDataType" 
   class="idl">
-     <dt>readonly attribute byte wear</dt>
+     <dt>readonly attribute byte? wear</dt>
      <dd>transmission clutch wear (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: no wear, 100: completely worn).</dd>
+     Max: 100, 0: no wear, 100: completely worn).<br>Available Zone: None</dd>
   </dl>
   <p class="note">
   Changed transmissionClutchWearLevel to wear to be more 
@@ -183,27 +183,19 @@
   <h3><a>Brake</a> Interface [OPTIONAL]</h3>
   <p>The <a>Brake</a> interface provides information about the state of a 
   vehicles brakes.
-  <dl title="[NoInterfaceObject] interface Brake : VehiclePropertyType" 
+  <dl title="[NoInterfaceObject] interface Brake : VehicleCommonDataType" 
   class="idl">
-     <dt>readonly attribute unsigned short fluidLevel</dt>
+     <dt>readonly attribute unsigned short? fluidLevel</dt>
      <dd>brake fluid level (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: empty, 100: full).</dd>
-     <dt>readonly attribute boolean fluidLevelLow</dt>
-     <dd>true if brake fluid level is low, false otherwise.</dd>
-     <dt>readonly attribute byte padWearFrontLeft</dt>
+     Max: 100, 0: empty, 100: full).<br>Available Zone: None</dd>
+     <dt>readonly attribute boolean? fluidLevelLow</dt>
+     <dd>true if brake fluid level is low, false otherwise.<br>Available Zone: None</dd>
+     <dt>readonly attribute byte? padWear</dt>
      <dd>front left brake pad wear (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: no wear, 100: completely worn).</dd>  
-     <dt>readonly attribute byte padWearFrontRight</dt>
-     <dd>front right brake pad wear (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: no wear, 100: completely worn).</dd>  
-     <dt>readonly attribute byte padWearRearLeft</dt>
-     <dd>rear left brake pad wear (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: no wear, 100: completely worn).</dd>  
-     <dt>readonly attribute byte padWearRearRight</dt>
-     <dd>rear right brake pad wear (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: no wear, 100: completely worn).</dd>  
-     <dt>readonly attribute boolean brakesWorn</dt>
-     <dd>true if brakes are worn, false otherwise.</dd>
+     Max: 100, 0: no wear, 100: completely worn).
+     <br>Available Zone: Front, Rear, Left, Right</dd></dd>
+     <dt>readonly attribute boolean? brakesWorn</dt>
+     <dd>true if brakes are worn, false otherwise.<br>Available Zone: None</dd>
   </dl>
 </section>
 
@@ -212,13 +204,13 @@
   <h3><a>WasherFluid</a> Interface [OPTIONAL]</h3>
   <p>The <a>WasherFluid</a> interface provides information about the state of a 
   vehicles washer fluid.
-  <dl title="[NoInterfaceObject] interface WasherFluid : VehiclePropertyType" 
+  <dl title="[NoInterfaceObject] interface WasherFluid : VehicleCommonDataType" 
   class="idl">
-     <dt>readonly attribute unsigned short level</dt>
+     <dt>readonly attribute unsigned short? level</dt>
      <dd>brake fluid level (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: empty, 100: full).</dd>
-     <dt>readonly attribute boolean levelLow</dt>
-     <dd>true if washer fluid level is low, false otherwise.</dd>
+     Max: 100, 0: empty, 100: full).<br>Available Zone: None</dd>
+     <dt>readonly attribute boolean? levelLow</dt>
+     <dd>true if washer fluid level is low, false otherwise.<br>Available Zone: None</dd>
   </dl>
 </section>
 
@@ -227,10 +219,10 @@
   <h3><a>MalfunctionIndicator</a> Interface [OPTIONAL]</h3>
   <p>The <a>MalfunctionIndicator</a> interface provides information about the state of a 
   vehicles Malfunction Indicator lamp.
-  <dl title="[NoInterfaceObject] interface MalfunctionIndicator : VehiclePropertyType" 
+  <dl title="[NoInterfaceObject] interface MalfunctionIndicator : VehicleCommonDataType" 
   class="idl">
      <dt>readonly attribute boolean on</dt>
-     <dd>true if malfunction indicator lamp is on, false otherwise.</dd>
+     <dd>true if malfunction indicator lamp is on, false otherwise.<br>Available Zone: None</dd>
   </dl>
 </section>
 
@@ -239,17 +231,17 @@
   <h3><a>BatteryStatus</a> Interface [OPTIONAL]</h3>
   <p>The <a>BatteryStatus</a> interface provides information about the state of a 
   vehicles battery.
-  <dl title="[NoInterfaceObject] interface BatteryStatus : VehiclePropertyType" 
+  <dl title="[NoInterfaceObject] interface BatteryStatus : VehicleCommonDataType" 
   class="idl">
-     <dt>readonly attribute unsigned short chargeLevel</dt>
+     <dt>readonly attribute unsigned short? chargeLevel</dt>
      <dd>battery charge level (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: empty, 100: full).</dd>
-     <dt>readonly attribute unsigned short voltage</dt>
+     Max: 100, 0: empty, 100: full).<br>Available Zone: None</dd>
+     <dt>readonly attribute unsigned short? voltage</dt>
      <dd>battery voltage (Unit: Volts, Resolution: 0.1, Min: 0, 
-     Max: 25.2).</dd>  
-     <dt>readonly attribute unsigned short current</dt>
+     Max: 25.2).<br>Available Zone: None</dd>  
+     <dt>readonly attribute unsigned short? current</dt>
      <dd>battery current (Unit: Amperes, Resolution: 1, Min: 0, 
-     Max: 255).</dd>  
+     Max: 255).<br>Available Zone: None</dd>  
   </dl>
 </section>
 
@@ -258,68 +250,20 @@
   <h3><a>Tire</a> Interface [OPTIONAL]</h3>
   <p>The <a>Tire</a> interface provides information about the state of a 
   vehicles tires.
-  <dl title="[NoInterfaceObject] interface Tire : VehiclePropertyType" 
+  <dl title="[NoInterfaceObject] interface Tire : VehicleCommonDataType" 
   class="idl">
-     <dt>readonly attribute boolean pressureLow</dt>
+     <dt>readonly attribute boolean? pressureLow</dt>
      <dd>true if any tire pressure is low, false otherwise.
      <div class="issue">Added - As is common on lower end vehicles.  Keep?</div>
      </dd>
-     <dt>readonly attribute unsigned short pressureFrontLeft</dt>
-     <dd>front left tire pressure (Unit: kilopascal, Resolution: 3, Min: 0, 
+     <dt>readonly attribute unsigned short? pressure</dt>
+     <dd>tire pressure (Unit: kilopascal, Resolution: 3, Min: 0, 
      Max: 765).</dd>
-     <dt>readonly attribute unsigned short pressureFrontRight</dt>
-     <dd>front right tire pressure (Unit: kilopascal, Resolution: 3, Min: 0, 
-     Max: 765).</dd>
-     <dt>readonly attribute unsigned short pressureRearLeft</dt>
-     <dd>rear left tire pressure (Unit: kilopascal, Resolution: 3, Min: 0, 
-     Max: 765).</dd>
-     <dt>readonly attribute unsigned short pressureRearRight</dt>
-     <dd>rear right tire pressure (Unit: kilopascal, Resolution: 3, Min: 0, 
-     Max: 765).</dd>
-     <dt>readonly attribute boolean pressureLowFrontLeft</dt>
-     <dd>true if front left tire pressure is low, false otherwise.</dd>
-     <dt>readonly attribute boolean pressureLowFrontRight</dt>
-     <dd>true if front right tire pressure is low, false otherwise.</dd>
-     <dt>readonly attribute boolean pressureLowRearLeft</dt>
-     <dd>true if rear left tire pressure is low, false otherwise.</dd>
-     <dt>readonly attribute boolean pressureLowRearRight</dt>
-     <dd>true if rear right tire pressure is low, false otherwise.</dd>
-     <dt>readonly attribute byte wearFrontLeft</dt>
-     <dd>front left tire wear (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: no wear, 100: completely worn).
-     <div class="issue">Remove? - Is tire wear practical?  Does anyone implement?
-     I am of two schools of thought.  Leave it in as optional.  If someone wants to 
-     implement, they can.  Or, remove because no one currently implements?  Same is true
-     for all tire wear attributes.
-     </div>
-     </dd>  
-     <dt>readonly attribute byte wearFrontRight</dt>
-     <dd>front right tire wear (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: no wear, 100: completely worn).</dd>  
-     <dt>readonly attribute byte wearRearLeft</dt>
-     <dd>rear left tire wear (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: no wear, 100: completely worn).</dd>  
-     <dt>readonly attribute byte wearRearRight</dt>
-     <dd>rear right tire wear (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: no wear, 100: completely worn).</dd>  
-     <dt>readonly attribute short temperatureFrontLeft</dt>
-     <dd>front left tire temperature (Unit: Celsius, Resolution: 1, Min: -40, 
-     Max: 215).
-     <div class="issue">Remove? - Is tire temperature practical?  Does anyone implement?
-     I am of two schools of thought.  Leave it in as optional.  If someone wants to 
-     implement, they can.  Or, remove because no one currently implements?  Same is true
-     for all tire temperature attributes.
-     </div>
-     </dd>  
-     <dt>readonly attribute short temperatureFrontRight</dt>
-     <dd>front right tire temperature (Unit: Celsius, Resolution: 1, Min: -40, 
-     Max: 215).</dd> 
-     <dt>readonly attribute short temperatureRearLeft</dt>
-     <dd>rear left tire temperature (Unit: Celsius, Resolution: 1, Min: -40, 
-     Max: 215).</dd> 
-     <dt>readonly attribute short temperatureRearRight</dt>
-     <dd>rear right tire temperature (Unit: Celsius, Resolution: 1, Min: -40, 
-     Max: 215).</dd> 
+     <dt>readonly attribute boolean? pressureLow</dt>
+     <dd>true if a tire pressure is low, false otherwise.</dd>
+     <dt>readonly attribute short? temperature</dt>
+     <dd>tire temperature (Unit: Celsius, Resolution: 1, Min: -40, 
+     Max: 215). </dd>  
   </dl>
   
   <p class='issue'>
@@ -331,14 +275,6 @@
   will gladly add back if desired.  Add back?
   </p>
 </section>
-
-
-
-
-
-
-
-
 
 
 <!---------------------------------------------------------------------------------->
