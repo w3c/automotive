@@ -18,7 +18,7 @@
           editors:  [
               { name: "Kevron Rees", company: "Intel",
                       companyURL: "http://www.intel.com" },
-              { name: "Justin Park", company: "LGE",
+              { name: "Justin (Jong Seon) Park", company: "LG Electronics",
                       companyURL: "http://www.lg.com"}
          ],
           inlineCSS:    true,
@@ -144,7 +144,7 @@
     
 <!------------------------ Interface Vehicle ------------------------------->
 <section>
-  <h2><a>Vehicle Information</a> Interface</h2> <p>The <a>Vehicle Information</a> interface
+  <h2><a>VehicleInformation</a> Interface</h2> <p>The <a>VehicleInformation</a> interface
   represents the initial entry point for getting access to the vehicle information
   services, i.e. Engine Speed and Tire Pressure. </p>
   
@@ -172,9 +172,9 @@
     <dt>const DOMString Rear = "Rear"</dt>
     <dt>const DOMString Center = "Center"</dt>
 
-    <dt>attribute unsigned DOMString value[]</dt<dd>Must return array of physical zones</dd>
+    <dt>attribute DOMString[] value</dt><dd>Must return array of physical zones</dd>
     <dt>readonly attribute Zone driver</dt><dd>Must return physical zone array for logical driver</dd>
-    <dt>readonly attribute Zone passenger[]</dt><dd>Must return physical zone array for logical passenger</dd>
+    <dt>readonly attribute Zone[] passenger</dt><dd>Must return physical zone array for logical passenger</dd>
     
     <dt>boolean equals(Zone zone)</dt><dd>Must return true if zone.value matches the contents of this.value.  
     Ordering of elements within Zone.value does not matter.</dd>
@@ -208,7 +208,6 @@
 
     <dt>Promise get(optional Zone zone)</dt> <dd>MUST return the Promise.</dd>
     <dt>Promise set(object value, optional Zone zone)</dt><dd>MUST return Promise</dd>
-    <dt>readonly attribute Zone zones[]</dt><dd>must return available zones</dd>
     <dt>unsigned short subscribe(VehicleInterfaceCallback callback, optional Zone zone)</dt><dd>must return handle to subscription or 0 if error</dd>
     <dt>void unsubscribe(short handle)</dt><dd>must return void.  unsubscribes to value changes on this interface.</dd>
   </dl>
@@ -221,8 +220,8 @@
   
   <dl title="[NoInterfaceObject] interface VehicleCommonDataType"
   class="idl">
-    <dt>readonly attribute Zone zone</dt><dd>must return zone for this data type or null if there is no zone associated with this data type</dd>
-    <dt>readonly attribute DOMTimeStamp timeStamp</dt><dd>must return timestamp when this data was received on the system</dd>
+    <dt>readonly attribute Zone? zone</dt><dd>must return zone for this data type or null if there is no zone associated with this data type</dd>
+    <dt>readonly attribute DOMTimeStamp? timeStamp</dt><dd>must return timestamp when this data was received on the system</dd>
   </dl>
 </section>
 
