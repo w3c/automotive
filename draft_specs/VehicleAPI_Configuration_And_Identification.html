@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vehicle Information API - Vehicle Configuration and Identification Information</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
+            class='remove'></script>
+    <script class="remove">
+      var respecConfig = {
+          specStatus:           "unofficial",
+          shortName:            "vehicle-information-api",
+          publishDate:          "",
+          previousPublishDate:  "",
+          previousMaturity:     "",
+          edDraftURI:           "",
+          // lcEnd:                "",
+          crEnd:                "",
+          editors:  [
+              { name: "Andy Gryc", company: "QNX",
+                      companyURL: "http://www.qnx.com" },
+              { name: "Tina Jeffries", company: "QNX",
+                      companyURL: "http://www.qnx.com" },
+              { name: "Paul J. Boyes", company: "OpenCar",
+                      companyURL: "http://www.opencar.com" },
+         ],
+          inlineCSS:    true,
+          noIDLIn:      true,
+          extraCSS:     ["http://dev.w3.org/2009/dap/ReSpec.js/css/respec.css"],
+          wg:           "",
+          wgURI:        "http://",
+          wgPublicList: "",
+          wgPatentURI:  "",
+      };
+    </script> 
+  </head>
+
+  <body>
+
+<!------------------------------ Abstract ------------------------------------>    
+<section id="abstract">
+  This specification defines a Vehicle Configuration and Identification 
+  Information API which offers a simple interface to get access to vehicle 
+  configuration and identification data. A typical use case of the Vehicle 
+  Configuration and Identification Information is the implementation of applications 
+  that show information such as VIN, fuel type, vehicle length, total number 
+  of doors, etc...
+</section>
+
+<!----------------------- Status of this document ---------------------------->    
+<section id="sotd">
+</section>
+
+<!----------------------------- Introduction --------------------------------->
+<section class="informative">
+  <h2>Introduction</h2>
+  <p>
+		TBD
+  </p>
+	<section class="use-cases">
+	  <h3>Use Cases for maintenance interfaces</h3>
+    <ul>
+			<li>
+			Driver and technician are able to see vehicle configuration and identification information such VIN and vehicle size.
+			</li>
+	  </ul>
+	</section>
+
+</section>
+
+<!-------------------- API Description & Properties -------------------------->
+
+<section class="api-properties">
+<h2>API Description & Properties</h2>
+
+<!------------------------ Interface Identification ------------------------------>
+<section>
+  <h3><a>Identification</a> Interface</h3>
+  <p>The <a>Identification</a> interface provides identification information about a
+  vehicle.
+  <dl title="[NoInterfaceObject] interface Identification : VehicleCommonDataType" class="idl">
+     <dt>readonly attribute DOMString? VIN</dt>
+     <dd>the Vehicle Identification Number</dd>
+     <dt>readonly attribute DOMString? WMI</dt>
+     <dd>the World Manufacture Identifier</dd>
+     <dt>readonly attribute DOMString[]? vehicleType</dt>
+     <dd>Type of vehicle</dd>
+     <dt>readonly attribute DOMString? brand</dt>
+     <dd>vehicle brand name</dd>
+     <dt>readonly attribute DOMString? model</dt>
+     <dd>vehicle model type</dd>
+     <dt>readonly attribute unsigned short? year</dt>
+     <dd>vehicle model year (Min: 2000, Max: 2100)</dd>
+  </dl>
+</section>
+
+<!------------------------ Interface Configuration ------------------------------>
+<section>
+  <h3><a>Configuration</a> Interface</h3>
+  <p>The <a>Configuration</a> interface provides configuration information information about a
+  vehicle.
+  <dl title="[NoInterfaceObject] interface Configuration : VehicleCommonDataType" class="idl">
+     <dt>readonly attribute unsigned float? width</dt>
+     <dd>Widest dimension of the vehicle (not including the side mirrors) (Unit:  Meters,
+     Resolution: 0.01, Min: 0, Max: 10  Note:  Number may be an approximation, and 
+     should not be expected to be exact.)</dd>
+     <dt>readonly attribute unsigned float? height</dt>
+     <dd>Distance from the ground to the highest point of the vehicle (not including antennas)
+     (Unit:  Meters, Resolution: 0.01, Min: 0, Max: 10  Note:  Number may be an approximation, and 
+     should not be expected to be exact.)</dd>
+     <dt>readonly attribute unsigned float? length</dt>
+     <dd>Distance from front bumper to rear bumper
+     (Unit:  Meters, Resolution: 0.01, Min: 0, Max: 10  Note:  Number may be an approximation, and 
+     should not be expected to be exact.)</dd>
+     <dt>readonly attribute unsigned short[]? doorsCount</dt>
+     <dd>list of car doors, organized in "rows" with number doors in each row.(Per Row - 
+     Min: 0, Max: 3)
+     <div class="issue">
+     NOTE TO EDITORS: DO NOT KNOW IF A LIST AS DESCRIBED CAN BE REPRESENTED IN 
+     WEBIDL MAY NEED TO REDO THIS.)For example, two door coupe would return {2}, 
+     four door sedan would return {2, 2}, four door SUV with hatchback would 
+     return {2, 2, 1}, etc.</div></dd>
+     <dt>readonly attribute unsigned short? totalDoors</dt>
+     <dd>Total number of doors on the vehicle (all doors opening to the interior, 
+     including hatchbacks) (Min: 0, Max: 10)</dd>
+     <dt>readonly attribute DOMString? fuelType</dt>
+     <dd>type of fuel used by vehicle
+     <div class="issue">Need to create enum for this?</div></dd>
+     <dt>readonly attribute DOMString? secondaryFuelType</dt>
+     <dd>type of secondary fuel used by vehicle
+     <div class="issue">Like fuelType... Need to create enum for this?</div></dd>
+     <dt>readonly attribute DOMString? refuelPosition</dt>
+     <dd>Side of the vehicle with access to the fuel door
+     <div class="issue">Need to create enum for this?</div></dd>
+     <dt>readonly attribute DOMString? transmissionGearType</dt>
+     <dd>Transmission gear type
+     <div class="issue">Need to create enum for this?</div></dd>
+     <dt>readonly attribute unsigned short? wheelInfoRadius</dt>
+     <dd>Radius of the wheel (Unit: centimeter, Min: 0, Max: 1000)</dd>
+     <dt>readonly attribute unsigned short? frontWheelRadius</dt>
+     <dd>Radius of the front wheel (Unit: centimeter, Min: 0, Max: 1000)</dd>     
+     <dt>readonly attribute unsigned short? rearWheelRadius</dt>
+     <dd>Radius of the rear wheel (Unit: centimeter, Min: 0, Max: 1000)</dd>     
+     <dt>readonly attribute unsigned boolean? steeringWheelLeft</dt>
+     <dd>True if steering wheel is on left side of vehicle</dd>          
+  </dl>
+</section>
+
+<!---------------------------------------------------------------------------------->
+
+</section>
+  </body>
+</html>
