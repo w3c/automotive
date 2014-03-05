@@ -154,62 +154,6 @@
   services, i.e. Engine Speed and Tire Pressure. </p>
 
   <dl title="[NoInterfaceObject] interface Vehicle" class="idl">  
-    <dt>readonly attribute VehicleInterface ? vehicleSpeed</dt>
-    <dt>readonly attribute VehicleInterface ? engineSpeed</dt>
-    <dd>Must return VehicleInterface for engineSpeed</dd>
-    <dt>readonly attribute VehicleInterface ? powertrainTorque</dt>
-    <dd>Must return VehicleInterface for powertrainTorque</dd>
-    <dt>readonly attribute VehicleInterface ? acceleratorPedalPosition</dt>
-    <dd>Must return VehicleInterface for acceleratorPedalPosition</dd>
-    <dt>readonly attribute VehicleInterface ? throttlePosition</dt>
-    <dd>Must return VehicleInterface for throttlePosition</dd>
-    <dt>readonly attribute VehicleInterface ? tripMeters</dt>
-    <dd>Must return VehicleInterface for tripMeters</dd>
-    <dt>readonly attribute VehicleInterface ? diagnostic</dt>
-    <dd>Must return VehicleInterface for diagnostic</dd>
-    <!-- running status types: -->
-    <dt>readonly attribute VehicleInterface ? transmission</dt>
-    <dd>Must return VehicleInterface for transmission</dd>
-    <dt>readonly attribute VehicleInterface ? cruiseControl</dt>
-    <dd>Must return VehicleInterface for cruiseControl</dd>
-    <dt>readonly attribute VehicleInterface ? lightStatus</dt>
-    <dd>Must return VehicleInterface for lightStatus</dd>
-    <dt>readonly attribute VehicleInterface ? interiorLightStatus</dt>
-    <dd>Must return VehicleInterface for interiorLightStatus</dd>
-    <dt>readonly attribute VehicleInterface ? chime</dt>
-    <dd>Must return VehicleInterface for chime</dd>
-    <dt>readonly attribute VehicleInterface ? fuel</dt>
-    <dd>Must return VehicleInterface for fuel</dd>
-    <dt>readonly attribute VehicleInterface ? engineOil</dt>
-    <dd>Must return VehicleInterface for engineOil</dd>
-    <dt>readonly attribute VehicleInterface ? acceleration</dt>
-    <dd>Must return VehicleInterface for acceleration</dd>
-    <dt>readonly attribute VehicleInterface ? location</dt>
-    <dd>Must return VehicleInterface for location</dd>
-    <dt>readonly attribute VehicleInterface ? engineCoolant</dt>
-    <dd>Must return VehicleInterface for engineCoolant</dd>
-    <dt>readonly attribute VehicleInterface ? deadReckoning</dt>
-    <dd>Must return VehicleInterface for deadReckoning</dd>
-    <!-- climate types: -->
-    <dt>readonly attribute VehicleInterface ? temperature</dt>
-    <dd>Must return VehicleInterface for temperature</dd>
-    <dt>readonly attribute VehicleInterface ? rainSensor</dt>
-    <dd>Must return VehicleInterface for rainSensor</dd>
-    <dt>readonly attribute VehicleInterface ? wiperStatus</dt>
-    <dd>Must return VehicleInterface for wiperStatus</dd>
-    <dt>readonly attribute VehicleInterface ? wiperSetting</dt>
-    <dd>Must return VehicleInterface for wiperSetting</dd>
-    <dt>readonly attribute VehicleInterface ? defrost</dt>
-    <dd>Must return VehicleInterface for defrost</dd>
-    <dt>readonly attribute VehicleInterface ? sunroof</dt>
-    <dd>Must return VehicleInterface for sunroof</dd>
-    <dt>readonly attribute VehicleInterface ? convertableRoof</dt>
-    <dd>Must return VehicleInterface for convertableRoof</dd>
-    <dt>readonly attribute VehicleInterface ? sideWindow</dt>
-    <dd>Must return VehicleInterface for sideWindow</dd>
-    <dt>readonly attribute VehicleInterface ? climateControl</dt>
-    <dd>Must return VehicleInterface for climateControl</dd>
-    
   </dl>
 </section>
 
@@ -390,7 +334,7 @@
   <dl title="[NoInterfaceObject] interface PowerTrainTorqueType : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned short value</dt>
-    <dd>Powertrain torque<br/><i>Units: Newton meters; Range: 0 - 10,000,000</dd>
+    <dd>Powertrain torque<br/>Units: Newton meters; Range: 0 - 10,000,000</dd>
   </dl>
 </section>
 
