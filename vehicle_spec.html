@@ -1356,8 +1356,6 @@ However, interior or exterior temperature must be distinguished in vehicles.
 		    <dd>Must return VehicleInterface for <a>ParkingBrake</a></dd>
  		    <dt>readonly attribute VehicleInterface? parkingLights</dt>
 		    <dd>Must return VehicleInterface for <a>ParkingLights</a></dd>
- 		    <dt>readonly attribute VehicleInterface? parkingLightsSettings</dt>
-		    <dd>Must return VehicleInterface for <a>ParkingLightsSettings</a></dd>
 		  </dl>
 
 <!------------------------ Interface LaneDepartureDetection (Vision) ------------------------------>
@@ -1422,39 +1420,17 @@ However, interior or exterior temperature must be distinguished in vehicles.
   </dl>
  </section> 
  
-  <!------------------------ Interface ParkingLights (Parking)------------------------------>
+  <!------------------------ Interface ParkingLights ------------------------------>
 <section>
   <h3><a>ParkingLights</a> Interface</h3>
   <p>The <a>ParkingLights</a> interface represents the current status of the parking Lights.
 
-  <dl title="enum ParkingLightsStatus" class="idl">
-  	<dt>Off</dt>
-  	<dd>0 = Parking assistance light is disabled</dd>
-  	<dt>On</dt>
-  	<dd>1 = Parking assistance light is enabled</dd>
-  </dl>
-
   <dl title="[NoInterfaceObject] interface ParkingLights : VehicleCommonDataType" class="idl">
-     <dt>attribute ParkingLightsStatus status</dt>
-     <dd>current status of parking Lights.</dd>
-  </dl>
- </section> 
- 
- <!------------------------ Interface ParkingLightsSettings (Parking) ------------------------------>
-<section>
-  <h3><a>ParkingLightsSettings</a> Interface</h3>
-  <p>The <a>ParkingLightsSettings</a> interface represents the current setting of the parking light.
-
-	<dl title="enum ParkingLightsControl" class="idl">
-		<dt>Off</dt>
-		<dd>Disable parking lights</dd>
-		<dt>On</dt>
-		<dd>Enable parking lights</dd>
-	</dl>
-
-  <dl title="[NoInterfaceObject] interface ParkingLightsSettings : VehicleCommonDataType" class="idl">
-     <dt>attribute ParkingLightsControl	settings</dt>
-     <dd>current setting of the parking lights. It can be used to send user's request for changing setting.</dd>
+     <dt>readonly attribute boolean status</dt>
+     <dd>Must return parking light status: on (true), off (false)
+     <dt>attribute boolean setting</dt>
+     <dd>Must return whether or not the Parking Lights is enabled (true) or disabled (false).<br>
+       It can be used to send user's request for changing setting.</dd>
   </dl>
 </section>
 
@@ -1500,7 +1476,7 @@ However, interior or exterior temperature must be distinguished in vehicles.
 			    Driver and technician are able to see vehicle personalization information such seat and mirror position.
 					</li>
 			  </ul>
-		  <section>
+		  </section>
   	</section>
   	<section>
   		<section>
@@ -1519,7 +1495,7 @@ However, interior or exterior temperature must be distinguished in vehicles.
 			    If users agree to provide vehicle information to the weather station, many cars can be used to get weather information such as amounts of rain and ambient temperatures.
 					</li>
 			  </ul>
-		  <section>
+		  </section>
   	</section>
   	<section>
   		<section>
