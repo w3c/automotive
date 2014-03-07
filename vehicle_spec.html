@@ -296,13 +296,12 @@
   </dl>
 </section>
 
-<!------------------------ Enum VehiclePowerMode ------------------------>
+<!------------------------ Interface VehiclePowerModeType ------------------------>
 <section>
-  <h2><a>VehiclePowerMode</a> type</h2> <p>The <a>VehiclePowerMode</a>
+  <h2><a>VehiclePowerModeType</a> Interface</h2> <p>The <a>VehiclePowerModeType</a>
   represents position of the ignition switch</p>
-  
-  <dl title="enum VehiclePowerMode"
-  class="idl">
+
+  <dl title="enum VehiclePowerMode" class="idl">
     <dt>off</dt>
     <dd>TODO: define</dd>
     <dt>accessory1</dt>
@@ -312,13 +311,7 @@
     <dt>running</dt>
     <dd>TODO: define</dd>
   </dl>
-</section>
 
-<!------------------------ Interface VehiclePowerModeType ------------------------>
-<section>
-  <h2><a>VehiclePowerModeType</a> Interface</h2> <p>The <a>VehiclePowerModeType</a>
-  represents position of the ignition switch</p>
-  
   <dl title="[NoInterfaceObject] interface VehiclePowerModeType : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute VehiclePowerMode value</dt>
@@ -398,11 +391,11 @@
   </dl>
 </section>
 
-<!------------------------ Enum TransmissionMode ------------------------>
+<!------------------------ Interface Transmission ------------------------------>
 <section>
-  <h2><a>TransmissionMode</a> type</h2> <p>The <a>TransmissionMode</a>
-  PRND setting</p>
-  
+  <h2><a>Transmission</a> Interface</h2>
+  <p>The <a>Transmission</a> interface represents the current transmission gear and mode.
+
   <dl title="enum TransmissionMode"
   class="idl">
     <dt>park</dt>
@@ -414,19 +407,12 @@
     <dt>drive</dt>
     <dd>TODO: define</dd>
   </dl>
-</section>
 
-<!------------------------ Interface Transmission ------------------------------>
-<section>
-  <h2><a>Transmission</a> Interface</h2>
-  <p>The <a>Transmission</a> interface represents the current transmission gear and mode.
   <dl title="[NoInterfaceObject] interface Transmission : VehiclePropertyType" class="idl">
-     
      <dt>readonly attribute octet ? gear</dt>
      <dd>Must return transmission gear position. Range 0 - 10</dd>
      <dt>readonly attribute TransmissionMode ? mode</dt>
      <dd>Must return transmission Mode (see <a>TransmissionMode</a>)</dd>
-     
   </dl>
 </section>
 
