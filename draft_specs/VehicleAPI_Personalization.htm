@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vehicle Information API - Personalization</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
+            class='remove'></script>
+    <script class="remove">
+      var respecConfig = {
+          specStatus:           "unofficial",
+          shortName:            "vehicle-personalization-api",
+          publishDate:          "",
+          previousPublishDate:  "",
+          previousMaturity:     "",
+          edDraftURI:           "",
+          // lcEnd:                "",
+          crEnd:                "",
+          editors:  [
+              { name: "Andy Gryc", company: "QNX",
+                      companyURL: "http://www.qnx.com" },
+              { name: "Tina Jeffries", company: "QNX",
+                      companyURL: "http://www.qnx.com" },
+              { name: "Paul J. Boyes", company: "OpenCar",
+                      companyURL: "http://www.opencar.com" },
+         ],
+          inlineCSS:    true,
+          noIDLIn:      true,
+          extraCSS:     ["http://dev.w3.org/2009/dap/ReSpec.js/css/respec.css"],
+          wg:           "",
+          wgURI:        "http://",
+          wgPublicList: "",
+          wgPatentURI:  "",
+      };
+    </script> 
+  </head>
+
+  <body>
+
+<!------------------------------ Abstract ------------------------------------>    
+<section id="abstract">
+  This specification defines a Vehicle Personalization 
+  Information API which offers a simple interface to get access to vehicle 
+  personalization data. A typical use case of the Vehicle 
+  Personalization Information is the implementation of applications 
+  that use information such as seat position, mirror position, unit configuration,
+  etc....
+</section>
+
+<!----------------------- Status of this document ---------------------------->    
+<section id="sotd">
+</section>
+
+<!----------------------------- Introduction --------------------------------->
+<section class="informative">
+  <h2>Introduction</h2>
+  <p>
+		TBD
+  </p>
+	<section class="use-cases">
+	  <h3>Use Cases for maintenance interfaces</h3>
+    <ul>
+			<li>
+			Driver and technician are able to see vehicle personalization information such
+			seat and mirror position.
+			</li>
+	  </ul>
+	</section>
+
+</section>
+
+<!-------------------- API Description & Properties -------------------------->
+
+<section class="api-properties">
+<h2>API Description & Properties</h2>
+
+<!---------------------- Personalization Interfaces ----------------------------->
+<section id="personalization-interfaces">
+      <h2>Personalization Interfaces</h2>
+      <p>the act of personalization the settings of vehicle 
+  		such as seat and mirror position.</p>
+
+		  <dl title="partial interface Vehicle" class="idl">  
+		    <!-- identification and configuration types: -->
+		    <dt>readonly attribute VehicleInterface? driverIdentification</dt>
+		    <dd>Must return VehicleInterface for <a>DriverIdentification</a></dd>
+		    <dt>readonly attribute VehicleInterface? language</dt>
+		    <dd>Must return VehicleInterface for <a>Language</a></dd>
+		    <dt>readonly attribute VehicleInterface? unitsOfMeasure</dt>
+		    <dd>Must return VehicleInterface for <a>UnitsOfMeasure</a></dd>
+		    <dt>readonly attribute VehicleInterface? mirror</dt>
+		    <dd>Must return VehicleInterface for <a>Mirror</a></dd>
+		    <dt>readonly attribute VehicleInterface? steeringWheel</dt>
+		    <dd>Must return VehicleInterface for <a>SteeringWheel</a></dd>
+		    <dt>readonly attribute VehicleInterface? driveMode</dt>
+		    <dd>Must return VehicleInterface for <a>DriveMode</a></dd>
+		    <dt>readonly attribute VehicleInterface? seat</dt>
+		    <dd>Must return VehicleInterface for <a>Seat</a></dd>
+		    <dt>readonly attribute VehicleInterface? dashboardIllumination</dt>
+		    <dd>Must return VehicleInterface for <a>DashboardIllumination</a></dd>
+		    <dt>readonly attribute VehicleInterface? vehicleSound</dt>
+		    <dd>Must return VehicleInterface for <a>VehicleSound</a></dd>
+		  </dl>
+		  
+<!------------------------ Interface Driver Identification ------------------------------>
+<section>
+  <h3><a>DriverIdentification</a> Interface</h3>
+  <p>The <a>DriverIdentification</a> interface provides driver identification information about a
+  vehicle.
+  <dl title="[NoInterfaceObject] interface DriverIdentification : VehicleCommonDataType" class="idl">
+     <dt>readonly attribute DOMString? keyFobID</dt>
+     <dd>Key fob identifier used to select personalization settings
+     <div class="issue">
+     As the key fob identifier is likely to be used to identify personalization settings,
+     what do we need to do to to add a method to make use of this?
+     </div>
+     </dd>
+     <dt>readonly attribute DOMString? driverID</dt>
+     <dd>Driver identifier that controls personalization settings
+     <div class="issue">
+      (same as KeyFob unless vehicle has alternative driver selection method) 
+     </div>
+     </dd>
+  </dl>
+</section>
+
+<!------------------------ Interface Language ------------------------------>
+<section>
+  <h3><a>Language</a> Interface</h3>
+  <p>The <a>LanguageConfiguration</a> interface provides language information about a
+  vehicle.
+  <dl title="[NoInterfaceObject] interface Language : VehicleCommonDataType" class="idl">
+     <dt>readonly attribute unsigned float? language</dt>
+     <dd>Language identifier based on two-letter codes as specified in ISO 639-1
+     <div class="issue">Should make enum out of ISO 639-1?</div></dd>
+  </dl>
+</section>
+     
+<!------------------------ Interface Units Of Measure ------------------------------>
+<section>
+  <h3><a>UnitsOfMeasure</a> Interface</h3>
+  <p>The <a>UnitsOfMeasure</a> interface provides information about the measurement  
+  system and units of measure of a vehicle.
+  <div class="issue">Enumerate use cases for this interface.  Could go multiple 
+  directions depending on intended use</div> 
+  <dl title="[NoInterfaceObject] interface UnitsOfMeasure : VehicleCommonDataType" class="idl">
+     <dt>readonly attribute DOMString? measurementSystem</dt>
+     <dd>measurement system currently being used by vehicle
+     <div class="issue">What standard should be used here?  What is best type/way to 
+     represent?</div></dd>
+     <dt>readonly attribute DOMString? unitsFuel</dt>
+     <dd>Fuel unit of measurement
+     <div class="issue">Won't this be dictated by measurement system?  Will we 
+     allow mix and match?</div>
+     <div class="issue">Should this be unitsFuelVolume?  Clearly this directly
+     affects other elements like fuel economy?</div>
+     <div class="issue">Should we have an element for fuel tank volume?</div>
+     </dd>
+     <dt>readonly attribute DOMString? unitsDistance</dt>
+     <dd>Distance unit of measurement
+     <div class="issue">Won't this be dictated by measurement system?  Will we 
+     allow mix and match?</div>
+     <div class="issue">How is it envisioned that this is used?</div>
+     </dd>
+     <dt>readonly attribute DOMString? unitsSpeed</dt>
+     <dd>Speed unit of measurement
+     <div class="issue">Won't this be dictated by measurement system?  Will we 
+     allow mix and match?</div>
+     </dd>
+     <dt>readonly attribute DOMString? unitsFuelConsumption</dt>
+     <dd>Fuel consumption unit of measurement
+     <div class="issue">Won't this be dictated by measurement system?  Will we 
+     allow mix and match?</div>
+     </dd>
+  </dl>	     
+</section>
+
+<!------------------------ Interface Mirror ------------------------------>
+<section>
+  <h3><a>Mirror</a> Interface</h3>
+  <p>The <a>Mirror</a> interface provides or sets information about mirrors
+  in vehicle.
+  <div class="issue">Check zone usage</div> 
+  <dl title="[NoInterfaceObject] interface Mirror : VehicleCommonDataType" class="idl">
+     <dt>readonly attribute unsigned short? mirrorTilt</dt>
+     <dd>Mirror tilt position in percentage distance travelled, from downward-facing to 
+     upward-facing position (Unit: percentage, Resolution: 1, 
+     Min: -100, Max: 100, 0 represents center position)
+     <br>Available Zone: Left, Right, Center</dd>
+     <dt>readonly attribute unsigned short? mirrorPan</dt>
+     <dd>Mirror pan position in percentage distance travelled, from left to right 
+     position (Unit: percentage, Resolution: 1, 
+     Min: -100, Max: 100, 0 represents center position)
+     <br>Available Zone: Left, Right, Center</dd>
+  </dl>	     
+</section>
+     
+<!------------------------ Interface Seat ------------------------------>
+<section>
+  <h3><a>Seat</a> Interface</h3>
+  <p>The <a>Seat</a> interface provides or sets information about seats
+  in vehicle.
+  <div class="issue">Check zone usage</div>
+  <dl title="[NoInterfaceObject] interface Seat : VehicleCommonDataType" class="idl">
+     <dt>readonly attribute unsigned short? reclineSeatBack</dt>
+     <dd>Seat back recline position as percent to completely reclined 
+     (Unit: percentage, Resolution: 1, 
+     Min: -100, Max: 100, center 0 represents the seatback upright at a 90 degree angle)
+     <br>Available Zone: Front, Middle, Rear, Left, Right, Center</dd>
+     <dt>readonly attribute unsigned short? seatSlide</dt>
+     <dd>Seat slide position as percentage of distance travelled away from forwardmost
+     position (Unit: percentage, Resolution: 1, 
+     Min: 0, Max: 100, 0 represents seat position farthest forward)
+     <br>Available Zone: Front, Middle, Rear, Left, Right, Center</dd>
+     <dt>readonly attribute unsigned short? seatCushionHeight</dt>
+     <dd> Seat cushion height position as a percentage of upward distance travelled 
+     (Unit: percentage, Resolution: 1, 
+     Min: 0, Max: 100, 0 represents the lowest seat position)
+     <br>Available Zone: Front, Middle, Rear, Left, Right, Center</dd>
+     <dt>readonly attribute unsigned short? seatHeadrest</dt>
+     <dd> Headrest position as a percentage of upward distance travelled
+     (Unit: percentage, Resolution: 1, 
+     Min: 0, Max: 100,  0 represents the lowest headrest position)
+     <br>Available Zone: Front, Middle, Rear, Left, Right, Center</dd>
+     <dt>readonly attribute unsigned short? seatBackCushion</dt>
+     <dd>Back cushion position as a percentage of lumbar curvature 
+     (Unit: percentage, Resolution: 1, 
+     Min: 0, Max: 100,  0 represents flat, and 100 is maximum curvature)
+     <br>Available Zone: Front, Middle, Rear, Left, Right, Center</dd>
+     <dt>readonly attribute unsigned short? seatSideCushion</dt>
+     <dd>Sides of back cushion position as a percentage of curvature 
+     (Unit: percentage, Resolution: 1, 
+     Min: 0, Max: 100,  0 represents flat, and 100 is maximum curvature)
+     <br>Available Zone: Front, Middle, Rear, Left, Right, Center</dd>
+  </dl>	     
+</section>
+
+<!------------------------ Interface Steering Wheel ------------------------------>
+<section>
+  <h3><a>SteeringWheel</a> Interface</h3>
+  <p>The <a>SteeringWheel</a> interface provides or sets information about steering
+  wheel in vehicle.
+  <dl title="[NoInterfaceObject] interface SteeringWheel : VehicleCommonDataType" class="idl">
+     <dt>readonly attribute unsigned short? steeringWheelTelescopingPosition</dt>
+     <dd>Steering wheel position as percentage of extension from the dash 
+     (Unit: percentage, Resolution: 1, 
+     Min: 0, Max: 100, 0 represents steering wheel positioned closest to dash)
+     </dd>
+     <dt>readonly attribute unsigned short? steeringWheelPositionTilt</dt>
+     <dd>Steering wheel position as percentage of tilt
+     (Unit: percentage, Resolution: 1, 
+     Min: 0, Max: 100, 0 represents steering wheel tilted lowest downward-facing position)
+     </dd>
+  </dl>
+</section>
+
+<!------------------------ Interface Drive Mode ------------------------------>
+<section>
+  <h3><a>DriveMode</a> Interface</h3>
+  <p>The <a>DriveMode</a> interface provides or sets information about a vehicles 
+  drive mode.
+  <dl title="[NoInterfaceObject] interface DriveMode : VehicleCommonDataType" class="idl">
+     <dt>readonly attribute DOMString? driveMode</dt>
+     <dd>Vehicle driving mode
+     <div class="issue">Need to define drive mode enum</div>
+     </dd>
+  </dl>	     
+</section>
+
+<!------------------------ Interface Dashboard Illumination ------------------------------>
+<section>
+  <h3><a>DashboardIllumination</a> Interface</h3>
+  <p>The <a>DashboardIllumination</a> interface provides or sets information about dashboard
+  illumination in vehicle.
+  <dl title="[NoInterfaceObject] interface DashboardIllumination : VehicleCommonDataType" class="idl">
+     <dt>readonly attribute DOMString? dashboardIllumination</dt>
+     <dd>Illumination of dashboard as a percentage 
+     (Unit: percentage, Resolution: 1, 
+     Min: 0, Max: 100, 0 represents none and 100 maximum illumination)
+     </dd>
+  </dl>	     
+</section>
+
+<!------------------------ Interface Vehicle Sound ------------------------------>
+<section>
+  <h3><a>VehicleSound</a> Interface</h3>
+  <p>The <a>VehicleSound</a> interface provides or sets information about vehicle sound.
+  <dl title="[NoInterfaceObject] interface VehicleSound : VehicleCommonDataType" class="idl">
+     <dt>readonly attribute boolean activeNoiseControlMode</dt>
+     <dd>Active noise control status 
+     (False: not-activated, True: activated)
+     </dd>
+     <dt>readonly attribute DOMString? engineSoundEnhancementMode</dt>
+     <dd>Engine sound enhancement mode where a null string means not-activated, and any 
+     other value represents a manufacture specific setting
+     </dd>     
+  </dl>	     
+</section>
+<!---------------------------------------------------------------------------------->
+</section>
+  </body>
+</html>
