@@ -134,7 +134,7 @@
 <!---------------------------- Basic Interfaces ------------------------------->
 <section id="basic-interfaces">
       <h2>Basic Interfaces</h2>
-      <p>Definition Here</p>
+      <p>TODO:Definition Here</p>
 
 <!---------------------- Extended interface Navigator ------------------------>
 <section>
@@ -369,7 +369,7 @@
 <!---------------------- Running Status Interfaces ---------------------------->
 <section id="runningstatus-interfaces">
       <h2>Running Status Interfaces</h2>
-      <p>Definition Here</p>
+      <p>TODO:Definition Here</p>
 
 		  <dl title="partial interface Vehicle" class="idl">  
 		    <!-- running status types: -->
@@ -910,8 +910,8 @@
 		    <dd>Must return VehicleInterface for <a>SteeringWheel</a></dd>
 		    <dt>attribute VehicleInterface? driveMode</dt>
 		    <dd>Must return VehicleInterface for <a>DriveMode</a></dd>
-		    <dt>attribute VehicleInterface? seat</dt>
-		    <dd>Must return VehicleInterface for <a>Seat</a></dd>
+		    <dt>attribute VehicleInterface? seatAdjustment</dt>
+		    <dd>Must return VehicleInterface for <a>SeatAdjustment</a></dd>
 		    <dt>attribute VehicleInterface? dashboardIllumination</dt>
 		    <dd>Must return VehicleInterface for <a>DashboardIllumination</a></dd>
 		    <dt>attribute VehicleInterface? vehicleSound</dt>
@@ -1010,14 +1010,14 @@
      <br>Available Zone: Left, Right, Center</dd>
   </dl>	     
 </section>
-     
-<!------------------------ Interface Seat ------------------------------>
+
+<!--------------------- Interface SeatAdjustment -------------------------->
 <section>
-  <h3><a>Seat</a> Interface</h3>
-  <p>The <a>Seat</a> interface provides or sets information about seats
+  <h3><a>SeatAdjustment</a> Interface</h3>
+  <p>The <a>SeatAdjustment</a> interface provides or sets information about seats
   in vehicle.
   <div class="issue">Check zone usage</div>
-  <dl title="[NoInterfaceObject] interface Seat : VehicleCommonDataType" class="idl">
+  <dl title="[NoInterfaceObject] interface SeatAdjustment : VehicleCommonDataType" class="idl">
      <dt>attribute unsigned short? reclineSeatBack</dt>
      <dd>Seat back recline position as percent to completely reclined 
      (Unit: percentage, Resolution: 1, 
@@ -1119,10 +1119,170 @@
 <!------------------------------------------------------------------------->
 
 <!------------------------------------------------------------------------->
+<!------------------------ DrivingSafety Interfaces ----------------------->
+
+<section id="drivingsafety-interfaces">
+      <h2>DrivingSafety Interfaces</h2>
+      <p>TODO:Definition Here</p>
+
+		  <dl title="partial interface Vehicle" class="idl">  
+		    <dt>readonly attribute VehicleInterface? antilockBrakingSystem</dt>
+		    <dd>Must return VehicleInterface for <a>AntilockBrakingSystem</a></dd>
+		    <dt>readonly attribute VehicleInterface? tractionControlSystem</dt>
+		    <dd>Must return VehicleInterface for <a>TractionControlSystem</a></dd>
+		    <dt>readonly attribute VehicleInterface? electronicStabilityControl</dt>
+		    <dd>Must return VehicleInterface for <a>ElectronicStabilityControl</a></dd>
+		    <dt>readonly attribute VehicleInterface? topSpeedLimit</dt>
+		    <dd>Must return VehicleInterface for <a>TopSpeedLimit</a></dd>
+		    <dt>readonly attribute VehicleInterface? airbagStatus</dt>
+		    <dd>Must return VehicleInterface for <a>AirbagStatus</a></dd>
+		    <dt>readonly attribute VehicleInterface? door</dt>
+		    <dd>Must return VehicleInterface for <a>Door</a></dd>
+		    <dt>readonly attribute VehicleInterface? childSafetyLock</dt>
+		    <dd>Must return VehicleInterface for <a>ChildSafetyLock</a></dd>
+		    <dt>readonly attribute VehicleInterface? seat</dt>
+		    <dd>Must return VehicleInterface for <a>Seat</a></dd>
+		  </dl>
+
+<!------------------- AntilockBrakingSystem Interface  -------------------->
+<section>
+  <h3><a>AntilockBrakingSystem</a> Interface</h3> <p>The <a>AntilockBrakingSystem</a>
+  provides status of ABS(Antilock Braking System) status and setting</p>
+
+  <dl title="[NoInterfaceObject] interface AntilockBrakingSystem : VehicleCommonDataType"
+  class="idl">
+    <dt>readonly attribute boolean enabled</dt>
+    <dd>Must return whether or not the ABS Setting is enabled (true) or disabled (false)</dd>
+    <dt>readonly attribute boolean engaged</dt>
+    <dd>Must return whether or not the ABS is engaged (true) or idle (false)</dd>
+  </dl>
+</section>
+
+<!------------------- TractionControlSystem Interface  -------------------->
+<section>
+  <h3><a>TractionControlSystem</a> Interface</h3> <p>The <a>TractionControlSystem</a>
+  provides status of TCS(Traction Control System) status and setting</p>
+
+  <dl title="[NoInterfaceObject] interface TractionControlSystem : VehicleCommonDataType"
+  class="idl">
+    <dt>readonly attribute boolean enabled</dt>
+    <dd>Must return whether or not the TCS Setting is enabled (true) or disabled (false)</dd>
+    <dt>readonly attribute boolean engaged</dt>
+    <dd>Must return whether or not the TCS is engaged (true) or idle (false)</dd>
+  </dl>
+</section>
+
+<!------------------- ElectronicStabilityControl Interface  -------------------->
+<section>
+  <h3><a>ElectronicStabilityControl</a> Interface</h3> <p>The <a>ElectronicStabilityControl</a>
+  provides status of ESC(Electronic Stability Control) status and setting</p>
+
+  <dl title="[NoInterfaceObject] interface ElectronicStabilityControl : VehicleCommonDataType"
+  class="idl">
+    <dt>readonly attribute boolean enabled</dt>
+    <dd>Must return whether or not the ESC Setting is enabled (true) or disabled (false)</dd>
+    <dt>readonly attribute boolean engaged</dt>
+    <dd>Must return whether or not the ESC is engaged (true) or idle (false)</dd>
+  </dl>
+</section>
+
+<!---------------------------- TopSpeedLimit Interface  ------------------------>
+<section>
+  <h3><a>TopSpeedLimit</a> Interface</h3> <p>The <a>TopSpeedLimit</a>
+  provides the current setting of top speed limit of the vehicle</p>
+
+  <dl title="[NoInterfaceObject] interface TopSpeedLimit : VehicleCommonDataType"
+  class="idl">
+    <dt>readonly attribute unsigned short speed</dt>
+    <dd>must return vehicle top speed limit in k/h</dd>
+  </dl>
+</section>
+
+<!---------------------------- AirbagStatus Interface  ------------------------>
+<section>
+  <h3><a>AirbagStatus</a> Interface</h3> <p>The <a>AirbagStatus</a>
+  provides the current status of airbags in each zones of the vehicle</p>
+
+  <dl title="[NoInterfaceObject] interface AirbagStatus : VehicleCommonDataType"
+  class="idl">
+    <dt>readonly attribute boolean activated</dt>
+    <dd>Must return whether or not the airbag is activated (true) or deactivated (false)</dd>
+    <dt>readonly attribute boolean deployed</dt>
+    <dd>Must return whether the airbag is deployed (true) or not (false)</dd>
+  </dl>
+  <p>Available Zone: Driver, Passenger, Front, Rear, Middle, Left, Right</p>
+</section>
+
+<!---------------------------- Door Interface  ------------------------>
+<section>
+  <h3><a>Door</a> Interface</h3> <p>The <a>Door</a>
+  provides the current status of doors in each zones of the vehicle</p>
+
+	<dl title="enum DoorOpenStatus" class="idl">
+		<dt>open</dt>
+		<dd>Door is opened</dd>
+		<dt>ajar</dt>
+		<dd>Door is ajar</dd>
+		<dt>close</dt>
+		<dd>Door is closed</dd>
+	</dl>
+
+  <dl title="[NoInterfaceObject] interface Door : VehicleCommonDataType"
+  class="idl">
+    <dt>readonly attribute DoorOpenStatus open</dt>
+    <dd>Must return the status of door's open status</dd>
+    <dt>readonly attribute boolean lock</dt>
+    <dd>Must return whether or not the door is locked (true) or unlocked (false)</dd>
+  </dl>
+  <p>Available Zone: Driver, Passenger, Front, Rear, Middle, Left, Right, Fuel(Fuel Fliter Cap), Hood, Trunk</p>
+</section>
+
+<!--------------------- ChildSafetyLock Interface  --------------------->
+<section>
+  <h3><a>ChildSafetyLock</a> Interface</h3> <p>The <a>ChildSafetyLock</a>
+  provides the current setting of Child Safety Lock</p>
+
+  <dl title="[NoInterfaceObject] interface ChildSafetyLock : VehicleCommonDataType"
+  class="idl">
+    <dt>readonly attribute boolean lock</dt>
+    <dd>Must return whether or not the Child Safety Lock is locked (true) or unlocked (false)</dd>
+  </dl>
+</section>
+
+<!---------------------------- Seat Interface  ------------------------>
+<section>
+  <h3><a>Seat</a> Interface</h3> <p>The <a>Seat</a>
+  provides the current occupant and seatbelt status of a seat in each zones of the vehicle</p>
+
+	<dl title="enum OccupantStatus" class="idl">
+		<dt>adult</dt>
+		<dd>occupant is an adult</dd>
+		<dt>child</dt>
+		<dd>occupant is a child</dd>
+		<dt>vacant</dt>
+		<dd>seat is vacant</dd>
+	</dl>
+
+  <dl title="[NoInterfaceObject] interface Seat : VehicleCommonDataType"
+  class="idl">
+    <dt>readonly attribute OccupantStatus occupant</dt>
+    <dd>Must return the status of seat occupant</dd>
+    <dt>readonly attribute boolean seatbelt</dt>
+    <dd>Must return whether or not the seat belt is fasten (true) or unfasten (false)</dd>
+  </dl>
+  <p>Available Zone: Driver, Passenger, Front, Rear, Middle, Left, Right, Center</p>
+</section>
+
+
+</section>
+<!------------------------------------------------------------------------->
+<!-------------------- End of DrivingSafety Interfaces -------------------->
+
+<!------------------------------------------------------------------------->
 <!---------------------- Climate Interfaces ------------------------------->
 <section id="Climate-interfaces">
       <h2>Climate Interfaces</h2>
-      <p>Definition Here</p>
+      <p>TODO:Definition Here</p>
 
 		  <dl title="partial interface Vehicle" class="idl">  
 		    <!-- climate types: -->
@@ -1281,11 +1441,13 @@ However, interior or exterior temperature must be distinguished in vehicles.
   <p>The <a>SideWindow</a> interface represents the current status of openness of side windows.
 
   <dl title="[NoInterfaceObject] interface SideWindow : VehicleCommonDataType" class="idl">
-  	<dt>attribute unsigned byte openness</dt>
-  	<dd>current status of the side window as a percentage of openness. (0:Closed, 100:Fully Opened)<br>
-  		Available Zone: Front, Rear, Left, Right</dd>
+  	<dt>attribute unsigned boolean? lock</dt>
+  	<dd>Must return whether or not the window is locked (true) or unlocked (false)</dd>
+  	<dt>attribute unsigned byte? openness</dt>
+  	<dd>current status of the side window as a percentage of openness. (0:Closed, 100:Fully Opened)</dd>
   </dl>
-  <p>It can be used to send user's request for changing setting.</p>
+  <p>Available Zone: Front, Rear, Left, Right<br>
+  	It can be used to send user's request for changing setting.</p>
 </section>
 
 <!------------------------ Interface ClimateControl ------------------------------>
@@ -1454,6 +1616,14 @@ However, interior or exterior temperature must be distinguished in vehicles.
   	</section>
   	<section>
   		<section>
+			  <h4>Use Cases for RunningStatus</h4>
+		    <ul>
+				TODO:
+			  </ul>
+			</section>
+  	</section>
+  	<section>
+  		<section>
 			  <h4>Use Cases for Maintenance</h4>
 		    <ul>
 					<li>
@@ -1477,6 +1647,14 @@ However, interior or exterior temperature must be distinguished in vehicles.
 					</li>
 			  </ul>
 		  </section>
+  	</section>
+  	<section>
+  		<section>
+			  <h4>Use Cases for DrivingSafety</h4>
+		    <ul>
+				TODO:
+			  </ul>
+			</section>
   	</section>
   	<section>
   		<section>
