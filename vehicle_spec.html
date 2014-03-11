@@ -27,6 +27,14 @@
           wgURI:        "http://",
           wgPublicList: "",
           wgPatentURI:  "",
+
+          localBiblio:  {
+					    "VIN": {
+					        title:    "Vehicle Identificaiton Number"
+					    ,   href:     "http://en.wikipedia.org/wiki/Vehicle_Identification_Number#World_Manufacturer_Identifier"
+					    ,   publisher:  "Wikipedia"
+					    }
+					}
       };
     </script> 
   </head>
@@ -187,14 +195,14 @@
 <section>
   <h3><a>VehicleInterfaceCallback</a> Callback</h3>
   <p>The <a>VehicleInterfaceCallback</a> </p>
-  <dl title="callback VehicleInterfaceCallback = void (object value)"></dl>
+  <dl title="callback VehicleInterfaceCallback = void (object value)" class="idl"></dl>
 </section> 
 
 <!------------------------ Callback VehicleInterfaceErrorCallback------------------------------>
 <section>
   <h3><a>VehicleInterfaceErrorCallback</a> Callback</h3>
   <p>The <a>VehicleInterfaceErrorCallback</a> </p>
-  <dl title="callback VehicleInterfaceErrorCallback = void (VehicleInterfaceError error); "></dl>
+  <dl title="callback VehicleInterfaceErrorCallback = void (VehicleInterfaceError error); " class="idl"></dl>
 </section> 
 
 <!------------------------ Interface VehicleInterface ------------------------>
@@ -257,25 +265,26 @@
   <p>The <a>Identification</a> interface provides identification information about a
   vehicle.
   <dl title="[NoInterfaceObject] interface Identification : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute DOMString? VIN</dt>
+     <dt>readonly attribute DOMString VIN</dt>
      <dd>the Vehicle Identification Number</dd>
      <dt>readonly attribute DOMString? WMI</dt>
      <dd>the World Manufacture Identifier</dd>
-     <dt>readonly attribute DOMString[]? vehicleType</dt>
-     <dd>Type of vehicle <div class="issue">Need enum of vehicle types?</div></dd>
      <dt>readonly attribute DOMString? brand</dt>
-     <dd>vehicle brand name<div class="issue">Need enum of vehicle brands?</div></dd>
+     <dd>vehicle brand name</dd>
      <dt>readonly attribute DOMString? model</dt>
-     <dd>vehicle model type<div class="issue">Need enum of vehicle models?</div></dd>
+     <dd>vehicle model type</dd>
      <dt>readonly attribute unsigned short? year</dt>
      <dd>vehicle model year (Min: 2000, Max: 2100)</dd>
   </dl>
+
+  <p class="note">[[VIN]](Vehicle Identification Number) is composed of several information including WMI, model year etc., but varies depending on standard.<br>
+  	In order to make it easy to use for App developers, it is recommended to provide each values as a separate attributes.</p>
 </section>
 
 <!------------------------ Interface Size Configuration --------------------------->
 <section>
   <h3><a>SizeConfiguration</a> Interface</h3>
-  <p>The <a>SizeConfiguration</a> interface provides size information about a
+  <p>The <a>SizeConfiguration</a> interface provides size and shape information about a
   vehicle as a whole.
   <dl title="[NoInterfaceObject] interface SizeConfiguration : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned float? width</dt>
@@ -297,44 +306,76 @@
      NOTE TO EDITORS: DO NOT KNOW IF A LIST AS DESCRIBED CAN BE REPRESENTED IN 
      WEBIDL MAY NEED TO REDO THIS.)For example, two door coupe would return {2}, 
      four door sedan would return {2, 2}, four door SUV with hatchback would 
-     return {2, 2, 1}, etc.</div></dd>
+     return {2, 2, 1}, etc.</div>
+     <div class="note">(Justin) Exact figures maybe used for DR, etc. In other cases, some Apps may need to draw the shape of the vehicle.
+     If an App can't know the exact data from Identification (from pre-stored data),
+     the app can draw the vehicle as similarly as possible by using both Door Count and Vehicle Types.
+     </div></dd>
      <dt>readonly attribute unsigned short? totalDoors</dt>
      <dd>Total number of doors on the vehicle (all doors opening to the interior, 
      including hatchbacks) (Min: 0, Max: 10)</dd>
-  </dl>	     
+     <dt>readonly attribute DOMString[]? vehicleType</dt>
+     <dd>Type of vehicle <div class="issue">Need enum of vehicle types?</div>
+     <div class="note">(Justin) It would be better to define some types... Plz refer.. href://http://en.wikipedia.org/wiki/Car_body_style
+     </div></dd>
+  </dl>
 </section>
-     
+
 <!-------------------- Interface Fuel Configuration --------------------------->
 <section>
   <h3><a>FuelConfiguration</a> Interface</h3>
   <p>The <a>FuelConfiguration</a> interface provides information about the fuel 
   configuration of a vehicle.
+
+  <dl title="enum FuelTypeEnum" class="idl">
+    <dt>gasoline</dt>
+    <dd>TODO: define</dd>
+    <dt>methanol</dt>
+    <dd>TODO: define</dd>
+    <dt>ethanol</dt>
+    <dd>TODO: define</dd>
+    <dt>diesel</dt>
+    <dd>TODO: define</dd>
+    <dt>lpg</dt>
+    <dd>TODO: define</dd>
+    <dt>cng</dt>
+    <dd>TODO: define</dd>
+    <dt>propane</dt>
+    <dd>TODO: define</dd>
+    <dt>electric</dt>
+    <dd>TODO: define</dd>
+  </dl>
+
   <dl title="[NoInterfaceObject] interface FuelConfiguration : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute DOMString? fuelType</dt>
-     <dd>type of fuel used by vehicle
-     <div class="issue">Need to create enum for this?</div></dd>
-     <dt>readonly attribute DOMString? secondaryFuelType</dt>
-     <dd>type of secondary fuel used by vehicle
-     <div class="issue">Like fuelType... Need to create enum for this?</div></dd>
+     <dt>readonly attribute FuelTypeEnum[] fuelType</dt>
+     <dd>type of fuel used by vehicle. If the vehicle uses multiple fuels, fuelType returns an array of fuel types.</dd>
      <dt>readonly attribute DOMString? refuelPosition</dt>
      <dd>Side of the vehicle with access to the fuel door
      <div class="issue">Need to create enum for this?</div></dd>
   </dl>	     
 </section>
-     
-     
+
 <!----------------- Interface Transmission Configuration ------------------->
 <section>
   <h3><a>TransmissionConfiguration</a> Interface</h3>
   <p>The <a>TransmissionConfiguration</a> interface provides transmission configuration
 	information information about a vehicle.
+
+  <dl title="enum TransmissionGearTypeEnum" class="idl">
+    <dt>auto</dt>
+    <dd>TODO: define</dd>
+    <dt>manual</dt>
+    <dd>TODO: define</dd>
+    <dt>cvt</dt>
+    <dd>TODO: define</dd>
+  </dl>
+
   <dl title="[NoInterfaceObject] interface TransmissionConfiguration : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute DOMString? transmissionGearType</dt>
-     <dd>Transmission gear type
-     <div class="issue">Need to create enum for this?</div></dd>
-  </dl>	     
+     <dt>readonly attribute TransmissionGearTypeEnum transmissionGearType</dt>
+     <dd>Transmission gear type</dd>
+  </dl>
 </section>
-     
+
 <!------------------------ Interface Wheel Configuration ------------------------>
 <section>
   <h3><a>WheelConfiguration</a> Interface</h3>
@@ -900,8 +941,8 @@
 		  <dl title="partial interface Vehicle" class="idl">  
 		    <dt>readonly attribute VehicleInterface? driverIdentification</dt>
 		    <dd>Must return VehicleInterface for <a>DriverIdentification</a></dd>
-		    <dt>attribute VehicleInterface? language</dt>
-		    <dd>Must return VehicleInterface for <a>Language</a></dd>
+		    <dt>attribute VehicleInterface? languageConfiguration</dt>
+		    <dd>Must return VehicleInterface for <a>LanguageConfiguration</a></dd>
 		    <dt>attribute VehicleInterface? unitsOfMeasure</dt>
 		    <dd>Must return VehicleInterface for <a>UnitsOfMeasure</a></dd>
 		    <dt>attribute VehicleInterface? mirror</dt>
@@ -942,53 +983,39 @@
 
 <!------------------------ Interface Language ------------------------------>
 <section>
-  <h3><a>Language</a> Interface</h3>
+  <h3><a>LanguageConfiguration</a> Interface</h3>
   <p>The <a>LanguageConfiguration</a> interface provides language information about a
   vehicle.
-  <dl title="[NoInterfaceObject] interface Language : VehicleCommonDataType" class="idl">
+  <dl title="[NoInterfaceObject] interface LanguageConfiguration : VehicleCommonDataType" class="idl">
      <dt>attribute unsigned float? language</dt>
      <dd>Language identifier based on two-letter codes as specified in ISO 639-1
-     <div class="issue">Should make enum out of ISO 639-1?</div></dd>
+     <div class="issue">Should make enum out of ISO 639-1?</div>
+     <div class="note">(Justin) It seems to be provided at system level. It looks not vehicle-specific attribute</div>
+     </dd>
   </dl>
 </section>
-     
+
 <!------------------------ Interface Units Of Measure ------------------------------>
 <section>
   <h3><a>UnitsOfMeasure</a> Interface</h3>
   <p>The <a>UnitsOfMeasure</a> interface provides information about the measurement  
   system and units of measure of a vehicle.
-  <div class="issue">Enumerate use cases for this interface.  Could go multiple 
-  directions depending on intended use</div> 
   <dl title="[NoInterfaceObject] interface UnitsOfMeasure : VehicleCommonDataType" class="idl">
-     <dt>attribute DOMString? measurementSystem</dt>
-     <dd>measurement system currently being used by vehicle
-     <div class="issue">What standard should be used here?  What is best type/way to 
-     represent?</div></dd>
-     <dt>attribute DOMString? unitsFuel</dt>
-     <dd>Fuel unit of measurement
-     <div class="issue">Won't this be dictated by measurement system?  Will we 
-     allow mix and match?</div>
-     <div class="issue">Should this be unitsFuelVolume?  Clearly this directly
-     affects other elements like fuel economy?</div>
-     <div class="issue">Should we have an element for fuel tank volume?</div>
+     <dt>attribute boolean? isMKSSystem</dt>
+     <dd>measurement system currently being used by vehicle.
+     'true' means the current measurement system is MKS-km(litter).
+     'false' means it is US customary units-mile(gallon).
      </dd>
+     <dt>attribute DOMString? unitsFuelVolume</dt>
+     <dd>Fuel unit of measurement. The value is one of both "litter" and "gallon".</dd>
      <dt>attribute DOMString? unitsDistance</dt>
-     <dd>Distance unit of measurement
-     <div class="issue">Won't this be dictated by measurement system?  Will we 
-     allow mix and match?</div>
-     <div class="issue">How is it envisioned that this is used?</div>
-     </dd>
+     <dd>Distance unit of measurement. The value is one of both "km" and "mile".</dd>
      <dt>attribute DOMString? unitsSpeed</dt>
-     <dd>Speed unit of measurement
-     <div class="issue">Won't this be dictated by measurement system?  Will we 
-     allow mix and match?</div>
-     </dd>
+     <dd>Speed unit of measurement. The value is one of both "km/h" and "mph".</dd>
      <dt>attribute DOMString? unitsFuelConsumption</dt>
-     <dd>Fuel consumption unit of measurement
-     <div class="issue">Won't this be dictated by measurement system?  Will we 
-     allow mix and match?</div>
-     </dd>
-  </dl>	     
+     <dd>Fuel consumption unit of measurement.
+     The value is one of following values: "l/100", "mpg", "km/l".</dd>
+  </dl>
 </section>
 
 <!------------------------ Interface Mirror ------------------------------>
@@ -996,7 +1023,6 @@
   <h3><a>Mirror</a> Interface</h3>
   <p>The <a>Mirror</a> interface provides or sets information about mirrors
   in vehicle.
-  <div class="issue">Check zone usage</div> 
   <dl title="[NoInterfaceObject] interface Mirror : VehicleCommonDataType" class="idl">
      <dt>attribute unsigned short? mirrorTilt</dt>
      <dd>Mirror tilt position in percentage distance travelled, from downward-facing to 
@@ -1016,8 +1042,7 @@
   <h3><a>SeatAdjustment</a> Interface</h3>
   <p>The <a>SeatAdjustment</a> interface provides or sets information about seats
   in vehicle.
-  <div class="issue">Check zone usage</div>
-  <dl title="[NoInterfaceObject] interface SeatAdjustment : VehicleCommonDataType" class="idl">
+   <dl title="[NoInterfaceObject] interface SeatAdjustment : VehicleCommonDataType" class="idl">
      <dt>attribute unsigned short? reclineSeatBack</dt>
      <dd>Seat back recline position as percent to completely reclined 
      (Unit: percentage, Resolution: 1, 
@@ -1074,12 +1099,24 @@
 <section>
   <h3><a>DriveMode</a> Interface</h3>
   <p>The <a>DriveMode</a> interface provides or sets information about a vehicles 
-  drive mode.
+  drive mode.</p>
+
+  <dl title="enum DriveModeEnum" class="idl">
+    <dt>comfort</dt>
+    <dd>TODO: define</dd>
+    <dt>auto</dt>
+    <dd>TODO: define</dd>
+    <dt>sport</dt>
+    <dd>TODO: define</dd>
+    <dt>eco</dt>
+    <dd>TODO: define</dd>
+    <dt>manual</dt>
+    <dd>TODO: define</dd>
+  </dl>
+
   <dl title="[NoInterfaceObject] interface DriveMode : VehicleCommonDataType" class="idl">
-     <dt>attribute DOMString? driveMode</dt>
-     <dd>Vehicle driving mode
-     <div class="issue">Need to define drive mode enum</div>
-     </dd>
+     <dt>attribute DriveModeEnum driveMode</dt>
+     <dd>Vehicle driving mode</dd>
   </dl>	     
 </section>
 
@@ -1109,10 +1146,9 @@
      <dt>attribute DOMString? engineSoundEnhancementMode</dt>
      <dd>Engine sound enhancement mode where a null string means not-activated, and any 
      other value represents a manufacture specific setting
-     </dd>     
-  </dl>	     
+     </dd>
+  </dl>
 </section>
-
 
 </section>
 <!------------------- End of Personalization Interfaces ------------------->
@@ -1546,14 +1582,14 @@ However, interior or exterior temperature must be distinguished in vehicles.
   <p>The <a>Alarm</a> interface represents the current status of the in vehicle Alarm system.
 
   <dl title="enum AlarmStatus" class="idl">
-  	<dt>Disarmed</dt>
-  	<dd>0 = The alarm is not armed</dd>
-  	<dt>PreArmed</dt>
-  	<dd>1 = The function is temporary not active</dd>
-  	<dt>Armed</dt>
-  	<dd>2 = The function is active</dd>
-	<dt>Alarmed</dt>
-  	<dd>3 = The Alarm is screaming </dd>
+  	<dt>disarmed</dt>
+  	<dd>The alarm is not armed</dd>
+  	<dt>preArmed</dt>
+  	<dd>The function is temporary not active</dd>
+  	<dt>armed</dt>
+  	<dd>The function is active</dd>
+	  <dt>alarmed</dt>
+  	<dd>The Alarm is screaming</dd>
   </dl>
 
   <dl title="[NoInterfaceObject] interface Alarm : VehicleCommonDataType" class="idl">
@@ -1568,12 +1604,12 @@ However, interior or exterior temperature must be distinguished in vehicles.
   <p>The <a>ParkingBrake</a> interface represents the current status of the parking brake.
 
   <dl title="enum ParkingBrakeStatus" class="idl">
-  	<dt>Inactive</dt>
-  	<dd>0 = Parking brake is not engaged (driving position)</dd>
-  	<dt>Active</dt>
-  	<dd>1 = Parking brake is engaged (parking position)</dd>
-  	<dt>Error</dt>
-  	<dd>2 = There is a problem with the parking brake system</dd>
+  	<dt>inactive</dt>
+  	<dd>Parking brake is not engaged (driving position)</dd>
+  	<dt>active</dt>
+  	<dd>Parking brake is engaged (parking position)</dd>
+  	<dt>error</dt>
+  	<dd>There is a problem with the parking brake system</dd>
   </dl>
 
   <dl title="[NoInterfaceObject] interface ParkingBrake : VehicleCommonDataType" class="idl">
@@ -1603,7 +1639,7 @@ However, interior or exterior temperature must be distinguished in vehicles.
 
 <!----------------------------- Use Cases ---------------------------------->
 <section class="use-cases">
-  <h2><a>Use-Cases</h2>
+  <h2>Use-Cases</h2>
   	<section>
   		<section>
 			  <h4>Use Cases for Vehicle Configuration & Identification</h4>
