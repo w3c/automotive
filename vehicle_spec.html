@@ -266,9 +266,9 @@
   vehicle.
   <dl title="[NoInterfaceObject] interface Identification : VehicleCommonDataType" class="idl">
      <dt>readonly attribute DOMString ? VIN</dt>
-     <dd>the Vehicle Identification Number</dd>
+     <dd>the Vehicle Identification Number (ISO 3833)</dd>
      <dt>readonly attribute DOMString ? WMI</dt>
-     <dd>the World Manufacture Identifier</dd>
+     <dd>the World Manufacture Identifier defined by SAE ISO 3780:2009.  3 characters.</dd>
      <dt>readonly attribute DOMString[] ? vehicleType</dt>
      <dt>readonly attribute DOMString ? brand</dt>
      <dd>vehicle brand name</dd>
@@ -315,10 +315,12 @@
      <dt>readonly attribute unsigned short ? totalDoors</dt>
      <dd>Total number of doors on the vehicle (all doors opening to the interior, 
      including hatchbacks) (Min: 0, Max: 10)</dd>
+     <div class="issue">(Kevron) Is it possible to use the zone concept with doors?  Doing so would eliminate the need for complex arrays.</div>
      <dt>readonly attribute DOMString[]? vehicleType</dt>
      <dd>Type of vehicle <div class="issue">Need enum of vehicle types?</div>
      <div class="note">(Justin) It would be better to define some types... Plz refer.. href://http://en.wikipedia.org/wiki/Car_body_style
-     </div></dd>
+     </div>
+     <div class="note">(Kevron) Agreed.  We should define these types as an enum.</div></dd>
   </dl>
 </section>
 
@@ -352,7 +354,8 @@
      <dd>type of fuel used by vehicle. If the vehicle uses multiple fuels, fuelType returns an array of fuel types.</dd>
      <dt>readonly attribute DOMString ? refuelPosition</dt>
      <dd>Side of the vehicle with access to the fuel door
-     <div class="issue">Need to create enum for this?</div></dd>
+     <div class="issue">Need to create enum for this?</div>
+     <div class="note">(Kevron) can this return Zone ? refuelPosition ?</div></dd>
   </dl>	     
 </section>
 
