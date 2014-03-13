@@ -135,7 +135,7 @@
 <!------------------------ Security and privacy ------------------------------>
 <section id="security">
       <h2>Security and privacy considerations</h2>
-      <p>This API must be only exposed to trusted content</p>
+      <p>This API MUST be only exposed to trusted content</p>
 </section>
 
 
@@ -179,14 +179,14 @@
     <dt>const DOMString Rear = "Rear"</dt>
     <dt>const DOMString Center = "Center"</dt>
 
-    <dt>attribute DOMString[] value</dt><dd>Must return array of physical zones</dd>
-    <dt>readonly attribute Zone driver</dt><dd>Must return physical zone array for logical driver</dd>
-    <dt>readonly attribute Zone[] passenger</dt><dd>Must return physical zone array for logical passenger</dd>
+    <dt>attribute DOMString[] value</dt><dd>MUST return array of physical zones</dd>
+    <dt>readonly attribute Zone driver</dt><dd>MUST return physical zone array for logical driver</dd>
+    <dt>readonly attribute Zone[] passenger</dt><dd>MUST return physical zone array for logical passenger</dd>
     
-    <dt>boolean equals(Zone zone)</dt><dd>Must return true if zone.value matches the contents of this.value.  
+    <dt>boolean equals(Zone zone)</dt><dd>MUST return true if zone.value matches the contents of this.value.  
     Ordering of elements within Zone.value does not matter.</dd>
     
-    <dt>boolean contains(Zone zone)</dt><dd>Must return true if zone.value can be found within this.value</dd>
+    <dt>boolean contains(Zone zone)</dt><dd>MUST return true if zone.value can be found within this.value</dd>
     
   </dl>
 </section>
@@ -215,8 +215,9 @@
 
     <dt>Promise get(optional Zone zone)</dt> <dd>MUST return the Promise.</dd>
     <dt>Promise set(object value, optional Zone zone)</dt><dd>MUST return Promise</dd>
-    <dt>unsigned short subscribe(VehicleInterfaceCallback callback, optional Zone zone)</dt><dd>must return handle to subscription or 0 if error</dd>
-    <dt>void unsubscribe(short handle)</dt><dd>must return void.  unsubscribes to value changes on this interface.</dd>
+    <dt>unsigned short subscribe(VehicleInterfaceCallback callback, optional Zone zone)</dt><dd>MUST return handle to subscription or 0 if error</dd>
+    <dt>void unsubscribe(short handle)</dt><dd>MUST return void.  unsubscribes to value changes on this interface.</dd>
+    <dt>readonly attribute Zone[] zones</dt><dd>MUST return all zones for this type.</dd>
   </dl>
 </section>
 
@@ -227,8 +228,8 @@
   
   <dl title="[NoInterfaceObject] interface VehicleCommonDataType"
   class="idl">
-    <dt>readonly attribute Zone? zone</dt><dd>must return zone for this data type or null if there is no zone associated with this data type</dd>
-    <dt>readonly attribute DOMTimeStamp? timeStamp</dt><dd>must return timestamp when this data was received on the system</dd>
+    <dt>readonly attribute Zone? zone</dt><dd>MUST return zone for this data type or null if there is no zone associated with this data type</dd>
+    <dt>readonly attribute DOMTimeStamp? timeStamp</dt><dd>MUST return timestamp when this data was received on the system</dd>
   </dl>
 </section>
 
@@ -246,17 +247,17 @@
 		  <dl title="partial interface Vehicle" class="idl">  
 		    <!-- identification and configuration types: -->
 		    <dt>readonly attribute VehicleInterface ? identification</dt>
-		    <dd>Must return VehicleInterface for <a>Identification</a></dd>
+		    <dd>MUST return VehicleInterface for <a>Identification</a></dd>
 		    <dt>readonly attribute VehicleInterface ? sizeConfiguration</dt>
-		    <dd>Must return VehicleInterface for <a>SizeConfiguration</a></dd>
+		    <dd>MUST return VehicleInterface for <a>SizeConfiguration</a></dd>
 		    <dt>readonly attribute VehicleInterface ? fuelConfiguration</dt>
-		    <dd>Must return VehicleInterface for <a>FuelConfiguration</a></dd>
+		    <dd>MUST return VehicleInterface for <a>FuelConfiguration</a></dd>
 		    <dt>readonly attribute VehicleInterface ? transmissionConfiguration</dt>
-		    <dd>Must return VehicleInterface for <a>TransmissionConfiguration</a></dd>
+		    <dd>MUST return VehicleInterface for <a>TransmissionConfiguration</a></dd>
 		    <dt>readonly attribute VehicleInterface ? wheelConfiguration</dt>
-		    <dd>Must return VehicleInterface for <a>WheelConfiguration</a></dd>
+		    <dd>MUST return VehicleInterface for <a>WheelConfiguration</a></dd>
 		    <dt>readonly attribute VehicleInterface ? steeringWheelConfiguration</dt>
-		    <dd>Must return VehicleInterface for <a>SteeringWheelConfiguration</a></dd>
+		    <dd>MUST return VehicleInterface for <a>SteeringWheelConfiguration</a></dd>
 		  </dl>
 
 <!------------------------ Interface Identification ------------------------------>
@@ -348,14 +349,19 @@
     <dt>electric</dt>
     <dd>TODO: define</dd>
   </dl>
+  
+  <dl title="enum RefuelPosition" class="idl">
+    <dt>right</dt>
+    <dd>right side of vehicle referenced from driver position</dd>
+    <dt>left></dt>
+    <dd>left side of vehicle referenced from driver position</dd>
+  <dl>
 
   <dl title="[NoInterfaceObject] interface FuelConfiguration : VehicleCommonDataType" class="idl">
      <dt>readonly attribute FuelTypeEnum[] ? fuelType</dt>
      <dd>type of fuel used by vehicle. If the vehicle uses multiple fuels, fuelType returns an array of fuel types.</dd>
-     <dt>readonly attribute DOMString ? refuelPosition</dt>
+     <dt>readonly attribute RefuelPostion ? refuelPosition</dt>
      <dd>Side of the vehicle with access to the fuel door
-     <div class="issue">Need to create enum for this?</div>
-     <div class="note">(Kevron) can this return Zone ? refuelPosition ?</div></dd>
   </dl>	     
 </section>
 
@@ -419,41 +425,41 @@
 		  <dl title="partial interface Vehicle" class="idl">  
 		    <!-- running status types: -->
 		    <dt>readonly attribute VehicleInterface vehicleSpeed</dt>
-		    <dd>Must return VehicleInterface for <a>VehicleSpeed</a></dd>
+		    <dd>MUST return VehicleInterface for <a>VehicleSpeed</a></dd>
 		    <dt>readonly attribute VehicleInterface ? engineSpeed</dt>
-		    <dd>Must return VehicleInterface for <a>EngineSpeed</a> or undefined if not supported</dd>
+		    <dd>MUST return VehicleInterface for <a>EngineSpeed</a> or undefined if not supported</dd>
 		    <dt>readonly attribute VehicleInterface ? powerTrainTorque</dt>
-		    <dd>Must return VehicleInterface for <a>PowerTrainTorque</a></dd>
+		    <dd>MUST return VehicleInterface for <a>PowerTrainTorque</a></dd>
 		    <dt>readonly attribute VehicleInterface ? acceleratorPedalPosition</dt>
-		    <dd>Must return VehicleInterface for <a>AcceleratorPedalPosition</a></dd>
+		    <dd>MUST return VehicleInterface for <a>AcceleratorPedalPosition</a></dd>
 		    <dt>readonly attribute VehicleInterface ? throttlePosition</dt>
-		    <dd>Must return VehicleInterface for <a>ThrottlePosition</a></dd>
+		    <dd>MUST return VehicleInterface for <a>ThrottlePosition</a></dd>
 		    <dt>readonly attribute VehicleInterface ? tripMeter</dt>
-		    <dd>Must return VehicleInterface for <a>TripMeter</a></dd>
+		    <dd>MUST return VehicleInterface for <a>TripMeter</a></dd>
 		    <dt>readonly attribute VehicleInterface ? diagnostic</dt>
-		    <dd>Must return VehicleInterface for <a>Diagnostic</a></dd>
+		    <dd>MUST return VehicleInterface for <a>Diagnostic</a></dd>
 		    <dt>readonly attribute VehicleInterface ? transmission</dt>
-		    <dd>Must return VehicleInterface for <a>Transmission</a></dd>
+		    <dd>MUST return VehicleInterface for <a>Transmission</a></dd>
 		    <dt>readonly attribute VehicleInterface ? ruiseControlStatus</dt>
-		    <dd>Must return VehicleInterface for <a>CruiseControlStatus</a></dd>
+		    <dd>MUST return VehicleInterface for <a>CruiseControlStatus</a></dd>
 		    <dt>readonly attribute VehicleInterface ? lightStatus</dt>
-		    <dd>Must return VehicleInterface for <a>LightStatus</a></dd>
+		    <dd>MUST return VehicleInterface for <a>LightStatus</a></dd>
 		    <dt>readonly attribute VehicleInterface ? interiorLightStatus</dt>
-		    <dd>Must return VehicleInterface for <a>InteriorLightStatus</a></dd>
+		    <dd>MUST return VehicleInterface for <a>InteriorLightStatus</a></dd>
 		    <dt>readonly attribute VehicleInterface ? chime</dt>
-		    <dd>Must return VehicleInterface for <a>Chime</a></dd>
+		    <dd>MUST return VehicleInterface for <a>Chime</a></dd>
 		    <dt>readonly attribute VehicleInterface ? fuel</dt>
-		    <dd>Must return VehicleInterface for <a>Fuel</a></dd>
+		    <dd>MUST return VehicleInterface for <a>Fuel</a></dd>
 		    <dt>readonly attribute VehicleInterface ? engineOil</dt>
-		    <dd>Must return VehicleInterface for <a>EngineOil</a></dd>
+		    <dd>MUST return VehicleInterface for <a>EngineOil</a></dd>
 		    <dt>readonly attribute VehicleInterface ? acceleration</dt>
-		    <dd>Must return VehicleInterface for <a>Acceleration</a></dd>
+		    <dd>MUST return VehicleInterface for <a>Acceleration</a></dd>
 		    <dt>readonly attribute VehicleInterface ? location</dt>
-		    <dd>Must return VehicleInterface for <a>Location</a></dd>
+		    <dd>MUST return VehicleInterface for <a>Location</a></dd>
 		    <dt>readonly attribute VehicleInterface ? engineCoolant</dt>
-		    <dd>Must return VehicleInterface for <a>EngineCoolant</a></dd>
+		    <dd>MUST return VehicleInterface for <a>EngineCoolant</a></dd>
 		    <dt>readonly attribute VehicleInterface ? deadReckoning</dt>
-		    <dd>Must return VehicleInterface for <a>DeadReckoning</a></dd>
+		    <dd>MUST return VehicleInterface for <a>DeadReckoning</a></dd>
 		  </dl>
 
 <!------------------------ Interface VehicleSpeed ------------------------>
@@ -463,7 +469,7 @@
   
   <dl title="[NoInterfaceObject] interface VehicleSpeed : VehicleCommonDataType"
   class="idl">
-    <dt>readonly attribute unsigned short speed</dt><dd>must return vehicle speed in k/h</dd>
+    <dt>readonly attribute unsigned short speed</dt><dd>MUST return vehicle speed in k/h</dd>
   </dl>
 </section>
 
@@ -475,7 +481,7 @@
   <dl title="[NoInterfaceObject] interface EngineSpeed : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned short speed</dt>
-    <dd>must return engine speed in rotations per minute. Range: 0-100,000</dd>
+    <dd>MUST return engine speed in rotations per minute. Range: 0-100,000</dd>
   </dl>
 </section>
 
@@ -595,9 +601,9 @@
   <dl title="[NoInterfaceObject] interface Transmission : VehicleCommonDataType" class="idl">
      
      <dt>readonly attribute octet ? gear</dt>
-     <dd>Must return transmission gear position. Range 0 - 10</dd>
+     <dd>MUST return transmission gear position. Range 0 - 10</dd>
      <dt>readonly attribute TransmissionMode ? mode</dt>
-     <dd>Must return transmission Mode (see <a>TransmissionMode</a>)</dd>
+     <dd>MUST return transmission Mode (see <a>TransmissionMode</a>)</dd>
      
   </dl>
 </section>
@@ -608,9 +614,9 @@
   <p>The <a>CruiseControlStatus</a> interface represents cruise control settings.
   <dl title="[NoInterfaceObject] interface CruiseControlStatus : VehicleCommonDataType" class="idl">
      <dt>readonly attribute boolean status</dt>
-     <dd>Must return whether or not the Cruise Control system is on (true) or off (false)</dd>
+     <dd>MUST return whether or not the Cruise Control system is on (true) or off (false)</dd>
      <dt>readonly attribute unsigned short Speed</dt>
-     <dd>Must return target Cruise Control speed in kilometers per hour (km/h).  Range: 0 - 1000;</dd>
+     <dd>MUST return target Cruise Control speed in kilometers per hour (km/h).  Range: 0 - 1000;</dd>
   </dl>
 </section>
 
@@ -620,25 +626,25 @@
   <p>The <a>LightStatus</a> interface represents exterior light statuses.
   <dl title="[NoInterfaceObject] interface LightStatus : VehicleCommonDataType" class="idl">
      <dt>readonly attribute boolean head</dt>
-     <dd>Must return headlight status: on (true), off (false)</dd>
+     <dd>MUST return headlight status: on (true), off (false)</dd>
      <dt>readonly attribute boolean rightTurn</dt>
-     <dd>Must return right turn signal status: on (true), off (false)</dd>
+     <dd>MUST return right turn signal status: on (true), off (false)</dd>
      <dt>readonly attribute boolean leftTurn</dt>
-     <dd>Must return left turn signal status: on (true), off (false)</dd>
+     <dd>MUST return left turn signal status: on (true), off (false)</dd>
      <dt>readonly attribute boolean brake</dt>
-     <dd>Must return Brake light status: on (true), off (false)</dd>
+     <dd>MUST return Brake light status: on (true), off (false)</dd>
      <dt>readonly attribute boolean? fog</dt>
-     <dd>Must return Fog light status: on (true), off (false)</dd>
+     <dd>MUST return Fog light status: on (true), off (false)</dd>
      <dt>readonly attribute boolean hazard</dt>
-     <dd>Must return Hazard light status: on (true), off (false)</dd>
+     <dd>MUST return Hazard light status: on (true), off (false)</dd>
      <dt>readonly attribute boolean parking</dt>
-     <dd>Must return Parking light status: on (true), off (false)</dd>
+     <dd>MUST return Parking light status: on (true), off (false)</dd>
      <dt>readonly attribute boolean highBeam</dt>
-     <dd>Must return HighBeam light status: on (true), off (false)</dd>
+     <dd>MUST return HighBeam light status: on (true), off (false)</dd>
      <dt>readonly attribute boolean? automaticHeadlights</dt>
-     <dd>Must return whether automatic head lights are activated (true) or not (false)</dd>
+     <dd>MUST return whether automatic head lights are activated (true) or not (false)</dd>
      <dt>readonly attribute boolean? dynamicHighBeam</dt>
-     <dd>Must return whether dynamic high beam is activated (true) or not (false)</dd>
+     <dd>MUST return whether dynamic high beam is activated (true) or not (false)</dd>
   </dl>
 </section>
 
@@ -648,7 +654,7 @@
   <p>The <a>InteriorLightStatus</a> interface represents interior light status.
   <dl title="[NoInterfaceObject] interface InteriorLightStatus : VehicleCommonDataType" class="idl">
      <dt>readonly attribute boolean status</dt>
-     <dd> Must return passenger interior light status for the given zone: on (true), off (false)</dd>
+     <dd> MUST return passenger interior light status for the given zone: on (true), off (false)</dd>
   </dl>
 </section>
 
@@ -658,7 +664,7 @@
   <p>The <a>Horn</a> interface represents horn status.
   <dl title="[NoInterfaceObject] interface Horn : VehicleCommonDataType" class="idl">
      <dt>readonly attribute boolean status</dt>
-     <dd>Must return Horn status: On (true) or off (false)</dd>
+     <dd>MUST return Horn status: On (true) or off (false)</dd>
   </dl>
 </section>
 
@@ -668,7 +674,7 @@
   <p>The <a>Chime</a> interface represents horn status.
   <dl title="[NoInterfaceObject] interface Chime : VehicleCommonDataType" class="idl">
      <dt>readonly attribute boolean status</dt>
-     <dd>Must return Chime status when a door is open: On (true) or off (false)</dd>
+     <dd>MUST return Chime status when a door is open: On (true) or off (false)</dd>
   </dl>
 </section>
 
@@ -678,17 +684,17 @@
   <p>The <a>Fuel</a> interface represents vehicle fuel status.
   <dl title="[NoInterfaceObject] interface Fuel : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned short level</dt>
-     <dd>Must return fuel level as a percentage of fullness</dd>
+     <dd>MUST return fuel level as a percentage of fullness</dd>
      <dt>readonly attribute unsigned short range</dt>
-     <dd>Must return estimated fuel range in kilometers</dd>
+     <dd>MUST return estimated fuel range in kilometers</dd>
      <dt>readonly attribute unsigned short instantConsumption</dt>
-     <dd>Must return instant fuel consumption in per distance travelled (l/100km)</dd>
+     <dd>MUST return instant fuel consumption in per distance travelled (l/100km)</dd>
      <dt>attribute unsigned short averageConsumption</dt>
-     <dd>Must return average fuel consumption in per distance travelled (l/100km).  Setting this to any value should reset the counter to '0'</dd>
+     <dd>MUST return average fuel consumption in per distance travelled (l/100km).  Setting this to any value should reset the counter to '0'</dd>
      <dt>attribute unsigned short fuelConsumedSinceRestart</dt>
-     <dd>Must return fuel consumed (l) since engine start;  resets to 0 each restart</dd>
+     <dd>MUST return fuel consumed (l) since engine start;  resets to 0 each restart</dd>
      <dt>attribute unsigned short vehicleTimeSinceRestart</dt>
-     <dd>Must return time (min) elapsed since vehicle restart. Range 0 - 100,000,000</dd>
+     <dd>MUST return time (min) elapsed since vehicle restart. Range 0 - 100,000,000</dd>
   </dl>
 </section>
 
@@ -698,13 +704,13 @@
   <p>The <a>EngineOil</a> interface represents engine oil status.
   <dl title="[NoInterfaceObject] interface EngineOil : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned short remaining</dt>
-     <dd>Must return remaining engine oil as percentage of fullness</dd>
+     <dd>MUST return remaining engine oil as percentage of fullness</dd>
      <dt>readonly attribute long temperature</dt>
-     <dd>Must return Engine Oil Temperature in Celcius</dd>
+     <dd>MUST return Engine Oil Temperature in Celcius</dd>
      <dt>readonly attribute unsigned short pressure</dt>
-     <dd>Must return Engine Oil Pressure in kPa</dd>
+     <dd>MUST return Engine Oil Pressure in kPa</dd>
      <dt>readonly attribute boolean change</dt>
-     <dd>Must return engine oil change indicator status</dd>
+     <dd>MUST return engine oil change indicator status</dd>
   </dl>
 </section>
 
@@ -714,11 +720,11 @@
   <p>The <a>Acceleration</a> interface represents vehicle acceleration.
   <dl title="[NoInterfaceObject] interface Acceleration : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned long x</dt>
-     <dd>Must return acceleration on the "X" axis as 1/1000 G (gravitational force). </dd>
+     <dd>MUST return acceleration on the "X" axis as 1/1000 G (gravitational force). </dd>
      <dt>readonly attribute unsigned long y</dt>
-     <dd>Must return acceleration on the "Y" axis as 1/1000 G (gravitational force). </dd>
+     <dd>MUST return acceleration on the "Y" axis as 1/1000 G (gravitational force). </dd>
      <dt>readonly attribute unsigned long z</dt>
-     <dd>Must return acceleration on the "Z" axis as 1/1000 G (gravitational force). </dd>
+     <dd>MUST return acceleration on the "Z" axis as 1/1000 G (gravitational force). </dd>
   </dl>
 </section>
 
@@ -728,13 +734,13 @@
   <p>The <a>Location</a> interface represents vehicle location status.  This is usually from gps, but could use a number of technologies.
   <dl title="[NoInterfaceObject] interface Location : VehicleCommonDataType" class="idl">
      <dt>readonly attribute double latitude</dt>
-     <dd>Must return latitude in Deg.Min. Range: -180 - +180</dd>
+     <dd>MUST return latitude in Deg.Min. Range: -180 - +180</dd>
      <dt>readonly attribute double longitude</dt>
-     <dd>Must return longitude in Deg.Min. Range: -90 - +90</dd>
+     <dd>MUST return longitude in Deg.Min. Range: -90 - +90</dd>
      <dt>readonly attribute double altitude</dt>
-     <dd>Must return altitude in meters above sea-level (0). Range: -1000 - 10,000</dd>
+     <dd>MUST return altitude in meters above sea-level (0). Range: -1000 - 10,000</dd>
      <dt>readonly attribute unsigned short direction</dt>
-     <dd>Must return cardinal direction in Degrees in which the vehicle is travelling. Range: 0 - 359</dd>
+     <dd>MUST return cardinal direction in Degrees in which the vehicle is travelling. Range: 0 - 359</dd>
   </dl>
 </section>
 
@@ -746,9 +752,9 @@
   <dl title="[NoInterfaceObject] interface EngineCoolant : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned short level</dt>
-    <dd>Must return engine coolant level as percentage of fullness</dd>
+    <dd>MUST return engine coolant level as percentage of fullness</dd>
     <dt>readonly attribute unsigned short temperature</dt>
-    <dd>Must return engine coolant temperature in Celcius</dd>
+    <dd>MUST return engine coolant temperature in Celcius</dd>
   </dl>
 </section>
 
@@ -760,9 +766,9 @@
   <dl title="[NoInterfaceObject] interface DeadReckoning : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute short steeringWheelAngle</dt>
-    <dd>Must return angle of steering wheel off centerline.  Range: -180 - 180</dd>
+    <dd>MUST return angle of steering wheel off centerline.  Range: -180 - 180</dd>
     <dt>readonly attribute unsigned short wheelTickSensor</dt>
-    <dd>Must return left/right wheel rotation counter.  Range: 0 - 1,000,000</dd>
+    <dd>MUST return left/right wheel rotation counter.  Range: 0 - 1,000,000</dd>
   </dl>
 </section>
 
@@ -780,21 +786,21 @@
 		  <dl title="partial interface Vehicle" class="idl">  
 		    <!-- maintenance types: -->
 		    <dt>readonly attribute VehicleInterface ? odometer</dt>
-		    <dd>Must return VehicleInterface for <a>Odometer</a> or undefined if not supported</dd>
+		    <dd>MUST return VehicleInterface for <a>Odometer</a> or undefined if not supported</dd>
 		    <dt>readonly attribute VehicleInterface ? transmissionOil</dt>
-		    <dd>Must return VehicleInterface for <a>TransmissionOil</a></dd>
+		    <dd>MUST return VehicleInterface for <a>TransmissionOil</a></dd>
 		    <dt>readonly attribute VehicleInterface ? transmissionClutch</dt>
-		    <dd>Must return VehicleInterface for <a>TransmissionClutch</a></dd>
+		    <dd>MUST return VehicleInterface for <a>TransmissionClutch</a></dd>
  		    <dt>readonly attribute VehicleInterface ? brake</dt>
-		    <dd>Must return VehicleInterface for <a>Brake</a></dd>
+		    <dd>MUST return VehicleInterface for <a>Brake</a></dd>
  		    <dt>readonly attribute VehicleInterface ? washerFluid</dt>
-		    <dd>Must return VehicleInterface for <a>WasherFluid</a></dd>
+		    <dd>MUST return VehicleInterface for <a>WasherFluid</a></dd>
 		    <dt>readonly attribute VehicleInterface ? malfunctionIndicator</dt>
-		    <dd>Must return VehicleInterface for <a>MalfunctionIndicator</a></dd>
+		    <dd>MUST return VehicleInterface for <a>MalfunctionIndicator</a></dd>
 		    <dt>readonly attribute VehicleInterface ? batteryStatus</dt>
-		    <dd>Must return VehicleInterface for <a>BatteryStatus</a></dd>
+		    <dd>MUST return VehicleInterface for <a>BatteryStatus</a></dd>
 		    <dt>readonly attribute VehicleInterface ? tire</dt>
-		    <dd>Must return VehicleInterface for <a>Tire</a></dd>
+		    <dd>MUST return VehicleInterface for <a>Tire</a></dd>
 		  </dl>
 
 <!------------------------ Interface Odometer ------------------------------>
@@ -944,23 +950,23 @@
 
 		  <dl title="partial interface Vehicle" class="idl">  
 		    <dt>readonly attribute VehicleInterface ? driverIdentification</dt>
-		    <dd>Must return VehicleInterface for <a>DriverIdentification</a></dd>
+		    <dd>MUST return VehicleInterface for <a>DriverIdentification</a></dd>
 		    <dt>attribute VehicleInterface? languageConfiguration</dt>
-		    <dd>Must return VehicleInterface for <a>LanguageConfiguration</a></dd>
+		    <dd>MUST return VehicleInterface for <a>LanguageConfiguration</a></dd>
 		    <dt>attribute VehicleInterface ? unitsOfMeasure</dt>
-		    <dd>Must return VehicleInterface for <a>UnitsOfMeasure</a></dd>
+		    <dd>MUST return VehicleInterface for <a>UnitsOfMeasure</a></dd>
 		    <dt>attribute VehicleInterface ? mirror</dt>
-		    <dd>Must return VehicleInterface for <a>Mirror</a></dd>
+		    <dd>MUST return VehicleInterface for <a>Mirror</a></dd>
 		    <dt>attribute VehicleInterface ? steeringWheel</dt>
-		    <dd>Must return VehicleInterface for <a>SteeringWheel</a></dd>
+		    <dd>MUST return VehicleInterface for <a>SteeringWheel</a></dd>
 		    <dt>attribute VehicleInterface ? driveMode</dt>
-		    <dd>Must return VehicleInterface for <a>DriveMode</a></dd>
+		    <dd>MUST return VehicleInterface for <a>DriveMode</a></dd>
 		    <dt>attribute VehicleInterface ? seatAdjustment</dt>
-		    <dd>Must return VehicleInterface for <a>SeatAdjustment</a></dd>
+		    <dd>MUST return VehicleInterface for <a>SeatAdjustment</a></dd>
 		    <dt>attribute VehicleInterface ? dashboardIllumination</dt>
-		    <dd>Must return VehicleInterface for <a>DashboardIllumination</a></dd>
+		    <dd>MUST return VehicleInterface for <a>DashboardIllumination</a></dd>
 		    <dt>attribute VehicleInterface ? vehicleSound</dt>
-		    <dd>Must return VehicleInterface for <a>VehicleSound</a></dd>
+		    <dd>MUST return VehicleInterface for <a>VehicleSound</a></dd>
 		  </dl>
 
 <!------------------------ Interface Driver Identification ------------------------------>
@@ -1167,21 +1173,21 @@
 
 		  <dl title="partial interface Vehicle" class="idl">  
 		    <dt>readonly attribute VehicleInterface ? antilockBrakingSystem</dt>
-		    <dd>Must return VehicleInterface for <a>AntilockBrakingSystem</a></dd>
+		    <dd>MUST return VehicleInterface for <a>AntilockBrakingSystem</a></dd>
 		    <dt>readonly attribute VehicleInterface ? tractionControlSystem</dt>
-		    <dd>Must return VehicleInterface for <a>TractionControlSystem</a></dd>
+		    <dd>MUST return VehicleInterface for <a>TractionControlSystem</a></dd>
 		    <dt>readonly attribute VehicleInterface ? electronicStabilityControl</dt>
-		    <dd>Must return VehicleInterface for <a>ElectronicStabilityControl</a></dd>
+		    <dd>MUST return VehicleInterface for <a>ElectronicStabilityControl</a></dd>
 		    <dt>readonly attribute VehicleInterface ? topSpeedLimit</dt>
-		    <dd>Must return VehicleInterface for <a>TopSpeedLimit</a></dd>
+		    <dd>MUST return VehicleInterface for <a>TopSpeedLimit</a></dd>
 		    <dt>readonly attribute VehicleInterface ? airbagStatus</dt>
-		    <dd>Must return VehicleInterface for <a>AirbagStatus</a></dd>
+		    <dd>MUST return VehicleInterface for <a>AirbagStatus</a></dd>
 		    <dt>readonly attribute VehicleInterface ? door</dt>
-		    <dd>Must return VehicleInterface for <a>Door</a></dd>
+		    <dd>MUST return VehicleInterface for <a>Door</a></dd>
 		    <dt>readonly attribute VehicleInterface ? childSafetyLock</dt>
-		    <dd>Must return VehicleInterface for <a>ChildSafetyLock</a></dd>
+		    <dd>MUST return VehicleInterface for <a>ChildSafetyLock</a></dd>
 		    <dt>readonly attribute VehicleInterface ? seat</dt>
-		    <dd>Must return VehicleInterface for <a>Seat</a></dd>
+		    <dd>MUST return VehicleInterface for <a>Seat</a></dd>
 		  </dl>
 
 <!------------------- AntilockBrakingSystem Interface  -------------------->
@@ -1192,9 +1198,9 @@
   <dl title="[NoInterfaceObject] interface AntilockBrakingSystem : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute boolean enabled</dt>
-    <dd>Must return whether or not the ABS Setting is enabled (true) or disabled (false)</dd>
+    <dd>MUST return whether or not the ABS Setting is enabled (true) or disabled (false)</dd>
     <dt>readonly attribute boolean engaged</dt>
-    <dd>Must return whether or not the ABS is engaged (true) or idle (false)</dd>
+    <dd>MUST return whether or not the ABS is engaged (true) or idle (false)</dd>
   </dl>
 </section>
 
@@ -1206,9 +1212,9 @@
   <dl title="[NoInterfaceObject] interface TractionControlSystem : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute boolean enabled</dt>
-    <dd>Must return whether or not the TCS Setting is enabled (true) or disabled (false)</dd>
+    <dd>MUST return whether or not the TCS Setting is enabled (true) or disabled (false)</dd>
     <dt>readonly attribute boolean engaged</dt>
-    <dd>Must return whether or not the TCS is engaged (true) or idle (false)</dd>
+    <dd>MUST return whether or not the TCS is engaged (true) or idle (false)</dd>
   </dl>
 </section>
 
@@ -1220,9 +1226,9 @@
   <dl title="[NoInterfaceObject] interface ElectronicStabilityControl : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute boolean enabled</dt>
-    <dd>Must return whether or not the ESC Setting is enabled (true) or disabled (false)</dd>
+    <dd>MUST return whether or not the ESC Setting is enabled (true) or disabled (false)</dd>
     <dt>readonly attribute boolean engaged</dt>
-    <dd>Must return whether or not the ESC is engaged (true) or idle (false)</dd>
+    <dd>MUST return whether or not the ESC is engaged (true) or idle (false)</dd>
   </dl>
 </section>
 
@@ -1234,7 +1240,7 @@
   <dl title="[NoInterfaceObject] interface TopSpeedLimit : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned short speed</dt>
-    <dd>must return vehicle top speed limit in k/h</dd>
+    <dd>MUST return vehicle top speed limit in k/h</dd>
   </dl>
 </section>
 
@@ -1246,9 +1252,9 @@
   <dl title="[NoInterfaceObject] interface AirbagStatus : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute boolean activated</dt>
-    <dd>Must return whether or not the airbag is activated (true) or deactivated (false)</dd>
+    <dd>MUST return whether or not the airbag is activated (true) or deactivated (false)</dd>
     <dt>readonly attribute boolean deployed</dt>
-    <dd>Must return whether the airbag is deployed (true) or not (false)</dd>
+    <dd>MUST return whether the airbag is deployed (true) or not (false)</dd>
   </dl>
   <p>Available Zone: Driver, Passenger, Front, Rear, Middle, Left, Right</p>
 </section>
@@ -1269,10 +1275,10 @@
 
   <dl title="[NoInterfaceObject] interface Door : VehicleCommonDataType"
   class="idl">
-    <dt>readonly attribute DoorOpenStatus open</dt>
-    <dd>Must return the status of door's open status</dd>
+    <dt>readonly attribute DoorOpenStatus status</dt>
+    <dd>MUST return the status of door's open status</dd>
     <dt>readonly attribute boolean lock</dt>
-    <dd>Must return whether or not the door is locked (true) or unlocked (false)</dd>
+    <dd>MUST return whether or not the door is locked (true) or unlocked (false)</dd>
   </dl>
   <p>Available Zone: Driver, Passenger, Front, Rear, Middle, Left, Right, Fuel(Fuel Fliter Cap), Hood, Trunk</p>
 </section>
@@ -1285,7 +1291,7 @@
   <dl title="[NoInterfaceObject] interface ChildSafetyLock : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute boolean lock</dt>
-    <dd>Must return whether or not the Child Safety Lock is locked (true) or unlocked (false)</dd>
+    <dd>MUST return whether or not the Child Safety Lock is locked (true) or unlocked (false)</dd>
   </dl>
 </section>
 
@@ -1306,9 +1312,9 @@
   <dl title="[NoInterfaceObject] interface Seat : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute OccupantStatus occupant</dt>
-    <dd>Must return the status of seat occupant</dd>
+    <dd>MUST return the status of seat occupant</dd>
     <dt>readonly attribute boolean seatbelt</dt>
-    <dd>Must return whether or not the seat belt is fasten (true) or unfasten (false)</dd>
+    <dd>MUST return whether or not the seat belt is fasten (true) or unfasten (false)</dd>
   </dl>
   <p>Available Zone: Driver, Passenger, Front, Rear, Middle, Left, Right, Center</p>
 </section>
@@ -1327,23 +1333,23 @@
 		  <dl title="partial interface Vehicle" class="idl">  
 		    <!-- climate types: -->
 		    <dt>readonly attribute VehicleInterface ? temperature</dt>
-		    <dd>Must return VehicleInterface for <a>Temperature</a></dd>
+		    <dd>MUST return VehicleInterface for <a>Temperature</a></dd>
 		    <dt>readonly attribute VehicleInterface ? rainSensor</dt>
-		    <dd>Must return VehicleInterface for <a>RainSensor</a></dd>
+		    <dd>MUST return VehicleInterface for <a>RainSensor</a></dd>
 		    <dt>readonly attribute VehicleInterface ? wiperStatus</dt>
-		    <dd>Must return VehicleInterface for <a>WiperStatus</a></dd>
+		    <dd>MUST return VehicleInterface for <a>WiperStatus</a></dd>
 		    <dt>attribute VehicleInterface ? wiperSetting</dt>
-		    <dd>Must return VehicleInterface for <a>WiperSetting</a></dd>
+		    <dd>MUST return VehicleInterface for <a>WiperSetting</a></dd>
 		    <dt>attribute VehicleInterface ? defrost</dt>
-		    <dd>Must return VehicleInterface for <a>Defrost</a></dd>
+		    <dd>MUST return VehicleInterface for <a>Defrost</a></dd>
 		    <dt>attribute VehicleInterface ? sunroof</dt>
-		    <dd>Must return VehicleInterface for <a>Sunroof</a></dd>
+		    <dd>MUST return VehicleInterface for <a>Sunroof</a></dd>
 		    <dt>attribute VehicleInterface ? convertibleRoof</dt>
-		    <dd>Must return VehicleInterface for <a>ConvertibleRoof</a></dd>
+		    <dd>MUST return VehicleInterface for <a>ConvertibleRoof</a></dd>
 		    <dt>attribute VehicleInterface ? sideWindow</dt>
-		    <dd>Must return VehicleInterface for <a>SideWindow</a></dd>
+		    <dd>MUST return VehicleInterface for <a>SideWindow</a></dd>
 		    <dt>attribute VehicleInterface ? climateControl</dt>
-		    <dd>Must return VehicleInterface for <a>ClimateControl</a> or undefined if not supported</dd>
+		    <dd>MUST return VehicleInterface for <a>ClimateControl</a> or undefined if not supported</dd>
 		  </dl>
 
 <!------------------------ Interface Temperature ------------------------------>
@@ -1364,7 +1370,7 @@ This interface is optional
   </p>
   <p class="note">There's relevant exploratory work in W3C.<br>
 <a href="https://dvcs.w3.org/hg/dap/raw-file/default/temperature/Overview.html">https://dvcs.w3.org/hg/dap/raw-file/default/temperature/Overview.html</a></br>
-However, interior or exterior temperature must be distinguished in vehicles.
+However, interior or exterior temperature MUST be distinguished in vehicles.
   </p>
 </section>
 
@@ -1482,7 +1488,7 @@ However, interior or exterior temperature must be distinguished in vehicles.
 
   <dl title="[NoInterfaceObject] interface SideWindow : VehicleCommonDataType" class="idl">
   	<dt>attribute unsigned boolean? lock</dt>
-  	<dd>Must return whether or not the window is locked (true) or unlocked (false)</dd>
+  	<dd>MUST return whether or not the window is locked (true) or unlocked (false)</dd>
   	<dt>attribute unsigned byte? openness</dt>
   	<dd>current status of the side window as a percentage of openness. (0:Closed, 100:Fully Opened)</dd>
   </dl>
@@ -1551,13 +1557,13 @@ However, interior or exterior temperature must be distinguished in vehicles.
 		  <dl title="partial interface Vehicle" class="idl">  
 		    <!-- maintenance types: -->
 		    <dt>readonly attribute VehicleInterface ? laneDepartureStatus</dt>
-		    <dd>Must return VehicleInterface for <a>LaneDepartureStatus</a> or undefined if not supported</dd>
+		    <dd>MUST return VehicleInterface for <a>LaneDepartureStatus</a> or undefined if not supported</dd>
 		    <dt>readonly attribute VehicleInterface ? alarm</dt>
-		    <dd>Must return VehicleInterface for <a>Alarm</a></dd>
+		    <dd>MUST return VehicleInterface for <a>Alarm</a></dd>
 		    <dt>readonly attribute VehicleInterface ? parkingBrake</dt>
-		    <dd>Must return VehicleInterface for <a>ParkingBrake</a></dd>
+		    <dd>MUST return VehicleInterface for <a>ParkingBrake</a></dd>
  		    <dt>readonly attribute VehicleInterface ? parkingLights</dt>
-		    <dd>Must return VehicleInterface for <a>ParkingLights</a></dd>
+		    <dd>MUST return VehicleInterface for <a>ParkingLights</a></dd>
 		  </dl>
 
 <!------------------------ Interface LaneDepartureDetection (Vision) ------------------------------>
@@ -1629,9 +1635,9 @@ However, interior or exterior temperature must be distinguished in vehicles.
 
   <dl title="[NoInterfaceObject] interface ParkingLights : VehicleCommonDataType" class="idl">
      <dt>readonly attribute boolean status</dt>
-     <dd>Must return parking light status: on (true), off (false)
+     <dd>MUST return parking light status: on (true), off (false)
      <dt>attribute boolean setting</dt>
-     <dd>Must return whether or not the Parking Lights is enabled (true) or disabled (false).<br>
+     <dd>MUST return whether or not the Parking Lights is enabled (true) or disabled (false).<br>
        It can be used to send user's request for changing setting.</dd>
   </dl>
 </section>
