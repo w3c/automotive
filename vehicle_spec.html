@@ -47,6 +47,9 @@
   to get access to vehicle data. A typical use case of the Vehicle Information is the
   implementation of a tachometer application that allows view information from the
   vehicle such as speed, tire pressure, and engine rotation speed (RPMs).
+  
+  <p class="note">Use the abstract from guidlines document.</p>
+  <p class="note">Include passenger-car statement from guidlines</p>
 </section>
 
 <!----------------------- Status of this document ---------------------------->    
@@ -59,7 +62,7 @@
   <p>
     The Vehicle Information API provides operations to get access to the vehicle data
     (henceforth "properties") available from vehicle systems and also to change (write) a number of
-    properties.  The API also allows users to request data that has been logged previously.
+    properties.
   <p>
     An example of use is provided below:
   
@@ -113,6 +116,7 @@
     
 <!----------------------------- Terminology ---------------------------------->
 <section id="terminology">
+<p class="note">Possibly remove some of these and add terms we do use</p>
   <h2>Terminology</h2> <p>The <code><a
   href="http://dev.w3.org/html5/spec/webappapis.html#eventhandler">
   EventHandler</a></code> interface represents a callback used for event
@@ -160,7 +164,8 @@
   <h3><a>Vehicle</a> Interface</h3> <p>The <a>Vehicle</a> interface
   represents the initial entry point for getting access to the vehicle information
   services, i.e. Engine Speed and Tire Pressure. </p>
-
+  <p class="note">No data types here should be nullable and we need to add an attribute that returns a map or what the system capabilities are
+  what is supported or not supported and why and a method to subscribe to capability changes</p>
   <dl title="[NoInterfaceObject] interface Vehicle" class="idl">  
   </dl>
 </section>
@@ -202,6 +207,7 @@
 <section>
   <h3><a>VehicleInterfaceErrorCallback</a> Callback</h3>
   <p>The <a>VehicleInterfaceErrorCallback</a> </p>
+  <p class="note">Define the types of possible errors</p>
   <dl title="callback VehicleInterfaceErrorCallback = void (VehicleInterfaceError error); " class="idl"></dl>
 </section> 
 
@@ -278,6 +284,7 @@
      <dt>readonly attribute unsigned short ? year</dt>
      <dd>vehicle model year (Min: 2000, Max: 2100)</dd>
   </dl>
+  <div class="note">possibly use SAE/ISO to define types</div>
 
   <p class="note">[[VIN]](Vehicle Identification Number) is composed of several information including WMI, model year etc., but varies depending on standard.<br>
   	In order to make it easy to use for App developers, it is recommended to provide each values as a separate attributes.</p>
@@ -289,6 +296,7 @@
   <p>The <a>SizeConfiguration</a> interface provides size and shape information about a
   vehicle as a whole.
   <dl title="[NoInterfaceObject] interface SizeConfiguration : VehicleCommonDataType" class="idl">
+     <p class="note">add weight (front and rear) and ground clearance</p>
      <dt>readonly attribute unsigned float ? width</dt>
      <dd>Widest dimension of the vehicle (not including the side mirrors) (Unit:  Meters,
      Resolution: 0.01, Min: 0, Max: 10  Note:  Number may be an approximation, and 
@@ -321,7 +329,7 @@
      <dd>Type of vehicle <div class="issue">Need enum of vehicle types?</div>
      <div class="note">(Justin) It would be better to define some types... Plz refer.. href://http://en.wikipedia.org/wiki/Car_body_style
      </div>
-     <div class="note">(Kevron) Agreed.  We should define these types as an enum.</div></dd>
+     </dd>
   </dl>
 </section>
 
@@ -329,7 +337,8 @@
 <section>
   <h3><a>FuelConfiguration</a> Interface</h3>
   <p>The <a>FuelConfiguration</a> interface provides information about the fuel 
-  configuration of a vehicle.
+  configuration of a vehicle.</p>
+  <p class="note">This is having trouble showing up</p>
 
   <dl title="enum FuelTypeEnum" class="idl">
     <dt>gasoline</dt>
@@ -440,7 +449,7 @@
 		    <dd>MUST return VehicleInterface for <a>Diagnostic</a></dd>
 		    <dt>readonly attribute VehicleInterface ? transmission</dt>
 		    <dd>MUST return VehicleInterface for <a>Transmission</a></dd>
-		    <dt>readonly attribute VehicleInterface ? ruiseControlStatus</dt>
+		    <dt>readonly attribute VehicleInterface ? cruiseControlStatus</dt>
 		    <dd>MUST return VehicleInterface for <a>CruiseControlStatus</a></dd>
 		    <dt>readonly attribute VehicleInterface ? lightStatus</dt>
 		    <dd>MUST return VehicleInterface for <a>LightStatus</a></dd>
