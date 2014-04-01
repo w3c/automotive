@@ -43,13 +43,14 @@
 
 <!------------------------------ Abstract ------------------------------------>    
 <section id="abstract">
-  This specification defines a Vehicle Information API which offers a simple interface
-  to get access to vehicle data. A typical use case of the Vehicle Information is the
-  implementation of a tachometer application that allows view information from the
-  vehicle such as speed, tire pressure, and engine rotation speed (RPMs).
+  <p>
+  This specification defines a standard for Vehicle Information API used to develop HTML5/JavaScript applications to run on in-vehicle infotainment systems and access resources of the vehicle.  The API can also be used by HTML5/JavaScript applications running on mobile devices to access the resources of a connected vehicle. This specification does not dictate or describe the protocol or transport used for the connection. A typical use case of Vehicle Information is the implementation of a 'virtual mechanic' application that provides vehicle status information such as tire pressure, engine oil level, washer fluid level, battery status, etc. </p>
+  <p>
+  The specification promotes an API that allows for third party application development in a manner that is consistent across automakers. It is recognized, however, that the mechanisms required for access or control of vehicle properties may differ between automotive trim levels, models, and automakers. Furthermore, different automakers may expose different properties that can be read or set by an application. As a result, this specification shall allow for automaker-specific extensions or restrictions. Extensions are only permitted for interfaces that are not already described by this API, and must be implemented to conform with the existing API format and guidelines used in this specification. If a property is restricted, the automaker would omit the optional feature in their implementation. Omitted featues are identified as "unsupported" as defined in the specification. </p>
+  <p>
+  The target platform supported by the specification is exclusively passenger vehicles. Use of this specification for non-passenger applications (transportation, heavy machinery, marine, airline infotainment, military, etc.)is not prohibited, but is not covered in the design or content of the API and therefore may be insufficient.</p>
   
-  <p class="note">Use the abstract from guidlines document.</p>
-  <p class="note">Include passenger-car statement from guidlines</p>
+  <p class="note">Need to verify that we will use 'unsupported' to specify an property that is not supported.</p>
 </section>
 
 <!----------------------- Status of this document ---------------------------->    
@@ -140,6 +141,9 @@
 <section id="security">
       <h2>Security and privacy considerations</h2>
       <p>This API MUST be only exposed to trusted content</p>
+
+<p class="note">Needs to be flushed out. Tina & Vadim discussing a proposal to address this. </p>
+
 </section>
 
 
