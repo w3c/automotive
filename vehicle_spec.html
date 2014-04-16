@@ -215,12 +215,19 @@
   <dl title="callback VehicleInterfaceErrorCallback = void (VehicleInterfaceError error); " class="idl"></dl>
 </section> 
 
+<!------------------------ Callback AvailableCallback------------------------------>
+<section>
+  <h3><a>AvailableCallback</a> Callback</h3>
+  <p>The <a>AvailableCallback</a> </p>
+  <dl title="callback AvailableCallback = void (Availability available)" class="idl"></dl>
+</section> 
+
 <!------------------------ Interface VehicleInterface ------------------------>
 <section>
   <h3><a>VehicleInterface</a> Interface</h3> <p>The <a>VehicleInterface</a>
   interface represents the base interface to get and set all vehicle properties.</p>
   
-  <dl title="[NoInterfaceObject] interface VehicleInterface"
+  <dl title="[NoInterfaceObject] interface VehicleInterface : EventTarget"
   class="idl">
 
     <dt>Promise get(optional Zone zone)</dt> <dd>MUST return the Promise.</dd>
@@ -229,6 +236,63 @@
     <dt>void unsubscribe(short handle)</dt><dd>MUST return void.  unsubscribes to value changes on this interface.</dd>
     <dt>readonly attribute Zone[] zones</dt><dd>MUST return all zones for this type.</dd>
   </dl>
+</section>
+
+<section>
+  <h2>Data availability</h2>
+  <p>allows for developers to determine what attributes are available and why they are not available.  It also allows for notifications when the availability
+   changes.</p>
+   
+  <dl title="enum Availability"
+  class="idl">
+    <dt>available</dt>
+    <dd>data is available</dd>
+    <dt>not_supported</dt>
+    <dd>not supported by this vehicle</dd>
+    <dt>not_supported_yet</dt>
+    <dd>not supported at this time, but may become supported later.</dd>
+    <dt>not_supported_security</dt>
+    <dd>not supported because of security</dd>
+    <dt>not_supported_policy</dt>
+    <dd>not supported because of system policy</dd>
+    <dt>not_supported_other</dt>
+    <dd>not supported for other reasons</dd>
+  </dl>
+   
+   <dl title="partial interface VehicleInterface" class="idl">
+     <dt>Availability available()</dt>
+     <dd>MUST return whether a not this attribute is available or not</dd>
+     <dt>readonly attribute boolean supported</dt>
+     <dd>MUST return true if this attribute is supported and available</dd>
+     <dt>short availabilityChangedListener( AvailableCallback callback )</dt>
+     <dd>MUST return handle for listener.</dd>
+     <dt>void removeAvailabilityChangedListener( short handle )</dt>
+   </dl>
+   
+   <pre class="example highlight">
+   if( ( var a = vehicle.vehicleSpeed.available() ) === "available" )
+   {
+     // we can use it.
+   }
+   else
+   {
+     // tell us why:
+     console.log(a);
+   }
+   </pre>
+   <pre class="example highlight">
+   var canHasVehicleSpeed = vehicle.vehicleSpeed.available() === "available";
+
+   vehicle.vehicle.availabilityChangedListener( function (available) {
+     canHasVehicleSpeed = available === "available";
+   });
+
+   if(canHasVehicleSpeed)
+   {
+     vehicle.vehicleSpeed.get().then(callback);
+   }        
+  </pre>
+  
 </section>
 
 <!------------------------ Interface VehicleCommonDataType ------------------------>
