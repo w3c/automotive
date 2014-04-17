@@ -364,7 +364,7 @@
     <dd>right side of vehicle referenced from driver position</dd>
     <dt>left></dt>
     <dd>left side of vehicle referenced from driver position</dd>
-  <dl>
+  </dl>
 
   <dl title="[NoInterfaceObject] interface FuelConfiguration : VehicleCommonDataType" class="idl">
      <dt>readonly attribute FuelTypeEnum[] ? fuelType</dt>
@@ -1660,120 +1660,127 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
 <section class="use-cases">
   <h2>Use-Cases</h2>
   	<section>
-  		<section>
-			  <h4>Use Cases for Vehicle Configuration & Identification</h4>
-		    <ul>
-					<li>
-					Driver and technician are able to see vehicle configuration and identification information such VIN and vehicle size.
-					</li>
-			  </ul>
-			</section>
-  	</section>
-  	<section>
-  		<section>
-			  <h4>Use Cases for RunningStatus</h4>
-		    <ul>
-				TODO:
-			  </ul>
-			</section>
-  	</section>
-  	<section>
-  		<section>
-			  <h4>Use Cases for Maintenance</h4>
-		    <ul>
-					<li>
-					Driver is able to see current state of key maintenance indicators (fluid states, battery charge, tire pressure, etc...) giving an snapshot of vehicle health while in and out of vehicle.
-					</li>
-					<li>
-					Driver receives alert notifications in and out of car letting him know of maintenance issues that need to be addressed.
-					</li>
-					<li>
-					If desired driver may share maintenance information with repair facility.
-					</li>
-			  </ul>
-			</section>
-  	</section>
-  	<section>
-  		<section>
-			  <h4>Use Cases for Personalization</h4>
-		    <ul>
-					<li>
-			    Driver and technician are able to see vehicle personalization information such seat and mirror position.
-					</li>
-			  </ul>
-		  </section>
-  	</section>
-  	<section>
-  		<section>
-			  <h4>Use Cases for DrivingSafety</h4>
-		    <ul>
-				TODO:
-			  </ul>
-			</section>
-  	</section>
-  	<section>
-  		<section>
-			  <h4>Use Cases for Climate</h4>
-		    <ul>
-					<li>
-					IVI system shows the status of various climate control equipments as GUI and lets a user control it via touch screen.
-					</li>
-					<li>
-					A user uses his smart devices to remotely check whether side windows of his parked car are closed or not, and to send a request to the car for closing it if opened.
-					</li>
-					<li>
-					A user uses his smart devices to start his car remotely, and turns heaters on to warm up the car inside before getting in the car.
-					</li>
-					<li>
-			    If users agree to provide vehicle information to the weather station, many cars can be used to get weather information such as amounts of rain and ambient temperatures.
-					</li>
-			  </ul>
-		  </section>
-  	</section>
-  	<section>
-  		<section>
-			  <h4>Use Cases for Vision interfaces</h4>
-           <ul>
-			    <li>
-			    To warn when the vehicle goes on another lane (Lane departure warning function)
-			    </li>
-			    <li>
-			    To warn in case of an danger (vehicle, pedestrian, animals, stop sign, red light, ...)
-                </li>
-                <li>
-                To record the scene before and after an accident (for insurance or testimony)
-                </li>
-                <li>
-                To improve vision in the dark
-               </li>
-           </ul>
-	   </section>
-    </section>
-    <section>
+      	<h3>Normative</h3>
+        The primary purpose of this specification is to provide web developers the ability to access and set vehicle
+        information through a simple common set of operations including get, set, subscribe, and unsubscribe.  Thus
+        normative use cases pertain to this access and do not cover higher application of business level use cases.
         <section>
-        <h4>Use Cases for Parking interfaces</h4>
-        <ul>
-            <li>
-            To be informed in case of intrusion in or around the vehicle.
-            </li>
-            <li>
-            To be informed of the parking brake status.
-            </li>
-        </ul>	  
+            <h4>Get </h4>
+            Get a single value once from the vehicle.
         </section>
-    </section>
-    <section>
         <section>
-        <h4>Use Cases for Electric Vehicle interfaces</h4>
-        <ul>
-            <li>
-            To see current state of the battery level, remaining time before full charging, ...
-			</li>
-			<li>
-			To check if the charging is plugged or unplugged.
-			</li>
-        </ul>
+            <h4>Set </h4>
+            Set a single value once in the vehicle.
         </section>
+        <section>
+            <h4>Subscribe </h4>
+            Subscribe to single value until unsubscribed.
+        </section>
+        <section>
+            <h4>Set </h4>
+            Unsubscribe to single value.
+        </section>
+  	</section>
+    <section>
+        <h3>Informative (Non-Normative)</h3>
+            <section>
+                <h4>Use Cases for Vehicle Configuration & Identification</h4>
+                <ul>
+                    <li>
+                        Driver and technician are able to see vehicle configuration and identification information such VIN and vehicle size.
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h4>Use Cases for RunningStatus</h4>
+                <ul>
+                    TODO:
+                </ul>
+            </section>
+            <section>
+                <h4>Use Cases for Maintenance</h4>
+                <ul>
+                    <li>
+                        Driver is able to see current state of key maintenance indicators (fluid states, battery charge, tire pressure, etc...) giving an snapshot of vehicle health while in and out of vehicle.
+                    </li>
+                    <li>
+                        Driver receives alert notifications in and out of car letting him know of maintenance issues that need to be addressed.
+                    </li>
+                    <li>
+                        If desired driver may share maintenance information with repair facility.
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h4>Use Cases for Personalization</h4>
+                <ul>
+                    <li>
+                        Driver and technician are able to see vehicle personalization information such seat and mirror position.
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h4>Use Cases for DrivingSafety</h4>
+                <ul>
+                    TODO:
+                </ul>
+            </section>
+            <section>
+                <h4>Use Cases for Climate</h4>
+                <ul>
+                    <li>
+                        IVI system shows the status of various climate control equipments as GUI and lets a user control it via touch screen.
+                    </li>
+                    <li>
+                        A user uses his smart devices to remotely check whether side windows of his parked car are closed or not, and to send a request to the car for closing it if opened.
+                    </li>
+                    <li>
+                        A user uses his smart devices to start his car remotely, and turns heaters on to warm up the car inside before getting in the car.
+                    </li>
+                    <li>
+                        If users agree to provide vehicle information to the weather station, many cars can be used to get weather information such as amounts of rain and ambient temperatures.
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h4>Use Cases for Vision interfaces</h4>
+                <ul>
+                    <li>
+                        To warn when the vehicle goes on another lane (Lane departure warning function)
+                    </li>
+                    <li>
+                        To warn in case of an danger (vehicle, pedestrian, animals, stop sign, red light, ...)
+                    </li>
+                    <li>
+                        To record the scene before and after an accident (for insurance or testimony)
+                    </li>
+                    <li>
+                        To improve vision in the dark
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h4>Use Cases for Parking interfaces</h4>
+                <ul>
+                    <li>
+                        To be informed in case of intrusion in or around the vehicle.
+                    </li>
+                    <li>
+                        To be informed of the parking brake status.
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h4>Use Cases for Electric Vehicle interfaces</h4>
+                <ul>
+                    <li>
+                        To see current state of the battery level, remaining time before full charging, ...
+                    </li>
+                    <li>
+                        To check if the charging is plugged or unplugged.
+                    </li>
+                </ul>
+            </section>
     </section>
 </section>
 <!------------------------- End of Use Cases ------------------------------->
