@@ -46,11 +46,10 @@
   <p>
   This specification defines a standard for Vehicle Information API used to develop HTML5/JavaScript applications to run on in-vehicle infotainment systems and access resources of the vehicle.  The API can also be used by HTML5/JavaScript applications running on mobile devices to access the resources of a connected vehicle. This specification does not dictate or describe the protocol or transport used for the connection. A typical use case of Vehicle Information is the implementation of a 'virtual mechanic' application that provides vehicle status information such as tire pressure, engine oil level, washer fluid level, battery status, etc. </p>
   <p>
-  The specification promotes an API that allows for third party application development in a manner that is consistent across automakers. It is recognized, however, that the mechanisms required for access or control of vehicle properties may differ between automotive trim levels, models, and automakers. Furthermore, different automakers may expose different properties that can be read or set by an application. As a result, this specification shall allow for automaker-specific extensions or restrictions. Extensions are only permitted for interfaces that are not already described by this API, and must be implemented to conform with the existing API format and guidelines used in this specification. If a property is restricted, the automaker would omit the optional feature in their implementation. Omitted featues are identified as "unsupported" as defined in the specification. </p>
+  The specification promotes an API that allows for third party application development in a manner that is consistent across automakers. It is recognized, however, that the mechanisms required for access or control of vehicle properties may differ between automotive trim levels, models, and automakers. Furthermore, different automakers may expose different properties that can be read or set by an application. As a result, this specification shall allow for automaker-specific extensions or restrictions. Extensions are only permitted for interfaces that are not already described by this API, and must be implemented to conform with the existing API format and guidelines used in this specification. If a property is restricted, the automaker would omit the optional feature in their implementation (see the <a>Availability</a> Section). </p>
   <p>
   The target platform supported by the specification is exclusively passenger vehicles. Use of this specification for non-passenger applications (transportation, heavy machinery, marine, airline infotainment, military, etc.)is not prohibited, but is not covered in the design or content of the API and therefore may be insufficient.</p>
   
-  <p class="note">Need to verify that we will use 'unsupported' to specify an property that is not supported.</p>
 </section>
 
 <!----------------------- Status of this document ---------------------------->    
@@ -150,16 +149,14 @@
 <!---------------------------- Basic Interfaces ------------------------------->
 <section id="basic-interfaces">
       <h2>Basic Interfaces</h2>
-      <p>TODO:Definition Here</p>
+      <p>The below basic interfaces are designed to allow basic access to vehicle data, determine what data is available and even change some of the data.</p>
 
 <!---------------------- Extended interface Navigator ------------------------>
 <section>
   <h3><a>Navigator</a> Interface</h3>
     <dl title="partial interface Navigator" class="idl">
       <dt>readonly attribute Vehicle vehicle</dt>
-      <dd>
-      The object that exposes the interface to vehicle information services.
-      </dd>
+      <dd>The object that exposes the interface to vehicle information services.</dd>
   </dl>
 </section>
     
@@ -240,7 +237,7 @@
 
 <section>
   <h2>Data availability</h2>
-  <p>allows for developers to determine what attributes are available and why they are not available.  It also allows for notifications when the availability
+  <p>The availability API allows for developers to determine what attributes are available or not and if not, why.  It also allows for notifications when the availability
    changes.</p>
    
   <dl title="enum Availability"
@@ -320,17 +317,17 @@
 
 		  <dl title="partial interface Vehicle" class="idl">  
 		    <!-- identification and configuration types: -->
-		    <dt>readonly attribute VehicleInterface ? identification</dt>
+		    <dt>readonly attribute VehicleInterface identification</dt>
 		    <dd>MUST return VehicleInterface for <a>Identification</a></dd>
-		    <dt>readonly attribute VehicleInterface ? sizeConfiguration</dt>
+		    <dt>readonly attribute VehicleInterface sizeConfiguration</dt>
 		    <dd>MUST return VehicleInterface for <a>SizeConfiguration</a></dd>
-		    <dt>readonly attribute VehicleInterface ? fuelConfiguration</dt>
+		    <dt>readonly attribute VehicleInterface fuelConfiguration</dt>
 		    <dd>MUST return VehicleInterface for <a>FuelConfiguration</a></dd>
-		    <dt>readonly attribute VehicleInterface ? transmissionConfiguration</dt>
+		    <dt>readonly attribute VehicleInterface transmissionConfiguration</dt>
 		    <dd>MUST return VehicleInterface for <a>TransmissionConfiguration</a></dd>
-		    <dt>readonly attribute VehicleInterface ? wheelConfiguration</dt>
+		    <dt>readonly attribute VehicleInterface wheelConfiguration</dt>
 		    <dd>MUST return VehicleInterface for <a>WheelConfiguration</a></dd>
-		    <dt>readonly attribute VehicleInterface ? steeringWheelConfiguration</dt>
+		    <dt>readonly attribute VehicleInterface steeringWheelConfiguration</dt>
 		    <dd>MUST return VehicleInterface for <a>SteeringWheelConfiguration</a></dd>
 		  </dl>
 
@@ -503,39 +500,39 @@
 		    <!-- running status types: -->
 		    <dt>readonly attribute VehicleInterface vehicleSpeed</dt>
 		    <dd>MUST return VehicleInterface for <a>VehicleSpeed</a></dd>
-		    <dt>readonly attribute VehicleInterface ? engineSpeed</dt>
+		    <dt>readonly attribute VehicleInterface engineSpeed</dt>
 		    <dd>MUST return VehicleInterface for <a>EngineSpeed</a> or undefined if not supported</dd>
-		    <dt>readonly attribute VehicleInterface ? powerTrainTorque</dt>
+		    <dt>readonly attribute VehicleInterface powerTrainTorque</dt>
 		    <dd>MUST return VehicleInterface for <a>PowerTrainTorque</a></dd>
-		    <dt>readonly attribute VehicleInterface ? acceleratorPedalPosition</dt>
+		    <dt>readonly attribute VehicleInterface acceleratorPedalPosition</dt>
 		    <dd>MUST return VehicleInterface for <a>AcceleratorPedalPosition</a></dd>
-		    <dt>readonly attribute VehicleInterface ? throttlePosition</dt>
+		    <dt>readonly attribute VehicleInterface throttlePosition</dt>
 		    <dd>MUST return VehicleInterface for <a>ThrottlePosition</a></dd>
-		    <dt>readonly attribute VehicleInterface ? tripMeter</dt>
+		    <dt>readonly attribute VehicleInterface tripMeter</dt>
 		    <dd>MUST return VehicleInterface for <a>TripMeter</a></dd>
-		    <dt>readonly attribute VehicleInterface ? diagnostic</dt>
+		    <dt>readonly attribute VehicleInterface diagnostic</dt>
 		    <dd>MUST return VehicleInterface for <a>Diagnostic</a></dd>
-		    <dt>readonly attribute VehicleInterface ? transmission</dt>
+		    <dt>readonly attribute VehicleInterface transmission</dt>
 		    <dd>MUST return VehicleInterface for <a>Transmission</a></dd>
-		    <dt>readonly attribute VehicleInterface ? cruiseControlStatus</dt>
+		    <dt>readonly attribute VehicleInterface cruiseControlStatus</dt>
 		    <dd>MUST return VehicleInterface for <a>CruiseControlStatus</a></dd>
-		    <dt>readonly attribute VehicleInterface ? lightStatus</dt>
+		    <dt>readonly attribute VehicleInterface lightStatus</dt>
 		    <dd>MUST return VehicleInterface for <a>LightStatus</a></dd>
-		    <dt>readonly attribute VehicleInterface ? interiorLightStatus</dt>
+		    <dt>readonly attribute VehicleInterface interiorLightStatus</dt>
 		    <dd>MUST return VehicleInterface for <a>InteriorLightStatus</a></dd>
-		    <dt>readonly attribute VehicleInterface ? chime</dt>
+		    <dt>readonly attribute VehicleInterface chime</dt>
 		    <dd>MUST return VehicleInterface for <a>Chime</a></dd>
-		    <dt>readonly attribute VehicleInterface ? fuel</dt>
+		    <dt>readonly attribute VehicleInterface fuel</dt>
 		    <dd>MUST return VehicleInterface for <a>Fuel</a></dd>
-		    <dt>readonly attribute VehicleInterface ? engineOil</dt>
+		    <dt>readonly attribute VehicleInterface engineOil</dt>
 		    <dd>MUST return VehicleInterface for <a>EngineOil</a></dd>
-		    <dt>readonly attribute VehicleInterface ? acceleration</dt>
+		    <dt>readonly attribute VehicleInterface acceleration</dt>
 		    <dd>MUST return VehicleInterface for <a>Acceleration</a></dd>
-		    <dt>readonly attribute VehicleInterface ? location</dt>
+		    <dt>readonly attribute VehicleInterface location</dt>
 		    <dd>MUST return VehicleInterface for <a>Location</a></dd>
-		    <dt>readonly attribute VehicleInterface ? engineCoolant</dt>
+		    <dt>readonly attribute VehicleInterface engineCoolant</dt>
 		    <dd>MUST return VehicleInterface for <a>EngineCoolant</a></dd>
-		    <dt>readonly attribute VehicleInterface ? deadReckoning</dt>
+		    <dt>readonly attribute VehicleInterface deadReckoning</dt>
 		    <dd>MUST return VehicleInterface for <a>DeadReckoning</a></dd>
 		  </dl>
 
@@ -862,21 +859,21 @@
 
 		  <dl title="partial interface Vehicle" class="idl">  
 		    <!-- maintenance types: -->
-		    <dt>readonly attribute VehicleInterface ? odometer</dt>
+		    <dt>readonly attribute VehicleInterface odometer</dt>
 		    <dd>MUST return VehicleInterface for <a>Odometer</a> or undefined if not supported</dd>
-		    <dt>readonly attribute VehicleInterface ? transmissionOil</dt>
+		    <dt>readonly attribute VehicleInterface transmissionOil</dt>
 		    <dd>MUST return VehicleInterface for <a>TransmissionOil</a></dd>
-		    <dt>readonly attribute VehicleInterface ? transmissionClutch</dt>
+		    <dt>readonly attribute VehicleInterface transmissionClutch</dt>
 		    <dd>MUST return VehicleInterface for <a>TransmissionClutch</a></dd>
- 		    <dt>readonly attribute VehicleInterface ? brake</dt>
+ 		    <dt>readonly attribute VehicleInterface brake</dt>
 		    <dd>MUST return VehicleInterface for <a>Brake</a></dd>
- 		    <dt>readonly attribute VehicleInterface ? washerFluid</dt>
+ 		    <dt>readonly attribute VehicleInterface washerFluid</dt>
 		    <dd>MUST return VehicleInterface for <a>WasherFluid</a></dd>
-		    <dt>readonly attribute VehicleInterface ? malfunctionIndicator</dt>
+		    <dt>readonly attribute VehicleInterface malfunctionIndicator</dt>
 		    <dd>MUST return VehicleInterface for <a>MalfunctionIndicator</a></dd>
-		    <dt>readonly attribute VehicleInterface ? batteryStatus</dt>
+		    <dt>readonly attribute VehicleInterface batteryStatus</dt>
 		    <dd>MUST return VehicleInterface for <a>BatteryStatus</a></dd>
-		    <dt>readonly attribute VehicleInterface ? tire</dt>
+		    <dt>readonly attribute VehicleInterface tire</dt>
 		    <dd>MUST return VehicleInterface for <a>Tire</a></dd>
 		  </dl>
 
@@ -1026,23 +1023,23 @@
   		such as seat and mirror position.</p>
 
 		  <dl title="partial interface Vehicle" class="idl">  
-		    <dt>readonly attribute VehicleInterface ? driverIdentification</dt>
+		    <dt>readonly attribute VehicleInterface driverIdentification</dt>
 		    <dd>MUST return VehicleInterface for <a>DriverIdentification</a></dd>
 		    <dt>readonly attribute VehicleInterface? languageConfiguration</dt>
 		    <dd>MUST return VehicleInterface for <a>LanguageConfiguration</a></dd>
-		    <dt>readonly attribute VehicleInterface ? unitsOfMeasure</dt>
+		    <dt>readonly attribute VehicleInterface unitsOfMeasure</dt>
 		    <dd>MUST return VehicleInterface for <a>UnitsOfMeasure</a></dd>
-		    <dt>readonly attribute VehicleInterface ? mirror</dt>
+		    <dt>readonly attribute VehicleInterface mirror</dt>
 		    <dd>MUST return VehicleInterface for <a>Mirror</a></dd>
-		    <dt>readonly attribute VehicleInterface ? steeringWheel</dt>
+		    <dt>readonly attribute VehicleInterface steeringWheel</dt>
 		    <dd>MUST return VehicleInterface for <a>SteeringWheel</a></dd>
-		    <dt>readonly attribute VehicleInterface ? driveMode</dt>
+		    <dt>readonly attribute VehicleInterface driveMode</dt>
 		    <dd>MUST return VehicleInterface for <a>DriveMode</a></dd>
-		    <dt>readonly attribute VehicleInterface ? seatAdjustment</dt>
+		    <dt>readonly attribute VehicleInterface seatAdjustment</dt>
 		    <dd>MUST return VehicleInterface for <a>SeatAdjustment</a></dd>
-		    <dt>readonly attribute VehicleInterface ? dashboardIllumination</dt>
+		    <dt>readonly attribute VehicleInterface dashboardIllumination</dt>
 		    <dd>MUST return VehicleInterface for <a>DashboardIllumination</a></dd>
-		    <dt>readonly attribute VehicleInterface ? vehicleSound</dt>
+		    <dt>readonly attribute VehicleInterface vehicleSound</dt>
 		    <dd>MUST return VehicleInterface for <a>VehicleSound</a></dd>
 		  </dl>
 
@@ -1249,21 +1246,21 @@
       <p>TODO:Definition Here</p>
 
 		  <dl title="partial interface Vehicle" class="idl">  
-		    <dt>readonly attribute VehicleInterface ? antilockBrakingSystem</dt>
+		    <dt>readonly attribute VehicleInterface antilockBrakingSystem</dt>
 		    <dd>MUST return VehicleInterface for <a>AntilockBrakingSystem</a></dd>
-		    <dt>readonly attribute VehicleInterface ? tractionControlSystem</dt>
+		    <dt>readonly attribute VehicleInterface tractionControlSystem</dt>
 		    <dd>MUST return VehicleInterface for <a>TractionControlSystem</a></dd>
-		    <dt>readonly attribute VehicleInterface ? electronicStabilityControl</dt>
+		    <dt>readonly attribute VehicleInterface electronicStabilityControl</dt>
 		    <dd>MUST return VehicleInterface for <a>ElectronicStabilityControl</a></dd>
-		    <dt>readonly attribute VehicleInterface ? topSpeedLimit</dt>
+		    <dt>readonly attribute VehicleInterface topSpeedLimit</dt>
 		    <dd>MUST return VehicleInterface for <a>TopSpeedLimit</a></dd>
-		    <dt>readonly attribute VehicleInterface ? airbagStatus</dt>
+		    <dt>readonly attribute VehicleInterface airbagStatus</dt>
 		    <dd>MUST return VehicleInterface for <a>AirbagStatus</a></dd>
-		    <dt>readonly attribute VehicleInterface ? door</dt>
+		    <dt>readonly attribute VehicleInterface door</dt>
 		    <dd>MUST return VehicleInterface for <a>Door</a></dd>
-		    <dt>readonly attribute VehicleInterface ? childSafetyLock</dt>
+		    <dt>readonly attribute VehicleInterface childSafetyLock</dt>
 		    <dd>MUST return VehicleInterface for <a>ChildSafetyLock</a></dd>
-		    <dt>readonly attribute VehicleInterface ? seat</dt>
+		    <dt>readonly attribute VehicleInterface seat</dt>
 		    <dd>MUST return VehicleInterface for <a>Seat</a></dd>
 		  </dl>
 
@@ -1409,23 +1406,23 @@
 
 		  <dl title="partial interface Vehicle" class="idl">  
 		    <!-- climate types: -->
-		    <dt>readonly attribute VehicleInterface ? temperature</dt>
+		    <dt>readonly attribute VehicleInterface temperature</dt>
 		    <dd>MUST return VehicleInterface for <a>Temperature</a></dd>
-		    <dt>readonly attribute VehicleInterface ? rainSensor</dt>
+		    <dt>readonly attribute VehicleInterface rainSensor</dt>
 		    <dd>MUST return VehicleInterface for <a>RainSensor</a></dd>
-		    <dt>readonly attribute VehicleInterface ? wiperStatus</dt>
+		    <dt>readonly attribute VehicleInterface wiperStatus</dt>
 		    <dd>MUST return VehicleInterface for <a>WiperStatus</a></dd>
-		    <dt>readonly attribute VehicleInterface ? wiperSetting</dt>
+		    <dt>readonly attribute VehicleInterface wiperSetting</dt>
 		    <dd>MUST return VehicleInterface for <a>WiperSetting</a></dd>
-		    <dt>readonly attribute VehicleInterface ? defrost</dt>
+		    <dt>readonly attribute VehicleInterface defrost</dt>
 		    <dd>MUST return VehicleInterface for <a>Defrost</a></dd>
-		    <dt>readonly attribute VehicleInterface ? sunroof</dt>
+		    <dt>readonly attribute VehicleInterface sunroof</dt>
 		    <dd>MUST return VehicleInterface for <a>Sunroof</a></dd>
-		    <dt>readonly attribute VehicleInterface ? convertibleRoof</dt>
+		    <dt>readonly attribute VehicleInterface convertibleRoof</dt>
 		    <dd>MUST return VehicleInterface for <a>ConvertibleRoof</a></dd>
-		    <dt>readonly attribute VehicleInterface ? sideWindow</dt>
+		    <dt>readonly attribute VehicleInterface sideWindow</dt>
 		    <dd>MUST return VehicleInterface for <a>SideWindow</a></dd>
-		    <dt>readonly attribute VehicleInterface ? climateControl</dt>
+		    <dt>readonly attribute VehicleInterface climateControl</dt>
 		    <dd>MUST return VehicleInterface for <a>ClimateControl</a> or undefined if not supported</dd>
 		  </dl>
 
@@ -1633,13 +1630,13 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
   	</div>
 		  <dl title="partial interface Vehicle" class="idl">  
 		    <!-- maintenance types: -->
-		    <dt>readonly attribute VehicleInterface ? laneDepartureStatus</dt>
+		    <dt>readonly attribute VehicleInterface laneDepartureStatus</dt>
 		    <dd>MUST return VehicleInterface for <a>LaneDepartureStatus</a> or undefined if not supported</dd>
-		    <dt>readonly attribute VehicleInterface ? alarm</dt>
+		    <dt>readonly attribute VehicleInterface alarm</dt>
 		    <dd>MUST return VehicleInterface for <a>Alarm</a></dd>
-		    <dt>readonly attribute VehicleInterface ? parkingBrake</dt>
+		    <dt>readonly attribute VehicleInterface parkingBrake</dt>
 		    <dd>MUST return VehicleInterface for <a>ParkingBrake</a></dd>
- 		    <dt>readonly attribute VehicleInterface ? parkingLights</dt>
+ 		    <dt>readonly attribute VehicleInterface parkingLights</dt>
 		    <dd>MUST return VehicleInterface for <a>ParkingLights</a></dd>
 		  </dl>
 
