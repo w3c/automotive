@@ -219,20 +219,79 @@
   <dl title="callback AvailableCallback = void (Availability available)" class="idl"></dl>
 </section> 
 
+<!------------------------ Interface VehicleInterfaceError ------------------------>
+
+<section>
+   <h3><a>VehicleInterfaceError</a> Interface</h3>
+   <p>VehicleInterfaceError is used to identify the type of error encountered during an opertion</p>
+   
+   <dl title="enum VehicleError" class="idl">
+     <dt>permission_denied</dt>
+     <dd>Indicates that the user does not have permission to perform the operation</dd>
+     <dt>invalid_operation</dt>
+     <dd>Indicates that the operation is not valid.  This can be because it isn't supported or has invalid arguments</dd>
+     <dt>timeout</dt>
+     <dd>Operation timed out.  Timeout length depends upon the implementation</dd>
+     <dt>invalid_zone</dt>
+     <dd>Indicates the zone argument is not valid</dd>
+     <dt>unknown</dt>
+     <dd>Indicates an error that is not known</dd>
+   </dl>
+   
+   <dl title="[NoInterfaceObject] interface VehicleInterfaceError"
+  class="idl">
+     <dt>readonly attribute VehicleError error</dt>
+     <dd>MUST return VehicleError</dd>
+     <dt>readonly attribute DOMString message</dt>
+     <dd>MUST return user-readable error message</dd>
+  </dl>
+     
 <!------------------------ Interface VehicleInterface ------------------------>
 <section>
   <h3><a>VehicleInterface</a> Interface</h3> <p>The <a>VehicleInterface</a>
   interface represents the base interface to get and set all vehicle properties.</p>
   
-  <dl title="[NoInterfaceObject] interface VehicleInterface : EventTarget"
+  <dl title="[NoInterfaceObject] interface VehicleInterface"
   class="idl">
 
-    <dt>Promise get(optional Zone zone)</dt> <dd>MUST return the Promise.</dd>
-    <dt>Promise set(object value, optional Zone zone)</dt><dd>MUST return Promise</dd>
-    <dt>unsigned short subscribe(VehicleInterfaceCallback callback, optional Zone zone)</dt><dd>MUST return handle to subscription or 0 if error</dd>
-    <dt>void unsubscribe(unsigned short handle)</dt><dd>MUST return void.  unsubscribes to value changes on this interface.</dd>
-    <dt>readonly attribute Zone[] zones</dt><dd>MUST return all zones for this type.</dd>
+    <dt>Promise get(optional Zone zone)</dt>
+    <dd>MUST return the Promise.  The "resolve" callback in the promise is used to pass the vehicle data type that corresponds to the specific VehicleInterface instance.  For example, "vehicle.vehicleSpeed" corresponds to the "VehicleSpeed" data type.</dd>
+    <dt>Promise set(object value, optional Zone zone)</dt>
+    <dd>MUST return Promise.  The "resolve" callback indicates the set was successful.  No data is passed to resolve.  If there was an error, "reject" will be called with a VehicleInterfaceError object</dd>
+    <dt>unsigned short subscribe(VehicleInterfaceCallback callback, optional Zone zone)</dt>
+    <dd>MUST return handle to subscription or 0 if error</dd>
+    <dt>void unsubscribe(unsigned short handle)</dt>
+    <dd>MUST return void.  unsubscribes to value changes on this interface.</dd>
+    <dt>readonly attribute Zone[] zones</dt>
+    <dd>MUST return all zones supported for this type.</dd>
   </dl>
+  
+  <pre class="example highlight">
+  vehicle.vehicleSpeed.get().then(resolve);
+  
+  function resolve(data)
+  {
+    //data is of type VehicleSpeed
+    console.log("Speed: " + data.speed);
+    console.log("Time Stamp: " + data.timestamp);
+  }
+  </pre>
+  
+  <pre class="example highlight">
+  var zone = Zone
+  vehicle.door.set({"lock" : true}, zone.driver).then(resolve, reject);
+  
+  function resolve()
+  {
+    /// success
+  }
+  
+  function reject(errorData)
+  {
+    console.log("Error occurred during set: " + errorData.message + " code: " + errorData.error);
+  }
+  </pre>
+  
 </section>
 
 <section>
@@ -282,12 +341,16 @@
 
    vehicle.vehicle.availabilityChangedListener( function (available) {
      canHasVehicleSpeed = available === "available";
+     checkVehicleSpeed();
    });
 
-   if(canHasVehicleSpeed)
+   function checkVehicleSpeed()
    {
-     vehicle.vehicleSpeed.get().then(callback);
-   }        
+     if(canHasVehicleSpeed)
+     {
+       vehicle.vehicleSpeed.get().then(callback);
+     }        
+   }
   </pre>
   
 </section>
