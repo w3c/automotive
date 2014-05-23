@@ -197,6 +197,7 @@
   <p>The <a>FuelConfiguration</a> interface provides information about the fuel 
   configuration of a vehicle.</p>
   <p class="note">This is having trouble showing up</p>
+  <p class="note">Bart Hanssens suggests being able to accommodate use case of multiple.  Could this be handled here.  Need elaboration.</p>
 
   <dl title="enum FuelTypeEnum" class="idl">
     <dt>gasoline</dt>
@@ -242,8 +243,6 @@
     <dt>auto</dt>
     <dd>TODO: define</dd>
     <dt>manual</dt>
-    <dd>TODO: define</dd>
-    <dt>cvt</dt>
     <dd>TODO: define</dd>
   </dl>
 
@@ -345,7 +344,7 @@
   
   <dl title="[NoInterfaceObject] interface EngineSpeed : VehicleCommonDataType"
   class="idl">
-    <dt>readonly attribute unsigned short speed</dt>
+    <dt>readonly attribute unsigned long speed</dt>
     <dd>MUST return engine speed in rotations per minute. Range: 0-100,000</dd>
   </dl>
 </section>
@@ -459,7 +458,11 @@
     <dd>TODO: define</dd>
     <dt>neutral</dt>
     <dd>TODO: define</dd>
+    <dt>low</dt>
+    <dd>TODO: define</dd>
     <dt>drive</dt>
+    <dd>TODO: define</dd>
+    <dt>overdrive</dt>
     <dd>TODO: define</dd>
   </dl>
 
@@ -820,6 +823,7 @@
 
 <!------------------------ Interface Driver Identification ------------------------------>
 <section>
+<p class="note">Vadim to make proposal on handling this in a more robust manner</p>
   <h3><a>DriverIdentification</a> Interface</h3>
   <p>The <a>DriverIdentification</a> interface provides driver identification information about a
   vehicle.
@@ -970,6 +974,8 @@
     <dt>eco</dt>
     <dd>TODO: define</dd>
     <dt>manual</dt>
+    <dd>TODO: define</dd>
+    <dt>winter</dt>
     <dd>TODO: define</dd>
   </dl>
 

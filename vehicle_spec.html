@@ -129,7 +129,6 @@
     
 <!----------------------------- Terminology ---------------------------------->
 <section id="terminology">
-<p class="note">Possibly remove some of these and add terms we do use</p>
   <h2>Terminology</h2> <p>The <code><a
   href="http://dev.w3.org/html5/spec/webappapis.html#eventhandler">
   EventHandler</a></code> interface represents a callback used for event
@@ -152,9 +151,8 @@
 <!------------------------ Security and privacy ------------------------------>
 <section id="security">
       <h2>Security and privacy considerations</h2>
-      <p>This API MUST be only exposed to trusted content</p>
 
-<p class="note">Needs to be flushed out. Tina & Vadim discussing a proposal to address this. </p>
+<p class="note">Needs to be flushed out. Tina & Vadim discussing a proposal to address this.  Alan to facilitate discussion with Sysapps group. </p>
 
 </section>
 
@@ -172,8 +170,6 @@
   <h3><a>Vehicle</a> Interface</h3> <p>The <a>Vehicle</a> interface
   represents the initial entry point for getting access to the vehicle information
   services, i.e. Engine Speed and Tire Pressure. </p>
-  <p class="note">No data types here should be nullable and we need to add an attribute that returns a map or what the system capabilities are
-  what is supported or not supported and why and a method to subscribe to capability changes</p>
   <dl title="[NoInterfaceObject] interface Vehicle" class="idl">  
   </dl>
 </section>
@@ -215,7 +211,7 @@
 <section>
   <h3><a>VehicleInterfaceErrorCallback</a> Callback</h3>
   <p>The <a>VehicleInterfaceErrorCallback</a> </p>
-  <p class="note">Define the types of possible errors</p>
+  <p class="note">Define the types of possible errors - Justin to edit.  Use common error types VehicleError</p>
   <dl title="callback VehicleInterfaceErrorCallback = void(VehicleInterfaceError error);" class="idl"></dl>
 </section> 
 
@@ -256,6 +252,7 @@
 
 <!------------------------ Interface VehicleInterface ------------------------>
 <section>
+	<p class="note">Add interval/step parameter to subscribe.  Not time based, for example steering wheel angle every x degrees.  Ask Daniel Jutras to make proposal.</p>
   <h3><a>VehicleInterface</a> Interface</h3> <p>The <a>VehicleInterface</a>
   interface represents the base interface to get and set all vehicle properties.</p>
   
@@ -304,6 +301,7 @@
 
 <section>
   <h2>Data availability</h2>
+  <p class="note">Appears that this is at interface level vs data element.  Addition level of detail on security or system error.  Vadim to make proposal.</p>
   <p>The availability API allows for developers to determine what attributes are available or not and if not, why.  It also allows for notifications when the availability
    changes.</p>
    
