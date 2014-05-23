@@ -75,7 +75,7 @@
   <p>
     The Vehicle Information API provides operations to get access to the vehicle data
     (henceforth "properties") available from vehicle systems and also to change (write) a number of
-    properties.  The types of Vehicle data are available in the <a href="data_spec.html">Vehicle Data specification</a>.
+    properties.  Vehicle data types are available in the <a href="data_spec.html">Vehicle Data specification</a>.
   <p>
     An example of use is provided below:
   
@@ -187,6 +187,10 @@
     <dt>const DOMString Left = "Left"</dt>
     <dt>const DOMString Rear = "Rear"</dt>
     <dt>const DOMString Center = "Center"</dt>
+    <dt>const DOMString Hood = "Hood"</dt>
+    <dt>const DOMString Trunk = "Trunk"</dt>
+    <dt>const DOMString Fuel = "Fuel"</dt>
+    <dd>Fuel cop</dd>
 
     <dt>attribute DOMString[] value</dt><dd>MUST return array of physical zones</dd>
     <dt>readonly attribute Zone driver</dt><dd>MUST return physical zone for logical driver</dd>
