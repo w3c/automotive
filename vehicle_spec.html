@@ -365,6 +365,38 @@
   
 </section>
 
+<section>
+<h2>History</h2>
+   <p> The History API provides a way for applications to access logged data from the vehicle.  What data is available and how much is up to the implementation.  This section is OPTIONAL.</p>
+   <dl title="interface HistoryItem">
+     <dt>readonly attribute any value</dt>
+     <dd>MUST return value.  This is ANY Vehicle Data Type.</dd>
+     <dt>readonly attribute DOMTimeStamp timeStamp</dt>
+     <dd>MUST return time in which 'value' was read by the system.</dd>
+   </dl>
+   <dl title="partial interface VehicleInterface" class="idl">
+     <dt>Promise getHistory(Date begin, Date end, optional Zone zone)</dt>
+     <dd>MUST return Promise.  The "resolve" callback in the promise is used to pass an array of <a>HistoryItem</a>s.</dd>
+     <dt>readonly attribute boolean isLogged</dt>
+     <dd>MUST return true if this attribute is logged</dd>
+     <dt>readonly attribute Date ? from</dt>
+     <dd>MUST return Date in which logging started from.  Returns null if <a>isLogged</a> is false.</dd>
+     <dt>readonly attribute Date ? to</dt>
+     <dd>MUST return Date in which logging of this attribute ends. Returns null if <a>isLogged</a> is false.</dd>
+   </dl>
+   
+   <pre class="example highlight">
+   /// check if there is data being logged for vehicleSpeed:
+   if(vehicle.vehicleSpeed.isLogged)
+   {
+     /// get all vehicleSpeed since it was first logged:
+     vehicle.vehicleSpeed.getHistory(vehicle.vehicleSpeed.from, vehicle.vehicleSpeed.to).then( function ( data ) {
+       console.log(data.length);
+     });
+   }
+   </pre>
+   
+</section>
 <!------------------------ Interface VehicleCommonDataType ------------------------>
 <section>
   <h3><a>VehicleCommonDataType</a> Interface</h3> <p>The <a>VehicleCommonDataType</a>
