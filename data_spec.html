@@ -416,7 +416,7 @@
   <!-- TODO: this needs help.  we need to support N trip meters -->
   <dl title="[NoInterfaceObject] interface TripMeter : VehicleCommonDataType"
   class="idl">
-    <dt>readonly attribute unsigned short distance</dt>
+    <dt>readonly attribute unsigned long distance</dt>
     <dd>Distance travelled based on trip meter. Units: km; Range: 0 - 100,000,000</dd>
     <dt>readonly attribute unsigned short ? averageSpeed</dt>
     <dd>Average speed based on trip meter. Units: km/h; Range: 0 - 1000</dd>
@@ -483,7 +483,7 @@
   <dl title="[NoInterfaceObject] interface CruiseControlStatus : VehicleCommonDataType" class="idl">
      <dt>readonly attribute boolean status</dt>
      <dd>MUST return whether or not the Cruise Control system is on (true) or off (false)</dd>
-     <dt>readonly attribute unsigned short Speed</dt>
+     <dt>readonly attribute unsigned short speed</dt>
      <dd>MUST return target Cruise Control speed in kilometers per hour (km/h).  Range: 0 - 1000;</dd>
   </dl>
 </section>
@@ -561,7 +561,7 @@
      <dd>MUST return average fuel consumption in per distance travelled (l/100km).  Setting this to any value should reset the counter to '0'</dd>
      <dt>readonly attribute unsigned short fuelConsumedSinceRestart</dt>
      <dd>MUST return fuel consumed (l) since engine start;  resets to 0 each restart</dd>
-     <dt>readonly attribute unsigned short vehicleTimeSinceRestart</dt>
+     <dt>readonly attribute unsigned long vehicleTimeSinceRestart</dt>
      <dd>MUST return time (min) elapsed since vehicle restart. Range 0 - 100,000,000</dd>
   </dl>
 </section>
@@ -599,7 +599,7 @@
 <!------------------------ Interface EngineCoolant ------------------------>
 <section>
   <h3><a>EngineCoolant</a> Interface</h3> <p>The <a>EngineCoolant</a>
-  represents</p>
+  represents values related to engine coolant</p>
   
   <dl title="[NoInterfaceObject] interface EngineCoolant : VehicleCommonDataType"
   class="idl">
@@ -610,16 +610,26 @@
   </dl>
 </section>
 
-<!------------------------ Interface DeadReckoning ------------------------>
+<!------------------------ Interface SteeringWheel ------------------------>
 <section>
-  <h3><a>DeadReckoning</a> Interface</h3> <p>The <a>DeadReckoning</a>
-  represents signals related to Dead Reckoning calculation </p>
+  <h3><a>SteeringWheel</a> Interface</h3> <p>The <a>SteeringWheel</a>
+  represents steering wheel data</p>
   
-  <dl title="[NoInterfaceObject] interface DeadReckoning : VehicleCommonDataType"
+  <dl title="[NoInterfaceObject] interface SteeringWheel : VehicleCommonDataType"
   class="idl">
-    <dt>readonly attribute short steeringWheelAngle</dt>
+    <dt>readonly attribute short angle</dt>
     <dd>MUST return angle of steering wheel off centerline.  Range: -180 - 180</dd>
-    <dt>readonly attribute unsigned short wheelTickSensor</dt>
+  </dl>
+</section>
+
+<!------------------------ Interface WheelTick ------------------------>
+<section>
+  <h3><a>WheelTick</a> Interface</h3> <p>The <a>WheelTick</a>
+  represents steering wheel data.  Available Zones: yes</p>
+  
+  <dl title="[NoInterfaceObject] interface WheelTick : VehicleCommonDataType"
+  class="idl">
+    <dt>readonly attribute unsigned long value</dt>
     <dd>MUST return left/right wheel rotation counter.  Range: 0 - 1,000,000</dd>
   </dl>
 </section>
@@ -704,20 +714,19 @@
 <section>
   <h3><a>Brake</a> Interface</h3>
   <p>The <a>Brake</a> interface provides information about the state of a 
-  vehicles brakes.
+  vehicles brakes.  Available Zone: Front, Rear, Left, Right
   <dl title="[NoInterfaceObject] interface Brake : VehicleCommonDataType" 
   class="idl">
      <dt>readonly attribute unsigned short ? fluidLevel</dt>
      <dd>brake fluid level (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: empty, 100: full).<br>Available Zone: None</dd>
+     Max: 100, 0: empty, 100: full).</dd>
      <dt>readonly attribute boolean? fluidLevelLow</dt>
-     <dd>true if brake fluid level is low, false otherwise.<br>Available Zone: None</dd>
+     <dd>true if brake fluid level is low, false otherwise.</dd>
      <dt>readonly attribute byte? padWear</dt>
      <dd>front left brake pad wear (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: no wear, 100: completely worn).
-     <br>Available Zone: Front, Rear, Left, Right</dd></dd>
+     Max: 100, 0: no wear, 100: completely worn).</dd></dd>
      <dt>readonly attribute boolean? brakesWorn</dt>
-     <dd>true if brakes are worn, false otherwise.<br>Available Zone: None</dd>
+     <dd>true if brakes are worn, false otherwise.<br></dd>
   </dl>
 </section>
 
@@ -725,14 +734,14 @@
 <section>
   <h3><a>WasherFluid</a> Interface</h3>
   <p>The <a>WasherFluid</a> interface provides information about the state of a 
-  vehicles washer fluid.
+  vehicles washer fluid.  Available Zone: None
   <dl title="[NoInterfaceObject] interface WasherFluid : VehicleCommonDataType" 
   class="idl">
      <dt>readonly attribute unsigned short ? level</dt>
      <dd>brake fluid level (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: empty, 100: full).<br>Available Zone: None</dd>
+     Max: 100, 0: empty, 100: full).</dd>
      <dt>readonly attribute boolean? levelLow</dt>
-     <dd>true if washer fluid level is low, false otherwise.<br>Available Zone: None</dd>
+     <dd>true if washer fluid level is low, false otherwise.</dd>
   </dl>
 </section>
 
@@ -740,11 +749,11 @@
 <section>
   <h3><a>MalfunctionIndicator</a> Interface</h3>
   <p>The <a>MalfunctionIndicator</a> interface provides information about the state of a 
-  vehicles Malfunction Indicator lamp.
+  vehicles Malfunction Indicator lamp.  <br>Available Zone: None
   <dl title="[NoInterfaceObject] interface MalfunctionIndicator : VehicleCommonDataType" 
   class="idl">
      <dt>readonly attribute boolean on</dt>
-     <dd>true if malfunction indicator lamp is on, false otherwise.<br>Available Zone: None</dd>
+     <dd>true if malfunction indicator lamp is on, false otherwise.</dd>
   </dl>
 </section>
 
@@ -752,18 +761,18 @@
 <section>
   <h3><a>BatteryStatus</a> Interface</h3>
   <p>The <a>BatteryStatus</a> interface provides information about the state of a 
-  vehicles battery.
+  vehicles battery. Available Zone: yes
   <dl title="[NoInterfaceObject] interface BatteryStatus : VehicleCommonDataType" 
   class="idl">
      <dt>readonly attribute unsigned short ? chargeLevel</dt>
      <dd>battery charge level (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: empty, 100: full).<br>Available Zone: None</dd>
+     Max: 100, 0: empty, 100: full).</dd>
      <dt>readonly attribute unsigned short ? voltage</dt>
      <dd>battery voltage (Unit: Volts, Resolution: 0.1, Min: 0, 
-     Max: 25.2).<br>Available Zone: None</dd>  
+     Max: 25.2).</dd>  
      <dt>readonly attribute unsigned short ? current</dt>
      <dd>battery current (Unit: Amperes, Resolution: 1, Min: 0, 
-     Max: 255).<br>Available Zone: None</dd>  
+     Max: 255).</dd>
   </dl>
 </section>
 
@@ -771,7 +780,7 @@
 <section>
   <h3><a>Tire</a> Interface</h3>
   <p>The <a>Tire</a> interface provides information about the state of a 
-  vehicles tires.
+  vehicles tires.  Available Zone: yes
   <dl title="[NoInterfaceObject] interface Tire : VehicleCommonDataType" 
   class="idl">
      <dt>readonly attribute boolean? pressureLow</dt>
@@ -781,7 +790,7 @@
      Max: 765).</dd>
      <dt>readonly attribute boolean? pressureLow</dt>
      <dd>true if a tire pressure is low, false otherwise.</dd>
-     <dt>readonly attribute short ? temperature</dt>
+     <dt>readonly attribute short? temperature</dt>
      <dd>tire temperature (Unit: Celsius, Resolution: 1, Min: -40, 
      Max: 215). </dd>  
   </dl>
@@ -939,9 +948,9 @@
   </dl>	     
 </section>
 
-<!------------------------ Interface Steering Wheel ------------------------------>
+<!------------------------ Interface Steering Wheel Configuration------------------------------>
 <section>
-  <h3><a>SteeringWheel</a> Interface</h3>
+  <h3><a>SteeringWheelConfiguration</a> Interface</h3>
   <p>The <a>SteeringWheel</a> interface provides or sets information about steering
   wheel in vehicle.
   <dl title="[NoInterfaceObject] interface SteeringWheel : VehicleCommonDataType" class="idl">
@@ -955,6 +964,7 @@
      (Unit: percentage, Resolution: 1, 
      Min: 0, Max: 100, 0 represents steering wheel tilted lowest downward-facing position)
      </dd>
+     
   </dl>
 </section>
 
@@ -1117,14 +1127,14 @@
 <!---------------------------- Door Interface  ------------------------>
 <section>
   <h3><a>Door</a> Interface</h3> <p>The <a>Door</a>
-  provides the current status of doors in each zones of the vehicle</p>
+  provides the current status of doors in each zones of the vehicle. Available Zone: Driver, Passenger, Front, Rear, Middle, Left, Right, Fuel, Hood, Trunk</p>
 
 	<dl title="enum DoorOpenStatus" class="idl">
 		<dt>open</dt>
 		<dd>Door is opened</dd>
 		<dt>ajar</dt>
 		<dd>Door is ajar</dd>
-		<dt>close</dt>
+		<dt>closed</dt>
 		<dd>Door is closed</dd>
 	</dl>
 
@@ -1135,7 +1145,7 @@
     <dt>attribute boolean lock</dt>
     <dd>MUST return whether or not the door is locked (true) or unlocked (false)</dd>
   </dl>
-  <p>Available Zone: Driver, Passenger, Front, Rear, Middle, Left, Right, Fuel(Fuel Fliter Cap), Hood, Trunk</p>
+
 </section>
 
 <!--------------------- ChildSafetyLock Interface  --------------------->
@@ -1153,7 +1163,8 @@
 <!---------------------------- Seat Interface  ------------------------>
 <section>
   <h3><a>Seat</a> Interface</h3> <p>The <a>Seat</a>
-  provides the current occupant and seatbelt status of a seat in each zones of the vehicle</p>
+  provides the current occupant and seatbelt status of a seat in each zones of the vehicle. 
+  Available Zone: Driver, Passenger, Front, Rear, Middle, Left, Right, Center</p>
 
 	<dl title="enum OccupantStatus" class="idl">
 		<dt>adult</dt>
@@ -1171,7 +1182,6 @@
     <dt>readonly attribute boolean seatbelt</dt>
     <dd>MUST return whether or not the seat belt is fasten (true) or unfasten (false)</dd>
   </dl>
-  <p>Available Zone: Driver, Passenger, Front, Rear, Middle, Left, Right, Center</p>
 </section>
 
 
@@ -1339,7 +1349,7 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
 <!------------------------ Interface SideWindow ------------------------------>
 <section>
   <h3><a>SideWindow</a> Interface</h3>
-  <p>The <a>SideWindow</a> interface represents the current status of openness of side windows.
+  <p>The <a>SideWindow</a> interface represents the current status of openness of side windows. Available Zone: Front, Rear, Left, Right
 
   <dl title="[NoInterfaceObject] interface SideWindow : VehicleCommonDataType" class="idl">
   	<dt>attribute unsigned boolean? lock</dt>
@@ -1347,14 +1357,12 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
   	<dt>attribute unsigned byte? openness</dt>
   	<dd>current status of the side window as a percentage of openness. (0:Closed, 100:Fully Opened)</dd>
   </dl>
-  <p>Available Zone: Front, Rear, Left, Right<br>
-  	It can be used to send user's request for changing setting.</p>
 </section>
 
 <!------------------------ Interface ClimateControl ------------------------------>
 <section>
   <h3><a>ClimateControl</a> Interface</h3>
-  <p>The <a>ClimateControl</a> interface represents the current setting of the climate control equipments such as heater and air conditioner.
+  <p>The <a>ClimateControl</a> interface represents the current setting of the climate control equipments such as heater and air conditioner.  Available Zone: Front, Rear, Left, Right
 
 	<dl title="enum AirflowDirection" class="idl">
 		<dt>frontpanel</dt>
@@ -1383,9 +1391,9 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
 		<dt>attribute unsigned byte? seatCooler</dt>
 		<dd>current status of the seat ventilation ( 0: off, 1: least warm ~ 10: warmest )</dd>
         <dt>attribute boolean airRecirculation</dt>
-        <dd>current setting of air recirculation. (true : on, false : pulling in outside air).<br>Available Zone: None</dd>
+        <dd>current setting of air recirculation. (true : on, false : pulling in outside air).</dd>
         <dt>attribute unsigned byte? steeringWheelHeater</dt>
-        <dd>current status of steering wheel heater ( 0: off, 1: least warm ~ 10: warmest ).<br>Available Zone: None</dd>
+        <dd>current status of steering wheel heater ( 0: off, 1: least warm ~ 10: warmest ).</dd>
   </dl>
   <p><a>ClimateControl</a> can be used to send user's request for changing setting.</p>
 </section>

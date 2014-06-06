@@ -75,7 +75,7 @@
   <p>
     The Vehicle Information API provides operations to get access to the vehicle data
     (henceforth "properties") available from vehicle systems and also to change (write) a number of
-    properties.  The types of Vehicle data are available in the <a href="data_spec.html">Vehicle Data specification</a>.
+    properties.  Vehicle data types are available in the <a href="data_spec.html">Vehicle Data specification</a>.
   <p>
     An example of use is provided below:
   
@@ -187,6 +187,10 @@
     <dt>const DOMString Left = "Left"</dt>
     <dt>const DOMString Rear = "Rear"</dt>
     <dt>const DOMString Center = "Center"</dt>
+    <dt>const DOMString Hood = "Hood"</dt>
+    <dt>const DOMString Trunk = "Trunk"</dt>
+    <dt>const DOMString Fuel = "Fuel"</dt>
+    <dd>Fuel cop</dd>
 
     <dt>attribute DOMString[] value</dt><dd>MUST return array of physical zones</dd>
     <dt>readonly attribute Zone driver</dt><dd>MUST return physical zone for logical driver</dd>
@@ -361,6 +365,38 @@
   
 </section>
 
+<section>
+<h2>History</h2>
+   <p> The History API provides a way for applications to access logged data from the vehicle.  What data is available and how much is up to the implementation.  This section is OPTIONAL.</p>
+   <dl title="interface HistoryItem">
+     <dt>readonly attribute any value</dt>
+     <dd>MUST return value.  This is ANY Vehicle Data Type.</dd>
+     <dt>readonly attribute DOMTimeStamp timeStamp</dt>
+     <dd>MUST return time in which 'value' was read by the system.</dd>
+   </dl>
+   <dl title="partial interface VehicleInterface" class="idl">
+     <dt>Promise getHistory(Date begin, Date end, optional Zone zone)</dt>
+     <dd>MUST return Promise.  The "resolve" callback in the promise is used to pass an array of <a>HistoryItem</a>s.</dd>
+     <dt>readonly attribute boolean isLogged</dt>
+     <dd>MUST return true if this attribute is logged</dd>
+     <dt>readonly attribute Date ? from</dt>
+     <dd>MUST return Date in which logging started from.  Returns null if <a>isLogged</a> is false.</dd>
+     <dt>readonly attribute Date ? to</dt>
+     <dd>MUST return Date in which logging of this attribute ends. Returns null if <a>isLogged</a> is false.</dd>
+   </dl>
+   
+   <pre class="example highlight">
+   /// check if there is data being logged for vehicleSpeed:
+   if(vehicle.vehicleSpeed.isLogged)
+   {
+     /// get all vehicleSpeed since it was first logged:
+     vehicle.vehicleSpeed.getHistory(vehicle.vehicleSpeed.from, vehicle.vehicleSpeed.to).then( function ( data ) {
+       console.log(data.length);
+     });
+   }
+   </pre>
+   
+</section>
 <!------------------------ Interface VehicleCommonDataType ------------------------>
 <section>
   <h3><a>VehicleCommonDataType</a> Interface</h3> <p>The <a>VehicleCommonDataType</a>
