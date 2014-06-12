@@ -300,8 +300,10 @@
 		    <dd>MUST return VehicleInterface for accessing <a>AcceleratorPedalPosition</a></dd>
 		    <dt>readonly attribute VehicleInterface throttlePosition</dt>
 		    <dd>MUST return VehicleInterface for accessing <a>ThrottlePosition</a></dd>
-		    <dt>readonly attribute VehicleInterface tripMeter</dt>
-		    <dd>MUST return VehicleInterface for accessing <a>TripMeter</a></dd>
+		    <dt>readonly attribute VehicleInterface tripMeterA</dt>
+		    <dd>MUST return VehicleInterface for accessing <a>TripMeter "A"</a></dd>
+		    <dt>readonly attribute VehicleInterface tripMeterB</dt>
+		    <dd>MUST return VehicleInterface for accessing <a>TripMeter "B"</a></dd>
 		    <dt>readonly attribute VehicleInterface diagnostic</dt>
 		    <dd>MUST return VehicleInterface for accessing <a>Diagnostic</a></dd>
 		    <dt>readonly attribute VehicleInterface transmission</dt>
@@ -830,29 +832,6 @@
 		    <dd>MUST return VehicleInterface for accessing <a>VehicleSound</a></dd>
 		  </dl>
 
-<!------------------------ Interface Driver Identification ------------------------------>
-<section>
-<p class="note">Vadim to make proposal on handling this in a more robust manner</p>
-  <h3><a>DriverIdentification</a> Interface</h3>
-  <p>The <a>DriverIdentification</a> interface provides driver identification information about a
-  vehicle.
-  <dl title="[NoInterfaceObject] interface DriverIdentification : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute DOMString ? keyFobID</dt>
-     <dd>Key fob identifier used to select personalization settings
-     <div class="issue">
-     As the key fob identifier is likely to be used to identify personalization settings,
-     what do we need to do to to add a method to make use of this?
-     </div>
-     </dd>
-     <dt>readonly attribute DOMString ? driverID</dt>
-     <dd>Driver identifier that controls personalization settings
-     <div class="issue">
-      (same as KeyFob unless vehicle has alternative driver selection method) 
-     </div>
-     </dd>
-  </dl>
-</section>
-
 <!------------------------ Interface Language ------------------------------>
 <section>
   <h3><a>LanguageConfiguration</a> Interface</h3>
@@ -1163,7 +1142,7 @@
 <!---------------------------- Seat Interface  ------------------------>
 <section>
   <h3><a>Seat</a> Interface</h3> <p>The <a>Seat</a>
-  provides the current occupant and seatbelt status of a seat in each zones of the vehicle. 
+  provides the current occupant information and seatbelt status of a seat in different zones of the vehicle.
   Available Zone: Driver, Passenger, Front, Rear, Middle, Left, Right, Center</p>
 
 	<dl title="enum OccupantStatus" class="idl">
@@ -1174,6 +1153,23 @@
 		<dt>vacant</dt>
 		<dd>seat is vacant</dd>
 	</dl>
+	
+  <dl title="enum IdentificationType" class="idl">
+    <dt>pin</dt>
+    <dd>Four digit pin number enetered by user</dd>
+    <dt>keyfob</dt>
+    <dd>Identification by key fob</dd>
+    <dt>Bluetooth</dt>
+    <dd>Identification by Bluetooth device</dd>
+    <dt>NFC</dt>
+    <dd>Identification by NFC device</dd>
+    <dt>fingerprint</dt>
+    <dd>Identification by fingerprint</dd>
+    <dt>camera</dt>
+    <dd>Identification by camera</dd>
+    <dt>voice</dt>
+    <dd>Identification by voice</dd>
+  </dl>
 
   <dl title="[NoInterfaceObject] interface Seat : VehicleCommonDataType"
   class="idl">
@@ -1181,6 +1177,10 @@
     <dd>MUST return the status of seat occupant</dd>
     <dt>readonly attribute boolean seatbelt</dt>
     <dd>MUST return whether or not the seat belt is fasten (true) or unfasten (false)</dd>
+    <dt>readonly attribute DOMString ? occupantName</dt>
+    <dd>Must return Driver identifier</dd>
+    <dt>readonly attribute IdentificationType identificationType</dt>
+    <dd>MUST return identification type</dd>
   </dl>
 </section>
 
