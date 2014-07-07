@@ -155,18 +155,15 @@
   vehicle as a whole.
   <dl title="[NoInterfaceObject] interface SizeConfiguration : VehicleCommonDataType" class="idl">
      <p class="note">add weight (front and rear) and ground clearance</p>
-     <dt>readonly attribute unsigned float ? width</dt>
-     <dd>Widest dimension of the vehicle (not including the side mirrors) (Unit:  Meters,
-     Resolution: 0.01, Min: 0, Max: 10  Note:  Number may be an approximation, and 
-     should not be expected to be exact.)</dd>
-     <dt>readonly attribute unsigned float ? height</dt>
+     <dt>readonly attribute unsigned short ? width</dt>
+     <dd>Widest dimension of the vehicle (not including the side mirrors) (Unit:  millimeters
+     Note:  Number may be an approximation, and should not be expected to be exact.)</dd>
+     <dt>readonly attribute unsigned short ? height</dt>
      <dd>Distance from the ground to the highest point of the vehicle (not including antennas)
-     (Unit:  Meters, Resolution: 0.01, Min: 0, Max: 10  Note:  Number may be an approximation, and 
-     should not be expected to be exact.)</dd>
-     <dt>readonly attribute unsigned float ? length</dt>
+     (Unit:  millimeters Note:  Number may be an approximation, and should not be expected to be exact.)</dd>
+     <dt>readonly attribute unsigned short ? length</dt>
      <dd>Distance from front bumper to rear bumper
-     (Unit:  Meters, Resolution: 0.01, Min: 0, Max: 10  Note:  Number may be an approximation, and 
-     should not be expected to be exact.)</dd>
+     (Unit:  millimeters Note:  Number may be an approximation, and should not be expected to be exact.)</dd>
      <dt>readonly attribute unsigned short[] ? doorsCount</dt>
      <dd>list of car doors, organized in "rows" with number doors in each row.(Per Row - 
      Min: 0, Max: 3)
@@ -259,11 +256,11 @@
   about a vehicle.
   <dl title="[NoInterfaceObject] interface WheelConfiguration : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned short ? wheelInfoRadius</dt>
-     <dd>Radius of the wheel (Unit: centimeter, Min: 0, Max: 1000)</dd>
+     <dd>Radius of the wheel (Unit: millimeters)</dd>
      <dt>readonly attribute unsigned short ? frontWheelRadius</dt>
-     <dd>Radius of the front wheel (Unit: centimeter, Min: 0, Max: 1000)</dd>     
+     <dd>Radius of the front wheel (Unit: millimeters)</dd>
      <dt>readonly attribute unsigned short ? rearWheelRadius</dt>
-     <dd>Radius of the rear wheel (Unit: centimeter, Min: 0, Max: 1000)</dd>     
+     <dd>Radius of the rear wheel (Unit: millimeters)</dd>
   </dl>	     
 </section>
           
@@ -335,7 +332,8 @@
   
   <dl title="[NoInterfaceObject] interface VehicleSpeed : VehicleCommonDataType"
   class="idl">
-    <dt>readonly attribute unsigned short speed</dt><dd>MUST return vehicle speed in k/h</dd>
+    <dt>readonly attribute unsigned short speed</dt>
+    <dd>Vehicle speed (Unit: meters per hour)</dd>
   </dl>
 </section>
 
@@ -347,7 +345,7 @@
   <dl title="[NoInterfaceObject] interface EngineSpeed : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned long speed</dt>
-    <dd>MUST return engine speed in rotations per minute. Range: 0-100,000</dd>
+    <dd>Engine speed (Unit:  rotations per minute)</dd>
   </dl>
 </section>
 
@@ -371,7 +369,7 @@
   <dl title="[NoInterfaceObject] interface VehiclePowerModeType : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute VehiclePowerMode value</dt>
-    <dd>postion of the ignition switch</dd>
+    <dd>position of the ignition switch</dd>
   </dl>
 </section>
 
@@ -382,8 +380,8 @@
   
   <dl title="[NoInterfaceObject] interface PowerTrainTorque : VehicleCommonDataType"
   class="idl">
-    <dt>readonly attribute unsigned short value</dt>
-    <dd>Powertrain torque<br/>Units: Newton meters; Range: 0 - 10,000,000</dd>
+    <dt>readonly attribute short value</dt>
+    <dd>Powertrain torque (Unit: newton meters)</dd>
   </dl>
 </section>
 
@@ -419,11 +417,11 @@
   <dl title="[NoInterfaceObject] interface TripMeter : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned long distance</dt>
-    <dd>Distance travelled based on trip meter. Units: km; Range: 0 - 100,000,000</dd>
+    <dd>Distance travelled based on trip meter (Unit: meters)</dd>
     <dt>readonly attribute unsigned short ? averageSpeed</dt>
-    <dd>Average speed based on trip meter. Units: km/h; Range: 0 - 1000</dd>
+    <dd>Average speed based on trip meter (Unit: kilometers per hour)</dd>
     <dt>readonly attribute unsigned short ? fuelConsumption</dt>
-    <dd>Fuel consumed based on trip meter. Units: l/100km; 0.0 - 100.0</dd>
+    <dd>Fuel consumed based on trip meter (Unit: milliliters per 100 kilometers)</dd>
   </dl>
 </section>
 
@@ -434,16 +432,16 @@
   
   <dl title="[NoInterfaceObject] interface Diagnostic : VehicleCommonDataType"
   class="idl">
-    <dt>readonly attribute unsigned short accumulatedEngineRuntime</dt>
-    <dd>engine runtime in hours.  Range 0 - 1,000,000</dd>
-    <dt>readonly attribute unsigned short distanceWithMILOn</dt>
-    <dd>distance travelled with the malfunction indicator light on. Units km.  Range: 0 - 100,000,000</dd>
-    <dt>readonly attribute unsigned short distanceSinceCodeCleared.</dt>
-    <dd>Distance travelled since the codes were last cleared. Units km. Range: 0 - 100,000,000</dd>
-    <dt>readonly attribute unsigned short timeRunMILOn</dt>
-    <dd>Time run with the malfunction indicator light on. Units: minutes. Range 0 - 100,000,000</dd>
-    <dt>readonly attribute unsigned short timeTroubleCodeClear</dt>
-    <dd>Time since the trouble codes were last cleared. Units: minutes. Range 0 - 100,000,000</dd>
+    <dt>readonly attribute unsigned long accumulatedEngineRuntime</dt>
+    <dd>engine runtime (Unit: seconds)</dd>
+    <dt>readonly attribute unsigned long distanceWithMILOn</dt>
+    <dd>distance travelled with the malfunction indicator light on (Unit: meters)</dd>
+    <dt>readonly attribute unsigned long distanceSinceCodeCleared.</dt>
+    <dd>Distance travelled since the codes were last cleared (Unit: meters)</dd>
+    <dt>readonly attribute unsigned long timeRunMILOn</dt>
+    <dd>Time run with the malfunction indicator light on (Unit: seconds)</dd>
+    <dt>readonly attribute unsigned long timeTroubleCodeClear</dt>
+    <dd>Time since the trouble codes were last cleared (Unit: seconds)</dd>
   </dl>
 </section>
 
@@ -486,7 +484,7 @@
      <dt>readonly attribute boolean status</dt>
      <dd>MUST return whether or not the Cruise Control system is on (true) or off (false)</dd>
      <dt>readonly attribute unsigned short speed</dt>
-     <dd>MUST return target Cruise Control speed in kilometers per hour (km/h).  Range: 0 - 1000;</dd>
+     <dd>MUST return target Cruise Control speed in kilometers per hour (Unit: kilometers per hour)</dd>
   </dl>
 </section>
 
@@ -555,16 +553,16 @@
   <dl title="[NoInterfaceObject] interface Fuel : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned short level</dt>
      <dd>MUST return fuel level as a percentage of fullness</dd>
-     <dt>readonly attribute unsigned short range</dt>
-     <dd>MUST return estimated fuel range in kilometers</dd>
-     <dt>readonly attribute unsigned short instantConsumption</dt>
-     <dd>MUST return instant fuel consumption in per distance travelled (l/100km)</dd>
-     <dt>readonly attribute unsigned short averageConsumption</dt>
-     <dd>MUST return average fuel consumption in per distance travelled (l/100km).  Setting this to any value should reset the counter to '0'</dd>
-     <dt>readonly attribute unsigned short fuelConsumedSinceRestart</dt>
-     <dd>MUST return fuel consumed (l) since engine start;  resets to 0 each restart</dd>
+     <dt>readonly attribute unsigned long range</dt>
+     <dd>MUST return estimated fuel range (Unit:  meters)</dd>
+     <dt>readonly attribute unsigned long instantConsumption</dt>
+     <dd>MUST return instant fuel consumption in per distance travelled (Unit:  milliliters per 100 kilometers)</dd>
+     <dt>readonly attribute unsigned long averageConsumption</dt>
+     <dd>MUST return average fuel consumption in per distance travelled (Unit:  milliliters per 100 kilometers).  Setting this to any value should reset the counter to '0'</dd>
+     <dt>readonly attribute unsigned long fuelConsumedSinceRestart</dt>
+     <dd>MUST return fuel consumed since engine start; (Unit:  millileters per 100 kilometers)  resets to 0 each restart</dd>
      <dt>readonly attribute unsigned long vehicleTimeSinceRestart</dt>
-     <dd>MUST return time (min) elapsed since vehicle restart. Range 0 - 100,000,000</dd>
+     <dd>MUST return time elapsed since vehicle restart (Unit:  seconds)</dd>
   </dl>
 </section>
 
@@ -576,9 +574,9 @@
      <dt>readonly attribute unsigned short remaining</dt>
      <dd>MUST return remaining engine oil as percentage of fullness</dd>
      <dt>readonly attribute long temperature</dt>
-     <dd>MUST return Engine Oil Temperature in Celcius</dd>
+     <dd>MUST return Engine Oil Temperature (Unit: celcius)</dd>
      <dt>readonly attribute unsigned short pressure</dt>
-     <dd>MUST return Engine Oil Pressure in kPa</dd>
+     <dd>MUST return Engine Oil Pressure (Unit: kilopascals)</dd>
      <dt>readonly attribute boolean change</dt>
      <dd>MUST return engine oil change indicator status</dd>
   </dl>
@@ -590,11 +588,11 @@
   <p>The <a>Acceleration</a> interface represents vehicle acceleration.
   <dl title="[NoInterfaceObject] interface Acceleration : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned long x</dt>
-     <dd>MUST return acceleration on the "X" axis as 1/1000 G (gravitational force). </dd>
+     <dd>MUST return acceleration on the "X" axis (Unit:  centimeters per second squared)</dd>
      <dt>readonly attribute unsigned long y</dt>
-     <dd>MUST return acceleration on the "Y" axis as 1/1000 G (gravitational force). </dd>
+     <dd>MUST return acceleration on the "Y" axis (Unit:  centimeters per second squared)</dd>
      <dt>readonly attribute unsigned long z</dt>
-     <dd>MUST return acceleration on the "Z" axis as 1/1000 G (gravitational force). </dd>
+     <dd>MUST return acceleration on the "Z" axis (Unit:  centimeters per second squared)</dd>
   </dl>
 </section>
 
@@ -608,7 +606,7 @@
     <dt>readonly attribute unsigned short level</dt>
     <dd>MUST return engine coolant level as percentage of fullness</dd>
     <dt>readonly attribute unsigned short temperature</dt>
-    <dd>MUST return engine coolant temperature in Celcius</dd>
+    <dd>MUST return engine coolant temperature (Unit: celcius)</dd>
   </dl>
 </section>
 
@@ -620,7 +618,7 @@
   <dl title="[NoInterfaceObject] interface SteeringWheel : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute short angle</dt>
-    <dd>MUST return angle of steering wheel off centerline.  Range: -180 - 180</dd>
+    <dd>MUST return angle of steering wheel off centerline (Unit:  degrees)</dd>
   </dl>
 </section>
 
@@ -632,7 +630,7 @@
   <dl title="[NoInterfaceObject] interface WheelTick : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned long value</dt>
-    <dd>MUST return left/right wheel rotation counter.  Range: 0 - 1,000,000</dd>
+    <dd>MUST return left/right wheel rotation counter</dd>
   </dl>
 </section>
 
@@ -673,13 +671,11 @@
   <p>The <a>Odometer</a> interface provides information about the distance that the
   vehicle has traveled.
   <dl title="[NoInterfaceObject] interface Odometer : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute unsigned short ? distanceSinceStart</dt>
-     <dd>the distance traveled by vehicle since start (Unit: kilometer, Resolution: 0.1, 
-     Min: 0, Max: 6553.5).<br>Available Zone: None
+     <dt>readonly attribute unsigned long ? distanceSinceStart</dt>
+     <dd>the distance traveled by vehicle since start (Unit: meters).<br>Available Zone: None
      </dd>
      <dt>readonly attribute unsigned long distanceTotal</dt>
-     <dd>the total distance traveled by the vehicle (Unit: kilometer, Resolution: 0.1, 
-     Min: 0, Max: 429496729.5).<br>Available Zone: None</dd>
+     <dd>the total distance traveled by the vehicle (Unit: meters).<br>Available Zone: None</dd>
   </dl>
 </section>
 
@@ -691,11 +687,9 @@
   <dl title="[NoInterfaceObject] interface TransmissionOil : VehicleCommonDataType" 
   class="idl">
      <dt>readonly attribute byte? wear</dt>
-     <dd>transmission oil wear (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: no wear, 100: completely worn).<br>Available Zone: None</dd>
+     <dd>transmission oil wear (Unit: percentage, 0: no wear, 100: completely worn).<br>Available Zone: None</dd>
      <dt>readonly attribute short ? temperature</dt>
-     <dd>current temperature of the transmission oil(Unit: Celsius, Resolution: 1, 
-     Min: -40, Max: 215).<br>Available Zone: None</dd>
+     <dd>current temperature of the transmission oil(Unit: celsius).<br>Available Zone: None</dd>
   </dl>
 </section>
 
@@ -707,8 +701,7 @@
   <dl title="[NoInterfaceObject] interface TransmissionClutch : VehicleCommonDataType" 
   class="idl">
      <dt>readonly attribute byte wear</dt>
-     <dd>transmission clutch wear (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: no wear, 100: completely worn).<br>Available Zone: None</dd>
+     <dd>transmission clutch wear (Unit: percentage, 0: no wear, 100: completely worn).<br>Available Zone: None</dd>
   </dl>
 </section>
 
@@ -720,13 +713,11 @@
   <dl title="[NoInterfaceObject] interface Brake : VehicleCommonDataType" 
   class="idl">
      <dt>readonly attribute unsigned short ? fluidLevel</dt>
-     <dd>brake fluid level (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: empty, 100: full).</dd>
+     <dd>brake fluid level (Unit: percentage, 0: empty, 100: full).</dd>
      <dt>readonly attribute boolean? fluidLevelLow</dt>
      <dd>true if brake fluid level is low, false otherwise.</dd>
      <dt>readonly attribute byte? padWear</dt>
-     <dd>front left brake pad wear (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: no wear, 100: completely worn).</dd></dd>
+     <dd>front left brake pad wear (Unit: percentage, 0: no wear, 100: completely worn).</dd></dd>
      <dt>readonly attribute boolean? brakesWorn</dt>
      <dd>true if brakes are worn, false otherwise.<br></dd>
   </dl>
@@ -740,8 +731,7 @@
   <dl title="[NoInterfaceObject] interface WasherFluid : VehicleCommonDataType" 
   class="idl">
      <dt>readonly attribute unsigned short ? level</dt>
-     <dd>brake fluid level (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: empty, 100: full).</dd>
+     <dd>brake fluid level (Unit: percentage, 0: empty, 100: full).</dd>
      <dt>readonly attribute boolean? levelLow</dt>
      <dd>true if washer fluid level is low, false otherwise.</dd>
   </dl>
@@ -767,14 +757,11 @@
   <dl title="[NoInterfaceObject] interface BatteryStatus : VehicleCommonDataType" 
   class="idl">
      <dt>readonly attribute unsigned short ? chargeLevel</dt>
-     <dd>battery charge level (Unit: percentage, Resolution: 1, Min: 0, 
-     Max: 100, 0: empty, 100: full).</dd>
+     <dd>battery charge level (Unit: percentage, 0: empty, 100: full).</dd>
      <dt>readonly attribute unsigned short ? voltage</dt>
-     <dd>battery voltage (Unit: Volts, Resolution: 0.1, Min: 0, 
-     Max: 25.2).</dd>  
+     <dd>battery voltage (Unit: volts).</dd>
      <dt>readonly attribute unsigned short ? current</dt>
-     <dd>battery current (Unit: Amperes, Resolution: 1, Min: 0, 
-     Max: 255).</dd>
+     <dd>battery current (Unit: amperes).</dd>
   </dl>
 </section>
 
@@ -788,13 +775,11 @@
      <dt>readonly attribute boolean? pressureLow</dt>
      <dd>true if any tire pressure is low, false otherwise.</dd>
      <dt>readonly attribute unsigned short ? pressure</dt>
-     <dd>tire pressure (Unit: kilopascal, Resolution: 3, Min: 0, 
-     Max: 765).</dd>
+     <dd>tire pressure (Unit: kilopascal).</dd>
      <dt>readonly attribute boolean? pressureLow</dt>
      <dd>true if a tire pressure is low, false otherwise.</dd>
      <dt>readonly attribute short? temperature</dt>
-     <dd>tire temperature (Unit: Celsius, Resolution: 1, Min: -40, 
-     Max: 215). </dd>  
+     <dd>tire temperature (Unit: celsius). </dd>
   </dl>
 </section>
 
@@ -877,13 +862,11 @@
   <dl title="[NoInterfaceObject] interface Mirror : VehicleCommonDataType" class="idl">
      <dt>attribute unsigned short ? mirrorTilt</dt>
      <dd>Mirror tilt position in percentage distance travelled, from downward-facing to 
-     upward-facing position (Unit: percentage, Resolution: 1, 
-     Min: -100, Max: 100, 0 represents center position)
+     upward-facing position (Unit: percentage, 0 represents center position)
      <br>Available Zone: Left, Right, Center</dd>
      <dt>attribute unsigned short ? mirrorPan</dt>
      <dd>Mirror pan position in percentage distance travelled, from left to right 
-     position (Unit: percentage, Resolution: 1, 
-     Min: -100, Max: 100, 0 represents center position)
+     position (Unit: percentage, 0 represents center position)
      <br>Available Zone: Left, Right, Center</dd>
   </dl>	     
 </section>
@@ -896,33 +879,27 @@
    <dl title="[NoInterfaceObject] interface SeatAdjustment : VehicleCommonDataType" class="idl">
      <dt>attribute unsigned short ? reclineSeatBack</dt>
      <dd>Seat back recline position as percent to completely reclined 
-     (Unit: percentage, Resolution: 1, 
-     Min: -100, Max: 100, center 0 represents the seatback upright at a 90 degree angle)
+     (Unit: percentage, center 0 represents the seatback upright at a 90 degree angle)
      <br>Available Zone: Front, Middle, Rear, Left, Right, Center</dd>
      <dt>attribute unsigned short ? seatSlide</dt>
      <dd>Seat slide position as percentage of distance travelled away from forwardmost
-     position (Unit: percentage, Resolution: 1, 
-     Min: 0, Max: 100, 0 represents seat position farthest forward)
+     position (Unit: percentage, 0 represents seat position farthest forward)
      <br>Available Zone: Front, Middle, Rear, Left, Right, Center</dd>
      <dt>attribute unsigned short ? seatCushionHeight</dt>
      <dd> Seat cushion height position as a percentage of upward distance travelled 
-     (Unit: percentage, Resolution: 1, 
-     Min: 0, Max: 100, 0 represents the lowest seat position)
+     (Unit: percentage, 0 represents the lowest seat position)
      <br>Available Zone: Front, Middle, Rear, Left, Right, Center</dd>
      <dt>attribute unsigned short ? seatHeadrest</dt>
      <dd> Headrest position as a percentage of upward distance travelled
-     (Unit: percentage, Resolution: 1, 
-     Min: 0, Max: 100,  0 represents the lowest headrest position)
+     (Unit: percentage,  0 represents the lowest headrest position)
      <br>Available Zone: Front, Middle, Rear, Left, Right, Center</dd>
      <dt>attribute unsigned short ? seatBackCushion</dt>
      <dd>Back cushion position as a percentage of lumbar curvature 
-     (Unit: percentage, Resolution: 1, 
-     Min: 0, Max: 100,  0 represents flat, and 100 is maximum curvature)
+     (Unit: percentage,  0 represents flat, and 100 is maximum curvature)
      <br>Available Zone: Front, Middle, Rear, Left, Right, Center</dd>
      <dt>attribute unsigned short ? seatSideCushion</dt>
      <dd>Sides of back cushion position as a percentage of curvature 
-     (Unit: percentage, Resolution: 1, 
-     Min: 0, Max: 100,  0 represents flat, and 100 is maximum curvature)
+     (Unit: percentage,  0 represents flat, and 100 is maximum curvature)
      <br>Available Zone: Front, Middle, Rear, Left, Right, Center</dd>
   </dl>	     
 </section>
@@ -935,13 +912,11 @@
   <dl title="[NoInterfaceObject] interface SteeringWheel : VehicleCommonDataType" class="idl">
      <dt>attribute unsigned short ? steeringWheelTelescopingPosition</dt>
      <dd>Steering wheel position as percentage of extension from the dash 
-     (Unit: percentage, Resolution: 1, 
-     Min: 0, Max: 100, 0 represents steering wheel positioned closest to dash)
+     (Unit: percentage, 0 represents steering wheel positioned closest to dash)
      </dd>
      <dt>attribute unsigned short ? steeringWheelPositionTilt</dt>
      <dd>Steering wheel position as percentage of tilt
-     (Unit: percentage, Resolution: 1, 
-     Min: 0, Max: 100, 0 represents steering wheel tilted lowest downward-facing position)
+     (Unit: percentage, Resolution: 1, 0 represents steering wheel tilted lowest downward-facing position)
      </dd>
      
   </dl>
@@ -982,8 +957,7 @@
   <dl title="[NoInterfaceObject] interface DashboardIllumination : VehicleCommonDataType" class="idl">
      <dt>attribute DOMString ? dashboardIllumination</dt>
      <dd>Illumination of dashboard as a percentage 
-     (Unit: percentage, Resolution: 1, 
-     Min: 0, Max: 100, 0 represents none and 100 maximum illumination)
+     (Unit: percentage, 0 represents none and 100 maximum illumination)
      </dd>
   </dl>	     
 </section>
@@ -1084,7 +1058,7 @@
   <dl title="[NoInterfaceObject] interface TopSpeedLimit : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned short speed</dt>
-    <dd>MUST return vehicle top speed limit in k/h</dd>
+    <dd>MUST return vehicle top speed limit (Unit:  kilometers per hour)</dd>
   </dl>
 </section>
 
@@ -1223,9 +1197,9 @@
   <p>The <a>Temperature</a> interface provides information about the current temperature of outside or inside vehicle.
   <dl title="[NoInterfaceObject] interface Temperature : VehicleCommonDataType" class="idl">
      <dt>readonly attribute short interiorTemperature</dt>
-     <dd>the current temperature of the air inside of the vehicle. </dd>
+     <dd>the current temperature of the air inside of the vehicle (Unit: celsius)</dd>
      <dt>readonly attribute short exteriorTemperature</dt>
-     <dd>the current temperature of the air around the vehicle</dd>
+     <dd>the current temperature of the air around the vehicle (Unit: celsius)</dd>
   </dl>
 
   <p>Unit is deg. of Celsius<br>
@@ -1381,7 +1355,7 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
 		<dt>attribute unsigned byte fanSpeedLevel</dt>
 		<dd>current status of the fan speed of the air flowing ( 0: off, 1: weakest ~ 10: strongest )</dd>
 		<dt>attribute byte? targetTemperature</dt>
-		<dd>current setting of the desired temperature (Unit is deg. of Celsius, Resolution is 0.5, Range is -70 to 125)</dd>
+		<dd>current setting of the desired temperature (Unit: celsius)</dd>
 		<dt>attribute boolean airConditioning</dt>
 		<dd>current status of the air conditioning system (true: on, false: off)</dd>
 		<dt>attribute boolean heater</dt>
