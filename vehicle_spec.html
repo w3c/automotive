@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Vehicle Information API</title>
+    <title>Vehicle Information Access API</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
             class='remove'></script>
@@ -29,20 +29,20 @@
           wgPatentURI:  "",
 
           localBiblio:  {
-					    "VIN": {
-					        title:    "Vehicle Identificaiton Number"
-					    ,   href:     "http://en.wikipedia.org/wiki/Vehicle_Identification_Number#World_Manufacturer_Identifier"
-					    ,   publisher:  "Wikipedia"
-					    }
-					}
+              "VIN": {
+                  title:    "Vehicle Identificaiton Number"
+              ,   href:     "http://en.wikipedia.org/wiki/Vehicle_Identification_Number#World_Manufacturer_Identifier"
+              ,   publisher:  "Wikipedia"
+              }
+          }
       };
-    </script> 
+    </script>
   </head>
 
   <body>
 
 
-<!------------------------------ Abstract ------------------------------------>    
+<!------------------------------ Abstract ------------------------------------>
 <section id="abstract">
   <p>
   The W3C Vehicle Information API defines an Open Web Platform standard for HTML5/JavaScript application developers enabling Web connectivity through in-vehicle infotainment systems and vehicle data access protocols. This API can also be leveraged by HTML5/JavaScript applications running on mobile devices that access the data resources of a connected passenger vehicle.</p>
@@ -62,13 +62,13 @@
   <p>
   Web developers building interoperable applications based upon this W3C Vehicle API standard, will help empower a common web platform across consumer devices and passenger vehicles consistent with the Web of Things.
   </p>
-  
+
 </section>
 
-<!----------------------- Status of this document ---------------------------->    
+<!----------------------- Status of this document ---------------------------->
 <section id="sotd">
 </section>
-    
+
 <!----------------------------- Introduction --------------------------------->
 <section class="informative">
   <h2>Introduction</h2>
@@ -78,26 +78,26 @@
     properties.  Vehicle data types are available in the <a href="data_spec.html">Vehicle Data specification</a>.
   <p>
     An example of use is provided below:
-  
+
   <pre class="example highlight">
         var vehicle = navigator.vehicle;
-        
+
         vehicle.vehicleSpeed.get().then(function(vehicleSpeed) {
           console.log("vehicle speed: " + vehicleSpeed.speed);
         },
         function(error) {
           console.log("There was an error");
         });
-        
+
         var vehicleSpeedSub = vehicle.vehicleSpeed.subscribe(function(vehicleSpeed) {
           console.log("vehicle speed changed to: " + vehicleSpeed.speed);
           vehicle.vehicleSpeed.unsubscribe(vehicleSpeedSub);
         });
-        
+
         var zone = new Zone;
-        
+
         var zones = vehicle.climateControl.zones;
-        
+
         for(var i in zones)
         {
            if(i.equals(zone.driver))
@@ -110,42 +110,42 @@
              function(error) {
                console.log("there was an error");
              });
-           }        
-        }        
+           }
+        }
   </pre>
 </section>
-    
+
 <!---------------------------- Conformance ----------------------------------->
 <section id="conformance">
   <p>This specification defines conformance criteria that apply to a single
   product: the <dfn>user agent</dfn> that implements the interfaces that it
   contains.
-  
+
   <p>Implementations that use ECMAScript to implement the APIs defined in this
   specification MUST implement them in a manner consistent with the ECMAScript
   Bindings defined in the Web IDL specification [[!WEBIDL]], as this
   specification uses that specification and terminology.
 </section>
-    
+
 <!----------------------------- Terminology ---------------------------------->
 <section id="terminology">
   <h2>Terminology</h2> <p>The <code><a
   href="http://dev.w3.org/html5/spec/webappapis.html#eventhandler">
   EventHandler</a></code> interface represents a callback used for event
   handlers as defined in [[!HTML5]].
-  
+
   <p>The concepts <dfn><a
   href="http://dev.w3.org/html5/spec/webappapis.html#queue-a-task"> queue a
   task</a></dfn> and <dfn><a
   href="http://dev.w3.org/html5/spec/webappapis.html#fire-a-simple-event">
   fire a simple event</a></dfn> are defined in [[!HTML5]].
-  
+
   <p>The terms <a
   href="http://dev.w3.org/html5/spec/webappapis.html#event-handlers"><dfn
   id="dfn-eventhandler">event handler</dfn></a> and <a
   href="http://dev.w3.org/html5/spec/webappapis.html#event-handler-event-type">
   <dfn id="dfn-eventtypes"> event handler event types</dfn></a> are defined in
-  [[!HTML5]]. 
+  [[!HTML5]].
 </section>
 
 <!------------------------ Security and privacy ------------------------------>
@@ -164,13 +164,13 @@
       <dd>The object that exposes the interface to vehicle information services.</dd>
   </dl>
 </section>
-    
+
 <!------------------------ Interface Vehicle ------------------------------->
 <section>
   <h3><a>Vehicle</a> Interface</h3> <p>The <a>Vehicle</a> interface
   represents the initial entry point for getting access to the vehicle information
   services, i.e. Engine Speed and Tire Pressure. </p>
-  <dl title="[NoInterfaceObject] interface Vehicle" class="idl">  
+  <dl title="[NoInterfaceObject] interface Vehicle" class="idl">
   </dl>
 </section>
 
@@ -178,7 +178,7 @@
 <section>
   <h3><a>Zone</a> Interface</h3> <p>The <a>Zone</a>
   interface contains the constants that represent physical zones and logical zones</p>
-  
+
   <dl title="[NoInterfaceObject] interface Zone"
   class="idl">
     <dt>const DOMString Front = "Front"</dt>
@@ -195,12 +195,12 @@
     <dt>attribute DOMString[] value</dt><dd>MUST return array of physical zones</dd>
     <dt>readonly attribute Zone driver</dt><dd>MUST return physical zone for logical driver</dd>
     <dt>readonly attribute Zone passenger</dt><dd>MUST return physical zone for logical passenger</dd>
-    
-    <dt>boolean equals(Zone zone)</dt><dd>MUST return true if zone.value matches the contents of this.value.  
+
+    <dt>boolean equals(Zone zone)</dt><dd>MUST return true if zone.value matches the contents of this.value.
     Ordering of elements within Zone.value does not matter.</dd>
-    
+
     <dt>boolean contains(Zone zone)</dt><dd>MUST return true if zone.value can be found within this.value</dd>
-    
+
   </dl>
 </section>
 
@@ -209,7 +209,7 @@
   <h3><a>VehicleInterfaceCallback</a> Callback</h3>
   <p>The <a>VehicleInterfaceCallback</a> </p>
   <dl title="callback VehicleInterfaceCallback = void(object value);" class="idl"></dl>
-</section> 
+</section>
 
 <!------------------------ Callback VehicleInterfaceErrorCallback------------------------------>
 <section>
@@ -217,21 +217,21 @@
   <p>The <a>VehicleInterfaceErrorCallback</a> </p>
   <p class="note">Define the types of possible errors - Justin to edit.  Use common error types VehicleError</p>
   <dl title="callback VehicleInterfaceErrorCallback = void(VehicleInterfaceError error);" class="idl"></dl>
-</section> 
+</section>
 
 <!------------------------ Callback AvailableCallback------------------------------>
 <section>
   <h3><a>AvailableCallback</a> Callback</h3>
   <p>The <a>AvailableCallback</a> </p>
   <dl title="callback AvailableCallback = void (Availability available)" class="idl"></dl>
-</section> 
+</section>
 
 <!------------------------ Interface VehicleInterfaceError ------------------------>
 
 <section>
    <h3><a>VehicleInterfaceError</a> Interface</h3>
    <p>VehicleInterfaceError is used to identify the type of error encountered during an opertion</p>
-   
+
    <dl title="enum VehicleError" class="idl">
      <dt>permission_denied</dt>
      <dd>Indicates that the user does not have permission to perform the operation</dd>
@@ -244,7 +244,7 @@
      <dt>unknown</dt>
      <dd>Indicates an error that is not known</dd>
    </dl>
-   
+
    <dl title="[NoInterfaceObject] interface VehicleInterfaceError"
   class="idl">
      <dt>readonly attribute VehicleError error</dt>
@@ -256,28 +256,23 @@
 
 <!------------------------ Interface VehicleInterface ------------------------>
 <section>
-	<p class="note">Add interval/step parameter to subscribe.  Not time based, for example steering wheel angle every x degrees.  Ask Daniel Jutras to make proposal.</p>
+  <p class="note">Add interval/step parameter to subscribe.  Not time based, for example steering wheel angle every x degrees.  Ask Daniel Jutras to make proposal.</p>
   <h3><a>VehicleInterface</a> Interface</h3> <p>The <a>VehicleInterface</a>
   interface represents the base interface to get and set all vehicle properties.</p>
-  
+
   <dl title="[NoInterfaceObject] interface VehicleInterface"
   class="idl">
 
     <dt>Promise get(optional Zone zone)</dt>
-    <dd>MUST return the Promise.  The "resolve" callback in the promise is used to pass the vehicle data type that corresponds to the specific VehicleInterface instance.  For example, "vehicle.vehicleSpeed" corresponds to the "VehicleSpeed" data type.</dd>
-    <dt>Promise set(object value, optional Zone zone)</dt>
-    <dd>MUST return Promise.  The "resolve" callback indicates the set was successful.  No data is passed to resolve.  If there was an error, "reject" will be called with a VehicleInterfaceError object</dd>
-    <dt>unsigned short subscribe(VehicleInterfaceCallback callback, optional Zone zone)</dt>
-    <dd>MUST return handle to subscription or 0 if error</dd>
-    <dt>void unsubscribe(unsigned short handle)</dt>
-    <dd>MUST return void.  unsubscribes to value changes on this interface.</dd>
+    <dd>MUST return the Promise.  The "resolve" callback in the promise is used to pass the vehicle data type that corresponds to the specific VehicleInterface instance.
+    For example, "vehicle.vehicleSpeed" corresponds to the "VehicleSpeed" data type.</dd>
     <dt>readonly attribute Zone[] zones</dt>
     <dd>MUST return all zones supported for this type.</dd>
   </dl>
-  
+
   <pre class="example highlight">
   vehicle.vehicleSpeed.get().then(resolve);
-  
+
   function resolve(data)
   {
     //data is of type VehicleSpeed
@@ -285,22 +280,49 @@
     console.log("Time Stamp: " + data.timestamp);
   }
   </pre>
-  
+</section>
+
+<!------------------------ Interface VehicleConfigurationInterface ------------------------>
+<section>
+  <h3><a>VehicleConfigurationInterface</a> Interface</h3> <p>The <a>VehicleConfigurationInterface</a>
+  interface is to be used to provide access to static vehicle information that never changes: external dimensions, identification, transmission type etc... </p>
+
+  <dl title="[NoInterfaceObject] interface VehicleConfigurationInterface : VehicleInterface"
+  class="idl">
+  </dl>
+</section>
+<!------------------------ Interface VehicleSignalInterface ------------------------>
+<section>
+  <h3><a>VehicleSignalInterface</a> Interface</h3> <p>The <a>VehicleSignalInterface</a>
+  interface represents vehicle signals that, as a rule, and unlike vehicle configurations, can change values, either programmatically
+  (necessitating support for set method) or due to external events and occurrences, as reflected by subscription management.</p>
+
+  <dl title="[NoInterfaceObject] interface VehicleSignalInterface : VehicleInterface"
+  class="idl">
+    <dt>Promise set(object value, optional Zone zone)</dt>
+    <dd>MUST return Promise.  The "resolve" callback indicates the set was successful.  No data is passed to resolve.  If there was an error,
+    "reject" will be called with a VehicleInterfaceError object</dd>
+    <dt>unsigned short subscribe(VehicleInterfaceCallback callback, optional Zone zone)</dt>
+    <dd>MUST return handle to subscription or 0 if error</dd>
+    <dt>void unsubscribe(unsigned short handle)</dt>
+    <dd>MUST return void.  unsubscribes to value changes on this interface.</dd>
+  </dl>
+
   <pre class="example highlight">
   var zone = Zone
   vehicle.door.set({"lock" : true}, zone.driver).then(resolve, reject);
-  
+
   function resolve()
   {
     /// success
   }
-  
+
   function reject(errorData)
   {
     console.log("Error occurred during set: " + errorData.message + " code: " + errorData.error);
   }
   </pre>
-  
+
 </section>
 
 <section>
@@ -308,7 +330,7 @@
   <p class="note">Appears that this is at interface level vs data element.  Addition level of detail on security or system error.  Vadim to make proposal.</p>
   <p>The availability API allows for developers to determine what attributes are available or not and if not, why.  It also allows for notifications when the availability
    changes.</p>
-   
+
   <dl title="enum Availability"
   class="idl">
     <dt>available</dt>
@@ -317,26 +339,26 @@
     <dd>not supported by this vehicle</dd>
     <dt>not_supported_yet</dt>
     <dd>not supported at this time, but may become supported later.</dd>
-    <dt>not_supported_security</dt>
-    <dd>not supported because of security</dd>
-    <dt>not_supported_policy</dt>
-    <dd>not supported because of system policy</dd>
+    <dt>not_supported_security_policy</dt>
+    <dd>not supported because of security policy</dd>
+    <dt>not_supported_business_policy</dt>
+    <dd>not supported because of business policy</dd>
     <dt>not_supported_other</dt>
     <dd>not supported for other reasons</dd>
   </dl>
-   
+
    <dl title="partial interface VehicleInterface" class="idl">
-     <dt>Availability available()</dt>
-     <dd>MUST return whether a not this attribute is available or not</dd>
+     <dt>Availability availableForRetrieval()</dt>
+     <dd>MUST return whether a not this attribute is available for get() or not</dd>
      <dt>readonly attribute boolean supported</dt>
      <dd>MUST return true if this attribute is supported and available</dd>
      <dt>short availabilityChangedListener( AvailableCallback callback )</dt>
      <dd>MUST return handle for listener.</dd>
      <dt>void removeAvailabilityChangedListener( short handle )</dt>
    </dl>
-   
+
    <pre class="example highlight">
-   if( ( var a = vehicle.vehicleSpeed.available() ) === "available" )
+   if( ( var a = vehicle.vehicleSpeed.availableForRetrieval() ) === "available" )
    {
      // we can use it.
    }
@@ -346,8 +368,16 @@
      console.log(a);
    }
    </pre>
+
+   <dl title="partial interface VehicleSignalInterface" class="idl">
+     <dt>Availability availableForSubscription()</dt>
+     <dd>MUST return whether a not this attribute is available for subscribe() or not</dd>
+     <dt>Availability availableForSetting()</dt>
+     <dd>MUST return whether a not this attribute is available for set() or not</dd>
+   </dl>
+
    <pre class="example highlight">
-   var canHasVehicleSpeed = vehicle.vehicleSpeed.available() === "available";
+   var canHasVehicleSpeed = vehicle.vehicleSpeed.availableForSubscription() === "available";
 
    vehicle.vehicle.availabilityChangedListener( function (available) {
      canHasVehicleSpeed = available === "available";
@@ -359,10 +389,10 @@
      if(canHasVehicleSpeed)
      {
        vehicle.vehicleSpeed.get().then(callback);
-     }        
+     }
    }
   </pre>
-  
+
 </section>
 
 <section>
@@ -384,7 +414,7 @@
      <dt>readonly attribute Date ? to</dt>
      <dd>MUST return Date in which logging of this attribute ends. Returns null if <a>isLogged</a> is false.</dd>
    </dl>
-   
+
    <pre class="example highlight">
    /// check if there is data being logged for vehicleSpeed:
    if(vehicle.vehicleSpeed.isLogged)
@@ -395,13 +425,13 @@
      });
    }
    </pre>
-   
+
 </section>
 <!------------------------ Interface VehicleCommonDataType ------------------------>
 <section>
   <h3><a>VehicleCommonDataType</a> Interface</h3> <p>The <a>VehicleCommonDataType</a>
   interface represents the common data type for all vehicle data types</p>
-  
+
   <dl title="[NoInterfaceObject] interface VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute Zone? zone</dt><dd>MUST return zone for this data type or null if there is no zone associated with this data type</dd>
@@ -410,9 +440,9 @@
 </section>
 <section class="use-cases">
   <h2>Use-Cases</h2>
-  
+
 <section>
-      	<h3>Normative</h3>
+        <h3>Normative</h3>
         The primary purpose of this specification is to provide web developers the ability to access and set vehicle
         information through a simple common set of operations including get, set, subscribe, and unsubscribe.  Thus
         normative use cases pertain to this access and do not cover higher application of business level use cases.
@@ -432,7 +462,7 @@
             <h4>Set </h4>
             Unsubscribe to single value.
         </section>
-  	</section>
+    </section>
 </section>
   </body>
 </html>
