@@ -215,28 +215,26 @@
 
   <dl title="enum FuelTypeEnum" class="idl">
     <dt>gasoline</dt>
-    <dd>TODO: define</dd>
+    <dd>Gasoline</dd>
     <dt>methanol</dt>
-    <dd>TODO: define</dd>
+    <dd>Methanol</dd>
     <dt>ethanol</dt>
-    <dd>TODO: define</dd>
+    <dd>Ethanol</dd>
     <dt>diesel</dt>
-    <dd>TODO: define</dd>
+    <dd>Diesel</dd>
     <dt>lpg</dt>
-    <dd>TODO: define</dd>
+    <dd>Liquified petroleom gas</dd>
     <dt>cng</dt>
-    <dd>TODO: define</dd>
-    <dt>propane</dt>
-    <dd>TODO: define</dd>
+    <dd>Compressed natural gas</dd>
     <dt>electric</dt>
-    <dd>TODO: define</dd>
+    <dd>Electric</dd>
   </dl>
   
   <dl title="enum RefuelPosition" class="idl">
     <dt>right</dt>
-    <dd>right side of vehicle referenced from driver position</dd>
+    <dd>Right side of vehicle referenced from driver position</dd>
     <dt>left></dt>
-    <dd>left side of vehicle referenced from driver position</dd>
+    <dd>Left side of vehicle referenced from driver position</dd>
   </dl>
 
   <dl title="[NoInterfaceObject] interface FuelConfiguration : VehicleCommonDataType" class="idl">
@@ -255,9 +253,9 @@
 
   <dl title="enum TransmissionGearTypeEnum" class="idl">
     <dt>auto</dt>
-    <dd>TODO: define</dd>
+    <dd>Automatic transmission</dd>
     <dt>manual</dt>
-    <dd>TODO: define</dd>
+    <dd>Manual transmission</dd>
   </dl>
 
   <dl title="[NoInterfaceObject] interface TransmissionConfiguration : VehicleCommonDataType" class="idl">
@@ -393,13 +391,13 @@
   <dl title="enum VehiclePowerMode"
   class="idl">
     <dt>off</dt>
-    <dd>TODO: define</dd>
+    <dd>Off - No power</dd>
     <dt>accessory1</dt>
-    <dd>TODO: define</dd>
+    <dd>Accessory power 1</dd>
     <dt>accessory2</dt>
-    <dd>TODO: define</dd>
+    <dd>Accessory power 2</dd>
     <dt>running</dt>
-    <dd>TODO: define</dd>
+    <dd>Running power</dd>
   </dl>
 
   <dl title="[NoInterfaceObject] interface VehiclePowerModeType : VehicleCommonDataType"
@@ -489,17 +487,17 @@
   <dl title="enum TransmissionMode"
   class="idl">
     <dt>park</dt>
-    <dd>TODO: define</dd>
+    <dd>Transmission is in park</dd>
     <dt>reverse</dt>
-    <dd>TODO: define</dd>
+    <dd>Transmission is in reverse</dd>
     <dt>neutral</dt>
-    <dd>TODO: define</dd>
+    <dd>Transmission is in neutral</dd>
     <dt>low</dt>
-    <dd>TODO: define</dd>
+    <dd>Transmission is in low</dd>
     <dt>drive</dt>
-    <dd>TODO: define</dd>
+    <dd>Transmission is in drive</dd>
     <dt>overdrive</dt>
-    <dd>TODO: define</dd>
+    <dd>Transmission is in overdrive</dd>
   </dl>
 
   <dl title="[NoInterfaceObject] interface Transmission : VehicleCommonDataType" class="idl">
@@ -1006,17 +1004,17 @@
 
   <dl title="enum DriveModeEnum" class="idl">
     <dt>comfort</dt>
-    <dd>TODO: define</dd>
+    <dd>Comfort mode</dd>
     <dt>auto</dt>
-    <dd>TODO: define</dd>
+    <dd>Automatically set mode</dd>
     <dt>sport</dt>
-    <dd>TODO: define</dd>
+    <dd>Sport mode</dd>
     <dt>eco</dt>
-    <dd>TODO: define</dd>
+    <dd>Ecological/fuel efficient mode</dd>
     <dt>manual</dt>
-    <dd>TODO: define</dd>
+    <dd>Manual mode</dd>
     <dt>winter</dt>
-    <dd>TODO: define</dd>
+    <dd>Winter/slippery mode</dd>
   </dl>
 
   <dl title="[NoInterfaceObject] interface DriveMode : VehicleCommonDataType" class="idl">
@@ -1197,16 +1195,16 @@
 
 	<dl title="enum OccupantStatus" class="idl">
 		<dt>adult</dt>
-		<dd>occupant is an adult</dd>
+		<dd>Occupant is an adult</dd>
 		<dt>child</dt>
-		<dd>occupant is a child</dd>
+		<dd>Occupant is a child</dd>
 		<dt>vacant</dt>
-		<dd>seat is vacant</dd>
+		<dd>Seat is vacant</dd>
 	</dl>
 	
   <dl title="enum IdentificationType" class="idl">
     <dt>pin</dt>
-    <dd>Four digit pin number enetered by user</dd>
+    <dd>Four digit pin number entered by user</dd>
     <dt>keyfob</dt>
     <dd>Identification by key fob</dd>
     <dt>Bluetooth</dt>
@@ -1523,7 +1521,7 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
   	<dt>armed</dt>
   	<dd>The function is active</dd>
 	  <dt>alarmed</dt>
-  	<dd>The Alarm is screaming</dd>
+  	<dd>The alarm is screaming</dd>
   </dl>
 
   <dl title="[NoInterfaceObject] interface Alarm : VehicleCommonDataType" class="idl">
@@ -1587,7 +1585,12 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
             <section>
                 <h4>Use Cases for RunningStatus</h4>
                 <ul>
-                    TODO:
+                    <li>
+                        Driver able to see driving performance information such as acceleration, speed, gears used, etc...
+                    </li>
+                    <li>
+                        Driver able to see fuel economy, consumption, level, range, etc...
+                    </li>
                 </ul>
             </section>
             <section>
@@ -1615,7 +1618,7 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
             <section>
                 <h4>Use Cases for DrivingSafety</h4>
                 <ul>
-                    TODO:
+                    Driver able to see safety setting and warnings at a glance.
                 </ul>
             </section>
             <section>
