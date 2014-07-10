@@ -129,19 +129,37 @@
   <h3><a>Identification</a> Interface</h3>
   <p>The <a>Identification</a> interface provides identification information about a
   vehicle.
+
+    <dl title="enum VehicleTypeEnum" class="idl">
+        <dt>passengerCarMini</dt>
+        <dd>Passenger car 680–907 kg</dd>
+        <dt>passengerCarLight</dt>
+        <dd>Passenger car 907–1,134 kg</dd>
+        <dt>passengerCarCompact</dt>
+        <dd>Passenger car 1,134–1,360 kg</dd>
+        <dt>passengerCarMedium</dt>
+        <dd>Passenger car 1,361–1,587 kg</dd>
+        <dt>passengerCarHeavy</dt>
+        <dd>Passenger car 1,588 kg and over</dd>
+        <dt>sportUtilityVehicle</dt>
+        <dd>Sport utility vehicle</dd>
+        <dt>pickupTruck</dt>
+        <dd>Pickup truck</dd>
+        <dt>van</dt>
+        <dd>Van</dd>
+    </dl>
+
   <dl title="[NoInterfaceObject] interface Identification : VehicleCommonDataType" class="idl">
      <dt>readonly attribute DOMString ? VIN</dt>
      <dd>the Vehicle Identification Number (ISO 3833)</dd>
      <dt>readonly attribute DOMString ? WMI</dt>
      <dd>the World Manufacture Identifier defined by SAE ISO 3780:2009.  3 characters.</dd>
-     <dt>readonly attribute DOMString[] ? vehicleType</dt>
+     <dt>readonly attribute VehicleTypeEnum ? vehicleType</dt>
+      <dd>vehicle type</dd>
      <dt>readonly attribute DOMString ? brand</dt>
      <dd>vehicle brand name</dd>
      <dt>readonly attribute DOMString ? model</dt>
-     <dd>vehicle model type
-         <div class="note">(Paul)I suggest we keep it simple and go with the NHTSA Classification  href://http://en.wikipedia.org/wiki/Car_body_style
-         </div>
-     </dd>
+     <dd>vehicle model</dd>
      <dt>readonly attribute unsigned short ? year</dt>
      <dd>vehicle model year (Min: 2000, Max: 2100)</dd>
   </dl>
@@ -322,8 +340,8 @@
 		    <dd>MUST return VehicleInterface for accessing <a>EngineCoolant</a></dd>
 		    <dt>readonly attribute VehicleInterface deadReckoning</dt>
 		    <dd>MUST return VehicleInterface for accessing <a>DeadReckoning</a></dd>
-            <dt>readonly attribute VehicleInterface ignitionStatus</dt>
-            <dd>MUST return VehicleInterface for accessing <a>IgnitionStatus</a></dd>
+            <dt>readonly attribute VehicleInterface ignitionTime</dt>
+            <dd>MUST return VehicleInterface for accessing <a>IgnitionTime</a></dd>
             <dt>readonly attribute VehicleInterface yawRate</dt>
             <dd>MUST return VehicleInterface for accessing <a>YawRate</a></dd>
             <dt>readonly attribute VehicleInterface brakeOperation</dt>
@@ -342,7 +360,7 @@
   </dl>
 </section>
 
-<!------------------------ Interface VehicleSpeed ------------------------>
+<!------------------------ Interface WheelSpeed ------------------------>
 <section>
   <h3><a>WheelSpeed</a> Interface</h3> <p>The <a>WheelSpeed</a>
   represent wheel speed information.  Available Zones: yes</p>
@@ -642,21 +660,21 @@
 <!------------------------ Interface WheelTick ------------------------>
 <section>
   <h3><a>WheelTick</a> Interface</h3> <p>The <a>WheelTick</a>
-  represents wheel rotation count data.  Available Zones: yes</p>
+  number of ticks per second.  Available Zones: yes</p>
   
   <dl title="[NoInterfaceObject] interface WheelTick : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned long value</dt>
-    <dd>MUST return wheel rotation counter. One tick equals one rotation.</dd>
+    <dd>MUST return number of ticks per second.</dd>
   </dl>
 </section>
 
-<!------------------------ Interface IgnitionStatus ------------------------>
+<!------------------------ Interface IgnitionTime ------------------------>
 <section>
-  <h3><a>IgnitionStatus</a> Interface</h3> <p>The <a>IgnitionStatus</a>
+  <h3><a>IgnitionTime</a> Interface</h3> <p>The <a>IgnitionTime</a>
   represents status of ignition.</p>
 
-  <dl title="[NoInterfaceObject] interface IgnitionStatus : VehicleCommonDataType"
+  <dl title="[NoInterfaceObject] interface IgnitionTime : VehicleCommonDataType"
       class="idl">
       <dt>readonly attribute DOMTimeStamp ignitionOnTime</dt>
       <dd>Time at ignition on</dd>
@@ -1431,7 +1449,7 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
   <p><a>ClimateControl</a> can be used to send user's request for changing setting.</p>
 </section>
 
-<!------------------------ Interface Temperature ------------------------------>
+<!------------------------ Interface AtmosphericPressure ------------------------------>
 <section>
   <h3><a>AtmosphericPressure</a> Interface</h3>
   <p>The <a>AtmosphericPressure</a> interface provides information about the current atmospheric pressure outside of the vehicle.
