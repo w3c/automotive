@@ -102,6 +102,17 @@
 
 </section>
 
+<!------------------------ Interface VehicleCommonDataType ------------------------>
+<section>
+  <h3><a>VehicleCommonDataType</a> Interface</h3> <p>The <a>VehicleCommonDataType</a>
+  interface represents the common data type for all vehicle data types</p>
+
+  <dl title="[NoInterfaceObject] interface VehicleCommonDataType"
+  class="idl">
+    <dt>readonly attribute DOMTimeStamp? timeStamp</dt><dd>MUST return timestamp when any data in this interface was received on the system.</dd>
+  </dl>
+</section>
+
 <!---------------- Vehicle Configuration & ID Interfaces --------------------->
 <section id="configuration-identification-interfaces">
       <h2>Configuration and Identification Interfaces</h2>
@@ -235,7 +246,7 @@
   <dl title="enum RefuelPosition" class="idl">
     <dt>right</dt>
     <dd>right side of vehicle referenced from driver position</dd>
-    <dt>left></dt>
+    <dt>left</dt>
     <dd>left side of vehicle referenced from driver position</dd>
   </dl>
 
@@ -272,10 +283,6 @@
   <p>The <a>WheelConfiguration</a> interface provides wheel configuration information
   about a vehicle.
   <dl title="[NoInterfaceObject] interface WheelConfiguration : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute unsigned short ? frontWheelRadius</dt>
-     <dd>Radius of the front wheel (Unit: millimeters)</dd>
-     <dt>readonly attribute unsigned short ? rearWheelRadius</dt>
-     <dd>Radius of the rear wheel (Unit: millimeters)</dd>
   </dl>
 </section>
 
@@ -1524,7 +1531,7 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
     <dt>attribute unsigned byte fanSpeedLevel</dt>
     <dd>current status of the fan speed of the air flowing ( 0: off, 1: weakest ~ 10: strongest )</dd>
     <dt>attribute byte? targetTemperature</dt>
-		<dd>current setting of the desired temperature (Unit: celsius)</dd>
+    <dd>current setting of the desired temperature (Unit: celsius)</dd>
     <dt>attribute boolean airConditioning</dt>
     <dd>current status of the air conditioning system (true: on, false: off)</dd>
     <dt>attribute boolean heater</dt>
