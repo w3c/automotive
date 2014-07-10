@@ -129,16 +129,37 @@
   <h3><a>Identification</a> Interface</h3>
   <p>The <a>Identification</a> interface provides identification information about a
   vehicle.
+
+    <dl title="enum VehicleTypeEnum" class="idl">
+        <dt>passengerCarMini</dt>
+        <dd>Passenger car 680–907 kg</dd>
+        <dt>passengerCarLight</dt>
+        <dd>Passenger car 907–1,134 kg</dd>
+        <dt>passengerCarCompact</dt>
+        <dd>Passenger car 1,134–1,360 kg</dd>
+        <dt>passengerCarMedium</dt>
+        <dd>Passenger car 1,361–1,587 kg</dd>
+        <dt>passengerCarHeavy</dt>
+        <dd>Passenger car 1,588 kg and over</dd>
+        <dt>sportUtilityVehicle</dt>
+        <dd>Sport utility vehicle</dd>
+        <dt>pickupTruck</dt>
+        <dd>Pickup truck</dd>
+        <dt>van</dt>
+        <dd>Van</dd>
+    </dl>
+
   <dl title="[NoInterfaceObject] interface Identification : VehicleCommonDataType" class="idl">
      <dt>readonly attribute DOMString ? VIN</dt>
      <dd>the Vehicle Identification Number (ISO 3833)</dd>
      <dt>readonly attribute DOMString ? WMI</dt>
      <dd>the World Manufacture Identifier defined by SAE ISO 3780:2009.  3 characters.</dd>
-     <dt>readonly attribute DOMString[] ? vehicleType</dt>
+     <dt>readonly attribute VehicleTypeEnum ? vehicleType</dt>
+      <dd>vehicle type</dd>
      <dt>readonly attribute DOMString ? brand</dt>
      <dd>vehicle brand name</dd>
      <dt>readonly attribute DOMString ? model</dt>
-     <dd>vehicle model type</dd>
+     <dd>vehicle model</dd>
      <dt>readonly attribute unsigned short ? year</dt>
      <dd>vehicle model year (Min: 2000, Max: 2100)</dd>
   </dl>
@@ -180,10 +201,6 @@
      <dd>Total number of doors on the vehicle (all doors opening to the interior, 
      including hatchbacks) (Min: 0, Max: 10)</dd>
      <div class="issue">(Kevron) Is it possible to use the zone concept with doors?  Doing so would eliminate the need for complex arrays.</div>
-     <dt>readonly attribute DOMString[]? vehicleType</dt>
-     <dd>Type of vehicle <div class="issue">Need enum of vehicle types?</div>
-     <div class="note">(Justin) It would be better to define some types... Plz refer.. href://http://en.wikipedia.org/wiki/Car_body_style
-     </div>
      </dd>
   </dl>
 </section>
@@ -255,8 +272,6 @@
   <p>The <a>WheelConfiguration</a> interface provides wheel configuration information 
   about a vehicle.
   <dl title="[NoInterfaceObject] interface WheelConfiguration : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute unsigned short ? wheelInfoRadius</dt>
-     <dd>Radius of the wheel (Unit: millimeters)</dd>
      <dt>readonly attribute unsigned short ? frontWheelRadius</dt>
      <dd>Radius of the front wheel (Unit: millimeters)</dd>
      <dt>readonly attribute unsigned short ? rearWheelRadius</dt>
@@ -289,6 +304,8 @@
 		    <!-- running status types: -->
 		    <dt>readonly attribute VehicleInterface vehicleSpeed</dt>
 		    <dd>MUST return VehicleInterface for accessing <a>VehicleSpeed</a></dd>
+            <dt>readonly attribute VehicleInterface wheelSpeed</dt>
+            <dd>MUST return VehicleInterface for accessing <a>WheelSpeed</a></dd>
 		    <dt>readonly attribute VehicleInterface engineSpeed</dt>
 		    <dd>MUST return VehicleInterface for accessing <a>EngineSpeed</a> or undefined if not supported</dd>
 		    <dt>readonly attribute VehicleInterface powerTrainTorque</dt>
@@ -323,6 +340,12 @@
 		    <dd>MUST return VehicleInterface for accessing <a>EngineCoolant</a></dd>
 		    <dt>readonly attribute VehicleInterface deadReckoning</dt>
 		    <dd>MUST return VehicleInterface for accessing <a>DeadReckoning</a></dd>
+            <dt>readonly attribute VehicleInterface ignitionTime</dt>
+            <dd>MUST return VehicleInterface for accessing <a>IgnitionTime</a></dd>
+            <dt>readonly attribute VehicleInterface yawRate</dt>
+            <dd>MUST return VehicleInterface for accessing <a>YawRate</a></dd>
+            <dt>readonly attribute VehicleInterface brakeOperation</dt>
+            <dd>MUST return VehicleInterface for accessing <a>BrakeOperation</a></dd>
 		  </dl>
 
 <!------------------------ Interface VehicleSpeed ------------------------>
@@ -334,6 +357,18 @@
   class="idl">
     <dt>readonly attribute unsigned short speed</dt>
     <dd>Vehicle speed (Unit: meters per hour)</dd>
+  </dl>
+</section>
+
+<!------------------------ Interface WheelSpeed ------------------------>
+<section>
+  <h3><a>WheelSpeed</a> Interface</h3> <p>The <a>WheelSpeed</a>
+  represent wheel speed information.  Available Zones: yes</p>
+
+  <dl title="[NoInterfaceObject] interface WheelSpeed : VehicleCommonDataType"
+      class="idl">
+      <dt>readonly attribute unsigned short speed</dt>
+      <dd>Wheel speed (Unit: meters per hour)</dd>
   </dl>
 </section>
 
@@ -376,7 +411,7 @@
 <!------------------------ Interface PowerTrainTorque ------------------------>
 <section>
   <h3><a>PowerTrainTorque</a> Interface</h3> <p>The <a>PowerTrainTorque</a>
-  represents position of the ignition switch</p>
+  represents powertrain torque</p>
   
   <dl title="[NoInterfaceObject] interface PowerTrainTorque : VehicleCommonDataType"
   class="idl">
@@ -625,12 +660,52 @@
 <!------------------------ Interface WheelTick ------------------------>
 <section>
   <h3><a>WheelTick</a> Interface</h3> <p>The <a>WheelTick</a>
-  represents steering wheel data.  Available Zones: yes</p>
+  number of ticks per second.  Available Zones: yes</p>
   
   <dl title="[NoInterfaceObject] interface WheelTick : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned long value</dt>
-    <dd>MUST return left/right wheel rotation counter</dd>
+    <dd>MUST return number of ticks per second.</dd>
+  </dl>
+</section>
+
+<!------------------------ Interface IgnitionTime ------------------------>
+<section>
+  <h3><a>IgnitionTime</a> Interface</h3> <p>The <a>IgnitionTime</a>
+  represents status of ignition.</p>
+
+  <dl title="[NoInterfaceObject] interface IgnitionTime : VehicleCommonDataType"
+      class="idl">
+      <dt>readonly attribute DOMTimeStamp ignitionOnTime</dt>
+      <dd>Time at ignition on</dd>
+      <dt>readonly attribute DOMTimeStamp ignitionOffTime</dt>
+      <dd>Time at ignition off
+          <div class="issue">We need to define what DOMTimeStamp means.</div>
+      </dd>
+  </dl>
+</section>
+
+<!------------------------ Interface YawRate ------------------------>
+<section>
+  <h3><a>YawRate</a> Interface</h3> <p>The <a>YawRate</a>
+  represents vehicle yaw rate.</p>
+
+  <dl title="[NoInterfaceObject] interface YawRate : VehicleCommonDataType"
+      class="idl">
+      <dt>readonly attribute short value</dt>
+      <dd>yaw rate of vehicle.  (Unit:  degrees per second)</dd>
+  </dl>
+</section>
+
+<!------------------------ Interface BrakeOperation ------------------------>
+<section>
+  <h3><a>BrakeOperation</a> Interface</h3> <p>The <a>BrakeOperation</a>
+  represents vehicle brake operation.</p>
+
+  <dl title="[NoInterfaceObject] interface BrakeOperation : VehicleCommonDataType"
+      class="idl">
+      <dt>readonly attribute boolean brakePedalDepressed</dt>
+      <dd>MUST return whether brake pedal is depressed or not.  true: brake pedal is depressed, false: brake pedal is not depressed</dd>
   </dl>
 </section>
 
@@ -653,8 +728,8 @@
 		    <dd>MUST return VehicleInterface for accessing <a>TransmissionOil</a></dd>
 		    <dt>readonly attribute VehicleInterface transmissionClutch</dt>
 		    <dd>MUST return VehicleInterface for accessing <a>TransmissionClutch</a></dd>
- 		    <dt>readonly attribute VehicleInterface brake</dt>
-		    <dd>MUST return VehicleInterface for accessing <a>Brake</a></dd>
+ 		    <dt>readonly attribute VehicleInterface brakeMaintenance</dt>
+		    <dd>MUST return VehicleInterface for accessing <a>BrakeMaintenance</a></dd>
  		    <dt>readonly attribute VehicleInterface washerFluid</dt>
 		    <dd>MUST return VehicleInterface for accessing <a>WasherFluid</a></dd>
 		    <dt>readonly attribute VehicleInterface malfunctionIndicator</dt>
@@ -705,12 +780,12 @@
   </dl>
 </section>
 
-<!------------------------ Interface Brake ------------------------------>
+<!------------------------ Interface BrakeMaintenance ------------------------------>
 <section>
-  <h3><a>Brake</a> Interface</h3>
-  <p>The <a>Brake</a> interface provides information about the state of a 
+  <h3><a>BrakeMaintenance</a> Interface</h3>
+  <p>The <a>BrakeMaintenance</a> interface provides information about the maintenance state of a
   vehicles brakes.  Available Zone: Front, Rear, Left, Right
-  <dl title="[NoInterfaceObject] interface Brake : VehicleCommonDataType" 
+  <dl title="[NoInterfaceObject] interface BrakeMaintenance : VehicleCommonDataType"
   class="idl">
      <dt>readonly attribute unsigned short ? fluidLevel</dt>
      <dd>brake fluid level (Unit: percentage, 0: empty, 100: full).</dd>
@@ -1189,6 +1264,8 @@
 		    <dd>MUST return VehicleInterface for accessing <a>SideWindow</a></dd>
 		    <dt>readonly attribute VehicleInterface climateControl</dt>
 		    <dd>MUST return VehicleInterface for accessing <a>ClimateControl</a> or undefined if not supported</dd>
+            <dt>readonly attribute VehicleInterface atmosphericPressure</dt>
+            <dd>MUST return VehicleInterface for accessing <a>AtmosphericPressure</a></dd>
 		  </dl>
 
 <!------------------------ Interface Temperature ------------------------------>
@@ -1196,9 +1273,9 @@
   <h3><a>Temperature</a> Interface</h3>
   <p>The <a>Temperature</a> interface provides information about the current temperature of outside or inside vehicle.
   <dl title="[NoInterfaceObject] interface Temperature : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute short interiorTemperature</dt>
+     <dt>readonly attribute float interiorTemperature</dt>
      <dd>the current temperature of the air inside of the vehicle (Unit: celsius)</dd>
-     <dt>readonly attribute short exteriorTemperature</dt>
+     <dt>readonly attribute float exteriorTemperature</dt>
      <dd>the current temperature of the air around the vehicle (Unit: celsius)</dd>
   </dl>
 
@@ -1370,6 +1447,16 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
         <dd>current status of steering wheel heater ( 0: off, 1: least warm ~ 10: warmest ).</dd>
   </dl>
   <p><a>ClimateControl</a> can be used to send user's request for changing setting.</p>
+</section>
+
+<!------------------------ Interface AtmosphericPressure ------------------------------>
+<section>
+  <h3><a>AtmosphericPressure</a> Interface</h3>
+  <p>The <a>AtmosphericPressure</a> interface provides information about the current atmospheric pressure outside of the vehicle.
+  <dl title="[NoInterfaceObject] interface AtmosphericPressre : VehicleCommonDataType" class="idl">
+      <dt>readonly attribute unsigned short pressure</dt>
+      <dd>the current atmospherics pressure outside of the vehicle (Unit: hectopascal)</dd>
+  </dl>
 </section>
 
 </section>
