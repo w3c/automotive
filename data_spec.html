@@ -173,7 +173,7 @@
 <section>
   <h3><a>SizeConfiguration</a> Interface</h3>
   <p>The <a>SizeConfiguration</a> interface provides size and shape information about a
-  vehicle as a whole.
+  vehicle as a whole.</p>
   <dl title="[NoInterfaceObject] interface SizeConfiguration : VehicleCommonDataType" class="idl">
      <p class="note">add weight (front and rear) and ground clearance</p>
      <dt>readonly attribute unsigned short ? width</dt>
@@ -247,7 +247,7 @@
 <section>
   <h3><a>TransmissionConfiguration</a> Interface</h3>
   <p>The <a>TransmissionConfiguration</a> interface provides transmission configuration
-	information information about a vehicle.
+	information information about a vehicle.</p>
 
   <dl title="enum TransmissionGearTypeEnum" class="idl">
     <dt>auto</dt>
@@ -266,7 +266,7 @@
 <section>
   <h3><a>WheelConfiguration</a> Interface</h3>
   <p>The <a>WheelConfiguration</a> interface provides wheel configuration information 
-  about a vehicle.
+  about a vehicle.</p>
   <dl title="[NoInterfaceObject] interface WheelConfiguration : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned short ? wheelRadius</dt>
      <dd>Radius of the front wheel (Unit: millimeters)</dd>
@@ -279,7 +279,7 @@
 <section>
   <h3><a>SteeringWheelConfiguration</a> Interface</h3>
   <p>The <a>SteeringWheelConfiguration</a> interface provides steering wheel configuration
-	information information about a vehicle.
+	information information about a vehicle.</p>
   <dl title="[NoInterfaceObject] interface SteeringWheelConfiguration : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned boolean? steeringWheelLeft</dt>
      <dd>True if steering wheel is on left side of vehicle</dd>          
@@ -347,8 +347,8 @@
 
 <!------------------------ Interface VehicleSpeed ------------------------>
 <section>
-  <h3><a>VehicleSpeed</a> Interface</h3> <p>The <a>VehicleSpeed</a>
-  represents vehicle speed information</p>
+  <h3><a>VehicleSpeed</a> Interface</h3>
+  <p>The <a>VehicleSpeed</a> interface represents vehicle speed information</p>
   
   <dl title="[NoInterfaceObject] interface VehicleSpeed : VehicleCommonDataType"
   class="idl">
@@ -359,7 +359,8 @@
 
 <!------------------------ Interface WheelSpeed ------------------------>
 <section>
-  <h3><a>WheelSpeed</a> Interface</h3> represents wheel speed information.</p>
+  <h3><a>WheelSpeed</a> Interface</h3>
+  <p>The <a>WheelSpeed</a> interface represents wheel speed information.</p>
 
   <dl title="[NoInterfaceObject] interface WheelSpeed : VehicleCommonDataType"
       class="idl">
@@ -372,8 +373,8 @@
 
 <!------------------------ Interface EngineSpeed ------------------------>
 <section>
-  <h3><a>EngineSpeed</a> Interface</h3> <p>The <a>EngineSpeed</a>
-  represents engine speed information</p>
+  <h3><a>EngineSpeed</a> Interface</h3>
+  <p>The <a>EngineSpeed</a> interface represents engine speed information.</p>
   
   <dl title="[NoInterfaceObject] interface EngineSpeed : VehicleCommonDataType"
   class="idl">
@@ -384,8 +385,8 @@
 
 <!------------------------ Interface VehiclePowerModeType ------------------------>
 <section>
-  <h3><a>VehiclePowerModeType</a> Interface</h3> <p>The <a>VehiclePowerModeType</a>
-  represents position of the ignition switch</p>
+  <h3><a>VehiclePowerModeType</a> Interface</h3>
+  <p>The <a>VehiclePowerModeType</a> interface represents position of the ignition switch.</p>
 
   <dl title="enum VehiclePowerMode"
   class="idl">
@@ -408,8 +409,8 @@
 
 <!------------------------ Interface PowerTrainTorque ------------------------>
 <section>
-  <h3><a>PowerTrainTorque</a> Interface</h3> <p>The <a>PowerTrainTorque</a>
-  represents powertrain torque</p>
+  <h3><a>PowerTrainTorque</a> Interface</h3>
+  <p>The <a>PowerTrainTorque</a> interface represents powertrain torque.</p>
   
   <dl title="[NoInterfaceObject] interface PowerTrainTorque : VehicleCommonDataType"
   class="idl">
@@ -421,7 +422,7 @@
 <!------------------------ Interface AcceleratorPedalPosition ------------------------>
 <section>
   <h3><a>AcceleratorPedalPosition</a> Interface</h3> <p>The <a>AcceleratorPedalPosition</a>
-  represents the accelerator pedal position</p>
+  interface represents the accelerator pedal position.</p>
   
   <dl title="[NoInterfaceObject] interface AcceleratorPedalPosition : VehicleCommonDataType"
   class="idl">
@@ -433,7 +434,7 @@
 <!------------------------ Interface ThrottlePosition ------------------------>
 <section>
   <h3><a>ThrottlePosition</a> Interface</h3> <p>The <a>ThrottlePosition</a>
-  represents position of the throttle</p>
+  represents position of the throttle.</p>
   
   <dl title="[NoInterfaceObject] interface ThrottlePosition : VehicleCommonDataType"
   class="idl">
@@ -444,8 +445,8 @@
 
 <!------------------------ Interface TripMeter ------------------------>
 <section>
-  <h3><a>TripMeter</a> Interface</h3> <p>The <a>TripMeter</a>
-  represents trip meter</p>
+  <h3><a>TripMeter</a> Interface</h3> <p>The <a>TripMeter</a> interface
+  represents trip meter.</p>
   <div class="issue">This needs help.  we need to support N trip meters</div>
   <dl title="[NoInterfaceObject] interface TripMeter : VehicleCommonDataType"
   class="idl">
@@ -460,8 +461,8 @@
 
 <!------------------------ Interface  Diagnostic ------------------------>
 <section>
-  <h3><a>Diagnostic</a> Interface</h3> <p>The <a>Diagnostic</a>
-  represents Diagnostic interface to malfunction indicator light information</p>
+  <h3><a>Diagnostic</a> Interface</h3> <p>The <a>Diagnostic</a> interface
+  represents Diagnostic interface to malfunction indicator light information.</p>
   
   <dl title="[NoInterfaceObject] interface Diagnostic : VehicleCommonDataType"
   class="idl">
@@ -576,7 +577,7 @@
 <!------------------------ Interface Chime ------------------------------>
 <section>
   <h3><a>Chime</a> Interface</h3>
-  <p>The <a>Chime</a> interface represents horn status.
+  <p>The <a>Chime</a> interface represents chime status.
   <dl title="[NoInterfaceObject] interface Chime : VehicleCommonDataType" class="idl">
      <dt>readonly attribute boolean status</dt>
      <dd>MUST return Chime status when a door is open: on (true) or off (false)</dd>
@@ -638,7 +639,7 @@
 <!------------------------ Interface EngineCoolant ------------------------>
 <section>
   <h3><a>EngineCoolant</a> Interface</h3> <p>The <a>EngineCoolant</a>
-  represents values related to engine coolant</p>
+  represents values related to engine coolant.</p>
   
   <dl title="[NoInterfaceObject] interface EngineCoolant : VehicleCommonDataType"
   class="idl">
@@ -652,7 +653,7 @@
 <!------------------------ Interface SteeringWheel ------------------------>
 <section>
   <h3><a>SteeringWheel</a> Interface</h3> <p>The <a>SteeringWheel</a>
-  represents steering wheel data</p>
+  represents steering wheel data.</p>
   
   <dl title="[NoInterfaceObject] interface SteeringWheel : VehicleCommonDataType"
   class="idl">
@@ -664,7 +665,7 @@
 <!------------------------ Interface WheelTick ------------------------>
 <section>
   <h3><a>WheelTick</a> Interface</h3> <p>The <a>WheelTick</a>
-  number of ticks per second.  Available Zones: yes</p>
+  number of ticks per second.</p>
   
   <dl title="[NoInterfaceObject] interface WheelTick : VehicleCommonDataType"
   class="idl">
@@ -1087,8 +1088,8 @@
 
 <!------------------- AntilockBrakingSystem Interface  -------------------->
 <section>
-  <h3><a>AntilockBrakingSystem</a> Interface</h3> <p>The <a>AntilockBrakingSystem</a>
-  provides status of ABS(Antilock Braking System) status and setting</p>
+  <h3><a>AntilockBrakingSystem</a> Interface</h3> <p>The <a>AntilockBrakingSystem</a> interface
+  provides status of ABS(Antilock Braking System) status and setting.</p>
 
   <dl title="[NoInterfaceObject] interface AntilockBrakingSystem : VehicleCommonDataType"
   class="idl">
@@ -1101,8 +1102,8 @@
 
 <!------------------- TractionControlSystem Interface  -------------------->
 <section>
-  <h3><a>TractionControlSystem</a> Interface</h3> <p>The <a>TractionControlSystem</a>
-  provides status of TCS(Traction Control System) status and setting</p>
+  <h3><a>TractionControlSystem</a> Interface</h3> <p>The <a>TractionControlSystem</a> interface
+  provides status of TCS(Traction Control System) status and setting.</p>
 
   <dl title="[NoInterfaceObject] interface TractionControlSystem : VehicleCommonDataType"
   class="idl">
@@ -1115,8 +1116,8 @@
 
 <!------------------- ElectronicStabilityControl Interface  -------------------->
 <section>
-  <h3><a>ElectronicStabilityControl</a> Interface</h3> <p>The <a>ElectronicStabilityControl</a>
-  provides status of ESC(Electronic Stability Control) status and setting</p>
+  <h3><a>ElectronicStabilityControl</a> Interface</h3> <p>The <a>ElectronicStabilityControl</a> interface
+  provides status of ESC(Electronic Stability Control) status and setting.</p>
 
   <dl title="[NoInterfaceObject] interface ElectronicStabilityControl : VehicleCommonDataType"
   class="idl">
@@ -1129,8 +1130,8 @@
 
 <!---------------------------- TopSpeedLimit Interface  ------------------------>
 <section>
-  <h3><a>TopSpeedLimit</a> Interface</h3> <p>The <a>TopSpeedLimit</a>
-  provides the current setting of top speed limit of the vehicle</p>
+  <h3><a>TopSpeedLimit</a> Interface</h3> <p>The <a>TopSpeedLimit</a> interface
+  provides the current setting of top speed limit of the vehicle.</p>
 
   <dl title="[NoInterfaceObject] interface TopSpeedLimit : VehicleCommonDataType"
   class="idl">
@@ -1141,8 +1142,8 @@
 
 <!---------------------------- AirbagStatus Interface  ------------------------>
 <section>
-  <h3><a>AirbagStatus</a> Interface</h3> <p>The <a>AirbagStatus</a>
-  provides the current status of airbags in each zones of the vehicle</p>
+  <h3><a>AirbagStatus</a> Interface</h3> <p>The <a>AirbagStatus</a> interface
+  provides the current status of airbags in each zones of the vehicle.</p>
 
   <dl title="[NoInterfaceObject] interface AirbagStatus : VehicleCommonDataType"
   class="idl">
@@ -1157,7 +1158,7 @@
 
 <!---------------------------- Door Interface  ------------------------>
 <section>
-  <h3><a>Door</a> Interface</h3> <p>The <a>Door</a>
+  <h3><a>Door</a> Interface</h3> <p>The <a>Door</a> interface
   provides the current status of doors in each zones of the vehicle.</p>
 
 	<dl title="enum DoorOpenStatus" class="idl">
@@ -1183,8 +1184,8 @@
 
 <!--------------------- ChildSafetyLock Interface  --------------------->
 <section>
-  <h3><a>ChildSafetyLock</a> Interface</h3> <p>The <a>ChildSafetyLock</a>
-  provides the current setting of Child Safety Lock</p>
+  <h3><a>ChildSafetyLock</a> Interface</h3> <p>The <a>ChildSafetyLock</a> interface
+  provides the current setting of Child Safety Lock.</p>
 
   <dl title="[NoInterfaceObject] interface ChildSafetyLock : VehicleCommonDataType"
   class="idl">
@@ -1197,7 +1198,7 @@
 
 <!---------------------------- Seat Interface  ------------------------>
 <section>
-  <h3><a>Seat</a> Interface</h3> <p>The <a>Seat</a>
+  <h3><a>Seat</a> Interface</h3> <p>The <a>Seat</a> interface
   provides the current occupant information and seatbelt status of a seat in different zones of the vehicle.</p>
 
 	<dl title="enum OccupantStatus" class="idl">
