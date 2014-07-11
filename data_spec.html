@@ -199,7 +199,7 @@
      </div></dd>
      <dt>readonly attribute unsigned short ? totalDoors</dt>
      <dd>Total number of doors on the vehicle (all doors opening to the interior, 
-     including hatchbacks) (Min: 0, Max: 10)</dd>
+     including hatchbacks)</dd>
      <div class="issue">(Kevron) Is it possible to use the zone concept with doors?  Doing so would eliminate the need for complex arrays.</div>
      </dd>
   </dl>
@@ -210,8 +210,6 @@
   <h3><a>FuelConfiguration</a> Interface</h3>
   <p>The <a>FuelConfiguration</a> interface provides information about the fuel 
   configuration of a vehicle.</p>
-  <p class="note">This is having trouble showing up</p>
-  <p class="note">Bart Hanssens suggests being able to accommodate use case of multiple.  Could this be handled here.  Need elaboration.</p>
 
   <dl title="enum FuelTypeEnum" class="idl">
     <dt>gasoline</dt>
@@ -233,7 +231,7 @@
   <dl title="enum RefuelPosition" class="idl">
     <dt>right</dt>
     <dd>Right side of vehicle referenced from driver position</dd>
-    <dt>left></dt>
+    <dt>left</dt>
     <dd>Left side of vehicle referenced from driver position</dd>
   </dl>
 
@@ -447,7 +445,7 @@
 <section>
   <h3><a>TripMeter</a> Interface</h3> <p>The <a>TripMeter</a>
   represents trip meter</p>
-  <!-- TODO: this needs help.  we need to support N trip meters -->
+  <div class="issue">This needs help.  we need to support N trip meters</div>
   <dl title="[NoInterfaceObject] interface TripMeter : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned long distance</dt>
@@ -1452,7 +1450,7 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
 <section>
   <h3><a>AtmosphericPressure</a> Interface</h3>
   <p>The <a>AtmosphericPressure</a> interface provides information about the current atmospheric pressure outside of the vehicle.
-  <dl title="[NoInterfaceObject] interface AtmosphericPressre : VehicleCommonDataType" class="idl">
+  <dl title="[NoInterfaceObject] interface AtmosphericPressure : VehicleCommonDataType" class="idl">
       <dt>readonly attribute unsigned short pressure</dt>
       <dd>the current atmospherics pressure outside of the vehicle (Unit: hectopascal)</dd>
   </dl>
