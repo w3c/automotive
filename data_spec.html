@@ -425,7 +425,7 @@
   <dl title="[NoInterfaceObject] interface AcceleratorPedalPosition : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned short value</dt>
-    <dd>Accelerator pedal position as a percentage (0%: released pedal, 100%: fully depressed)</dd>
+    <dd>Accelerator pedal position as a percentage (Unit: percentage, 0%: released pedal, 100%: fully depressed)</dd>
   </dl>
 </section>
 
@@ -437,7 +437,7 @@
   <dl title="[NoInterfaceObject] interface ThrottlePosition : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned short value</dt>
-    <dd>Throttle position as a percentage (0%: closed, 100%: fully open)</dd>
+    <dd>Throttle position as a percentage (Unit: percentage, 0%: closed, 100%: fully open)</dd>
   </dl>
 </section>
 
@@ -542,9 +542,9 @@
      <dt>attribute boolean highBeam</dt>
      <dd>MUST return HighBeam light status: on (true), off (false)</dd>
      <dt>attribute boolean? automaticHeadlights</dt>
-     <dd>MUST return whether automatic head lights are activated (true) or not (false)</dd>
+     <dd>MUST return whether automatic head lights status: activated (true) or not (false)</dd>
      <dt>attribute boolean? dynamicHighBeam</dt>
-     <dd>MUST return whether dynamic high beam is activated (true) or not (false)</dd>
+     <dd>MUST return whether dynamic high beam status: activated (true) or not (false)</dd>
   </dl>
 </section>
 
@@ -564,7 +564,7 @@
   <p>The <a>Horn</a> interface represents horn status.
   <dl title="[NoInterfaceObject] interface Horn : VehicleCommonDataType" class="idl">
      <dt>attribute boolean status</dt>
-     <dd>MUST return Horn status: On (true) or off (false)</dd>
+     <dd>MUST return Horn status: on (true) or off (false)</dd>
   </dl>
 </section>
 
@@ -574,7 +574,7 @@
   <p>The <a>Chime</a> interface represents horn status.
   <dl title="[NoInterfaceObject] interface Chime : VehicleCommonDataType" class="idl">
      <dt>readonly attribute boolean status</dt>
-     <dd>MUST return Chime status when a door is open: On (true) or off (false)</dd>
+     <dd>MUST return Chime status when a door is open: on (true) or off (false)</dd>
   </dl>
 </section>
 
@@ -592,7 +592,7 @@
      <dt>readonly attribute unsigned long averageConsumption</dt>
      <dd>MUST return average fuel consumption in per distance travelled (Unit:  milliliters per 100 kilometers).  Setting this to any value should reset the counter to '0'</dd>
      <dt>readonly attribute unsigned long fuelConsumedSinceRestart</dt>
-     <dd>MUST return fuel consumed since engine start; (Unit:  millileters per 100 kilometers)  resets to 0 each restart</dd>
+     <dd>MUST return fuel consumed since engine start; (Unit:  milliliters per 100 kilometers)  resets to 0 each restart</dd>
      <dt>readonly attribute unsigned long vehicleTimeSinceRestart</dt>
      <dd>MUST return time elapsed since vehicle restart (Unit:  seconds)</dd>
   </dl>
@@ -603,14 +603,16 @@
   <h3><a>EngineOil</a> Interface</h3>
   <p>The <a>EngineOil</a> interface represents engine oil status.
   <dl title="[NoInterfaceObject] interface EngineOil : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute unsigned short remaining</dt>
-     <dd>MUST return remaining engine oil as percentage of fullness</dd>
+    <dt>readonly attribute unsigned short level</dt>
+    <dd>MUST return engine oil level (Unit: percentage, 0%: empty, 100%: full</dd>
+     <dt>readonly attribute unsigned short lifeRemaining</dt>
+     <dd>MUST return remaining engine oil life (Unit: percentage, 0%:no life remaining, 100%: full life remaining</dd>
      <dt>readonly attribute long temperature</dt>
      <dd>MUST return Engine Oil Temperature (Unit: celcius)</dd>
      <dt>readonly attribute unsigned short pressure</dt>
      <dd>MUST return Engine Oil Pressure (Unit: kilopascals)</dd>
      <dt>readonly attribute boolean change</dt>
-     <dd>MUST return engine oil change indicator status</dd>
+     <dd>MUST return engine oil change indicator status: change oil (true) or no change (false)</dd>
   </dl>
 </section>
 
@@ -636,7 +638,7 @@
   <dl title="[NoInterfaceObject] interface EngineCoolant : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned short level</dt>
-    <dd>MUST return engine coolant level as percentage of fullness</dd>
+    <dd>MUST return engine coolant level (Unit: percentage 0%: empty, 100%: full)</dd>
     <dt>readonly attribute unsigned short temperature</dt>
     <dd>MUST return engine coolant temperature (Unit: celcius)</dd>
   </dl>
@@ -650,7 +652,7 @@
   <dl title="[NoInterfaceObject] interface SteeringWheel : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute short angle</dt>
-    <dd>MUST return angle of steering wheel off centerline (Unit:  degrees)</dd>
+    <dd>MUST return angle of steering wheel off centerline (Unit: degrees -:degrees to the left, +:degrees to the right)</dd>
   </dl>
 </section>
 
@@ -662,7 +664,7 @@
   <dl title="[NoInterfaceObject] interface WheelTick : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned long value</dt>
-    <dd>MUST return number of ticks per second.</dd>
+    <dd>MUST return number of ticks per second (Unit: ticks per second)</dd>
   </dl>
 </section>
 
@@ -773,7 +775,7 @@
   <dl title="[NoInterfaceObject] interface TransmissionClutch : VehicleCommonDataType" 
   class="idl">
      <dt>readonly attribute byte wear</dt>
-     <dd>transmission clutch wear (Unit: percentage, 0: no wear, 100: completely worn).<br>Available Zone: None</dd>
+     <dd>transmission clutch wear (Unit: percentage, 0%: no wear, 100%: completely worn).<br>Available Zone: None</dd>
   </dl>
 </section>
 
@@ -785,13 +787,13 @@
   <dl title="[NoInterfaceObject] interface BrakeMaintenance : VehicleCommonDataType"
   class="idl">
      <dt>readonly attribute unsigned short ? fluidLevel</dt>
-     <dd>brake fluid level (Unit: percentage, 0: empty, 100: full).</dd>
+     <dd>brake fluid level (Unit: percentage, 0%: empty, 100%: full).</dd>
      <dt>readonly attribute boolean? fluidLevelLow</dt>
-     <dd>true if brake fluid level is low, false otherwise.</dd>
+     <dd>true if brake fluid level: low (true), not low (false)</dd>
      <dt>readonly attribute byte? padWear</dt>
-     <dd>front left brake pad wear (Unit: percentage, 0: no wear, 100: completely worn).</dd></dd>
+     <dd>front left brake pad wear (Unit: percentage, 0%: no wear, 100%: completely worn).</dd></dd>
      <dt>readonly attribute boolean? brakesWorn</dt>
-     <dd>true if brakes are worn, false otherwise.<br></dd>
+     <dd>true if brakes are worn: worn (true), not worn (false)<br></dd>
   </dl>
 </section>
 
@@ -803,9 +805,9 @@
   <dl title="[NoInterfaceObject] interface WasherFluid : VehicleCommonDataType" 
   class="idl">
      <dt>readonly attribute unsigned short ? level</dt>
-     <dd>brake fluid level (Unit: percentage, 0: empty, 100: full).</dd>
+     <dd>brake fluid level (Unit: percentage, 0%: empty, 100%: full).</dd>
      <dt>readonly attribute boolean? levelLow</dt>
-     <dd>true if washer fluid level is low, false otherwise.</dd>
+     <dd>true if washer fluid level is low: low (true), not low: (false)</dd>
   </dl>
 </section>
 
@@ -817,7 +819,7 @@
   <dl title="[NoInterfaceObject] interface MalfunctionIndicator : VehicleCommonDataType" 
   class="idl">
      <dt>readonly attribute boolean on</dt>
-     <dd>true if malfunction indicator lamp is on, false otherwise.</dd>
+     <dd>true if malfunction indicator lamp is on:  lamp on (true), lamp not on (false)</dd>
   </dl>
 </section>
 
@@ -829,7 +831,7 @@
   <dl title="[NoInterfaceObject] interface BatteryStatus : VehicleCommonDataType" 
   class="idl">
      <dt>readonly attribute unsigned short ? chargeLevel</dt>
-     <dd>battery charge level (Unit: percentage, 0: empty, 100: full).</dd>
+     <dd>battery charge level (Unit: percentage, 0%: empty, 100%: full).</dd>
      <dt>readonly attribute unsigned short ? voltage</dt>
      <dd>battery voltage (Unit: volts).</dd>
      <dt>readonly attribute unsigned short ? current</dt>
@@ -845,11 +847,9 @@
   <dl title="[NoInterfaceObject] interface Tire : VehicleCommonDataType" 
   class="idl">
      <dt>readonly attribute boolean? pressureLow</dt>
-     <dd>true if any tire pressure is low, false otherwise.</dd>
+     <dd>true if any tire pressure is low: pressure low (true), pressure not low (false)</dd>
      <dt>readonly attribute unsigned short ? pressure</dt>
      <dd>tire pressure (Unit: kilopascal).</dd>
-     <dt>readonly attribute boolean? pressureLow</dt>
-     <dd>true if a tire pressure is low, false otherwise.</dd>
      <dt>readonly attribute short? temperature</dt>
      <dd>tire temperature (Unit: celsius). </dd>
   </dl>
@@ -911,7 +911,7 @@
   <dl title="[NoInterfaceObject] interface UnitsOfMeasure : VehicleCommonDataType" class="idl">
      <dt>attribute boolean ? isMKSSystem</dt>
      <dd>measurement system currently being used by vehicle.
-     'true' means the current measurement system is MKS-km(litter).
+     'true' means the current measurement system is MKS-km(liter).
      'false' means it is US customary units-mile(gallon).
      </dd>
      <dt>attribute DOMString? unitsFuelVolume</dt>
@@ -934,11 +934,11 @@
   <dl title="[NoInterfaceObject] interface Mirror : VehicleCommonDataType" class="idl">
      <dt>attribute unsigned short ? mirrorTilt</dt>
      <dd>Mirror tilt position in percentage distance travelled, from downward-facing to 
-     upward-facing position (Unit: percentage, 0 represents center position)
+     upward-facing position (Unit: percentage, 0%:center position, -100%:fully downward, 100%:full upward)
      <br>Available Zone: Left, Right, Center</dd>
      <dt>attribute unsigned short ? mirrorPan</dt>
      <dd>Mirror pan position in percentage distance travelled, from left to right 
-     position (Unit: percentage, 0 represents center position)
+     position (Unit: percentage, %0:center position, -100%:fully left, 100%:fully right)
      <br>Available Zone: Left, Right, Center</dd>
   </dl>	     
 </section>
@@ -951,27 +951,27 @@
    <dl title="[NoInterfaceObject] interface SeatAdjustment : VehicleCommonDataType" class="idl">
      <dt>attribute unsigned short ? reclineSeatBack</dt>
      <dd>Seat back recline position as percent to completely reclined 
-     (Unit: percentage, center 0 represents the seatback upright at a 90 degree angle)
+     (Unit: percentage, 0%:upright at a 90 degree angle, 100%:fully reclined, -100%:fully forward)
      <br>Available Zone: Front, Middle, Rear, Left, Right, Center</dd>
      <dt>attribute unsigned short ? seatSlide</dt>
      <dd>Seat slide position as percentage of distance travelled away from forwardmost
-     position (Unit: percentage, 0 represents seat position farthest forward)
+     position (Unit: percentage, 0%:farthest forward, 100%:farthest back)
      <br>Available Zone: Front, Middle, Rear, Left, Right, Center</dd>
      <dt>attribute unsigned short ? seatCushionHeight</dt>
      <dd> Seat cushion height position as a percentage of upward distance travelled 
-     (Unit: percentage, 0 represents the lowest seat position)
+     (Unit: percentage, 0%:lowest. 100%:highest)
      <br>Available Zone: Front, Middle, Rear, Left, Right, Center</dd>
      <dt>attribute unsigned short ? seatHeadrest</dt>
      <dd> Headrest position as a percentage of upward distance travelled
-     (Unit: percentage,  0 represents the lowest headrest position)
+     (Unit: percentage,  0%:lowest, 100%:highest)
      <br>Available Zone: Front, Middle, Rear, Left, Right, Center</dd>
      <dt>attribute unsigned short ? seatBackCushion</dt>
      <dd>Back cushion position as a percentage of lumbar curvature 
-     (Unit: percentage,  0 represents flat, and 100 is maximum curvature)
+     (Unit: percentage,  0%:flat, 100%: maximum curvature)
      <br>Available Zone: Front, Middle, Rear, Left, Right, Center</dd>
      <dt>attribute unsigned short ? seatSideCushion</dt>
      <dd>Sides of back cushion position as a percentage of curvature 
-     (Unit: percentage,  0 represents flat, and 100 is maximum curvature)
+     (Unit: percentage,  0%:flat, 100%:maximum curvature)
      <br>Available Zone: Front, Middle, Rear, Left, Right, Center</dd>
   </dl>	     
 </section>
@@ -984,11 +984,11 @@
   <dl title="[NoInterfaceObject] interface SteeringWheel : VehicleCommonDataType" class="idl">
      <dt>attribute unsigned short ? steeringWheelTelescopingPosition</dt>
      <dd>Steering wheel position as percentage of extension from the dash 
-     (Unit: percentage, 0 represents steering wheel positioned closest to dash)
+     (Unit: percentage, 0%:closest to dash, 100%:farthest from dash)
      </dd>
      <dt>attribute unsigned short ? steeringWheelPositionTilt</dt>
      <dd>Steering wheel position as percentage of tilt
-     (Unit: percentage, Resolution: 1, 0 represents steering wheel tilted lowest downward-facing position)
+     (Unit: percentage, 0%:tilted lowest downward-facing position, 100%:highest upward-facing position)
      </dd>
      
   </dl>
@@ -1029,7 +1029,7 @@
   <dl title="[NoInterfaceObject] interface DashboardIllumination : VehicleCommonDataType" class="idl">
      <dt>attribute DOMString ? dashboardIllumination</dt>
      <dd>Illumination of dashboard as a percentage 
-     (Unit: percentage, 0 represents none and 100 maximum illumination)
+     (Unit: percentage, 0%:none, 100%:maximum illumination)
      </dd>
   </dl>	     
 </section>
@@ -1040,9 +1040,7 @@
   <p>The <a>VehicleSound</a> interface provides or sets information about vehicle sound.
   <dl title="[NoInterfaceObject] interface VehicleSound : VehicleCommonDataType" class="idl">
      <dt>attribute boolean activeNoiseControlMode</dt>
-     <dd>Active noise control status 
-     (False: not-activated, True: activated)
-     </dd>
+     <dd>Active noise control status: not-activated (false), activated (true)</dd>
      <dt>attribute DOMString ? engineSoundEnhancementMode</dt>
      <dd>Engine sound enhancement mode where a null string means not-activated, and any 
      other value represents a manufacture specific setting
@@ -1088,9 +1086,9 @@
   <dl title="[NoInterfaceObject] interface AntilockBrakingSystem : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute boolean enabled</dt>
-    <dd>MUST return whether or not the ABS Setting is enabled (true) or disabled (false)</dd>
+    <dd>MUST return whether or not the ABS Setting is enabled: enabled (true) or disabled (false)</dd>
     <dt>readonly attribute boolean engaged</dt>
-    <dd>MUST return whether or not the ABS is engaged (true) or idle (false)</dd>
+    <dd>MUST return whether or not the ABS is engaged: engaged (true) or idle (false)</dd>
   </dl>
 </section>
 
@@ -1102,9 +1100,9 @@
   <dl title="[NoInterfaceObject] interface TractionControlSystem : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute boolean enabled</dt>
-    <dd>MUST return whether or not the TCS Setting is enabled (true) or disabled (false)</dd>
+    <dd>MUST return whether or not the TCS Setting is enabled: enabled (true) or disabled (false)</dd>
     <dt>readonly attribute boolean engaged</dt>
-    <dd>MUST return whether or not the TCS is engaged (true) or idle (false)</dd>
+    <dd>MUST return whether or not the TCS is engaged: engaged (true) or idle (false)</dd>
   </dl>
 </section>
 
@@ -1116,9 +1114,9 @@
   <dl title="[NoInterfaceObject] interface ElectronicStabilityControl : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute boolean enabled</dt>
-    <dd>MUST return whether or not the ESC Setting is enabled (true) or disabled (false)</dd>
+    <dd>MUST return whether or not the ESC Setting is enabled: enabled (true) or disabled (false)</dd>
     <dt>readonly attribute boolean engaged</dt>
-    <dd>MUST return whether or not the ESC is engaged (true) or idle (false)</dd>
+    <dd>MUST return whether or not the ESC is engaged: engaged (true) or idle (false)</dd>
   </dl>
 </section>
 
@@ -1142,9 +1140,9 @@
   <dl title="[NoInterfaceObject] interface AirbagStatus : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute boolean activated</dt>
-    <dd>MUST return whether or not the airbag is activated (true) or deactivated (false)</dd>
+    <dd>MUST return whether or not the airbag is activaged: activated (true) or deactivated (false)</dd>
     <dt>readonly attribute boolean deployed</dt>
-    <dd>MUST return whether the airbag is deployed (true) or not (false)</dd>
+    <dd>MUST return whether the airbag is deployed: deployed (true) or not (false)</dd>
   </dl>
   <p>Available Zone: Driver, Passenger, Front, Rear, Middle, Left, Right</p>
 </section>
@@ -1168,7 +1166,7 @@
     <dt>readonly attribute DoorOpenStatus status</dt>
     <dd>MUST return the status of door's open status</dd>
     <dt>attribute boolean lock</dt>
-    <dd>MUST return whether or not the door is locked (true) or unlocked (false)</dd>
+    <dd>MUST return whether or not the door is locked: locked (true) or unlocked (false)</dd>
   </dl>
 
 </section>
@@ -1181,7 +1179,7 @@
   <dl title="[NoInterfaceObject] interface ChildSafetyLock : VehicleCommonDataType"
   class="idl">
     <dt>attribute boolean lock</dt>
-    <dd>MUST return whether or not the Child Safety Lock is locked (true) or unlocked (false)</dd>
+    <dd>MUST return whether or not the Child Safety Lock is locked: locked (true) or unlocked (false)</dd>
   </dl>
 </section>
 
@@ -1222,7 +1220,7 @@
     <dt>readonly attribute OccupantStatus occupant</dt>
     <dd>MUST return the status of seat occupant</dd>
     <dt>readonly attribute boolean seatbelt</dt>
-    <dd>MUST return whether or not the seat belt is fasten (true) or unfasten (false)</dd>
+    <dd>MUST return whether or not the seat belt is fastened: fastened (true) or unfastened (false)</dd>
     <dt>readonly attribute DOMString ? occupantName</dt>
     <dd>Must return occupant identifier</dd>
     <dt>readonly attribute IdentificationType identificationType</dt>
@@ -1275,12 +1273,6 @@
      <dt>readonly attribute float exteriorTemperature</dt>
      <dd>the current temperature of the air around the vehicle (Unit: celsius)</dd>
   </dl>
-
-  <p>Unit is deg. of Celsius<br>
-Resolution is 0.5<br>
-Range is -70 to 125<br>
-This interface is optional
-  </p>
   <p class="note">There's relevant exploratory work in W3C.<br>
 <a href="https://dvcs.w3.org/hg/dap/raw-file/default/temperature/Overview.html">https://dvcs.w3.org/hg/dap/raw-file/default/temperature/Overview.html</a></br>
 However, interior or exterior temperature MUST be distinguished in vehicles.
@@ -1293,7 +1285,7 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
   <p>The <a>RainSensor</a> interface provides information about ambient light levels.
   <dl title="[NoInterfaceObject] interface RainSensor : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned byte rain</dt>
-     <dd>the amount of rain detected by the rain sensor. level of rain intensity ( 0: No Rain ~ 10: Heaviest Rain)</dd>
+     <dd>the amount of rain detected by the rain sensor. level of rain intensity (0: No Rain, 10:Heaviest Rain)</dd>
   </dl>
 </section>
 
@@ -1303,9 +1295,9 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
   <p>The <a>WiperStatus</a> interface represents the status of wiper operation.
   <dl title="[NoInterfaceObject] interface WiperStatus : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned byte frontWiperSpeed</dt>
-     <dd>current speed interval of wiping windshield ( 0: off, 1: Slowest ~ 10: Fastest )</dd>
+     <dd>current speed interval of wiping windshield (0: off, 1: Slowest, 10: Fastest )</dd>
      <dt>readonly attribute unsigned byte? rearWiperSpeed</dt>
-     <dd>current speed interval of wiping rear window ( 0: off, 1: Slowest ~ 10: Fastest )</dd>
+     <dd>current speed interval of wiping rear window ( 0: off, 1: Slowest, 10: Fastest )</dd>
   </dl>
   <p>rearWiperSpeed is optional depending on vehicle type.</p>
 </section>
@@ -1337,7 +1329,7 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
   <dl title="[NoInterfaceObject] interface WiperSetting : VehicleCommonDataType" class="idl">
      <dt>attribute WiperControl	frontWiperControl</dt>
      <dd>current setting of the front wiper controller. It can be used to send user's request for changing setting.</dd>
-     <dt>attribute WiperControl?	rearWiperControl</dt>
+     <dt>attribute WiperControl? rearWiperControl</dt>
      <dd>current setting of the rear wiper controller. It can be used to send user's request for changing setting.</dd>
   </dl>
   <p>rearWiperControl is optional depending on vehicle type.</p>
@@ -1364,9 +1356,9 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
   <p>The <a>Sunroof</a> interface represents the current status of Sunroof.
   <dl title="[NoInterfaceObject] interface Sunroof : VehicleCommonDataType" class="idl">
      <dt>attribute unsigned byte openness</dt>
-     <dd>current status of Sunroof as a percentage of openness ( 0: Closed, 100: Fully Opened).</dd>
+     <dd>current status of Sunroof as a percentage of openness (0%: closed, 100%: fully opened)</dd>
      <dt>attribute unsigned byte tilt</dt>
-     <dd>current status of Sunroof as a percentage of tilted ( 0: Closed, 100: Maximum Tilted).</dd>
+     <dd>current status of Sunroof as a percentage of tilted (0%: closed, 100%: maximum tilted)</dd>
   </dl>
   <p>Both can be used to send user's request for changing setting.</p>
 </section>
@@ -1401,9 +1393,9 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
 
   <dl title="[NoInterfaceObject] interface SideWindow : VehicleCommonDataType" class="idl">
   	<dt>attribute unsigned boolean? lock</dt>
-  	<dd>MUST return whether or not the window is locked (true) or unlocked (false)</dd>
+  	<dd>MUST return whether or not the window is locked: locked (true) or unlocked (false)</dd>
   	<dt>attribute unsigned byte? openness</dt>
-  	<dd>current status of the side window as a percentage of openness. (0:Closed, 100:Fully Opened)</dd>
+  	<dd>current status of the side window as a percentage of openness. (0%:Closed, 100%:Fully Opened)</dd>
   </dl>
 </section>
 
@@ -1427,21 +1419,21 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
 		<dt>attribute AirflowDirection airflowDirection</dt>
 		<dd>current status of the direction of the air flow through the ventilation system</dd>
 		<dt>attribute unsigned byte fanSpeedLevel</dt>
-		<dd>current status of the fan speed of the air flowing ( 0: off, 1: weakest ~ 10: strongest )</dd>
+		<dd>current status of the fan speed of the air flowing (0: off, 1: weakest, 10: strongest )</dd>
 		<dt>attribute byte? targetTemperature</dt>
 		<dd>current setting of the desired temperature (Unit: celsius)</dd>
 		<dt>attribute boolean airConditioning</dt>
-		<dd>current status of the air conditioning system (true: on, false: off)</dd>
+		<dd>current status of the air conditioning system: on (true) or off (false)</dd>
 		<dt>attribute boolean heater</dt>
-		<dd>current status of the heating system (true: on, false: off)</dd>
+		<dd>current status of the heating system: on (true) or off (false)</dd>
 		<dt>attribute unsigned byte? seatHeater</dt>
-		<dd>current status of the seat warmer ( 0: off, 1: least warm ~ 10: warmest )</dd>
+		<dd>current status of the seat warmer ( 0: off, 1: least warm, 10: warmest )</dd>
 		<dt>attribute unsigned byte? seatCooler</dt>
-		<dd>current status of the seat ventilation ( 0: off, 1: least warm ~ 10: warmest )</dd>
+		<dd>current status of the seat ventilation ( 0: off, 1: least warm, 10: warmest )</dd>
         <dt>attribute boolean airRecirculation</dt>
-        <dd>current setting of air recirculation. (true : on, false : pulling in outside air).</dd>
+        <dd>current setting of air recirculation: on (true) or pulling in outside air (false).</dd>
         <dt>attribute unsigned byte? steeringWheelHeater</dt>
-        <dd>current status of steering wheel heater ( 0: off, 1: least warm ~ 10: warmest ).</dd>
+        <dd>current status of steering wheel heater ( 0: off, 1: least warm, 10: warmest ).</dd>
   </dl>
   <p><a>ClimateControl</a> can be used to send user's request for changing setting.</p>
 </section>
@@ -1555,9 +1547,9 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
 
   <dl title="[NoInterfaceObject] interface ParkingLights : VehicleCommonDataType" class="idl">
      <dt>readonly attribute boolean status</dt>
-     <dd>MUST return parking light status: on (true), off (false)
+     <dd>MUST return parking light status: on (true) or off (false)
      <dt>attribute boolean setting</dt>
-     <dd>MUST return whether or not the Parking Lights is enabled (true) or disabled (false).<br>
+     <dd>MUST return whether or not the Parking Lights is enabled: enabled (true) or disabled (false).<br>
        It can be used to send user's request for changing setting.</dd>
   </dl>
 </section>
