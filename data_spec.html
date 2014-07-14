@@ -163,17 +163,17 @@
     </dl>
 
   <dl title="[NoInterfaceObject] interface Identification : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute DOMString ? VIN</dt>
+     <dt>readonly attribute DOMString? VIN</dt>
      <dd>the Vehicle Identification Number (ISO 3833)</dd>
-     <dt>readonly attribute DOMString ? WMI</dt>
+     <dt>readonly attribute DOMString? WMI</dt>
      <dd>the World Manufacture Identifier defined by SAE ISO 3780:2009.  3 characters.</dd>
-     <dt>readonly attribute VehicleTypeEnum ? vehicleType</dt>
+     <dt>readonly attribute VehicleTypeEnum? vehicleType</dt>
       <dd>vehicle type</dd>
-     <dt>readonly attribute DOMString ? brand</dt>
+     <dt>readonly attribute DOMString? brand</dt>
      <dd>vehicle brand name</dd>
-     <dt>readonly attribute DOMString ? model</dt>
+     <dt>readonly attribute DOMString? model</dt>
      <dd>vehicle model</dd>
-     <dt>readonly attribute unsigned short ? year</dt>
+     <dt>readonly attribute unsigned short? year</dt>
      <dd>vehicle model year</dd>
   </dl>
   <div class="note">possibly use SAE/ISO to define types</div>
@@ -189,16 +189,16 @@
   vehicle as a whole.</p>
   <dl title="[NoInterfaceObject] interface SizeConfiguration : VehicleCommonDataType" class="idl">
      <p class="note">add weight (front and rear) and ground clearance</p>
-     <dt>readonly attribute unsigned short ? width</dt>
+     <dt>readonly attribute unsigned short? width</dt>
      <dd>Widest dimension of the vehicle (not including the side mirrors) (Unit:  millimeters
      Note:  Number may be an approximation, and should not be expected to be exact.)</dd>
-     <dt>readonly attribute unsigned short ? height</dt>
+     <dt>readonly attribute unsigned short? height</dt>
      <dd>Distance from the ground to the highest point of the vehicle (not including antennas)
      (Unit:  millimeters Note:  Number may be an approximation, and should not be expected to be exact.)</dd>
-     <dt>readonly attribute unsigned short ? length</dt>
+     <dt>readonly attribute unsigned short? length</dt>
      <dd>Distance from front bumper to rear bumper
      (Unit:  millimeters Note:  Number may be an approximation, and should not be expected to be exact.)</dd>
-     <dt>readonly attribute unsigned short[] ? doorsCount</dt>
+     <dt>readonly attribute unsigned short[]? doorsCount</dt>
      <dd>list of car doors, organized in "rows" with number doors in each row.(Per Row -
      Min: 0, Max: 3)
      <div class="issue">
@@ -210,7 +210,7 @@
      If an App can't know the exact data from Identification (from pre-stored data),
      the app can draw the vehicle as similarly as possible by using both Door Count and Vehicle Types.
      </div></dd>
-     <dt>readonly attribute unsigned short ? totalDoors</dt>
+     <dt>readonly attribute unsigned short? totalDoors</dt>
      <dd>Total number of doors on the vehicle (all doors opening to the interior,
      including hatchbacks) (Min: 0, Max: 10)</dd>
 
@@ -252,9 +252,9 @@
   </dl>
 
   <dl title="[NoInterfaceObject] interface FuelConfiguration : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute FuelTypeEnum[] ? fuelType</dt>
+     <dt>readonly attribute FuelTypeEnum[]? fuelType</dt>
      <dd>type of fuel used by vehicle. If the vehicle uses multiple fuels, fuelType returns an array of fuel types.</dd>
-     <dt>readonly attribute RefuelPostion ? refuelPosition</dt>
+     <dt>readonly attribute RefuelPostion? refuelPosition</dt>
      <dd>Side of the vehicle with access to the fuel door</dd>
   </dl>
 </section>
@@ -274,7 +274,7 @@
   </dl>
 
   <dl title="[NoInterfaceObject] interface TransmissionConfiguration : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute TransmissionGearTypeEnum ? transmissionGearType</dt>
+     <dt>readonly attribute TransmissionGearTypeEnum? transmissionGearType</dt>
      <dd>Transmission gear type</dd>
   </dl>
 </section>
@@ -286,9 +286,9 @@
   <p>The <a>WheelConfiguration</a> interface provides wheel configuration information 
   about a vehicle.</p>
   <dl title="[NoInterfaceObject] interface WheelConfiguration : VehicleCommonDataType" class="idl">
-    <dt>readonly attribute unsigned short ? wheelRadius</dt>
+    <dt>readonly attribute unsigned short? wheelRadius</dt>
     <dd>Radius of the front wheel (Unit: millimeters)</dd>
-    <dt>attribute Zone ? zone</dt>
+    <dt>attribute Zone? zone</dt>
     <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
@@ -396,7 +396,7 @@
       class="idl">
       <dt>readonly attribute unsigned short speed</dt>
       <dd>Wheel speed (Unit: meters per hour)</dd>
-      <dt>attribute Zone ? zone</dt>
+      <dt>attribute Zone? zone</dt>
       <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
@@ -490,9 +490,9 @@
   class="idl">
     <dt>readonly attribute unsigned long distance</dt>
     <dd>Distance travelled based on trip meter (Unit: meters)</dd>
-    <dt>readonly attribute unsigned short ? averageSpeed</dt>
+    <dt>readonly attribute unsigned short? averageSpeed</dt>
     <dd>Average speed based on trip meter (Unit: kilometers per hour)</dd>
-    <dt>readonly attribute unsigned short ? fuelConsumption</dt>
+    <dt>readonly attribute unsigned short? fuelConsumption</dt>
     <dd>Fuel consumed based on trip meter (Unit: milliliters per 100 kilometers)</dd>
   </dl>
 </section>
@@ -542,9 +542,9 @@
 
   <dl title="[NoInterfaceObject] interface Transmission : VehicleCommonDataType" class="idl">
 
-     <dt>readonly attribute octet ? gear</dt>
+     <dt>readonly attribute octet? gear</dt>
      <dd>MUST return transmission gear position. Range 0 - 10</dd>
-     <dt>readonly attribute TransmissionMode ? mode</dt>
+     <dt>readonly attribute TransmissionMode? mode</dt>
      <dd>MUST return transmission Mode (see <a>TransmissionMode</a>)</dd>
 
   </dl>
@@ -587,7 +587,7 @@
      <dd>MUST return whether automatic head lights status: activated (true) or not (false)</dd>
      <dt>attribute boolean? dynamicHighBeam</dt>
      <dd>MUST return whether dynamic high beam status: activated (true) or not (false)</dd>
-     <dt>attribute Zone ? zone</dt>
+     <dt>attribute Zone? zone</dt>
      <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
@@ -599,7 +599,7 @@
   <dl title="[NoInterfaceObject] interface InteriorLightStatus : VehicleCommonDataType" class="idl">
      <dt>attribute boolean status</dt>
      <dd> MUST return passenger interior light status for the given zone: on (true), off (false)</dd>
-    <dt>attribute Zone ? zone</dt>
+    <dt>attribute Zone? zone</dt>
     <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
@@ -716,7 +716,7 @@
   class="idl">
     <dt>readonly attribute unsigned long value</dt>
     <dd>MUST return number of ticks per second (Unit: ticks per second)</dd>
-      <dt>attribute Zone ? zone</dt>
+      <dt>attribute Zone? zone</dt>
       <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
@@ -884,7 +884,7 @@
   <p>The <a>Odometer</a> interface provides information about the distance that the
   vehicle has traveled.
   <dl title="[NoInterfaceObject] interface Odometer : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute unsigned long ? distanceSinceStart</dt>
+     <dt>readonly attribute unsigned long? distanceSinceStart</dt>
      <dd>the distance traveled by vehicle since start (Unit: meters).</dd>
      <dt>readonly attribute unsigned long distanceTotal</dt>
      <dd>the total distance traveled by the vehicle (Unit: meters).</dd>
@@ -900,7 +900,7 @@
   class="idl">
      <dt>readonly attribute byte? wear</dt>
      <dd>transmission oil wear (Unit: percentage, 0: no wear, 100: completely worn).</dd>
-     <dt>readonly attribute short ? temperature</dt>
+     <dt>readonly attribute short? temperature</dt>
      <dd>current temperature of the transmission oil(Unit: celsius).</dd>
   </dl>
 </section>
@@ -924,7 +924,7 @@
   vehicles brakes.
   <dl title="[NoInterfaceObject] interface BrakeMaintenance : VehicleCommonDataType"
   class="idl">
-     <dt>readonly attribute unsigned short ? fluidLevel</dt>
+     <dt>readonly attribute unsigned short? fluidLevel</dt>
      <dd>brake fluid level (Unit: percentage, 0%: empty, 100%: full).</dd>
      <dt>readonly attribute boolean? fluidLevelLow</dt>
      <dd>true if brake fluid level: low (true), not low (false)</dd>
@@ -932,7 +932,7 @@
      <dd>front left brake pad wear (Unit: percentage, 0%: no wear, 100%: completely worn).</dd></dd>
      <dt>readonly attribute boolean? brakesWorn</dt>
      <dd>true if brakes are worn: worn (true), not worn (false)<br></dd>
-    <dt>attribute Zone ? zone</dt>
+    <dt>attribute Zone? zone</dt>
     <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
@@ -946,7 +946,7 @@
   <dl title="[NoInterfaceObject] interface WasherFluid : VehicleCommonDataType" 
 
   class="idl">
-     <dt>readonly attribute unsigned short ? level</dt>
+     <dt>readonly attribute unsigned short? level</dt>
      <dd>washer fluid level (Unit: percentage, 0%: empty, 100%: full).</dd>
      <dt>readonly attribute boolean? levelLow</dt>
      <dd>true if washer fluid level is low: low (true), not low: (false)</dd>
@@ -976,13 +976,13 @@
   <dl title="[NoInterfaceObject] interface BatteryStatus : VehicleCommonDataType" 
 
   class="idl">
-     <dt>readonly attribute unsigned short ? chargeLevel</dt>
+     <dt>readonly attribute unsigned short? chargeLevel</dt>
      <dd>battery charge level (Unit: percentage, 0%: empty, 100%: full).</dd>
-     <dt>readonly attribute unsigned short ? voltage</dt>
+     <dt>readonly attribute unsigned short? voltage</dt>
      <dd>battery voltage (Unit: volts).</dd>
-     <dt>readonly attribute unsigned short ? current</dt>
+     <dt>readonly attribute unsigned short? current</dt>
      <dd>battery current (Unit: amperes).</dd>
-     <dt>attribute Zone ? zone</dt>
+     <dt>attribute Zone? zone</dt>
      <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
@@ -998,11 +998,11 @@
   class="idl">
      <dt>readonly attribute boolean? pressureLow</dt>
      <dd>true if any tire pressure is low: pressure low (true), pressure not low (false)</dd>
-     <dt>readonly attribute unsigned short ? pressure</dt>
+     <dt>readonly attribute unsigned short? pressure</dt>
      <dd>tire pressure (Unit: kilopascal).</dd>
      <dt>readonly attribute short? temperature</dt>
      <dd>tire temperature (Unit: celsius). </dd>
-     <dt>attribute Zone ? zone</dt>
+     <dt>attribute Zone? zone</dt>
      <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
@@ -1049,7 +1049,7 @@
   <p>The <a>LanguageConfiguration</a> interface provides language information about a
   vehicle.
   <dl title="[NoInterfaceObject] interface LanguageConfiguration : VehicleCommonDataType" class="idl">
-     <dt>attribute unsigned float ? language</dt>
+     <dt>attribute unsigned float? language</dt>
      <dd>Language identifier based on two-letter codes as specified in ISO 639-1
      <div class="issue">Should make enum out of ISO 639-1?</div>
      <div class="note">(Justin) It seems to be provided at system level. It looks not vehicle-specific attribute</div>
@@ -1063,18 +1063,18 @@
   <p>The <a>UnitsOfMeasure</a> interface provides information about the measurement
   system and units of measure of a vehicle.
   <dl title="[NoInterfaceObject] interface UnitsOfMeasure : VehicleCommonDataType" class="idl">
-     <dt>attribute boolean ? isMKSSystem</dt>
+     <dt>attribute boolean? isMKSSystem</dt>
      <dd>measurement system currently being used by vehicle.
      'true' means the current measurement system is MKS-km(liter).
      'false' means it is US customary units-mile(gallon).
      </dd>
      <dt>attribute DOMString? unitsFuelVolume</dt>
      <dd>Fuel unit of measurement. The value is one of both "litter" and "gallon".</dd>
-     <dt>attribute DOMString ? unitsDistance</dt>
+     <dt>attribute DOMString? unitsDistance</dt>
      <dd>Distance unit of measurement. The value is one of both "km" and "mile".</dd>
-     <dt>attribute DOMString ? unitsSpeed</dt>
+     <dt>attribute DOMString? unitsSpeed</dt>
      <dd>Speed unit of measurement. The value is one of both "km/h" and "mph".</dd>
-     <dt>attribute DOMString ? unitsFuelConsumption</dt>
+     <dt>attribute DOMString? unitsFuelConsumption</dt>
      <dd>Fuel consumption unit of measurement.
      The value is one of following values: "l/100", "mpg", "km/l".</dd>
   </dl>
@@ -1086,14 +1086,14 @@
   <p>The <a>Mirror</a> interface provides or sets information about mirrors
   in vehicle.
   <dl title="[NoInterfaceObject] interface Mirror : VehicleCommonDataType" class="idl">
-     <dt>attribute unsigned short ? mirrorTilt</dt>
+     <dt>attribute unsigned short? mirrorTilt</dt>
 
      <dd>Mirror tilt position in percentage distance travelled, from downward-facing to 
      upward-facing position (Unit: percentage, 0%:center position, -100%:fully downward, 100%:full upward)</dd>
-     <dt>attribute unsigned short ? mirrorPan</dt>
+     <dt>attribute unsigned short? mirrorPan</dt>
      <dd>Mirror pan position in percentage distance travelled, from left to right 
      position (Unit: percentage, %0:center position, -100%:fully left, 100%:fully right)</dd>
-    <dt>attribute Zone ? zone</dt>
+    <dt>attribute Zone? zone</dt>
     <dd>MUST return Zone for requested attribute</dd>
 
   </dl>
@@ -1105,30 +1105,30 @@
   <p>The <a>SeatAdjustment</a> interface provides or sets information about seats
   in vehicle.
   <dl title="[NoInterfaceObject] interface SeatAdjustment : VehicleCommonDataType" class="idl">
-     <dt>attribute unsigned short ? reclineSeatBack</dt>
+     <dt>attribute unsigned short? reclineSeatBack</dt>
 
      <dd>Seat back recline position as percent to completely reclined 
      (Unit: percentage, 0%:upright at a 90 degree angle, 100%:fully reclined, -100%:fully forward)</dd>
 
-     <dt>attribute unsigned short ? seatSlide</dt>
+     <dt>attribute unsigned short? seatSlide</dt>
      <dd>Seat slide position as percentage of distance travelled away from forwardmost
      position (Unit: percentage, 0%:farthest forward, 100%:farthest back)</dd>
-     <dt>attribute unsigned short ? seatCushionHeight</dt>
+     <dt>attribute unsigned short? seatCushionHeight</dt>
 
      <dd> Seat cushion height position as a percentage of upward distance travelled 
      (Unit: percentage, 0%:lowest. 100%:highest)</dd>
 
-     <dt>attribute unsigned short ? seatHeadrest</dt>
+     <dt>attribute unsigned short? seatHeadrest</dt>
      <dd> Headrest position as a percentage of upward distance travelled
      (Unit: percentage,  0%:lowest, 100%:highest)</dd>
-     <dt>attribute unsigned short ? seatBackCushion</dt>
+     <dt>attribute unsigned short? seatBackCushion</dt>
 
      <dd>Back cushion position as a percentage of lumbar curvature 
      (Unit: percentage,  0%:flat, 100%: maximum curvature)</dd>
-     <dt>attribute unsigned short ? seatSideCushion</dt>
+     <dt>attribute unsigned short? seatSideCushion</dt>
      <dd>Sides of back cushion position as a percentage of curvature 
      (Unit: percentage,  0%:flat, 100%:maximum curvature)</dd>
-     <dt>attribute Zone ? zone</dt>
+     <dt>attribute Zone? zone</dt>
      <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
@@ -1139,13 +1139,13 @@
   <p>The <a>SteeringWheel</a> interface provides or sets information about steering
   wheel in vehicle.
   <dl title="[NoInterfaceObject] interface SteeringWheel : VehicleCommonDataType" class="idl">
-     <dt>attribute unsigned short ? steeringWheelTelescopingPosition</dt>
+     <dt>attribute unsigned short? steeringWheelTelescopingPosition</dt>
 
      <dd>Steering wheel position as percentage of extension from the dash 
      (Unit: percentage, 0%:closest to dash, 100%:farthest from dash)
 
      </dd>
-     <dt>attribute unsigned short ? steeringWheelPositionTilt</dt>
+     <dt>attribute unsigned short? steeringWheelPositionTilt</dt>
      <dd>Steering wheel position as percentage of tilt
      (Unit: percentage, 0%:tilted lowest downward-facing position, 100%:highest upward-facing position)
      </dd>
@@ -1174,7 +1174,7 @@
   </dl>
 
   <dl title="[NoInterfaceObject] interface DriveMode : VehicleCommonDataType" class="idl">
-     <dt>attribute DriveModeEnum ? driveMode</dt>
+     <dt>attribute DriveModeEnum? driveMode</dt>
      <dd>Vehicle driving mode</dd>
   </dl>
 </section>
@@ -1185,7 +1185,7 @@
   <p>The <a>DashboardIllumination</a> interface provides or sets information about dashboard
   illumination in vehicle.
   <dl title="[NoInterfaceObject] interface DashboardIllumination : VehicleCommonDataType" class="idl">
-     <dt>attribute DOMString ? dashboardIllumination</dt>
+     <dt>attribute DOMString? dashboardIllumination</dt>
 
      <dd>Illumination of dashboard as a percentage 
      (Unit: percentage, 0%:none, 100%:maximum illumination)
@@ -1203,7 +1203,7 @@
 
      <dd>Active noise control status: not-activated (false), activated (true)</dd>
 
-     <dt>attribute DOMString ? engineSoundEnhancementMode</dt>
+     <dt>attribute DOMString? engineSoundEnhancementMode</dt>
      <dd>Engine sound enhancement mode where a null string means not-activated, and any
      other value represents a manufacture specific setting
      </dd>
@@ -1305,7 +1305,7 @@
     <dd>MUST return whether or not the airbag is activaged: activated (true) or deactivated (false)</dd>
     <dt>readonly attribute boolean deployed</dt>
     <dd>MUST return whether the airbag is deployed: deployed (true) or not (false)</dd>
-      <dt>attribute Zone ? zone</dt>
+      <dt>attribute Zone? zone</dt>
       <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
@@ -1330,7 +1330,7 @@
     <dd>MUST return the status of door's open status</dd>
     <dt>attribute boolean lock</dt>
     <dd>MUST return whether or not the door is locked: locked (true) or unlocked (false)</dd>
-      <dt>attribute Zone ? zone</dt>
+      <dt>attribute Zone? zone</dt>
       <dd>MUST return Zone for requested attribute</dd>
   </dl>
 
@@ -1345,7 +1345,7 @@
   class="idl">
     <dt>attribute boolean lock</dt>
     <dd>MUST return whether or not the Child Safety Lock is locked: locked (true) or unlocked (false)</dd>
-      <dt>attribute Zone ? zone</dt>
+      <dt>attribute Zone? zone</dt>
       <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
@@ -1389,11 +1389,11 @@
     <dd>MUST return the status of seat occupant</dd>
     <dt>readonly attribute boolean seatbelt</dt>
     <dd>MUST return whether or not the seat belt is fastened: fastened (true) or unfastened (false)</dd>
-    <dt>readonly attribute DOMString ? occupantName</dt>
+    <dt>readonly attribute DOMString? occupantName</dt>
     <dd>Must return occupant identifier</dd>
     <dt>readonly attribute IdentificationType identificationType</dt>
     <dd>MUST return identification type</dd>
-      <dt>attribute Zone ? zone</dt>
+      <dt>attribute Zone? zone</dt>
       <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
@@ -1456,7 +1456,7 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
   <dl title="[NoInterfaceObject] interface RainSensor : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned byte rain</dt>
      <dd>the amount of rain detected by the rain sensor. level of rain intensity (0: No Rain, 10:Heaviest Rain)</dd>
-    <dt>attribute Zone ? zone</dt>
+    <dt>attribute Zone? zone</dt>
     <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
@@ -1468,7 +1468,7 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
   <dl title="[NoInterfaceObject] interface WiperStatus : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned byte wiperSpeed</dt>
      <dd>current speed interval of wiping windshield (0: off, 1: Slowest, 10: Fastest )</dd>
-    <dt>attribute Zone ? zone</dt>
+    <dt>attribute Zone? zone</dt>
     <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
@@ -1500,7 +1500,7 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
   <dl title="[NoInterfaceObject] interface WiperSetting : VehicleCommonDataType" class="idl">
      <dt>attribute WiperControl	wiperControl</dt>
      <dd>current setting of the front wiper controller. It can be used to send user's request for changing setting.</dd>
-      <dt>attribute Zone ? zone</dt>
+      <dt>attribute Zone? zone</dt>
       <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
@@ -1514,7 +1514,7 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
      <dd>current status of the defrost switch for window. It can be used to send user's request for changing setting.</dd>
      <dt>attribute boolean? defrostMirrors</dt>
      <dd>current status of the defrost switch for mirrors. It can be used to send user's request for changing setting.</dd>
-    <dt>attribute Zone ? zone</dt>
+    <dt>attribute Zone? zone</dt>
     <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
@@ -1528,7 +1528,7 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
      <dd>current status of Sunroof as a percentage of openness (0%: closed, 100%: fully opened)</dd>
      <dt>attribute unsigned byte tilt</dt>
      <dd>current status of Sunroof as a percentage of tilted (0%: closed, 100%: maximum tilted)</dd>
-    <dt>attribute Zone ? zone</dt>
+    <dt>attribute Zone? zone</dt>
     <dd>MUST return Zone for requested attribute</dd>
   </dl>
   <p>Both can be used to send user's request for changing setting.</p>
@@ -1567,7 +1567,7 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
   	<dd>MUST return whether or not the window is locked: locked (true) or unlocked (false)</dd>
   	<dt>attribute unsigned byte? openness</dt>
   	<dd>current status of the side window as a percentage of openness. (0%:Closed, 100%:Fully Opened)</dd>
-    <dt>attribute Zone ? zone</dt>
+    <dt>attribute Zone? zone</dt>
     <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
@@ -1608,7 +1608,7 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
     <dd>current setting of air recirculation: on (true) or pulling in outside air (false).</dd>
     <dt>attribute unsigned byte? steeringWheelHeater</dt>
     <dd>current status of steering wheel heater ( 0: off, 1: least warm, 10: warmest ).</dd>
-    <dt>attribute Zone ? zone</dt>
+    <dt>attribute Zone? zone</dt>
     <dd>MUST return Zone for requested attribute</dd>
   </dl>
   <p><a>ClimateControl</a> can be used to send user's request for changing setting.</p>
