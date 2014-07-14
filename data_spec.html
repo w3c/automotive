@@ -107,9 +107,9 @@
   <h3><a>VehicleCommonDataType</a> Interface</h3> <p>The <a>VehicleCommonDataType</a>
   interface represents the common data type for all vehicle data types</p>
 
-  <dl title="[NoInterfaceObject] interface VehicleCommonDataType"
-  class="idl">
-    <dt>readonly attribute DOMTimeStamp? timeStamp</dt><dd>MUST return timestamp when any data in this interface was received on the system.</dd>
+  <dl title="[NoInterfaceObject] interface VehicleCommonDataType" class="idl">
+    <dt>readonly attribute DOMTimeStamp? timeStamp</dt>
+    <dd>MUST return timestamp when any data in this interface was received on the system.</dd>
   </dl>
 </section>
 
@@ -288,8 +288,8 @@
   <dl title="[NoInterfaceObject] interface WheelConfiguration : VehicleCommonDataType" class="idl">
     <dt>readonly attribute unsigned short ? wheelRadius</dt>
     <dd>Radius of the front wheel (Unit: millimeters)</dd>
-    <dd>attribute Zone ? zone</dd>
-    <dt>MUST return Zone for requested attribute</dt>
+    <dt>attribute Zone ? zone</dt>
+    <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
 
@@ -396,8 +396,8 @@
       class="idl">
       <dt>readonly attribute unsigned short speed</dt>
       <dd>Wheel speed (Unit: meters per hour)</dd>
-      <dd>attribute Zone ? zone</dd>
-      <dt>MUST return Zone for requested attribute</dt>
+      <dt>attribute Zone ? zone</dt>
+      <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
 
@@ -587,8 +587,8 @@
      <dd>MUST return whether automatic head lights status: activated (true) or not (false)</dd>
      <dt>attribute boolean? dynamicHighBeam</dt>
      <dd>MUST return whether dynamic high beam status: activated (true) or not (false)</dd>
-    <dt>attribute Zone ? zone</dt>
-    <dt>MUST return Zone for requested attribute</dt>
+     <dt>attribute Zone ? zone</dt>
+     <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
 
@@ -599,8 +599,8 @@
   <dl title="[NoInterfaceObject] interface InteriorLightStatus : VehicleCommonDataType" class="idl">
      <dt>attribute boolean status</dt>
      <dd> MUST return passenger interior light status for the given zone: on (true), off (false)</dd>
-    <dd>attribute Zone ? zone</dd>
-    <dt>MUST return Zone for requested attribute</dt>
+    <dt>attribute Zone ? zone</dt>
+    <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
 
@@ -716,8 +716,8 @@
   class="idl">
     <dt>readonly attribute unsigned long value</dt>
     <dd>MUST return number of ticks per second (Unit: ticks per second)</dd>
-      <dd>attribute Zone ? zone</dd>
-      <dt>MUST return Zone for requested attribute</dt>
+      <dt>attribute Zone ? zone</dt>
+      <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
 
@@ -932,8 +932,8 @@
      <dd>front left brake pad wear (Unit: percentage, 0%: no wear, 100%: completely worn).</dd></dd>
      <dt>readonly attribute boolean? brakesWorn</dt>
      <dd>true if brakes are worn: worn (true), not worn (false)<br></dd>
-    <dd>attribute Zone ? zone</dd>
-    <dt>MUST return Zone for requested attribute</dt>
+    <dt>attribute Zone ? zone</dt>
+    <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
 
@@ -982,8 +982,8 @@
      <dd>battery voltage (Unit: volts).</dd>
      <dt>readonly attribute unsigned short ? current</dt>
      <dd>battery current (Unit: amperes).</dd>
-     <dd>attribute Zone ? zone</dd>
-     <dt>MUST return Zone for requested attribute</dt>
+     <dt>attribute Zone ? zone</dt>
+     <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
 
@@ -1002,8 +1002,8 @@
      <dd>tire pressure (Unit: kilopascal).</dd>
      <dt>readonly attribute short? temperature</dt>
      <dd>tire temperature (Unit: celsius). </dd>
-     <dd>attribute Zone ? zone</dd>
-     <dt>MUST return Zone for requested attribute</dt>
+     <dt>attribute Zone ? zone</dt>
+     <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
 
@@ -1093,8 +1093,8 @@
      <dt>attribute unsigned short ? mirrorPan</dt>
      <dd>Mirror pan position in percentage distance travelled, from left to right 
      position (Unit: percentage, %0:center position, -100%:fully left, 100%:fully right)</dd>
-    <dd>attribute Zone ? zone</dd>
-    <dt>MUST return Zone for requested attribute</dt>
+    <dt>attribute Zone ? zone</dt>
+    <dd>MUST return Zone for requested attribute</dd>
 
   </dl>
 </section>
@@ -1128,8 +1128,8 @@
      <dt>attribute unsigned short ? seatSideCushion</dt>
      <dd>Sides of back cushion position as a percentage of curvature 
      (Unit: percentage,  0%:flat, 100%:maximum curvature)</dd>
-     <dd>attribute Zone ? zone</dd>
-     <dt>MUST return Zone for requested attribute</dt>
+     <dt>attribute Zone ? zone</dt>
+     <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
 
@@ -1305,8 +1305,8 @@
     <dd>MUST return whether or not the airbag is activaged: activated (true) or deactivated (false)</dd>
     <dt>readonly attribute boolean deployed</dt>
     <dd>MUST return whether the airbag is deployed: deployed (true) or not (false)</dd>
-      <dd>attribute Zone ? zone</dd>
-      <dt>MUST return Zone for requested attribute</dt>
+      <dt>attribute Zone ? zone</dt>
+      <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
 
@@ -1330,8 +1330,8 @@
     <dd>MUST return the status of door's open status</dd>
     <dt>attribute boolean lock</dt>
     <dd>MUST return whether or not the door is locked: locked (true) or unlocked (false)</dd>
-      <dd>attribute Zone ? zone</dd>
-      <dt>MUST return Zone for requested attribute</dt>
+      <dt>attribute Zone ? zone</dt>
+      <dd>MUST return Zone for requested attribute</dd>
   </dl>
 
 </section>
@@ -1345,8 +1345,8 @@
   class="idl">
     <dt>attribute boolean lock</dt>
     <dd>MUST return whether or not the Child Safety Lock is locked: locked (true) or unlocked (false)</dd>
-      <dd>attribute Zone ? zone</dd>
-      <dt>MUST return Zone for requested attribute</dt>
+      <dt>attribute Zone ? zone</dt>
+      <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
 
@@ -1393,8 +1393,8 @@
     <dd>Must return occupant identifier</dd>
     <dt>readonly attribute IdentificationType identificationType</dt>
     <dd>MUST return identification type</dd>
-      <dd>attribute Zone ? zone</dd>
-      <dt>MUST return Zone for requested attribute</dt>
+      <dt>attribute Zone ? zone</dt>
+      <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
 
@@ -1456,8 +1456,8 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
   <dl title="[NoInterfaceObject] interface RainSensor : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned byte rain</dt>
      <dd>the amount of rain detected by the rain sensor. level of rain intensity (0: No Rain, 10:Heaviest Rain)</dd>
-    <dd>attribute Zone ? zone</dd>
-    <dt>MUST return Zone for requested attribute</dt>
+    <dt>attribute Zone ? zone</dt>
+    <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
 
@@ -1468,8 +1468,8 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
   <dl title="[NoInterfaceObject] interface WiperStatus : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned byte wiperSpeed</dt>
      <dd>current speed interval of wiping windshield (0: off, 1: Slowest, 10: Fastest )</dd>
-    <dd>attribute Zone ? zone</dd>
-    <dt>MUST return Zone for requested attribute</dt>
+    <dt>attribute Zone ? zone</dt>
+    <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
 
@@ -1500,8 +1500,8 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
   <dl title="[NoInterfaceObject] interface WiperSetting : VehicleCommonDataType" class="idl">
      <dt>attribute WiperControl	wiperControl</dt>
      <dd>current setting of the front wiper controller. It can be used to send user's request for changing setting.</dd>
-      <dd>attribute Zone ? zone</dd>
-      <dt>MUST return Zone for requested attribute</dt>
+      <dt>attribute Zone ? zone</dt>
+      <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
 
@@ -1514,8 +1514,8 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
      <dd>current status of the defrost switch for window. It can be used to send user's request for changing setting.</dd>
      <dt>attribute boolean? defrostMirrors</dt>
      <dd>current status of the defrost switch for mirrors. It can be used to send user's request for changing setting.</dd>
-    <dd>attribute Zone ? zone</dd>
-    <dt>MUST return Zone for requested attribute</dt>
+    <dt>attribute Zone ? zone</dt>
+    <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
 
@@ -1528,8 +1528,8 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
      <dd>current status of Sunroof as a percentage of openness (0%: closed, 100%: fully opened)</dd>
      <dt>attribute unsigned byte tilt</dt>
      <dd>current status of Sunroof as a percentage of tilted (0%: closed, 100%: maximum tilted)</dd>
-    <dd>attribute Zone ? zone</dd>
-    <dt>MUST return Zone for requested attribute</dt>
+    <dt>attribute Zone ? zone</dt>
+    <dd>MUST return Zone for requested attribute</dd>
   </dl>
   <p>Both can be used to send user's request for changing setting.</p>
 </section>
@@ -1567,8 +1567,8 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
   	<dd>MUST return whether or not the window is locked: locked (true) or unlocked (false)</dd>
   	<dt>attribute unsigned byte? openness</dt>
   	<dd>current status of the side window as a percentage of openness. (0%:Closed, 100%:Fully Opened)</dd>
-    <dd>attribute Zone ? zone</dd>
-    <dt>MUST return Zone for requested attribute</dt>
+    <dt>attribute Zone ? zone</dt>
+    <dd>MUST return Zone for requested attribute</dd>
   </dl>
 </section>
 
@@ -1608,8 +1608,8 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
     <dd>current setting of air recirculation: on (true) or pulling in outside air (false).</dd>
     <dt>attribute unsigned byte? steeringWheelHeater</dt>
     <dd>current status of steering wheel heater ( 0: off, 1: least warm, 10: warmest ).</dd>
-    <dd>attribute Zone ? zone</dd>
-    <dt>MUST return Zone for requested attribute</dt>
+    <dt>attribute Zone ? zone</dt>
+    <dd>MUST return Zone for requested attribute</dd>
   </dl>
   <p><a>ClimateControl</a> can be used to send user's request for changing setting.</p>
 </section>
