@@ -335,8 +335,6 @@
         <dd>MUST return VehicleInterface for accessing <a>TripMeter "A"</a></dd>
         <dt>readonly attribute VehicleInterface tripMeterB</dt>
         <dd>MUST return VehicleInterface for accessing <a>TripMeter "B"</a></dd>
-        <dt>readonly attribute VehicleInterface diagnostic</dt>
-        <dd>MUST return VehicleInterface for accessing <a>Diagnostic</a></dd>
         <dt>readonly attribute VehicleInterface transmission</dt>
         <dd>MUST return VehicleInterface for accessing <a>Transmission</a></dd>
         <dt>readonly attribute VehicleInterface cruiseControlStatus</dt>
@@ -494,28 +492,6 @@
     <dd>Average speed based on trip meter (Unit: kilometers per hour)</dd>
     <dt>readonly attribute unsigned short? fuelConsumption</dt>
     <dd>Fuel consumed based on trip meter (Unit: milliliters per 100 kilometers)</dd>
-  </dl>
-</section>
-
-<!------------------------ Interface  Diagnostic ------------------------>
-<section>
-
-  <h3><a>Diagnostic</a> Interface</h3> <p>The <a>Diagnostic</a> interface
-  represents Diagnostic interface to malfunction indicator light information.</p>
-  
-
-  <dl title="[NoInterfaceObject] interface Diagnostic : VehicleCommonDataType"
-  class="idl">
-    <dt>readonly attribute unsigned long accumulatedEngineRuntime</dt>
-    <dd>engine runtime (Unit: seconds)</dd>
-    <dt>readonly attribute unsigned long distanceWithMILOn</dt>
-    <dd>distance travelled with the malfunction indicator light on (Unit: meters)</dd>
-    <dt>readonly attribute unsigned long distanceSinceCodeCleared.</dt>
-    <dd>Distance travelled since the codes were last cleared (Unit: meters)</dd>
-    <dt>readonly attribute unsigned long timeRunMILOn</dt>
-    <dd>Time run with the malfunction indicator light on (Unit: seconds)</dd>
-    <dt>readonly attribute unsigned long timeTroubleCodeClear</dt>
-    <dd>Time since the trouble codes were last cleared (Unit: seconds)</dd>
   </dl>
 </section>
 
@@ -875,6 +851,8 @@
         <dd>MUST return VehicleInterface for accessing <a>BatteryStatus</a></dd>
         <dt>readonly attribute VehicleInterface tire</dt>
         <dd>MUST return VehicleInterface for accessing <a>Tire</a></dd>
+        <dt>readonly attribute VehicleInterface diagnostic</dt>
+        <dd>MUST return VehicleInterface for accessing <a>Diagnostic</a></dd>
       </dl>
 
 
@@ -1007,6 +985,27 @@
   </dl>
 </section>
 
+<!------------------------ Interface  Diagnostic ------------------------>
+<section>
+
+    <h3><a>Diagnostic</a> Interface</h3> <p>The <a>Diagnostic</a> interface
+    represents Diagnostic interface to malfunction indicator light information.</p>
+
+
+    <dl title="[NoInterfaceObject] interface Diagnostic : VehicleCommonDataType"
+        class="idl">
+        <dt>readonly attribute unsigned long accumulatedEngineRuntime</dt>
+        <dd>engine runtime (Unit: seconds)</dd>
+        <dt>readonly attribute unsigned long distanceWithMILOn</dt>
+        <dd>distance travelled with the malfunction indicator light on (Unit: meters)</dd>
+        <dt>readonly attribute unsigned long distanceSinceCodeCleared.</dt>
+        <dd>Distance travelled since the codes were last cleared (Unit: meters)</dd>
+        <dt>readonly attribute unsigned long timeRunMILOn</dt>
+        <dd>Time run with the malfunction indicator light on (Unit: seconds)</dd>
+        <dt>readonly attribute unsigned long timeTroubleCodeClear</dt>
+        <dd>Time since the trouble codes were last cleared (Unit: seconds)</dd>
+    </dl>
+</section>
 
 </section>
 <!------------------- End of Maintenance Interfaces ----------------------->
