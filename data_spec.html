@@ -242,20 +242,12 @@
     <dd>Electric</dd>
   </dl>
 
-  <dl title="enum RefuelPosition" class="idl">
-    <dt>right</dt>
-
-    <dd>Right side of vehicle referenced from driver position</dd>
-    <dt>left</dt>
-    <dd>Left side of vehicle referenced from driver position</dd>
-
-  </dl>
-
   <dl title="[NoInterfaceObject] interface FuelConfiguration : VehicleCommonDataType" class="idl">
      <dt>readonly attribute FuelTypeEnum[]? fuelType</dt>
      <dd>type of fuel used by vehicle. If the vehicle uses multiple fuels, fuelType returns an array of fuel types.</dd>
-     <dt>readonly attribute RefuelPostion? refuelPosition</dt>
-     <dd>Side of the vehicle with access to the fuel door</dd>
+     <dt>readonly attribute Zone? refuelPosition</dt>
+     <dd>Location on the vehicle with access to the fuel door</dd>
+
   </dl>
 </section>
 
