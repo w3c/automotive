@@ -152,7 +152,15 @@
 <section id="security">
       <h2>Security and privacy considerations</h2>
 
-<p class="note">Needs to be flushed out. Tina & Vadim discussing a proposal to address this.  Alan to facilitate discussion with Sysapps group. </p>
+<p>It is expected that security of vehicle APIs described in this document is based on permissions dictated by:
+  <li>The JavaScript runtime under which the APIs are used – in some cases</li>
+  <li>The underlying operating system – always</li>
+  <br/>
+  No separate permission or access control model will be defined for vehicle APIs. Depending on a specific platform,
+  the JavaScript runtime SDK used may have to provide tools to generate permissions for application descriptors as
+  required by the OS. Android is an example under which such a descriptor (Android app manifest) has to be generated
+  if the runtime maps its apps to OS-level apps.
+</p>
 
 </section>
 
@@ -179,22 +187,22 @@
   <h3><a>Zone</a> Interface</h3> <p>The <a>Zone</a>
   interface contains the constants that represent physical zones and logical zones</p>
 
+  <dl title="enum ZonePosition" class="idl">
+    <dt>Front = "Front"</dt>
+    <dt>Middle = "Middle"</dt>
+    <dd>the middle position of a row.
+    <dt>Right = "Right"</dt>
+    <dt>Left = "Left"</dt>
+    <dt>Rear = "Rear"</dt>
+    <dt>Center = "Center"</dt>
+    <dd>the center row</dd>
+  </dl>
+
   <dl title="[NoInterfaceObject] interface Zone"
   class="idl">
-    <dt>const DOMString Front = "Front"</dt>
-    <dt>const DOMString Middle = "Middle"</dt>
-    <dt>const DOMString Right = "Right"</dt>
-    <dt>const DOMString Left = "Left"</dt>
-    <dt>const DOMString Rear = "Rear"</dt>
-    <dt>const DOMString Center = "Center"</dt>
-    <dt>const DOMString Hood = "Hood"</dt>
-    <dt>const DOMString Trunk = "Trunk"</dt>
-    <dt>const DOMString Fuel = "Fuel"</dt>
-    <dd>Fuel cop</dd>
 
     <dt>attribute DOMString[] value</dt><dd>MUST return array of physical zones</dd>
     <dt>readonly attribute Zone driver</dt><dd>MUST return physical zone for logical driver</dd>
-    <dt>readonly attribute Zone passenger</dt><dd>MUST return physical zone for logical passenger</dd>
 
     <dt>boolean equals(Zone zone)</dt><dd>MUST return true if zone.value matches the contents of this.value.
     Ordering of elements within Zone.value does not matter.</dd>
@@ -234,7 +242,7 @@
 
    <dl title="enum VehicleError" class="idl">
      <dt>permission_denied</dt>
-     <dd>Indicates that the user does not have permission to perform the operation</dd>
+     <dd>Indicates that the user does not have permission to perform the operation. More details can be obtained through the <a href="#data-availability">Data Availability</a> API.</dd>
      <dt>invalid_operation</dt>
      <dd>Indicates that the operation is not valid.  This can be because it isn't supported or has invalid arguments</dd>
      <dt>timeout</dt>
@@ -258,7 +266,7 @@
 <section>
   <p class="note">Add interval/step parameter to subscribe.  Not time based, for example steering wheel angle every x degrees.  Ask Daniel Jutras to make proposal.</p>
   <h3><a>VehicleInterface</a> Interface</h3> <p>The <a>VehicleInterface</a>
-  interface represents the base interface to get and set all vehicle properties.</p>
+  interface represents the base interface to get all vehicle properties.</p>
 
   <dl title="[NoInterfaceObject] interface VehicleInterface"
   class="idl">
@@ -326,7 +334,7 @@
 </section>
 
 <section>
-  <h2>Data availability</h2>
+  <h2>Data Availability</h2>
   <p class="note">Appears that this is at interface level vs data element.  Addition level of detail on security or system error.  Vadim to make proposal.</p>
   <p>The availability API allows for developers to determine what attributes are available or not and if not, why.  It also allows for notifications when the availability
    changes.</p>

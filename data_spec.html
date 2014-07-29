@@ -122,18 +122,18 @@
 
       <dl title="partial interface Vehicle" class="idl">
         <!-- identification and configuration types: -->
-        <dt>readonly attribute VehicleInterface identification</dt>
-        <dd>MUST return VehicleInterface for accessing <a>Identification</a></dd>
-        <dt>readonly attribute VehicleInterface sizeConfiguration</dt>
-        <dd>MUST return VehicleInterface for accessing <a>SizeConfiguration</a></dd>
-        <dt>readonly attribute VehicleInterface fuelConfiguration</dt>
-        <dd>MUST return VehicleInterface for accessing <a>FuelConfiguration</a></dd>
-        <dt>readonly attribute VehicleInterface transmissionConfiguration</dt>
-        <dd>MUST return VehicleInterface for accessing <a>TransmissionConfiguration</a></dd>
-        <dt>readonly attribute VehicleInterface wheelConfiguration</dt>
-        <dd>MUST return VehicleInterface for accessing <a>WheelConfiguration</a></dd>
-        <dt>readonly attribute VehicleInterface steeringWheelConfiguration</dt>
-        <dd>MUST return VehicleInterface for accessing <a>SteeringWheelConfiguration</a></dd>
+        <dt>readonly attribute VehicleConfigurationInterface identification</dt>
+        <dd>MUST return VehicleConfigurationInterface for accessing <a>Identification</a></dd>
+        <dt>readonly attribute VehicleConfigurationInterface sizeConfiguration</dt>
+        <dd>MUST return VehicleConfigurationInterface for accessing <a>SizeConfiguration</a></dd>
+        <dt>readonly attribute VehicleConfigurationInterface fuelConfiguration</dt>
+        <dd>MUST return VehicleConfigurationInterface for accessing <a>FuelConfiguration</a></dd>
+        <dt>readonly attribute VehicleConfigurationInterface transmissionConfiguration</dt>
+        <dd>MUST return VehicleConfigurationInterface for accessing <a>TransmissionConfiguration</a></dd>
+        <dt>readonly attribute VehicleConfigurationInterface wheelConfiguration</dt>
+        <dd>MUST return VehicleConfigurationInterface for accessing <a>WheelConfiguration</a></dd>
+        <dt>readonly attribute VehicleConfigurationInterface steeringWheelConfiguration</dt>
+        <dd>MUST return VehicleConfigurationInterface for accessing <a>SteeringWheelConfiguration</a></dd>
       </dl>
 
 
@@ -255,7 +255,7 @@
 <section>
   <h3><a>TransmissionConfiguration</a> Interface</h3>
   <p>The <a>TransmissionConfiguration</a> interface provides transmission configuration
-	information information about a vehicle.</p>
+  information information about a vehicle.</p>
 
 
   <dl title="enum TransmissionGearTypeEnum" class="idl">
@@ -275,7 +275,7 @@
 <section>
   <h3><a>WheelConfiguration</a> Interface</h3>
 
-  <p>The <a>WheelConfiguration</a> interface provides wheel configuration information 
+  <p>The <a>WheelConfiguration</a> interface provides wheel configuration information
   about a vehicle.</p>
   <dl title="[NoInterfaceObject] interface WheelConfiguration : VehicleCommonDataType" class="idl">
     <dt>readonly attribute unsigned short? wheelRadius</dt>
@@ -290,7 +290,7 @@
   <h3><a>SteeringWheelConfiguration</a> Interface</h3>
   <p>The <a>SteeringWheelConfiguration</a> interface provides steering wheel configuration
 
-	information information about a vehicle.</p>
+  information information about a vehicle.</p>
 
   <dl title="[NoInterfaceObject] interface SteeringWheelConfiguration : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned boolean? steeringWheelLeft</dt>
@@ -311,56 +311,56 @@
 
       <dl title="partial interface Vehicle" class="idl">
         <!-- running status types: -->
-        <dt>readonly attribute VehicleInterface vehicleSpeed</dt>
-        <dd>MUST return VehicleInterface for accessing <a>VehicleSpeed</a></dd>
-            <dt>readonly attribute VehicleInterface wheelSpeed</dt>
-            <dd>MUST return VehicleInterface for accessing <a>WheelSpeed</a></dd>
-        <dt>readonly attribute VehicleInterface engineSpeed</dt>
-        <dd>MUST return VehicleInterface for accessing <a>EngineSpeed</a></dd>
-        <dt>readonly attribute VehicleInterface powerTrainTorque</dt>
-        <dd>MUST return VehicleInterface for accessing <a>PowerTrainTorque</a></dd>
-        <dt>readonly attribute VehicleInterface acceleratorPedalPosition</dt>
-        <dd>MUST return VehicleInterface for accessing <a>AcceleratorPedalPosition</a></dd>
-        <dt>readonly attribute VehicleInterface throttlePosition</dt>
-        <dd>MUST return VehicleInterface for accessing <a>ThrottlePosition</a></dd>
-        <dt>readonly attribute VehicleInterface tripMeterA</dt>
-        <dd>MUST return VehicleInterface for accessing <a>TripMeter "A"</a></dd>
-        <dt>readonly attribute VehicleInterface tripMeterB</dt>
-        <dd>MUST return VehicleInterface for accessing <a>TripMeter "B"</a></dd>
-        <dt>readonly attribute VehicleInterface transmission</dt>
-        <dd>MUST return VehicleInterface for accessing <a>Transmission</a></dd>
-        <dt>readonly attribute VehicleInterface cruiseControlStatus</dt>
-        <dd>MUST return VehicleInterface for accessing <a>CruiseControlStatus</a></dd>
-        <dt>readonly attribute VehicleInterface lightStatus</dt>
-        <dd>MUST return VehicleInterface for accessing <a>LightStatus</a></dd>
-        <dt>readonly attribute VehicleInterface interiorLightStatus</dt>
-        <dd>MUST return VehicleInterface for accessing <a>InteriorLightStatus</a></dd>
-        <dt>readonly attribute VehicleInterface chime</dt>
-        <dd>MUST return VehicleInterface for accessing <a>Chime</a></dd>
-        <dt>readonly attribute VehicleInterface fuel</dt>
-        <dd>MUST return VehicleInterface for accessing <a>Fuel</a></dd>
-        <dt>readonly attribute VehicleInterface engineOil</dt>
-        <dd>MUST return VehicleInterface for accessing <a>EngineOil</a></dd>
-        <dt>readonly attribute VehicleInterface acceleration</dt>
-        <dd>MUST return VehicleInterface for accessing <a>Acceleration</a></dd>
-        <dt>readonly attribute VehicleInterface engineCoolant</dt>
-        <dd>MUST return VehicleInterface for accessing <a>EngineCoolant</a></dd>
-        <dt>readonly attribute VehicleInterface steeringWheel</dt>
-        <dd>MUST return VehicleInterface for accessing <a>SteeringWheel</a></dd>
-        <dt>readonly attribute VehicleInterface ignitionTime</dt>
-        <dd>MUST return VehicleInterface for accessing <a>IgnitionTime</a></dd>
-        <dt>readonly attribute VehicleInterface yawRate</dt>
-        <dd>MUST return VehicleInterface for accessing <a>YawRate</a></dd>
-        <dt>readonly attribute VehicleInterface brakeOperation</dt>
-        <dd>MUST return VehicleInterface for accessing <a>BrakeOperation</a></dd>
-        <dt>readonly attribute VehicleInterface wheelTick</dt>
-        <dd>MUST return VehicleInterface for accessing <a>WheelTick</a></dd>
-        <dt>readonly attribute VehicleInterface buttonEvent</dt>
-        <dd>MUST return VehicleInterface for accessing <a>ButtonEvent</a></dd>
-        <dt>readonly attribute VehicleInterface drivingMode</dt>
-        <dd>MUST return VehicleInterface for accessing <a>DrivingMode</a></dd>
-        <dt>readonly attribute VehicleInterface nightMode</dt>
-        <dd>MUST return VehicleInterface for accessing <a>NightMode</a></dd>
+        <dt>readonly attribute VehicleSignalInterface vehicleSpeed</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>VehicleSpeed</a></dd>
+        <dt>readonly attribute VehicleSignalInterface wheelSpeed</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>WheelSpeed</a></dd>
+        <dt>readonly attribute VehicleSignalInterface engineSpeed</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>EngineSpeed</a> or undefined if not supported</dd>
+        <dt>readonly attribute VehicleSignalInterface powerTrainTorque</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>PowerTrainTorque</a></dd>
+        <dt>readonly attribute VehicleSignalInterface acceleratorPedalPosition</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>AcceleratorPedalPosition</a></dd>
+        <dt>readonly attribute VehicleSignalInterface throttlePosition</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>ThrottlePosition</a></dd>
+        <dt>readonly attribute VehicleSignalInterface tripMeters</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>TripMeters</a></dd>
+        <dt>readonly attribute VehicleSignalInterface diagnostic</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>Diagnostic</a></dd>
+        <dt>readonly attribute VehicleSignalInterface transmission</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>Transmission</a></dd>
+        <dt>readonly attribute VehicleSignalInterface cruiseControlStatus</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>CruiseControlStatus</a></dd>
+        <dt>readonly attribute VehicleSignalInterface lightStatus</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>LightStatus</a></dd>
+        <dt>readonly attribute VehicleSignalInterface interiorLightStatus</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>InteriorLightStatus</a></dd>
+        <dt>readonly attribute VehicleSignalInterface chime</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>Chime</a></dd>
+        <dt>readonly attribute VehicleSignalInterface fuel</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>Fuel</a></dd>
+        <dt>readonly attribute VehicleSignalInterface engineOil</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>EngineOil</a></dd>
+        <dt>readonly attribute VehicleSignalInterface acceleration</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>Acceleration</a></dd>
+        <dt>readonly attribute VehicleSignalInterface engineCoolant</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>EngineCoolant</a></dd>
+        <dt>readonly attribute VehicleSignalInterface steeringWheel</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>SteeringWheel</a></dd>
+        <dt>readonly attribute VehicleSignalInterface ignitionTime</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>IgnitionTime</a></dd>
+        <dt>readonly attribute VehicleSignalInterface yawRate</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>YawRate</a></dd>
+        <dt>readonly attribute VehicleSignalInterface brakeOperation</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>BrakeOperation</a></dd>
+        <dt>readonly attribute VehicleSignalInterface wheelTick</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>WheelTick</a></dd>
+        <dt>readonly attribute VehicleSignalInterface buttonEvent</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>ButtonEvent</a></dd>
+        <dt>readonly attribute VehicleSignalInterface drivingMode</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>DrivingMode</a></dd>
+        <dt>readonly attribute VehicleSignalInterface nightMode</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>NightMode</a></dd>
       </dl>
 
 <!------------------------ Interface VehicleSpeed ------------------------>
@@ -368,7 +368,7 @@
 
   <h3><a>VehicleSpeed</a> Interface</h3>
   <p>The <a>VehicleSpeed</a> interface represents vehicle speed information</p>
-  
+
 
   <dl title="[NoInterfaceObject] interface VehicleSpeed : VehicleCommonDataType"
   class="idl">
@@ -396,7 +396,7 @@
 
   <h3><a>EngineSpeed</a> Interface</h3>
   <p>The <a>EngineSpeed</a> interface represents engine speed information.</p>
-  
+
 
   <dl title="[NoInterfaceObject] interface EngineSpeed : VehicleCommonDataType"
   class="idl">
@@ -434,7 +434,7 @@
 
   <h3><a>PowerTrainTorque</a> Interface</h3>
   <p>The <a>PowerTrainTorque</a> interface represents powertrain torque.</p>
-  
+
 
   <dl title="[NoInterfaceObject] interface PowerTrainTorque : VehicleCommonDataType"
   class="idl">
@@ -448,7 +448,7 @@
   <h3><a>AcceleratorPedalPosition</a> Interface</h3> <p>The <a>AcceleratorPedalPosition</a>
 
   interface represents the accelerator pedal position.</p>
-  
+
 
   <dl title="[NoInterfaceObject] interface AcceleratorPedalPosition : VehicleCommonDataType"
   class="idl">
@@ -462,7 +462,7 @@
   <h3><a>ThrottlePosition</a> Interface</h3> <p>The <a>ThrottlePosition</a>
 
   represents position of the throttle.</p>
-  
+
 
   <dl title="[NoInterfaceObject] interface ThrottlePosition : VehicleCommonDataType"
   class="idl">
@@ -471,12 +471,12 @@
   </dl>
 </section>
 
-<!------------------------ Interface TripMeter ------------------------>
+<!------------------------ Interface TripMeters ------------------------>
 <section>
-  <h3><a>TripMeter</a> Interface</h3> <p>The <a>TripMeter</a> interface
+  <h3><a>Trip</a> Interface</h3> <p>The <a>Trip</a> interface
   represents trip meter.</p>
   <div class="issue">This needs help.  we need to support N trip meters</div>
-  <dl title="[NoInterfaceObject] interface TripMeter : VehicleCommonDataType"
+  <dl title="[NoInterfaceObject] interface Trip"
   class="idl">
     <dt>readonly attribute unsigned long distance</dt>
     <dd>Distance travelled based on trip meter (Unit: meters)</dd>
@@ -485,7 +485,14 @@
     <dt>readonly attribute unsigned short? fuelConsumption</dt>
     <dd>Fuel consumed based on trip meter (Unit: milliliters per 100 kilometers)</dd>
   </dl>
+
+  <dl title="[NoInterfaceObject] interface TripMeters : VehicleCommonDataType" class="idl">
+    <dt>readonly attribute Trip[] meters;
+  </dl>
 </section>
+
+
+
 
 <!------------------------ Interface Transmission ------------------------------>
 <section>
@@ -649,7 +656,7 @@
   <h3><a>EngineCoolant</a> Interface</h3> <p>The <a>EngineCoolant</a>
 
   represents values related to engine coolant.</p>
-  
+
   <dl title="[NoInterfaceObject] interface EngineCoolant : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned short level</dt>
@@ -664,7 +671,7 @@
   <h3><a>SteeringWheel</a> Interface</h3> <p>The <a>SteeringWheel</a>
 
   represents steering wheel data.</p>
-  
+
 
   <dl title="[NoInterfaceObject] interface SteeringWheel : VehicleCommonDataType"
   class="idl">
@@ -678,7 +685,7 @@
   <h3><a>WheelTick</a> Interface</h3> <p>The <a>WheelTick</a>
 
   number of ticks per second.</p>
-  
+
 
   <dl title="[NoInterfaceObject] interface WheelTick : VehicleCommonDataType"
   class="idl">
@@ -823,26 +830,26 @@
       <h2>Maintenance Interfaces</h2>
 
       <p>Interfaces relating to vehicle maintenance, the act of inspecting or testing the condition of vehicle
-  		subsystems (e.g., engine) and servicing or replacing parts and fluids.</p>
+      subsystems (e.g., engine) and servicing or replacing parts and fluids.</p>
 
       <dl title="partial interface Vehicle" class="idl">
         <!-- maintenance types: -->
-        <dt>readonly attribute VehicleInterface odometer</dt>
-        <dd>MUST return VehicleInterface for accessing <a>Odometer</a></dd>
-        <dt>readonly attribute VehicleInterface transmissionOil</dt>
-        <dd>MUST return VehicleInterface for accessing <a>TransmissionOil</a></dd>
-        <dt>readonly attribute VehicleInterface transmissionClutch</dt>
-        <dd>MUST return VehicleInterface for accessing <a>TransmissionClutch</a></dd>
- 		<dt>readonly attribute VehicleInterface brakeMaintenance</dt>
-		<dd>MUST return VehicleInterface for accessing <a>BrakeMaintenance</a></dd>
-        <dt>readonly attribute VehicleInterface washerFluid</dt>
-        <dd>MUST return VehicleInterface for accessing <a>WasherFluid</a></dd>
-        <dt>readonly attribute VehicleInterface malfunctionIndicator</dt>
-        <dd>MUST return VehicleInterface for accessing <a>MalfunctionIndicator</a></dd>
-        <dt>readonly attribute VehicleInterface batteryStatus</dt>
-        <dd>MUST return VehicleInterface for accessing <a>BatteryStatus</a></dd>
-        <dt>readonly attribute VehicleInterface tire</dt>
-        <dd>MUST return VehicleInterface for accessing <a>Tire</a></dd>
+        <dt>readonly attribute VehicleSignalInterface odometer</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>Odometer</a> or undefined if not supported</dd>
+        <dt>readonly attribute VehicleSignalInterface transmissionOil</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>TransmissionOil</a></dd>
+        <dt>readonly attribute VehicleSignalInterface transmissionClutch</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>TransmissionClutch</a></dd>
+        <dt>readonly attribute VehicleSignalInterface brakeMaintenance</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>BrakeMaintenance</a></dd>
+        <dt>readonly attribute VehicleSignalInterface washerFluid</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>WasherFluid</a></dd>
+        <dt>readonly attribute VehicleSignalInterface malfunctionIndicator</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>MalfunctionIndicator</a></dd>
+        <dt>readonly attribute VehicleSignalInterface batteryStatus</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>BatteryStatus</a></dd>
+        <dt>readonly attribute VehicleSignalInterface tire</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>Tire</a></dd>
         <dt>readonly attribute VehicleInterface diagnostic</dt>
         <dd>MUST return VehicleInterface for accessing <a>Diagnostic</a></dd>
       </dl>
@@ -911,9 +918,9 @@
 <section>
   <h3><a>WasherFluid</a> Interface</h3>
 
-  <p>The <a>WasherFluid</a> interface provides information about the state of a 
+  <p>The <a>WasherFluid</a> interface provides information about the state of a
   vehicles washer fluid.
-  <dl title="[NoInterfaceObject] interface WasherFluid : VehicleCommonDataType" 
+  <dl title="[NoInterfaceObject] interface WasherFluid : VehicleCommonDataType"
 
   class="idl">
      <dt>readonly attribute unsigned short? level</dt>
@@ -927,9 +934,9 @@
 <section>
   <h3><a>MalfunctionIndicator</a> Interface</h3>
 
-  <p>The <a>MalfunctionIndicator</a> interface provides information about the state of a 
+  <p>The <a>MalfunctionIndicator</a> interface provides information about the state of a
   vehicles Malfunction Indicator lamp.
-  <dl title="[NoInterfaceObject] interface MalfunctionIndicator : VehicleCommonDataType" 
+  <dl title="[NoInterfaceObject] interface MalfunctionIndicator : VehicleCommonDataType"
 
   class="idl">
      <dt>readonly attribute boolean on</dt>
@@ -941,9 +948,9 @@
 <section>
   <h3><a>BatteryStatus</a> Interface</h3>
 
-  <p>The <a>BatteryStatus</a> interface provides information about the state of a 
+  <p>The <a>BatteryStatus</a> interface provides information about the state of a
   vehicles battery.
-  <dl title="[NoInterfaceObject] interface BatteryStatus : VehicleCommonDataType" 
+  <dl title="[NoInterfaceObject] interface BatteryStatus : VehicleCommonDataType"
 
   class="idl">
      <dt>readonly attribute unsigned short? chargeLevel</dt>
@@ -961,9 +968,9 @@
 <section>
   <h3><a>Tire</a> Interface</h3>
 
-  <p>The <a>Tire</a> interface provides information about the state of a 
+  <p>The <a>Tire</a> interface provides information about the state of a
   vehicles tires.
-  <dl title="[NoInterfaceObject] interface Tire : VehicleCommonDataType" 
+  <dl title="[NoInterfaceObject] interface Tire : VehicleCommonDataType"
 
   class="idl">
      <dt>readonly attribute boolean? pressureLow</dt>
@@ -1010,27 +1017,27 @@
       <h2>Personalization Interfaces</h2>
 
       <p>Interfaces relating personalization the settings of vehicle
-  		such as seat and mirror position.</p>
+      such as seat and mirror position.</p>
 
       <dl title="partial interface Vehicle" class="idl">
-        <dt>readonly attribute VehicleInterface driverIdentification</dt>
-        <dd>MUST return VehicleInterface for accessing <a>DriverIdentification</a></dd>
-        <dt>readonly attribute VehicleInterface? languageConfiguration</dt>
-        <dd>MUST return VehicleInterface for accessing <a>LanguageConfiguration</a></dd>
-        <dt>readonly attribute VehicleInterface unitsOfMeasure</dt>
-        <dd>MUST return VehicleInterface for accessing <a>UnitsOfMeasure</a></dd>
-        <dt>readonly attribute VehicleInterface mirror</dt>
-        <dd>MUST return VehicleInterface for accessing <a>Mirror</a></dd>
-        <dt>readonly attribute VehicleInterface steeringWheel</dt>
-        <dd>MUST return VehicleInterface for accessing <a>SteeringWheel</a></dd>
-        <dt>readonly attribute VehicleInterface driveMode</dt>
-        <dd>MUST return VehicleInterface for accessing <a>DriveMode</a></dd>
-        <dt>readonly attribute VehicleInterface seatAdjustment</dt>
-        <dd>MUST return VehicleInterface for accessing <a>SeatAdjustment</a></dd>
-        <dt>readonly attribute VehicleInterface dashboardIllumination</dt>
-        <dd>MUST return VehicleInterface for accessing <a>DashboardIllumination</a></dd>
-        <dt>readonly attribute VehicleInterface vehicleSound</dt>
-        <dd>MUST return VehicleInterface for accessing <a>VehicleSound</a></dd>
+        <dt>readonly attribute VehicleSignalInterface driverIdentification</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>DriverIdentification</a></dd>
+        <dt>readonly attribute VehicleSignalInterface? languageConfiguration</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>LanguageConfiguration</a></dd>
+        <dt>readonly attribute VehicleSignalInterface unitsOfMeasure</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>UnitsOfMeasure</a></dd>
+        <dt>readonly attribute VehicleSignalInterface mirror</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>Mirror</a></dd>
+        <dt>readonly attribute VehicleSignalInterface steeringWheel</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>SteeringWheel</a></dd>
+        <dt>readonly attribute VehicleSignalInterface driveMode</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>DriveMode</a></dd>
+        <dt>readonly attribute VehicleSignalInterface seatAdjustment</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>SeatAdjustment</a></dd>
+        <dt>readonly attribute VehicleSignalInterface dashboardIllumination</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>DashboardIllumination</a></dd>
+        <dt>readonly attribute VehicleSignalInterface vehicleSound</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>VehicleSound</a></dd>
       </dl>
 
 
@@ -1079,10 +1086,10 @@
   <dl title="[NoInterfaceObject] interface Mirror : VehicleCommonDataType" class="idl">
      <dt>attribute unsigned short? mirrorTilt</dt>
 
-     <dd>Mirror tilt position in percentage distance travelled, from downward-facing to 
+     <dd>Mirror tilt position in percentage distance travelled, from downward-facing to
      upward-facing position (Unit: percentage, 0%:center position, -100%:fully downward, 100%:full upward)</dd>
      <dt>attribute unsigned short? mirrorPan</dt>
-     <dd>Mirror pan position in percentage distance travelled, from left to right 
+     <dd>Mirror pan position in percentage distance travelled, from left to right
      position (Unit: percentage, %0:center position, -100%:fully left, 100%:fully right)</dd>
     <dt>attribute Zone? zone</dt>
     <dd>MUST return Zone for requested attribute</dd>
@@ -1098,7 +1105,7 @@
   <dl title="[NoInterfaceObject] interface SeatAdjustment : VehicleCommonDataType" class="idl">
      <dt>attribute unsigned short? reclineSeatBack</dt>
 
-     <dd>Seat back recline position as percent to completely reclined 
+     <dd>Seat back recline position as percent to completely reclined
      (Unit: percentage, 0%:upright at a 90 degree angle, 100%:fully reclined, -100%:fully forward)</dd>
 
      <dt>attribute unsigned short? seatSlide</dt>
@@ -1106,7 +1113,7 @@
      position (Unit: percentage, 0%:farthest forward, 100%:farthest back)</dd>
      <dt>attribute unsigned short? seatCushionHeight</dt>
 
-     <dd> Seat cushion height position as a percentage of upward distance travelled 
+     <dd> Seat cushion height position as a percentage of upward distance travelled
      (Unit: percentage, 0%:lowest. 100%:highest)</dd>
 
      <dt>attribute unsigned short? seatHeadrest</dt>
@@ -1114,10 +1121,10 @@
      (Unit: percentage,  0%:lowest, 100%:highest)</dd>
      <dt>attribute unsigned short? seatBackCushion</dt>
 
-     <dd>Back cushion position as a percentage of lumbar curvature 
+     <dd>Back cushion position as a percentage of lumbar curvature
      (Unit: percentage,  0%:flat, 100%: maximum curvature)</dd>
      <dt>attribute unsigned short? seatSideCushion</dt>
-     <dd>Sides of back cushion position as a percentage of curvature 
+     <dd>Sides of back cushion position as a percentage of curvature
      (Unit: percentage,  0%:flat, 100%:maximum curvature)</dd>
      <dt>attribute Zone? zone</dt>
      <dd>MUST return Zone for requested attribute</dd>
@@ -1132,7 +1139,7 @@
   <dl title="[NoInterfaceObject] interface SteeringWheel : VehicleCommonDataType" class="idl">
      <dt>attribute unsigned short? steeringWheelTelescopingPosition</dt>
 
-     <dd>Steering wheel position as percentage of extension from the dash 
+     <dd>Steering wheel position as percentage of extension from the dash
      (Unit: percentage, 0%:closest to dash, 100%:farthest from dash)
 
      </dd>
@@ -1178,7 +1185,7 @@
   <dl title="[NoInterfaceObject] interface DashboardIllumination : VehicleCommonDataType" class="idl">
      <dt>attribute DOMString? dashboardIllumination</dt>
 
-     <dd>Illumination of dashboard as a percentage 
+     <dd>Illumination of dashboard as a percentage
      (Unit: percentage, 0%:none, 100%:maximum illumination)
 
      </dd>
@@ -1213,22 +1220,22 @@
       <p>Interfaces related to driving safety such as anti-lock braking and airbag status.</p>
 
       <dl title="partial interface Vehicle" class="idl">
-        <dt>readonly attribute VehicleInterface antilockBrakingSystem</dt>
-        <dd>MUST return VehicleInterface for accessing <a>AntilockBrakingSystem</a></dd>
-        <dt>readonly attribute VehicleInterface tractionControlSystem</dt>
-        <dd>MUST return VehicleInterface for accessing <a>TractionControlSystem</a></dd>
-        <dt>readonly attribute VehicleInterface electronicStabilityControl</dt>
-        <dd>MUST return VehicleInterface for accessing <a>ElectronicStabilityControl</a></dd>
-        <dt>readonly attribute VehicleInterface topSpeedLimit</dt>
-        <dd>MUST return VehicleInterface for accessing <a>TopSpeedLimit</a></dd>
-        <dt>readonly attribute VehicleInterface airbagStatus</dt>
-        <dd>MUST return VehicleInterface for accessing <a>AirbagStatus</a></dd>
-        <dt>readonly attribute VehicleInterface door</dt>
-        <dd>MUST return VehicleInterface for accessing <a>Door</a></dd>
-        <dt>readonly attribute VehicleInterface childSafetyLock</dt>
-        <dd>MUST return VehicleInterface for accessing <a>ChildSafetyLock</a></dd>
-        <dt>readonly attribute VehicleInterface seat</dt>
-        <dd>MUST return VehicleInterface for accessing <a>Seat</a></dd>
+        <dt>readonly attribute VehicleSignalInterface antilockBrakingSystem</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>AntilockBrakingSystem</a></dd>
+        <dt>readonly attribute VehicleSignalInterface tractionControlSystem</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>TractionControlSystem</a></dd>
+        <dt>readonly attribute VehicleSignalInterface electronicStabilityControl</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>ElectronicStabilityControl</a></dd>
+        <dt>readonly attribute VehicleSignalInterface topSpeedLimit</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>TopSpeedLimit</a></dd>
+        <dt>readonly attribute VehicleSignalInterface airbagStatus</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>AirbagStatus</a></dd>
+        <dt>readonly attribute VehicleSignalInterface door</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>Door</a></dd>
+        <dt>readonly attribute VehicleSignalInterface childSafetyLock</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>ChildSafetyLock</a></dd>
+        <dt>readonly attribute VehicleSignalInterface seat</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>Seat</a></dd>
       </dl>
 
 <!------------------- AntilockBrakingSystem Interface  -------------------->
@@ -1355,7 +1362,7 @@
     <dt>vacant</dt>
     <dd>Seat is vacant</dd>
   </dl>
-	
+
 
   <dl title="enum IdentificationType" class="idl">
     <dt>pin</dt>
@@ -1402,26 +1409,26 @@
 
       <dl title="partial interface Vehicle" class="idl">
         <!-- climate types: -->
-        <dt>readonly attribute VehicleInterface temperature</dt>
-        <dd>MUST return VehicleInterface for accessing <a>Temperature</a></dd>
-        <dt>readonly attribute VehicleInterface rainSensor</dt>
-        <dd>MUST return VehicleInterface for accessing <a>RainSensor</a></dd>
-        <dt>readonly attribute VehicleInterface wiperStatus</dt>
-        <dd>MUST return VehicleInterface for accessing <a>WiperStatus</a></dd>
-        <dt>readonly attribute VehicleInterface wiperSetting</dt>
-        <dd>MUST return VehicleInterface for accessing <a>WiperSetting</a></dd>
-        <dt>readonly attribute VehicleInterface defrost</dt>
-        <dd>MUST return VehicleInterface for accessing <a>Defrost</a></dd>
-        <dt>readonly attribute VehicleInterface sunroof</dt>
-        <dd>MUST return VehicleInterface for accessing <a>Sunroof</a></dd>
-        <dt>readonly attribute VehicleInterface convertibleRoof</dt>
-        <dd>MUST return VehicleInterface for accessing <a>ConvertibleRoof</a></dd>
-        <dt>readonly attribute VehicleInterface sideWindow</dt>
-        <dd>MUST return VehicleInterface for accessing <a>SideWindow</a></dd>
-        <dt>readonly attribute VehicleInterface climateControl</dt>
-        <dd>MUST return VehicleInterface for accessing <a>ClimateControl</a></dd>
-            <dt>readonly attribute VehicleInterface atmosphericPressure</dt>
-            <dd>MUST return VehicleInterface for accessing <a>AtmosphericPressure</a></dd>
+        <dt>readonly attribute VehicleSignalInterface temperature</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>Temperature</a></dd>
+        <dt>readonly attribute VehicleSignalInterface rainSensor</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>RainSensor</a></dd>
+        <dt>readonly attribute VehicleSignalInterface wiperStatus</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>WiperStatus</a></dd>
+        <dt>readonly attribute VehicleSignalInterface wiperSetting</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>WiperSetting</a></dd>
+        <dt>readonly attribute VehicleSignalInterface defrost</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>Defrost</a></dd>
+        <dt>readonly attribute VehicleSignalInterface sunroof</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>Sunroof</a></dd>
+        <dt>readonly attribute VehicleSignalInterface convertibleRoof</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>ConvertibleRoof</a></dd>
+        <dt>readonly attribute VehicleSignalInterface sideWindow</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>SideWindow</a></dd>
+        <dt>readonly attribute VehicleSignalInterface climateControl</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>ClimateControl</a> or undefined if not supported</dd>
+        <dt>readonly attribute VehicleSignalInterface atmosphericPressure</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>AtmosphericPressure</a></dd>
       </dl>
 
 <!------------------------ Interface Temperature ------------------------------>
@@ -1554,10 +1561,10 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
   <p>The <a>SideWindow</a> interface represents the current status of openness of side windows.
 
   <dl title="[NoInterfaceObject] interface SideWindow : VehicleCommonDataType" class="idl">
-  	<dt>attribute unsigned boolean? lock</dt>
-  	<dd>MUST return whether or not the window is locked: locked (true) or unlocked (false)</dd>
-  	<dt>attribute unsigned byte? openness</dt>
-  	<dd>current status of the side window as a percentage of openness. (0%:Closed, 100%:Fully Opened)</dd>
+    <dt>attribute unsigned boolean? lock</dt>
+    <dd>MUST return whether or not the window is locked: locked (true) or unlocked (false)</dd>
+    <dt>attribute unsigned byte? openness</dt>
+    <dd>current status of the side window as a percentage of openness. (0%:Closed, 100%:Fully Opened)</dd>
     <dt>attribute Zone? zone</dt>
     <dd>MUST return Zone for requested attribute</dd>
   </dl>
@@ -1624,8 +1631,8 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
       <h2>Vision and Parking Interfaces</h2>
 
       <p>Interfaces relating to vision and parking such as lane departure and parking brake.</p>
-  		
-  	  <div class='note'>
+
+      <div class='note'>
 
       <p>
   Those three categories need to be more clearly defined. It will help determine data elements fall within them.
@@ -1637,14 +1644,14 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
     </div>
       <dl title="partial interface Vehicle" class="idl">
         <!-- maintenance types: -->
-        <dt>readonly attribute VehicleInterface laneDepartureStatus</dt>
-        <dd>MUST return VehicleInterface for accessing <a>LaneDepartureStatus</a></dd>
-        <dt>readonly attribute VehicleInterface alarm</dt>
-        <dd>MUST return VehicleInterface for accessing <a>Alarm</a></dd>
-        <dt>readonly attribute VehicleInterface parkingBrake</dt>
-        <dd>MUST return VehicleInterface for accessing <a>ParkingBrake</a></dd>
-        <dt>readonly attribute VehicleInterface parkingLights</dt>
-        <dd>MUST return VehicleInterface for accessing <a>ParkingLights</a></dd>
+        <dt>readonly attribute VehicleSignalInterface laneDepartureStatus</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>LaneDepartureStatus</a> or undefined if not supported</dd>
+        <dt>readonly attribute VehicleSignalInterface alarm</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>Alarm</a></dd>
+        <dt>readonly attribute VehicleSignalInterface parkingBrake</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>ParkingBrake</a></dd>
+        <dt>readonly attribute VehicleSignalInterface parkingLights</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>ParkingLights</a></dd>
       </dl>
 
 <!------------------------ Interface LaneDepartureDetection (Vision) ------------------------------>
@@ -1674,14 +1681,14 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
 
   <dl title="enum AlarmStatus" class="idl">
 
-  	<dt>disarmed</dt>
-  	<dd>The alarm is not armed</dd>
-  	<dt>preArmed</dt>
-  	<dd>The function is temporary not active</dd>
-  	<dt>armed</dt>
-  	<dd>The function is active</dd>
-	  <dt>alarmed</dt>
-  	<dd>The alarm is screaming</dd>
+    <dt>disarmed</dt>
+    <dd>The alarm is not armed</dd>
+    <dt>preArmed</dt>
+    <dd>The function is temporary not active</dd>
+    <dt>armed</dt>
+    <dd>The function is active</dd>
+    <dt>alarmed</dt>
+    <dd>The alarm is screaming</dd>
 
   </dl>
 
