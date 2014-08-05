@@ -130,22 +130,8 @@
 <!----------------------------- Terminology ---------------------------------->
 <section id="terminology">
   <h2>Terminology</h2> <p>The <code><a
-  href="http://dev.w3.org/html5/spec/webappapis.html#eventhandler">
-  EventHandler</a></code> interface represents a callback used for event
-  handlers as defined in [[!HTML5]].
-
-  <p>The concepts <dfn><a
-  href="http://dev.w3.org/html5/spec/webappapis.html#queue-a-task"> queue a
-  task</a></dfn> and <dfn><a
-  href="http://dev.w3.org/html5/spec/webappapis.html#fire-a-simple-event">
-  fire a simple event</a></dfn> are defined in [[!HTML5]].
-
-  <p>The terms <a
-  href="http://dev.w3.org/html5/spec/webappapis.html#event-handlers"><dfn
-  id="dfn-eventhandler">event handler</dfn></a> and <a
-  href="http://dev.w3.org/html5/spec/webappapis.html#event-handler-event-type">
-  <dfn id="dfn-eventtypes"> event handler event types</dfn></a> are defined in
-  [[!HTML5]].
+  href="http://www.w3.org/TR/2013/WD-dom-20131107/#promises">
+  Promise</a></code> provide a convenient way to get access to the result of an operation.</p>
 </section>
 
 <!------------------------ Security and privacy ------------------------------>
@@ -219,14 +205,6 @@
   <dl title="callback VehicleInterfaceCallback = void(object value);" class="idl"></dl>
 </section>
 
-<!------------------------ Callback VehicleInterfaceErrorCallback------------------------------>
-<section>
-  <h3><a>VehicleInterfaceErrorCallback</a> Callback</h3>
-  <p>The <a>VehicleInterfaceErrorCallback</a> </p>
-  <p class="note">Define the types of possible errors - Justin to edit.  Use common error types VehicleError</p>
-  <dl title="callback VehicleInterfaceErrorCallback = void(VehicleInterfaceError error);" class="idl"></dl>
-</section>
-
 <!------------------------ Callback AvailableCallback------------------------------>
 <section>
   <h3><a>AvailableCallback</a> Callback</h3>
@@ -264,16 +242,14 @@
 
 <!------------------------ Interface VehicleInterface ------------------------>
 <section>
-  <p class="note">Add interval/step parameter to subscribe.  Not time based, for example steering wheel angle every x degrees.  Ask Daniel Jutras to make proposal.</p>
   <h3><a>VehicleInterface</a> Interface</h3> <p>The <a>VehicleInterface</a>
   interface represents the base interface to get all vehicle properties.</p>
 
   <dl title="[NoInterfaceObject] interface VehicleInterface"
   class="idl">
-
     <dt>Promise get(optional Zone zone)</dt>
-    <dd>MUST return the Promise.  The "resolve" callback in the promise is used to pass the vehicle data type that corresponds to the specific VehicleInterface instance.
-    For example, "vehicle.vehicleSpeed" corresponds to the "VehicleSpeed" data type.</dd>
+    <dd>MUST return the <a href="http://www.w3.org/TR/2013/WD-dom-20131107/#promises">Promise</a>.  The "resolve" callback in the promise is used to pass the vehicle data type that corresponds to the specific VehicleInterface instance.
+    For example, "vehicle.vehicleSpeed" corresponds to the "VehicleSpeed" data type.  <a>VehicleInterfaceError</a> is passed to the 'reject' callback in the promise.</dd>
     <dt>readonly attribute Zone[] zones</dt>
     <dd>MUST return all zones supported for this type.</dd>
   </dl>
@@ -308,8 +284,8 @@
   <dl title="[NoInterfaceObject] interface VehicleSignalInterface : VehicleInterface"
   class="idl">
     <dt>Promise set(object value, optional Zone zone)</dt>
-    <dd>MUST return Promise.  The "resolve" callback indicates the set was successful.  No data is passed to resolve.  If there was an error,
-    "reject" will be called with a VehicleInterfaceError object</dd>
+    <dd>MUST return <a href="http://www.w3.org/TR/2013/WD-dom-20131107/#promises">Promise</a>.  The "resolve" callback indicates the set was successful.  No data is passed to resolve.  If there was an error,
+    "reject" will be called with a <a>VehicleInterfaceError</a> object</dd>
     <dt>unsigned short subscribe(VehicleInterfaceCallback callback, optional Zone zone)</dt>
     <dd>MUST return handle to subscription or 0 if error</dd>
     <dt>void unsubscribe(unsigned short handle)</dt>
@@ -335,7 +311,6 @@
 
 <section>
   <h2>Data Availability</h2>
-  <p class="note">Appears that this is at interface level vs data element.  Addition level of detail on security or system error.  Vadim to make proposal.</p>
   <p>The availability API allows for developers to determine what attributes are available or not and if not, why.  It also allows for notifications when the availability
    changes.</p>
 

@@ -72,35 +72,11 @@
 </section>
 
 <!----------------------------- Terminology ---------------------------------->
+<!--
 <section id="terminology">
-<p class="note">Possibly remove some of these and add terms we do use</p>
-  <h2>Terminology</h2> <p>The <code><a
-  href="http://dev.w3.org/html5/spec/webappapis.html#eventhandler">
-  EventHandler</a></code> interface represents a callback used for event
-  handlers as defined in [[!HTML5]].
-
-  <p>The concepts <dfn><a
-  href="http://dev.w3.org/html5/spec/webappapis.html#queue-a-task"> queue a
-  task</a></dfn> and <dfn><a
-  href="http://dev.w3.org/html5/spec/webappapis.html#fire-a-simple-event">
-  fire a simple event</a></dfn> are defined in [[!HTML5]].
-
-  <p>The terms <a
-  href="http://dev.w3.org/html5/spec/webappapis.html#event-handlers"><dfn
-  id="dfn-eventhandler">event handler</dfn></a> and <a
-  href="http://dev.w3.org/html5/spec/webappapis.html#event-handler-event-type">
-  <dfn id="dfn-eventtypes"> event handler event types</dfn></a> are defined in
-  [[!HTML5]].
+  <h2>Terminology</h2>
 </section>
-
-<!------------------------ Security and privacy ------------------------------>
-<section id="security">
-      <h2>Security and privacy considerations</h2>
-      <p>This API MUST be only exposed to trusted content</p>
-
-<p class="note">Needs to be flushed out. Tina & Vadim discussing a proposal to address this. </p>
-
-</section>
+-->
 
 <!------------------------ Interface VehicleCommonDataType ------------------------>
 <section>
@@ -168,7 +144,7 @@
      <dt>readonly attribute DOMString? WMI</dt>
      <dd>the World Manufacture Identifier defined by SAE ISO 3780:2009.  3 characters.</dd>
      <dt>readonly attribute VehicleTypeEnum? vehicleType</dt>
-      <dd>vehicle type</dd>
+     <dd>vehicle type</dd>
      <dt>readonly attribute DOMString? brand</dt>
      <dd>vehicle brand name</dd>
      <dt>readonly attribute DOMString? model</dt>
@@ -176,10 +152,6 @@
      <dt>readonly attribute unsigned short? year</dt>
      <dd>vehicle model year</dd>
   </dl>
-  <div class="note">possibly use SAE/ISO to define types</div>
-
-  <p class="note">[[VIN]](Vehicle Identification Number) is composed of several information including WMI, model year etc., but varies depending on standard.<br>
-    In order to make it easy to use for App developers, it is recommended to provide each values as a separate attributes.</p>
 </section>
 
 <!------------------------ Interface Size Configuration --------------------------->
@@ -188,7 +160,6 @@
   <p>The <a>SizeConfiguration</a> interface provides size and shape information about a
   vehicle as a whole.</p>
   <dl title="[NoInterfaceObject] interface SizeConfiguration : VehicleCommonDataType" class="idl">
-     <p class="note">add weight (front and rear) and ground clearance</p>
      <dt>readonly attribute unsigned short? width</dt>
      <dd>Widest dimension of the vehicle (not including the side mirrors) (Unit:  millimeters
      Note:  Number may be an approximation, and should not be expected to be exact.)</dd>
@@ -201,20 +172,10 @@
      <dt>readonly attribute unsigned short[]? doorsCount</dt>
      <dd>list of car doors, organized in "rows" with number doors in each row.(Per Row -
      Min: 0, Max: 3)
-     <div class="issue">
-     NOTE TO EDITORS: DO NOT KNOW IF A LIST AS DESCRIBED CAN BE REPRESENTED IN
-     WEBIDL MAY NEED TO REDO THIS.)For example, two door coupe would return {2},
-     four door sedan would return {2, 2}, four door SUV with hatchback would
-     return {2, 2, 1}, etc.</div>
-     <div class="note">(Justin) Exact figures maybe used for DR, etc. In other cases, some Apps may need to draw the shape of the vehicle.
-     If an App can't know the exact data from Identification (from pre-stored data),
-     the app can draw the vehicle as similarly as possible by using both Door Count and Vehicle Types.
-     </div></dd>
+     </dd>
      <dt>readonly attribute unsigned short? totalDoors</dt>
      <dd>Total number of doors on the vehicle (all doors opening to the interior,
      including hatchbacks) (Min: 0, Max: 10)</dd>
-
-     <div class="issue">(Kevron) Is it possible to use the zone concept with doors?  Doing so would eliminate the need for complex arrays.</div>
      </dd>
   </dl>
 </section>
@@ -475,7 +436,6 @@
 <section>
   <h3><a>Trip</a> Interface</h3> <p>The <a>Trip</a> interface
   represents trip meter.</p>
-  <div class="issue">This needs help.  we need to support N trip meters</div>
   <dl title="[NoInterfaceObject] interface Trip"
   class="idl">
     <dt>readonly attribute unsigned long distance</dt>
@@ -706,9 +666,7 @@
       <dt>readonly attribute DOMTimeStamp ignitionOnTime</dt>
       <dd>Time at ignition on</dd>
       <dt>readonly attribute DOMTimeStamp ignitionOffTime</dt>
-      <dd>Time at ignition off
-          <div class="issue">We need to define what DOMTimeStamp means.</div>
-      </dd>
+      <dd>Time at ignition off</dd>
   </dl>
 </section>
 
@@ -1047,11 +1005,8 @@
   <p>The <a>LanguageConfiguration</a> interface provides language information about a
   vehicle.
   <dl title="[NoInterfaceObject] interface LanguageConfiguration : VehicleCommonDataType" class="idl">
-     <dt>attribute unsigned float? language</dt>
-     <dd>Language identifier based on two-letter codes as specified in ISO 639-1
-     <div class="issue">Should make enum out of ISO 639-1?</div>
-     <div class="note">(Justin) It seems to be provided at system level. It looks not vehicle-specific attribute</div>
-     </dd>
+     <dt>attribute DOMString? language</dt>
+     <dd>Language identifier based on two-letter codes as specified in ISO 639-1</dd>
   </dl>
 </section>
 
@@ -1441,10 +1396,6 @@
      <dt>readonly attribute float exteriorTemperature</dt>
      <dd>the current temperature of the air around the vehicle (Unit: celsius)</dd>
   </dl>
-  <p class="note">There's relevant exploratory work in W3C.<br>
-<a href="https://dvcs.w3.org/hg/dap/raw-file/default/temperature/Overview.html">https://dvcs.w3.org/hg/dap/raw-file/default/temperature/Overview.html</a></br>
-However, interior or exterior temperature MUST be distinguished in vehicles.
-  </p>
 </section>
 
 <!------------------------ Interface RainSensor ------------------------------>
@@ -1632,16 +1583,6 @@ However, interior or exterior temperature MUST be distinguished in vehicles.
 
       <p>Interfaces relating to vision and parking such as lane departure and parking brake.</p>
 
-      <div class='note'>
-
-      <p>
-  Those three categories need to be more clearly defined. It will help determine data elements fall within them.
-  Vision system and parking seems not very clear in regards with Driving safety where some functions are also related to parking and vision.
-  It is clear that certain elements could fall within multiple categories depending on how one might want to classify them.
-  Vision is much more than only lane departure warning.
-  Electric vehicle category should be renamed in order to cover alternate power trains (hybrid, range extenders,etc)
-  </p>
-    </div>
       <dl title="partial interface Vehicle" class="idl">
         <!-- maintenance types: -->
         <dt>readonly attribute VehicleSignalInterface laneDepartureStatus</dt>
