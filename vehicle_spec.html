@@ -331,7 +331,7 @@
   </dl>
 
    <dl title="partial interface VehicleInterface" class="idl">
-     <dt>Availability availableForRetrieval()</dt>
+     <dt>Availability availableForRetrieval(DOMString attributeName)</dt>
      <dd>MUST return whether a not this attribute is available for get() or not</dd>
      <dt>readonly attribute boolean supported</dt>
      <dd>MUST return true if this attribute is supported and available</dd>
@@ -353,14 +353,14 @@
    </pre>
 
    <dl title="partial interface VehicleSignalInterface" class="idl">
-     <dt>Availability availableForSubscription()</dt>
+     <dt>Availability availableForSubscription(DOMString attributeName)</dt>
      <dd>MUST return whether a not this attribute is available for subscribe() or not</dd>
-     <dt>Availability availableForSetting()</dt>
+     <dt>Availability availableForSetting(DOMString attributeName)</dt>
      <dd>MUST return whether a not this attribute is available for set() or not</dd>
    </dl>
 
    <pre class="example highlight">
-   var canHasVehicleSpeed = vehicle.vehicleSpeed.availableForSubscription() === "available";
+   var canHasVehicleSpeed = vehicle.vehicleSpeed.availableForSubscription("speed") === "available";
 
    vehicle.vehicle.availabilityChangedListener( function (available) {
      canHasVehicleSpeed = available === "available";
