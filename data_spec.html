@@ -564,17 +564,17 @@
   <h3><a>Fuel</a> Interface</h3>
   <p>The <a>Fuel</a> interface represents vehicle fuel status.
   <dl title="[NoInterfaceObject] interface Fuel : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute unsigned short level</dt>
+     <dt>readonly attribute unsigned short? level</dt>
      <dd>MUST return fuel level as a percentage of fullness</dd>
-     <dt>readonly attribute unsigned long range</dt>
+     <dt>readonly attribute unsigned long? range</dt>
      <dd>MUST return estimated fuel range (Unit:  meters)</dd>
-     <dt>readonly attribute unsigned long instantConsumption</dt>
+     <dt>readonly attribute unsigned long? instantConsumption</dt>
      <dd>MUST return instant fuel consumption in per distance travelled (Unit:  milliliters per 100 kilometers)</dd>
-     <dt>readonly attribute unsigned long averageConsumption</dt>
+     <dt>attribute unsigned long? averageConsumption</dt>
      <dd>MUST return average fuel consumption in per distance travelled (Unit:  milliliters per 100 kilometers).  Setting this to any value should reset the counter to '0'</dd>
-     <dt>readonly attribute unsigned long fuelConsumedSinceRestart</dt>
+     <dt>readonly attribute unsigned long? fuelConsumedSinceRestart</dt>
      <dd>MUST return fuel consumed since engine start; (Unit:  milliliters per 100 kilometers)  resets to 0 each restart</dd>
-     <dt>readonly attribute unsigned long vehicleTimeSinceRestart</dt>
+     <dt>readonly attribute unsigned long? timeSinceRestart</dt>
      <dd>MUST return time elapsed since vehicle restart (Unit:  seconds)</dd>
   </dl>
 </section>
@@ -621,7 +621,7 @@
   class="idl">
     <dt>readonly attribute unsigned short level</dt>
     <dd>MUST return engine coolant level (Unit: percentage 0%: empty, 100%: full)</dd>
-    <dt>readonly attribute unsigned short temperature</dt>
+    <dt>readonly attribute short temperature</dt>
     <dd>MUST return engine coolant temperature (Unit: celcius)</dd>
   </dl>
 </section>
