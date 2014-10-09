@@ -108,7 +108,7 @@
         <dd>MUST return VehicleConfigurationInterface for accessing <a>TransmissionConfiguration</a></dd>
         <dt>readonly attribute VehicleConfigurationInterface wheelConfiguration</dt>
         <dd>MUST return VehicleConfigurationInterface for accessing <a>WheelConfiguration</a></dd>
-        <dt>readonly attribute VehicleConfigurationInterface steeringWheelConfiguration</dt>
+        <dt>readonly attribute VehicleSignalInterface steeringWheelConfiguration</dt>
         <dd>MUST return VehicleConfigurationInterface for accessing <a>SteeringWheelConfiguration</a></dd>
       </dl>
 
@@ -254,8 +254,16 @@
   information information about a vehicle.</p>
 
   <dl title="[NoInterfaceObject] interface SteeringWheelConfiguration : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute unsigned boolean? steeringWheelLeft</dt>
+     <dt>readonly attribute boolean? steeringWheelLeft</dt>
      <dd>MUST return true if steering wheel is on left side of vehicle</dd>
+     <dt>attribute unsigned short? steeringWheelTelescopingPosition</dt>
+     <dd>MUST return steering wheel position as percentage of extension from the dash
+     (Unit: percentage, 0%:closest to dash, 100%:farthest from dash)
+     </dd>
+     <dt>attribute unsigned short? steeringWheelPositionTilt</dt>
+     <dd>MUST return steering wheel position as percentage of tilt
+     (Unit: percentage, 0%:tilted lowest downward-facing position, 100%:highest upward-facing position)
+     </dd>
   </dl>
 </section>
 
@@ -286,8 +294,6 @@
         <dd>MUST return VehicleSignalInterface for accessing <a>ThrottlePosition</a></dd>
         <dt>readonly attribute VehicleSignalInterface tripMeters</dt>
         <dd>MUST return VehicleSignalInterface for accessing <a>TripMeters</a></dd>
-        <dt>readonly attribute VehicleSignalInterface diagnostic</dt>
-        <dd>MUST return VehicleSignalInterface for accessing <a>Diagnostic</a></dd>
         <dt>readonly attribute VehicleSignalInterface transmission</dt>
         <dd>MUST return VehicleSignalInterface for accessing <a>Transmission</a></dd>
         <dt>readonly attribute VehicleSignalInterface cruiseControlStatus</dt>
@@ -296,6 +302,8 @@
         <dd>MUST return VehicleSignalInterface for accessing <a>LightStatus</a></dd>
         <dt>readonly attribute VehicleSignalInterface interiorLightStatus</dt>
         <dd>MUST return VehicleSignalInterface for accessing <a>InteriorLightStatus</a></dd>
+        <dt>readonly attribute VehicleSignalInterface horn</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>Horn</a></dd>
         <dt>readonly attribute VehicleSignalInterface chime</dt>
         <dd>MUST return VehicleSignalInterface for accessing <a>Chime</a></dd>
         <dt>readonly attribute VehicleSignalInterface fuel</dt>
@@ -808,8 +816,8 @@
         <dd>MUST return VehicleSignalInterface for accessing <a>BatteryStatus</a></dd>
         <dt>readonly attribute VehicleSignalInterface tire</dt>
         <dd>MUST return VehicleSignalInterface for accessing <a>Tire</a></dd>
-        <dt>readonly attribute VehicleInterface diagnostic</dt>
-        <dd>MUST return VehicleInterface for accessing <a>Diagnostic</a></dd>
+        <dt>readonly attribute VehicleSignalInterface diagnostic</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>Diagnostic</a></dd>
       </dl>
 
 
@@ -978,16 +986,12 @@
       such as seat and mirror position.</p>
 
       <dl title="partial interface Vehicle" class="idl">
-        <dt>readonly attribute VehicleSignalInterface driverIdentification</dt>
-        <dd>MUST return VehicleSignalInterface for accessing <a>DriverIdentification</a></dd>
         <dt>readonly attribute VehicleSignalInterface? languageConfiguration</dt>
         <dd>MUST return VehicleSignalInterface for accessing <a>LanguageConfiguration</a></dd>
         <dt>readonly attribute VehicleSignalInterface unitsOfMeasure</dt>
         <dd>MUST return VehicleSignalInterface for accessing <a>UnitsOfMeasure</a></dd>
         <dt>readonly attribute VehicleSignalInterface mirror</dt>
         <dd>MUST return VehicleSignalInterface for accessing <a>Mirror</a></dd>
-        <dt>readonly attribute VehicleSignalInterface steeringWheel</dt>
-        <dd>MUST return VehicleSignalInterface for accessing <a>SteeringWheel</a></dd>
         <dt>readonly attribute VehicleSignalInterface driveMode</dt>
         <dd>MUST return VehicleSignalInterface for accessing <a>DriveMode</a></dd>
         <dt>readonly attribute VehicleSignalInterface seatAdjustment</dt>
@@ -1083,25 +1087,6 @@
      (Unit: percentage,  0%:flat, 100%:maximum curvature)</dd>
      <dt>attribute Zone? zone</dt>
      <dd>MUST return Zone for requested attribute</dd>
-  </dl>
-</section>
-
-<!------------------------ Interface Steering Wheel Configuration------------------------------>
-<section>
-  <h3><a>SteeringWheelConfiguration</a> Interface</h3>
-  <p>The <a>SteeringWheel</a> interface provides or sets information about steering
-  wheel in vehicle.
-  <dl title="[NoInterfaceObject] interface SteeringWheel : VehicleCommonDataType" class="idl">
-     <dt>attribute unsigned short? steeringWheelTelescopingPosition</dt>
-
-     <dd>MUST return steering wheel position as percentage of extension from the dash
-     (Unit: percentage, 0%:closest to dash, 100%:farthest from dash)
-
-     </dd>
-     <dt>attribute unsigned short? steeringWheelPositionTilt</dt>
-     <dd>MUST return steering wheel position as percentage of tilt
-     (Unit: percentage, 0%:tilted lowest downward-facing position, 100%:highest upward-facing position)
-     </dd>
   </dl>
 </section>
 
@@ -1512,7 +1497,7 @@
   <p>The <a>SideWindow</a> interface represents the current status of openness of side windows.
 
   <dl title="[NoInterfaceObject] interface SideWindow : VehicleCommonDataType" class="idl">
-    <dt>attribute unsigned boolean? lock</dt>
+    <dt>attribute boolean? lock</dt>
     <dd>MUST return whether or not the window is locked: locked (true) or unlocked (false)</dd>
     <dt>attribute unsigned byte? openness</dt>
     <dd>MUST return current status of the side window as a percentage of openness. (0%:Closed, 100%:Fully Opened)</dd>

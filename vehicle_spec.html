@@ -362,7 +362,7 @@
    <pre class="example highlight">
    var canHasVehicleSpeed = vehicle.vehicleSpeed.availableForSubscription("speed") === "available";
 
-   vehicle.vehicle.availabilityChangedListener( function (available) {
+   vehicle.vehicleSpeed.availabilityChangedListener( function (available) {
      canHasVehicleSpeed = available === "available";
      checkVehicleSpeed();
    });
