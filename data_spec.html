@@ -71,6 +71,51 @@
   specification uses that specification and terminology.</p>
 </section>
 
+<!---------------------------- Extending this API ----------------------------------->
+<section id="Extending">
+  <h3>Extending the Vehicle Data API</h3>
+  <p>This specification anticipates that implementors may desire to extend this API and
+  define new data types that this specification does not define.  This section provides some
+  general guidlines on how extending the API should be done.</p>
+
+  <p>All new data types must have two parts: a <a href="vehicle_spec.html#vehicleinterface-interface">VehicleInterface</a>
+  attributed on the navigator.vehicle object and an interface definition that defines the 
+  data type.  The following example describes how one would extend the specification to add
+  a "whizzer" data feature.</p>
+
+  <pre class="example highlight">
+    partial interface Vehicle {
+       readonly attribute VehicleSignalInterface whizzer; /// returns an interface to the Whizzer type
+    }
+
+    interface Whizzer {
+       readonly attribute boolean isWhizzing;
+    }
+  </pre>
+  
+  <section id="Extending Existing Data Types">
+    <h3>Extending Existing Data Types</h3>
+    <p>There may also be attributes of a data type interface that an implementor may wish to extend.
+    The general guideline here is to add attributes to interfaces that are logically related.  For 
+    example, lets say an implementor wishes to add support for a new type of light.  The implementor
+    would extend the already existing Light interface and add the attribute there.
+    </p>
+    <pre class="example highlight">
+      partial interface Light {
+        attribute boolean superBeam;
+      }
+    </pre>
+  </section>
+
+  <section id="Mapping vs Extending">
+    <h3>Mapping vs. Extending</h3>
+    <p>Because vehicle data may be different in a system than what is defined in the specication, it is
+    preferable to perform post-processing to translate and map the system data to the defined type.  It
+    is NOT preferable to create a new type if one has already been defined by this specification.
+    </p>
+  </section>
+</section>
+
 <!----------------------------- Terminology ---------------------------------->
 <!--
 <section id="terminology">
