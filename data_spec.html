@@ -655,11 +655,11 @@
   <h3><a>Acceleration</a> Interface</h3>
   <p>The <a>Acceleration</a> interface represents vehicle acceleration.
   <dl title="[NoInterfaceObject] interface Acceleration : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute unsigned long x</dt>
+     <dt>readonly attribute long x</dt>
      <dd>MUST return acceleration on the "X" axis (Unit:  centimeters per second squared)</dd>
-     <dt>readonly attribute unsigned long y</dt>
+     <dt>readonly attribute long y</dt>
      <dd>MUST return acceleration on the "Y" axis (Unit:  centimeters per second squared)</dd>
-     <dt>readonly attribute unsigned long z</dt>
+     <dt>readonly attribute long z</dt>
      <dd>MUST return acceleration on the "Z" axis (Unit:  centimeters per second squared)</dd>
   </dl>
 </section>
@@ -672,7 +672,7 @@
 
   <dl title="[NoInterfaceObject] interface EngineCoolant : VehicleCommonDataType"
   class="idl">
-    <dt>readonly attribute unsigned short level</dt>
+    <dt>readonly attribute octet level</dt>
     <dd>MUST return engine coolant level (Unit: percentage 0%: empty, 100%: full)</dd>
     <dt>readonly attribute short temperature</dt>
     <dd>MUST return engine coolant temperature (Unit: celcius)</dd>
