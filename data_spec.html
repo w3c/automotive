@@ -752,7 +752,7 @@
   <h3><a>ButtonEvent</a> Interface</h3> <p>The <a>ButtonEvent</a>
   represents button press events from the steering wheel or other source</p>
 
-  <dl title="enum VehicleButton"
+  <dl title="enum Button"
   class="idl">
     <dt>home</dt>
     <dd></dd>
@@ -786,7 +786,7 @@
     <dd></dd>
   </dl>
 
-  <dl title="enum PressType"
+  <dl title="enum ButtonEventType"
   class="idl">
     <dt>press</dt>
     <dd></dd>
@@ -796,12 +796,17 @@
     <dd></dd>
   </dl>
 
+  <dl title="[NoInterfaceObject] interface VehicleButton"
+    <dt>readonly attribute Button button</dt>
+    <dd>MUST return the button corresponding to the event.</dd>
+    <dt>readonly attribute ButtonEventType state</dt>
+    <dd>MUST return the type of event</dd>
+  </dl>
+
   <dl title="[NoInterfaceObject] interface ButtonEvent : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute VehicleButton[] button</dt>
     <dd>MUST return the button events tha occured.  This supports multiple simultanious button events.</dd>
-    <dt>readonly attribute PressType state</dt>
-    <dd>MUST return the type of event</dd>
   </dl>
 </section>
 
