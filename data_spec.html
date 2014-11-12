@@ -796,7 +796,7 @@
     <dd></dd>
   </dl>
 
-  <dl title="[NoInterfaceObject] interface VehicleButton"
+  <dl title="[NoInterfaceObject] interface VehicleButton" class="idl">
     <dt>readonly attribute Button button</dt>
     <dd>MUST return the button corresponding to the event.</dd>
     <dt>readonly attribute ButtonEventType state</dt>
@@ -806,7 +806,7 @@
   <dl title="[NoInterfaceObject] interface ButtonEvent : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute VehicleButton[] button</dt>
-    <dd>MUST return the button events tha occured.  This supports multiple simultanious button events.</dd>
+    <dd>MUST return the button events that occured.  This supports multiple simultanious button events.</dd>
   </dl>
 </section>
 
@@ -891,9 +891,9 @@
   vehicles transmission oil.
   <dl title="[NoInterfaceObject] interface TransmissionOil : VehicleCommonDataType"
   class="idl">
-     <dt>readonly attribute byte? wear</dt>
+     <dt>readonly attribute octet? wear</dt>
      <dd>MUST return transmission oil wear (Unit: percentage, 0: no wear, 100: completely worn).</dd>
-     <dt>readonly attribute short? temperature</dt>
+     <dt>readonly attribute byte? temperature</dt>
      <dd>MUST return current temperature of the transmission oil(Unit: celsius).</dd>
   </dl>
 </section>
@@ -905,7 +905,7 @@
   vehicles transmission clutch.
   <dl title="[NoInterfaceObject] interface TransmissionClutch : VehicleCommonDataType"
   class="idl">
-     <dt>readonly attribute byte wear</dt>
+     <dt>readonly attribute octet wear</dt>
      <dd>MUST return transmission clutch wear (Unit: percentage, 0%: no wear, 100%: completely worn).</dd>
   </dl>
 </section>
@@ -917,12 +917,12 @@
   vehicles brakes.
   <dl title="[NoInterfaceObject] interface BrakeMaintenance : VehicleCommonDataType"
   class="idl">
-     <dt>readonly attribute unsigned short? fluidLevel</dt>
+     <dt>readonly attribute octet? fluidLevel</dt>
      <dd>MUST return brake fluid level (Unit: percentage, 0%: empty, 100%: full).</dd>
      <dt>readonly attribute boolean? fluidLevelLow</dt>
      <dd>MUST return true if brake fluid level: low (true), not low (false)</dd>
-     <dt>readonly attribute byte? padWear</dt>
-     <dd>MUST return front left brake pad wear (Unit: percentage, 0%: no wear, 100%: completely worn).</dd>
+     <dt>readonly attribute octet? padWear</dt>
+     <dd>MUST return brake pad wear (Unit: percentage, 0%: no wear, 100%: completely worn).</dd>
      <dt>readonly attribute boolean? brakesWorn</dt>
      <dd>MUST return true if brakes are worn: worn (true), not worn (false)</dd>
     <dt>readonly attribute Zone? zone</dt>
