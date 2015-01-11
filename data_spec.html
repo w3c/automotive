@@ -128,7 +128,7 @@
   <h3><a>VehicleCommonDataType</a> Interface</h3> <p>The <a>VehicleCommonDataType</a>
   interface represents the common data type for all vehicle data types</p>
 
-  <dl title="[NoInterfaceObject] interface VehicleCommonDataType" class="idl">
+  <dl title="interface VehicleCommonDataType" class="idl">
     <dt>readonly attribute DOMTimeStamp? timeStamp</dt>
     <dd>MUST return timestamp when any data in this interface was received on the system.</dd>
   </dl>
@@ -183,7 +183,7 @@
         <dd>Van</dd>
     </dl>
 
-  <dl title="[NoInterfaceObject] interface Identification : VehicleCommonDataType" class="idl">
+  <dl title="interface Identification : VehicleCommonDataType" class="idl">
      <dt>readonly attribute DOMString? VIN</dt>
      <dd>MUST return the Vehicle Identification Number (ISO 3833)</dd>
      <dt>readonly attribute DOMString? WMI</dt>
@@ -204,7 +204,7 @@
   <h3><a>SizeConfiguration</a> Interface</h3>
   <p>The <a>SizeConfiguration</a> interface provides size and shape information about a
   vehicle as a whole.</p>
-  <dl title="[NoInterfaceObject] interface SizeConfiguration : VehicleCommonDataType" class="idl">
+  <dl title="interface SizeConfiguration : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned short? width</dt>
      <dd>MUST return widest dimension of the vehicle (not including the side mirrors) (Unit:  millimeters
      Note:  Number may be an approximation, and should not be expected to be exact.)</dd>
@@ -248,7 +248,7 @@
     <dd>Electric</dd>
   </dl>
 
-  <dl title="[NoInterfaceObject] interface FuelConfiguration : VehicleCommonDataType" class="idl">
+  <dl title="interface FuelConfiguration : VehicleCommonDataType" class="idl">
      <dt>readonly attribute FuelTypeEnum[]? fuelType</dt>
      <dd>MUST return type of fuel used by vehicle. If the vehicle uses multiple fuels, fuelType returns an array of fuel types.</dd>
      <dt>readonly attribute Zone? refuelPosition</dt>
@@ -271,7 +271,7 @@
     <dd>Manual transmission</dd>
   </dl>
 
-  <dl title="[NoInterfaceObject] interface TransmissionConfiguration : VehicleCommonDataType" class="idl">
+  <dl title="interface TransmissionConfiguration : VehicleCommonDataType" class="idl">
      <dt>readonly attribute TransmissionGearTypeEnum? transmissionGearType</dt>
      <dd>MUST return transmission gear type</dd>
   </dl>
@@ -283,7 +283,7 @@
 
   <p>The <a>WheelConfiguration</a> interface provides wheel configuration information
   about a vehicle.</p>
-  <dl title="[NoInterfaceObject] interface WheelConfiguration : VehicleCommonDataType" class="idl">
+  <dl title="interface WheelConfiguration : VehicleCommonDataType" class="idl">
     <dt>readonly attribute unsigned short? wheelRadius</dt>
     <dd>MUST return radius of the front wheel (Unit: millimeters)</dd>
     <dt>readonly attribute Zone? zone</dt>
@@ -298,7 +298,7 @@
 
   information information about a vehicle.</p>
 
-  <dl title="[NoInterfaceObject] interface SteeringWheelConfiguration : VehicleCommonDataType" class="idl">
+  <dl title="interface SteeringWheelConfiguration : VehicleCommonDataType" class="idl">
      <dt>readonly attribute boolean? steeringWheelLeft</dt>
      <dd>MUST return true if steering wheel is on left side of vehicle</dd>
      <dt>attribute unsigned short? steeringWheelTelescopingPosition</dt>
@@ -384,7 +384,7 @@
   <p>The <a>VehicleSpeed</a> interface represents vehicle speed information</p>
 
 
-  <dl title="[NoInterfaceObject] interface VehicleSpeed : VehicleCommonDataType"
+  <dl title="interface VehicleSpeed : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned short speed</dt>
     <dd>MUST return vehicle speed (Unit: meters per hour)</dd>
@@ -396,7 +396,7 @@
   <h3><a>WheelSpeed</a> Interface</h3>
   <p>The <a>WheelSpeed</a> interface represents wheel speed information.</p>
 
-  <dl title="[NoInterfaceObject] interface WheelSpeed : VehicleCommonDataType"
+  <dl title="interface WheelSpeed : VehicleCommonDataType"
       class="idl">
       <dt>readonly attribute unsigned short speed</dt>
       <dd>MUST return wheel speed (Unit: meters per hour)</dd>
@@ -412,7 +412,7 @@
   <p>The <a>EngineSpeed</a> interface represents engine speed information.</p>
 
 
-  <dl title="[NoInterfaceObject] interface EngineSpeed : VehicleCommonDataType"
+  <dl title="interface EngineSpeed : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned long speed</dt>
     <dd>MUST return engine speed (Unit:  rotations per minute)</dd>
@@ -436,7 +436,7 @@
     <dd>Running power</dd>
   </dl>
 
-  <dl title="[NoInterfaceObject] interface VehiclePowerModeType : VehicleCommonDataType"
+  <dl title="interface VehiclePowerModeType : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute VehiclePowerMode value</dt>
     <dd>MUST return position of the ignition switch</dd>
@@ -449,7 +449,7 @@
   <p>The <a>PowertrainTorque</a> interface represents powertrain torque.</p>
 
 
-  <dl title="[NoInterfaceObject] interface PowertrainTorque : VehicleCommonDataType"
+  <dl title="interface PowertrainTorque : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute short value</dt>
     <dd>MUST return powertrain torque (Unit: newton meters)</dd>
@@ -462,7 +462,7 @@
   interface represents the accelerator pedal position.</p>
 
 
-  <dl title="[NoInterfaceObject] interface AcceleratorPedalPosition : VehicleCommonDataType"
+  <dl title="interface AcceleratorPedalPosition : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned short value</dt>
     <dd>MUST return accelerator pedal position as a percentage (Unit: percentage, 0%: released pedal, 100%: fully depressed)</dd>
@@ -476,7 +476,7 @@
   represents position of the throttle.</p>
 
 
-  <dl title="[NoInterfaceObject] interface ThrottlePosition : VehicleCommonDataType"
+  <dl title="interface ThrottlePosition : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned short value</dt>
     <dd>MUST return throttle position as a percentage (Unit: percentage, 0%: closed, 100%: fully open)</dd>
@@ -487,7 +487,7 @@
 <section>
   <h3><a>Trip</a> Interface</h3> <p>The <a>Trip</a> interface
   represents trip meter.</p>
-  <dl title="[NoInterfaceObject] interface Trip"
+  <dl title="interface Trip"
   class="idl">
     <dt>readonly attribute unsigned long distance</dt>
     <dd>MUST return distance travelled based on trip meter (Unit: meters)</dd>
@@ -497,7 +497,7 @@
     <dd>MUST return fuel consumed based on trip meter (Unit: milliliters per 100 kilometers)</dd>
   </dl>
 
-  <dl title="[NoInterfaceObject] interface TripMeters : VehicleCommonDataType" class="idl">
+  <dl title="interface TripMeters : VehicleCommonDataType" class="idl">
     <dt>readonly attribute Trip[] meters;
     <dd>MUST return trip meters</dd>
   </dl>
@@ -527,7 +527,7 @@
     <dd>Transmission is in overdrive</dd>
   </dl>
 
-  <dl title="[NoInterfaceObject] interface Transmission : VehicleCommonDataType" class="idl">
+  <dl title="interface Transmission : VehicleCommonDataType" class="idl">
 
      <dt>readonly attribute octet? gear</dt>
      <dd>MUST return transmission gear position. Range 0 - 10</dd>
@@ -541,7 +541,7 @@
 <section>
   <h3><a>CruiseControlStatus</a> Interface</h3>
   <p>The <a>CruiseControlStatus</a> interface represents cruise control settings.
-  <dl title="[NoInterfaceObject] interface CruiseControlStatus : VehicleCommonDataType" class="idl">
+  <dl title="interface CruiseControlStatus : VehicleCommonDataType" class="idl">
      <dt>readonly attribute boolean status</dt>
      <dd>MUST return whether or not the Cruise Control system is on (true) or off (false)</dd>
      <dt>readonly attribute unsigned short speed</dt>
@@ -553,7 +553,7 @@
 <section>
   <h3><a>LightStatus</a> Interface</h3>
   <p>The <a>LightStatus</a> interface represents exterior light statuses.
-  <dl title="[NoInterfaceObject] interface LightStatus : VehicleCommonDataType" class="idl">
+  <dl title="interface LightStatus : VehicleCommonDataType" class="idl">
      <dt>attribute boolean head</dt>
      <dd>MUST return headlight status: on (true), off (false)</dd>
      <dt>attribute boolean rightTurn</dt>
@@ -583,7 +583,7 @@
 <section>
   <h3><a>InteriorLightStatus</a> Interface</h3>
   <p>The <a>InteriorLightStatus</a> interface represents interior light status.
-  <dl title="[NoInterfaceObject] interface InteriorLightStatus : VehicleCommonDataType" class="idl">
+  <dl title="interface InteriorLightStatus : VehicleCommonDataType" class="idl">
      <dt>attribute boolean status</dt>
      <dd> MUST return interior light status for the given zone: on (true), off (false)</dd>
     <dt>readonly attribute Zone? zone</dt>
@@ -595,7 +595,7 @@
 <section>
   <h3><a>Horn</a> Interface</h3>
   <p>The <a>Horn</a> interface represents horn status.
-  <dl title="[NoInterfaceObject] interface Horn : VehicleCommonDataType" class="idl">
+  <dl title="interface Horn : VehicleCommonDataType" class="idl">
      <dt>attribute boolean status</dt>
      <dd>MUST return Horn status: on (true) or off (false)</dd>
   </dl>
@@ -605,7 +605,7 @@
 <section>
   <h3><a>Chime</a> Interface</h3>
   <p>The <a>Chime</a> interface represents chime status.
-  <dl title="[NoInterfaceObject] interface Chime : VehicleCommonDataType" class="idl">
+  <dl title="interface Chime : VehicleCommonDataType" class="idl">
      <dt>readonly attribute boolean status</dt>
      <dd>MUST return Chime status when a door is open: on (true) or off (false)</dd>
   </dl>
@@ -615,7 +615,7 @@
 <section>
   <h3><a>Fuel</a> Interface</h3>
   <p>The <a>Fuel</a> interface represents vehicle fuel status.
-  <dl title="[NoInterfaceObject] interface Fuel : VehicleCommonDataType" class="idl">
+  <dl title="interface Fuel : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned short? level</dt>
      <dd>MUST return fuel level as a percentage of fullness</dd>
      <dt>readonly attribute unsigned long? range</dt>
@@ -635,7 +635,7 @@
 <section>
   <h3><a>EngineOil</a> Interface</h3>
   <p>The <a>EngineOil</a> interface represents engine oil status.
-  <dl title="[NoInterfaceObject] interface EngineOil : VehicleCommonDataType" class="idl">
+  <dl title="interface EngineOil : VehicleCommonDataType" class="idl">
     <dt>readonly attribute unsigned short level</dt>
     <dd>MUST return engine oil level (Unit: percentage, 0%: empty, 100%: full</dd>
      <dt>readonly attribute unsigned short lifeRemaining</dt>
@@ -653,7 +653,7 @@
 <section>
   <h3><a>Acceleration</a> Interface</h3>
   <p>The <a>Acceleration</a> interface represents vehicle acceleration.
-  <dl title="[NoInterfaceObject] interface Acceleration : VehicleCommonDataType" class="idl">
+  <dl title="interface Acceleration : VehicleCommonDataType" class="idl">
      <dt>readonly attribute long x</dt>
      <dd>MUST return acceleration on the "X" axis (Unit:  centimeters per second squared)</dd>
      <dt>readonly attribute long y</dt>
@@ -669,7 +669,7 @@
 
   represents values related to engine coolant.</p>
 
-  <dl title="[NoInterfaceObject] interface EngineCoolant : VehicleCommonDataType"
+  <dl title="interface EngineCoolant : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute octet level</dt>
     <dd>MUST return engine coolant level (Unit: percentage 0%: empty, 100%: full)</dd>
@@ -685,7 +685,7 @@
   represents steering wheel data.</p>
 
 
-  <dl title="[NoInterfaceObject] interface SteeringWheel : VehicleCommonDataType"
+  <dl title="interface SteeringWheel : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute short angle</dt>
     <dd>MUST return angle of steering wheel off centerline (Unit: degrees -:degrees to the left, +:degrees to the right)</dd>
@@ -699,7 +699,7 @@
   number of ticks per second.</p>
 
 
-  <dl title="[NoInterfaceObject] interface WheelTick : VehicleCommonDataType"
+  <dl title="interface WheelTick : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned long value</dt>
     <dd>MUST return number of ticks per second (Unit: ticks per second)</dd>
@@ -713,7 +713,7 @@
   <h3><a>IgnitionTime</a> Interface</h3> <p>The <a>IgnitionTime</a>
   represents status of ignition.</p>
 
-  <dl title="[NoInterfaceObject] interface IgnitionTime : VehicleCommonDataType"
+  <dl title="interface IgnitionTime : VehicleCommonDataType"
       class="idl">
       <dt>readonly attribute DOMTimeStamp ignitionOnTime</dt>
       <dd>MUST return time at ignition on</dd>
@@ -727,7 +727,7 @@
   <h3><a>YawRate</a> Interface</h3> <p>The <a>YawRate</a>
   represents vehicle yaw rate.</p>
 
-  <dl title="[NoInterfaceObject] interface YawRate : VehicleCommonDataType"
+  <dl title="interface YawRate : VehicleCommonDataType"
       class="idl">
       <dt>readonly attribute short value</dt>
       <dd>MUST return yaw rate of vehicle.  (Unit:  degrees per second)</dd>
@@ -739,7 +739,7 @@
   <h3><a>BrakeOperation</a> Interface</h3> <p>The <a>BrakeOperation</a>
   represents vehicle brake operation.</p>
 
-  <dl title="[NoInterfaceObject] interface BrakeOperation : VehicleCommonDataType"
+  <dl title="interface BrakeOperation : VehicleCommonDataType"
       class="idl">
       <dt>readonly attribute boolean brakePedalDepressed</dt>
       <dd>MUST return whether brake pedal is depressed or not.  true: brake pedal is depressed, false: brake pedal is not depressed</dd>
@@ -795,14 +795,14 @@
     <dd></dd>
   </dl>
 
-  <dl title="[NoInterfaceObject] interface VehicleButton" class="idl">
+  <dl title="interface VehicleButton" class="idl">
     <dt>readonly attribute Button button</dt>
     <dd>MUST return the button corresponding to the event.</dd>
     <dt>readonly attribute ButtonEventType state</dt>
     <dd>MUST return the type of event</dd>
   </dl>
 
-  <dl title="[NoInterfaceObject] interface ButtonEvent : VehicleCommonDataType"
+  <dl title="interface ButtonEvent : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute VehicleButton[] button</dt>
     <dd>MUST return the button events that occured.  This supports multiple simultanious button events.</dd>
@@ -815,7 +815,7 @@
   <p>The <a>DrivingMode</a> interface provides information about whether or not the vehicle is driving.  DrivingMode is an abstract data type that may
   combine several other data types such as vehicle speed, transmission gear, etc.  Typical usage would be to disable certain functions in the application
   if the vehicle is not safe to operate those functions to avoid driver distraction.</p>
-  <dl title="[NoInterfaceObject] interface DrivingMode : VehicleCommonDataType" class="idl">
+  <dl title="interface DrivingMode : VehicleCommonDataType" class="idl">
     <dt>readonly attribute boolean mode</dt>
     <dd>MUST return true if vehicle is in driving mode</dd>
   </dl>
@@ -828,7 +828,7 @@
   <p>The <a>NightMode</a> interface provides information about whether or not it is night time.  NightMode is an abstract data type that may
   combine several other data types such as exterior brightness, time of day, sunrise/sunset, etc to determine whether or not it is night time.
   Typical usage is to change the UI theme to a darker theme during the night.</p>
-  <dl title="[NoInterfaceObject] interface NightMode : VehicleCommonDataType" class="idl">
+  <dl title="interface NightMode : VehicleCommonDataType" class="idl">
     <dt>readonly attribute boolean mode</dt>
     <dd>MUST return true if it is night time</dd>
   </dl>
@@ -875,7 +875,7 @@
   <h3><a>Odometer</a> Interface</h3>
   <p>The <a>Odometer</a> interface provides information about the distance that the
   vehicle has traveled.
-  <dl title="[NoInterfaceObject] interface Odometer : VehicleCommonDataType" class="idl">
+  <dl title="interface Odometer : VehicleCommonDataType" class="idl">
      <dt>readonly attribute unsigned long? distanceSinceStart</dt>
      <dd>MUST return the distance traveled by vehicle since start (Unit: meters).</dd>
      <dt>readonly attribute unsigned long distanceTotal</dt>
@@ -888,7 +888,7 @@
   <h3><a>TransmissionOil</a> Interface</h3>
   <p>The <a>TransmissionOil</a> interface provides information about the state of a
   vehicles transmission oil.
-  <dl title="[NoInterfaceObject] interface TransmissionOil : VehicleCommonDataType"
+  <dl title="interface TransmissionOil : VehicleCommonDataType"
   class="idl">
      <dt>readonly attribute octet? wear</dt>
      <dd>MUST return transmission oil wear (Unit: percentage, 0: no wear, 100: completely worn).</dd>
@@ -902,7 +902,7 @@
   <h3><a>TransmissionClutch</a> Interface</h3>
   <p>The <a>TransmissionClutch</a> interface provides information about the state of a
   vehicles transmission clutch.
-  <dl title="[NoInterfaceObject] interface TransmissionClutch : VehicleCommonDataType"
+  <dl title="interface TransmissionClutch : VehicleCommonDataType"
   class="idl">
      <dt>readonly attribute octet wear</dt>
      <dd>MUST return transmission clutch wear (Unit: percentage, 0%: no wear, 100%: completely worn).</dd>
@@ -914,7 +914,7 @@
   <h3><a>BrakeMaintenance</a> Interface</h3>
   <p>The <a>BrakeMaintenance</a> interface provides information about the maintenance state of a
   vehicles brakes.
-  <dl title="[NoInterfaceObject] interface BrakeMaintenance : VehicleCommonDataType"
+  <dl title="interface BrakeMaintenance : VehicleCommonDataType"
   class="idl">
      <dt>readonly attribute octet? fluidLevel</dt>
      <dd>MUST return brake fluid level (Unit: percentage, 0%: empty, 100%: full).</dd>
@@ -935,7 +935,7 @@
 
   <p>The <a>WasherFluid</a> interface provides information about the state of a
   vehicles washer fluid.
-  <dl title="[NoInterfaceObject] interface WasherFluid : VehicleCommonDataType"
+  <dl title="interface WasherFluid : VehicleCommonDataType"
 
   class="idl">
      <dt>readonly attribute unsigned short? level</dt>
@@ -951,7 +951,7 @@
 
   <p>The <a>MalfunctionIndicator</a> interface provides information about the state of a
   vehicles Malfunction Indicator lamp.
-  <dl title="[NoInterfaceObject] interface MalfunctionIndicator : VehicleCommonDataType"
+  <dl title="interface MalfunctionIndicator : VehicleCommonDataType"
 
   class="idl">
      <dt>readonly attribute boolean on</dt>
@@ -965,7 +965,7 @@
 
   <p>The <a>BatteryStatus</a> interface provides information about the state of a
   vehicles battery.
-  <dl title="[NoInterfaceObject] interface BatteryStatus : VehicleCommonDataType"
+  <dl title="interface BatteryStatus : VehicleCommonDataType"
 
   class="idl">
      <dt>readonly attribute octet? chargeLevel</dt>
@@ -985,7 +985,7 @@
 
   <p>The <a>Tire</a> interface provides information about the state of a
   vehicles tires.
-  <dl title="[NoInterfaceObject] interface Tire : VehicleCommonDataType"
+  <dl title="interface Tire : VehicleCommonDataType"
 
   class="idl">
      <dt>readonly attribute boolean? pressureLow</dt>
@@ -1006,7 +1006,7 @@
     represents Diagnostic interface to malfunction indicator light information.</p>
 
 
-    <dl title="[NoInterfaceObject] interface Diagnostic : VehicleCommonDataType"
+    <dl title="interface Diagnostic : VehicleCommonDataType"
         class="idl">
         <dt>readonly attribute unsigned long accumulatedEngineRuntime</dt>
         <dd>MUST return engine runtime (Unit: seconds)</dd>
@@ -1057,7 +1057,7 @@
   <h3><a>LanguageConfiguration</a> Interface</h3>
   <p>The <a>LanguageConfiguration</a> interface provides language information about a
   vehicle.
-  <dl title="[NoInterfaceObject] interface LanguageConfiguration : VehicleCommonDataType" class="idl">
+  <dl title="interface LanguageConfiguration : VehicleCommonDataType" class="idl">
      <dt>attribute DOMString? language</dt>
      <dd>MUST return language identifier based on two-letter codes as specified in ISO 639-1</dd>
   </dl>
@@ -1068,7 +1068,7 @@
   <h3><a>UnitsOfMeasure</a> Interface</h3>
   <p>The <a>UnitsOfMeasure</a> interface provides information about the measurement
   system and units of measure of a vehicle.
-  <dl title="[NoInterfaceObject] interface UnitsOfMeasure : VehicleCommonDataType" class="idl">
+  <dl title="interface UnitsOfMeasure : VehicleCommonDataType" class="idl">
      <dt>attribute boolean? isMKSSystem</dt>
      <dd>MUST return measurement system currently being used by vehicle.
      'true' means the current measurement system is MKS-km(liter).
@@ -1091,7 +1091,7 @@
   <h3><a>Mirror</a> Interface</h3>
   <p>The <a>Mirror</a> interface provides or sets information about mirrors
   in vehicle.
-  <dl title="[NoInterfaceObject] interface Mirror : VehicleCommonDataType" class="idl">
+  <dl title="interface Mirror : VehicleCommonDataType" class="idl">
      <dt>attribute octet? mirrorTilt</dt>
      <dd>MUST return mirror tilt position in percentage distance travelled, from downward-facing to
      upward-facing position (Unit: percentage, 0%:center position, -100%:fully downward, 100%:full upward)</dd>
@@ -1109,7 +1109,7 @@
   <h3><a>SeatAdjustment</a> Interface</h3>
   <p>The <a>SeatAdjustment</a> interface provides or sets information about seats
   in vehicle.
-  <dl title="[NoInterfaceObject] interface SeatAdjustment : VehicleCommonDataType" class="idl">
+  <dl title="interface SeatAdjustment : VehicleCommonDataType" class="idl">
      <dt>attribute octet? reclineSeatBack</dt>
 
      <dd>MUST return seat back recline position as percent to completely reclined
@@ -1159,7 +1159,7 @@
     <dd>Winter/slippery mode</dd>
   </dl>
 
-  <dl title="[NoInterfaceObject] interface DriveMode : VehicleCommonDataType" class="idl">
+  <dl title="interface DriveMode : VehicleCommonDataType" class="idl">
      <dt>attribute DriveModeType? driveMode</dt>
      <dd>MUST return vehicle drive mode</dd>
   </dl>
@@ -1170,7 +1170,7 @@
   <h3><a>DashboardIllumination</a> Interface</h3>
   <p>The <a>DashboardIllumination</a> interface provides or sets information about dashboard
   illumination in vehicle.
-  <dl title="[NoInterfaceObject] interface DashboardIllumination : VehicleCommonDataType" class="idl">
+  <dl title="interface DashboardIllumination : VehicleCommonDataType" class="idl">
      <dt>attribute octet? dashboardIllumination</dt>
 
      <dd>MUST return illumination of dashboard as a percentage
@@ -1184,7 +1184,7 @@
 <section>
   <h3><a>VehicleSound</a> Interface</h3>
   <p>The <a>VehicleSound</a> interface provides or sets information about vehicle sound.
-  <dl title="[NoInterfaceObject] interface VehicleSound : VehicleCommonDataType" class="idl">
+  <dl title="interface VehicleSound : VehicleCommonDataType" class="idl">
      <dt>attribute boolean activeNoiseControlMode</dt>
 
      <dd>MUST return active noise control status: not-activated (false), activated (true)</dd>
@@ -1233,7 +1233,7 @@
   <h3><a>AntilockBrakingSystem</a> Interface</h3> <p>The <a>AntilockBrakingSystem</a> interface
   provides status of ABS(Antilock Braking System) status and setting.</p>
 
-  <dl title="[NoInterfaceObject] interface AntilockBrakingSystem : VehicleCommonDataType"
+  <dl title="interface AntilockBrakingSystem : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute boolean enabled</dt>
     <dd>MUST return whether or not the ABS Setting is enabled: enabled (true) or disabled (false)</dd>
@@ -1247,7 +1247,7 @@
   <h3><a>TractionControlSystem</a> Interface</h3> <p>The <a>TractionControlSystem</a> interface
   provides status of TCS(Traction Control System) status and setting.</p>
 
-  <dl title="[NoInterfaceObject] interface TractionControlSystem : VehicleCommonDataType"
+  <dl title="interface TractionControlSystem : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute boolean enabled</dt>
     <dd>MUST return whether or not the TCS Setting is enabled: enabled (true) or disabled (false)</dd>
@@ -1261,7 +1261,7 @@
   <h3><a>ElectronicStabilityControl</a> Interface</h3> <p>The <a>ElectronicStabilityControl</a> interface
   provides status of ESC(Electronic Stability Control) status and setting.</p>
 
-  <dl title="[NoInterfaceObject] interface ElectronicStabilityControl : VehicleCommonDataType"
+  <dl title="interface ElectronicStabilityControl : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute boolean enabled</dt>
     <dd>MUST return whether or not the ESC Setting is enabled: enabled (true) or disabled (false)</dd>
@@ -1275,7 +1275,7 @@
   <h3><a>TopSpeedLimit</a> Interface</h3> <p>The <a>TopSpeedLimit</a> interface
   provides the current setting of top speed limit of the vehicle.</p>
 
-  <dl title="[NoInterfaceObject] interface TopSpeedLimit : VehicleCommonDataType"
+  <dl title="interface TopSpeedLimit : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned short speed</dt>
     <dd>MUST return vehicle top speed limit (Unit:  kilometers per hour)</dd>
@@ -1287,7 +1287,7 @@
   <h3><a>AirbagStatus</a> Interface</h3> <p>The <a>AirbagStatus</a> interface
   provides the current status of airbags in each zones of the vehicle.</p>
 
-  <dl title="[NoInterfaceObject] interface AirbagStatus : VehicleCommonDataType"
+  <dl title="interface AirbagStatus : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute boolean activated</dt>
     <dd>MUST return whether or not the airbag is activaged: activated (true) or deactivated (false)</dd>
@@ -1312,7 +1312,7 @@
     <dd>Door is closed</dd>
   </dl>
 
-  <dl title="[NoInterfaceObject] interface Door : VehicleCommonDataType"
+  <dl title="interface Door : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute DoorOpenStatus status</dt>
     <dd>MUST return the status of door's open status</dd>
@@ -1329,7 +1329,7 @@
   <h3><a>ChildSafetyLock</a> Interface</h3> <p>The <a>ChildSafetyLock</a> interface
   provides the current setting of Child Safety Lock.</p>
 
-  <dl title="[NoInterfaceObject] interface ChildSafetyLock : VehicleCommonDataType"
+  <dl title="interface ChildSafetyLock : VehicleCommonDataType"
   class="idl">
     <dt>attribute boolean lock</dt>
     <dd>MUST return whether or not the Child Safety Lock is locked: locked (true) or unlocked (false)</dd>
@@ -1371,7 +1371,7 @@
     <dd>Identification by voice</dd>
   </dl>
 
-  <dl title="[NoInterfaceObject] interface Seat : VehicleCommonDataType"
+  <dl title="interface Seat : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute OccupantStatus occupant</dt>
     <dd>MUST return the status of seat occupant</dd>
@@ -1423,7 +1423,7 @@
 <section>
   <h3><a>Temperature</a> Interface</h3>
   <p>The <a>Temperature</a> interface provides information about the current temperature of outside or inside vehicle.
-  <dl title="[NoInterfaceObject] interface Temperature : VehicleCommonDataType" class="idl">
+  <dl title="interface Temperature : VehicleCommonDataType" class="idl">
      <dt>readonly attribute float interiorTemperature</dt>
      <dd>MUST return the current temperature of the air inside of the vehicle (Unit: celsius)</dd>
      <dt>readonly attribute float exteriorTemperature</dt>
@@ -1435,7 +1435,7 @@
 <section>
   <h3><a>RainSensor</a> Interface</h3>
   <p>The <a>RainSensor</a> interface provides information about ambient light levels.
-  <dl title="[NoInterfaceObject] interface RainSensor : VehicleCommonDataType" class="idl">
+  <dl title="interface RainSensor : VehicleCommonDataType" class="idl">
      <dt>readonly attribute octet rainIntensity</dt>
      <dd>MUST return the amount of rain detected by the rain sensor. level of rain intensity (0: No Rain, 10:Heaviest Rain)</dd>
     <dt>readonly attribute Zone? zone</dt>
@@ -1467,7 +1467,7 @@
     <dd>Wiper is on the automatic mode which controls wiping speed with accordance with the amount of rain</dd>
   </dl>
   
-  <dl title="[NoInterfaceObject] interface WiperStatus : VehicleCommonDataType" class="idl">
+  <dl title="interface WiperStatus : VehicleCommonDataType" class="idl">
      <dt>readonly attribute WiperControl wiperSpeed</dt>
      <dd>MUST return current speed interval of wiping windshield</dd>
      <dt>attribute WiperControl	wiperSetting</dt>
@@ -1481,7 +1481,7 @@
 <section>
   <h3><a>Defrost</a> Interface</h3>
   <p>The <a>Defrost</a> interface represents the status of wiper operation.
-  <dl title="[NoInterfaceObject] interface Defrost : VehicleCommonDataType" class="idl">
+  <dl title="interface Defrost : VehicleCommonDataType" class="idl">
      <dt>attribute boolean? defrostWindow</dt>
      <dd>MUST return current status of the defrost switch for window. It can be used to send user's request for changing setting.</dd>
      <dt>attribute boolean? defrostMirrors</dt>
@@ -1495,7 +1495,7 @@
 <section>
   <h3><a>Sunroof</a> Interface</h3>
   <p>The <a>Sunroof</a> interface represents the current status of Sunroof.
-  <dl title="[NoInterfaceObject] interface Sunroof : VehicleCommonDataType" class="idl">
+  <dl title="interface Sunroof : VehicleCommonDataType" class="idl">
      <dt>attribute octet openness</dt>
      <dd>MUST return current status of Sunroof as a percentage of openness (0%: closed, 100%: fully opened)</dd>
      <dt>attribute octet tilt</dt>
@@ -1522,7 +1522,7 @@
     <dd>the convertible roof is opened</dd>
   </dl>
 
-  <dl title="[NoInterfaceObject] interface ConvertibleRoof : VehicleCommonDataType" class="idl">
+  <dl title="interface ConvertibleRoof : VehicleCommonDataType" class="idl">
      <dt>readonly attribute ConvertibleRoofStatus status</dt>
      <dd>MUST return current status of Convertible Roof.</dd>
      
@@ -1537,7 +1537,7 @@
   <h3><a>SideWindow</a> Interface</h3>
   <p>The <a>SideWindow</a> interface represents the current status of openness of side windows.
 
-  <dl title="[NoInterfaceObject] interface SideWindow : VehicleCommonDataType" class="idl">
+  <dl title="interface SideWindow : VehicleCommonDataType" class="idl">
     <dt>attribute boolean? lock</dt>
     <dd>MUST return whether or not the window is locked: locked (true) or unlocked (false)</dd>
     <dt>attribute octet? openness</dt>
@@ -1563,7 +1563,7 @@
     <dd>Air flow is directed to the floor outlets and the windshield</dd>
   </dl>
 
-  <dl title="[NoInterfaceObject] interface ClimateControl : VehicleCommonDataType" class="idl">
+  <dl title="interface ClimateControl : VehicleCommonDataType" class="idl">
 
     <dt>attribute AirflowDirection airflowDirection</dt>
     <dd>MUST return current status of the direction of the air flow through the ventilation system</dd>
@@ -1593,7 +1593,7 @@
 <section>
   <h3><a>AtmosphericPressure</a> Interface</h3>
   <p>The <a>AtmosphericPressure</a> interface provides information about the current atmospheric pressure outside of the vehicle.
-  <dl title="[NoInterfaceObject] interface AtmosphericPressure : VehicleCommonDataType" class="idl">
+  <dl title="interface AtmosphericPressure : VehicleCommonDataType" class="idl">
     <dt>readonly attribute unsigned short pressure</dt>
     <dd>MUST return the current atmospheric pressure outside of the vehicle (Unit: hectopascal)</dd>
   </dl>
@@ -1635,7 +1635,7 @@
     <dd>The function is in its operational mode</dd>
   </dl>
 
-  <dl title="[NoInterfaceObject] interface LaneDepartureDetection : VehicleCommonDataType" class="idl">
+  <dl title="interface LaneDepartureDetection : VehicleCommonDataType" class="idl">
      <dt>readonly attribute LaneDepartureStatus status</dt>
      <dd>MUST return current status of Lane departure warning function.</dd>
   </dl>
@@ -1659,7 +1659,7 @@
 
   </dl>
 
-  <dl title="[NoInterfaceObject] interface Alarm : VehicleCommonDataType" class="idl">
+  <dl title="interface Alarm : VehicleCommonDataType" class="idl">
      <dt>attribute AlarmStatus status</dt>
      <dd>MUST return current status of vehicle alarm system.</dd>
   </dl>
@@ -1679,7 +1679,7 @@
     <dd>There is a problem with the parking brake system</dd>
   </dl>
 
-  <dl title="[NoInterfaceObject] interface ParkingBrake : VehicleCommonDataType" class="idl">
+  <dl title="interface ParkingBrake : VehicleCommonDataType" class="idl">
      <dt>readonly attribute ParkingBrakeStatus status</dt>
      <dd>MUST return current status of parking brake.</dd>
   </dl>
@@ -1810,7 +1810,7 @@
   <h3><a></a> Interface</h3> <p>The <a></a>
   represents</p>
 
-  <dl title="[NoInterfaceObject] interface : VehicleCommonDataType"
+  <dl title="interface : VehicleCommonDataType"
   class="idl">
     <dt></dt>
     <dd></dd>
