@@ -261,7 +261,7 @@
 <section>
   <h3><a>TransmissionConfiguration</a> Interface</h3>
   <p>The <a>TransmissionConfiguration</a> interface provides transmission configuration
-  information information about a vehicle.</p>
+  information about a vehicle.</p>
 
 
   <dl title="enum TransmissionGearTypeEnum" class="idl">
@@ -296,7 +296,7 @@
   <h3><a>SteeringWheelConfiguration</a> Interface</h3>
   <p>The <a>SteeringWheelConfiguration</a> interface provides steering wheel configuration
 
-  information information about a vehicle.</p>
+  information about a vehicle.</p>
 
   <dl title="interface SteeringWheelConfiguration : VehicleCommonDataType" class="idl">
      <dt>readonly attribute boolean? steeringWheelLeft</dt>
@@ -637,9 +637,9 @@
   <p>The <a>EngineOil</a> interface represents engine oil status.
   <dl title="interface EngineOil : VehicleCommonDataType" class="idl">
     <dt>readonly attribute unsigned short level</dt>
-    <dd>MUST return engine oil level (Unit: percentage, 0%: empty, 100%: full</dd>
+    <dd>MUST return engine oil level (Unit: percentage, 0%: empty, 100%: full)</dd>
      <dt>readonly attribute unsigned short lifeRemaining</dt>
-     <dd>MUST return remaining engine oil life (Unit: percentage, 0%:no life remaining, 100%: full life remaining</dd>
+     <dd>MUST return remaining engine oil life (Unit: percentage, 0%:no life remaining, 100%: full life remaining)</dd>
      <dt>readonly attribute long temperature</dt>
      <dd>MUST return Engine Oil Temperature (Unit: celcius)</dd>
      <dt>readonly attribute unsigned short pressure</dt>
@@ -805,7 +805,7 @@
   <dl title="interface ButtonEvent : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute VehicleButton[] button</dt>
-    <dd>MUST return the button events that occured.  This supports multiple simultanious button events.</dd>
+    <dd>MUST return the button events that occured.  This supports multiple simultaneous button events.</dd>
   </dl>
 </section>
 
@@ -845,7 +845,7 @@
       <h2>Maintenance Interfaces</h2>
 
       <p>Interfaces relating to vehicle maintenance, the act of inspecting or testing the condition of vehicle
-      subsystems (e.g., engine) and servicing or replacing parts and fluids.</p>
+      subsystems (e.g. engine) and servicing or replacing parts and fluids.</p>
 
       <dl title="partial interface Vehicle" class="idl">
         <!-- maintenance types: -->
@@ -887,11 +887,11 @@
 <section>
   <h3><a>TransmissionOil</a> Interface</h3>
   <p>The <a>TransmissionOil</a> interface provides information about the state of a
-  vehicles transmission oil.
+  vehicle's transmission oil.
   <dl title="interface TransmissionOil : VehicleCommonDataType"
   class="idl">
      <dt>readonly attribute octet? wear</dt>
-     <dd>MUST return transmission oil wear (Unit: percentage, 0: no wear, 100: completely worn).</dd>
+     <dd>MUST return transmission oil wear (Unit: percentage, 0%: no wear, 100%: completely worn).</dd>
      <dt>readonly attribute byte? temperature</dt>
      <dd>MUST return current temperature of the transmission oil(Unit: celsius).</dd>
   </dl>
@@ -901,7 +901,7 @@
 <section>
   <h3><a>TransmissionClutch</a> Interface</h3>
   <p>The <a>TransmissionClutch</a> interface provides information about the state of a
-  vehicles transmission clutch.
+  vehicle's transmission clutch.
   <dl title="interface TransmissionClutch : VehicleCommonDataType"
   class="idl">
      <dt>readonly attribute octet wear</dt>
@@ -913,7 +913,7 @@
 <section>
   <h3><a>BrakeMaintenance</a> Interface</h3>
   <p>The <a>BrakeMaintenance</a> interface provides information about the maintenance state of a
-  vehicles brakes.
+  vehicle's brakes.
   <dl title="interface BrakeMaintenance : VehicleCommonDataType"
   class="idl">
      <dt>readonly attribute octet? fluidLevel</dt>
@@ -934,7 +934,7 @@
   <h3><a>WasherFluid</a> Interface</h3>
 
   <p>The <a>WasherFluid</a> interface provides information about the state of a
-  vehicles washer fluid.
+  vehicle's washer fluid.
   <dl title="interface WasherFluid : VehicleCommonDataType"
 
   class="idl">
@@ -950,7 +950,7 @@
   <h3><a>MalfunctionIndicator</a> Interface</h3>
 
   <p>The <a>MalfunctionIndicator</a> interface provides information about the state of a
-  vehicles Malfunction Indicator lamp.
+  vehicle's Malfunction Indicator lamp.
   <dl title="interface MalfunctionIndicator : VehicleCommonDataType"
 
   class="idl">
@@ -964,7 +964,7 @@
   <h3><a>BatteryStatus</a> Interface</h3>
 
   <p>The <a>BatteryStatus</a> interface provides information about the state of a
-  vehicles battery.
+  vehicle's battery.
   <dl title="interface BatteryStatus : VehicleCommonDataType"
 
   class="idl">
@@ -984,7 +984,7 @@
   <h3><a>Tire</a> Interface</h3>
 
   <p>The <a>Tire</a> interface provides information about the state of a
-  vehicles tires.
+  vehicle's tires.
   <dl title="interface Tire : VehicleCommonDataType"
 
   class="idl">
@@ -1097,7 +1097,7 @@
      upward-facing position (Unit: percentage, 0%:center position, -100%:fully downward, 100%:full upward)</dd>
      <dt>attribute octet? mirrorPan</dt>
      <dd>MUST return mirror pan position in percentage distance travelled, from left to right
-     position (Unit: percentage, %0:center position, -100%:fully left, 100%:fully right)</dd>
+     position (Unit: percentage, 0%:center position, -100%:fully left, 100%:fully right)</dd>
     <dt>readonly attribute Zone? zone</dt>
     <dd>MUST return Zone for requested attribute</dd>
 
