@@ -1092,10 +1092,10 @@
   <p>The <a>Mirror</a> interface provides or sets information about mirrors
   in vehicle.
   <dl title="interface Mirror : VehicleCommonDataType" class="idl">
-     <dt>attribute octet? mirrorTilt</dt>
+     <dt>attribute byte? mirrorTilt</dt>
      <dd>MUST return mirror tilt position in percentage distance travelled, from downward-facing to
      upward-facing position (Unit: percentage, 0%:center position, -100%:fully downward, 100%:full upward)</dd>
-     <dt>attribute octet? mirrorPan</dt>
+     <dt>attribute byte? mirrorPan</dt>
      <dd>MUST return mirror pan position in percentage distance travelled, from left to right
      position (Unit: percentage, %0:center position, -100%:fully left, 100%:fully right)</dd>
     <dt>readonly attribute Zone? zone</dt>
