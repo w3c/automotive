@@ -102,7 +102,7 @@
           if(i.equals(zone.driver)) {
             var value = {};
             value["acStatus"] = true;
-            vehicle.climateControl.set(value, zone.driver).then(function(){
+            vehicle.climateControl.set(value, zone.driver).then(function() {
               console.log("successfully set acStatus");
             },
             function(error) {
