@@ -98,19 +98,17 @@
 
         var zones = vehicle.climateControl.zones;
 
-        for(var i in zones)
-        {
-           if(i.equals(zone.driver))
-           {
-              var value = {};
-              value["acStatus"] = true;
-              vehicle.climateControl.set(value, zone.driver).then(function(){
-                console.log("successfully set acStatus");
-             },
-             function(error) {
-               console.log("there was an error");
-             });
-           }
+        for(var i = 0, zone; zone = zones[i]; i++) {
+          if(i.equals(zone.driver)) {
+            var value = {};
+            value["acStatus"] = true;
+            vehicle.climateControl.set(value, zone.driver).then(function(){
+              console.log("successfully set acStatus");
+            },
+            function(error) {
+              console.log("there was an error");
+            });
+          }
         }
   </pre>
 </section>
