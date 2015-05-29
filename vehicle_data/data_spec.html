@@ -363,8 +363,8 @@
         <dd>MUST return VehicleSignalInterface for accessing <a>SteeringWheel</a></dd>
         <dt>readonly attribute VehicleSignalInterface ignitionTime</dt>
         <dd>MUST return VehicleSignalInterface for accessing <a>IgnitionTime</a></dd>
-        <dt>readonly attribute VehicleSignalInterface yawRate</dt>
-        <dd>MUST return VehicleSignalInterface for accessing <a>YawRate</a></dd>
+        <dt>readonly attribute VehicleSignalInterface gyro</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>Gyro</a></dd>
         <dt>readonly attribute VehicleSignalInterface brakeOperation</dt>
         <dd>MUST return VehicleSignalInterface for accessing <a>BrakeOperation</a></dd>
         <dt>readonly attribute VehicleSignalInterface wheelTick</dt>
@@ -724,15 +724,17 @@
   </dl>
 </section>
 
-<!------------------------ Interface YawRate ------------------------>
+<!------------------------ Interface Gyro ------------------------------>
 <section>
-  <h3><a>YawRate</a> Interface</h3> <p>The <a>YawRate</a>
-  represents vehicle yaw rate.</p>
-
-  <dl title="interface YawRate : VehicleCommonDataType"
-      class="idl">
-      <dt>readonly attribute short value</dt>
-      <dd>MUST return yaw rate of vehicle.  (Unit:  degrees per second)</dd>
+  <h3><a>Gyro</a> Interface</h3>
+  <p>The <a>Gyro</a> interface represents vehicle angular rates.
+  <dl title="interface Gyro : VehicleCommonDataType" class="idl">
+     <dt>readonly attribute short yawRate</dt>
+     <dd>MUST return yaw rate of vehicle.  (Unit:  degrees per second)</dd>
+     <dt>readonly attribute short pitchRate</dt>
+     <dd>MUST return pitch rate of vehicle.  (Unit:  degrees per second)</dd>
+     <dt>readonly attribute short rollRate</dt>
+     <dd>MUST return roll rate of vehicle. (Unit:  degrees per second)</dd>
   </dl>
 </section>
 
