@@ -841,6 +841,19 @@
 
 </section>
 
+<!------------------------ Interface StartStopMode ------------------------------>
+<section>
+  <h3><a>StartStopMode</a> Interface</h3>
+  <p>The <a>StartStopMode</a> interface provides information about the status of start/stop feature of the vehicle, whereby the engine shuts off instead of idling while stationary.</p>
+  <dl title="interface StartStopMode : VehicleCommonDataType" class="idl">
+    <dt>readonly attribute boolean? startStopEnabled</dt>
+    <dd>MUST return true if start/stop is enabled</dd>
+    <dt>readonly attribute boolean? startStopActive</dt>
+    <dd>MUST return true if start/stop is currently active</dd>
+  </dl>
+
+</section>
+
 </section>
 <!------------------- End of Running Status Interfaces ---------------------->
 <!--------------------------------------------------------------------------->
