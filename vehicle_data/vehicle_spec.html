@@ -7,7 +7,7 @@
             class='remove'></script>
     <script class="remove">
       var respecConfig = {
-          specStatus:           "ED",
+          specStatus:           "FPWD",
           shortName:            "vehicle-information-api",
           editors:  [{ 
             name: "이원석(Wonsuk Lee)", company: "ETRI",
@@ -34,15 +34,15 @@
           wg:           "Automotive Working Group",
           wgURI:        "http://www.w3.org/auto/wg/",
           wgPublicList: "public-automotive",
-          wgPatentURI:  "",
-      };
+          wgPatentURI: "http://www.w3.org/2004/01/pp-impl/76043/status",
+	  };
     </script>
   </head>
 
   <body>
 
 
-<!------------------------------ Abstract ------------------------------------>
+<!-- Abstract -->
 <section id="abstract">
   <p>
   The W3C Vehicle Information API aims to enable connectivity through in-vehicle infotainment systems and vehicle data access protocols. This API can also be leveraged by web applications running on mobile devices that access the data resources of a connected passenger vehicle.</p>
@@ -65,11 +65,11 @@
 
 </section>
 
-<!----------------------- Status of this document ---------------------------->
+<!-- Status of this document -->
 <section id="sotd">
 </section>
 
-<!----------------------------- Introduction --------------------------------->
+<!-- Introduction -->
 <section class="informative">
   <h2>Introduction</h2>
   <p>
@@ -113,7 +113,7 @@
   </pre>
 </section>
 
-<!---------------------------- Conformance ----------------------------------->
+<!-- Conformance -->
 <section id="conformance">
   <p>This specification defines conformance criteria that apply to a single
   product: the <dfn>user agent</dfn> that implements the interfaces that it
@@ -125,14 +125,14 @@
   specification uses that specification and terminology.
 </section>
 
-<!----------------------------- Terminology ---------------------------------->
+<!-- Terminology -->
 <section id="terminology">
   <h2>Terminology</h2> <p>The <code><a
   href="http://www.w3.org/TR/2013/WD-dom-20131107/#promises">
   Promise</a></code> provide a convenient way to get access to the result of an operation.</p>
 </section>
 
-<!------------------------ Security and privacy ------------------------------>
+<!-- Security and privacy -->
 <section id="security">
       <h2>Security and privacy considerations</h2>
 
@@ -149,7 +149,7 @@
 
 </section>
 
-<!---------------------- Extended interface Navigator ------------------------>
+<!-- Extended interface Navigator -->
 <section>
   <h3><a>Navigator</a> Interface</h3>
     <dl title="partial interface Navigator" class="idl">
@@ -158,7 +158,7 @@
   </dl>
 </section>
 
-<!------------------------ Interface Vehicle ------------------------------->
+<!-- Interface Vehicle -->
 <section>
   <h3><a>Vehicle</a> Interface</h3> <p>The <a>Vehicle</a> interface
   represents the initial entry point for getting access to the vehicle information
@@ -167,7 +167,7 @@
   </dl>
 </section>
 
-<!------------------------ Interface Zone ------------------------>
+<!-- Interface Zone -->
 <section>
   <h3><a>Zone</a> Interface</h3> <p>The <a>Zone</a>
   interface contains the constants that represent physical zones and logical zones</p>
@@ -197,21 +197,21 @@
   </dl>
 </section>
 
-<!------------------------ Callback VehicleInterfaceCallback------------------------------>
+<!-- Callback VehicleInterfaceCallback-->
 <section>
   <h3><a>VehicleInterfaceCallback</a> Callback</h3>
   <p>The <a>VehicleInterfaceCallback</a> </p>
   <dl title="callback VehicleInterfaceCallback = void(object value)" class="idl"></dl>
 </section>
 
-<!------------------------ Callback AvailableCallback------------------------------>
+<!-- Callback AvailableCallback-->
 <section>
   <h3><a>AvailableCallback</a> Callback</h3>
   <p>The <a>AvailableCallback</a> </p>
   <dl title="callback AvailableCallback = void (Availability available)" class="idl"></dl>
 </section>
 
-<!------------------------ Interface VehicleInterfaceError ------------------------>
+<!-- Interface VehicleInterfaceError -->
 
 <section>
    <h3><a>VehicleInterfaceError</a> Interface</h3>
@@ -239,7 +239,7 @@
   </dl>
 </section>
 
-<!------------------------ Interface VehicleInterface ------------------------>
+<!-- Interface VehicleInterface -->
 <section>
   <h3><a>VehicleInterface</a> Interface</h3> <p>The <a>VehicleInterface</a>
   interface represents the base interface to get all vehicle properties.</p>
@@ -265,7 +265,7 @@
   </pre>
 </section>
 
-<!------------------------ Interface VehicleConfigurationInterface ------------------------>
+<!-- Interface VehicleConfigurationInterface -->
 <section>
   <h3><a>VehicleConfigurationInterface</a> Interface</h3> <p>The <a>VehicleConfigurationInterface</a>
   interface is to be used to provide access to static vehicle information that never changes: external dimensions, identification, transmission type etc... </p>
@@ -274,7 +274,7 @@
   class="idl">
   </dl>
 </section>
-<!------------------------ Interface VehicleSignalInterface ------------------------>
+<!-- Interface VehicleSignalInterface -->
 <section>
   <h3><a>VehicleSignalInterface</a> Interface</h3> <p>The <a>VehicleSignalInterface</a>
   interface represents vehicle signals that, as a rule, and unlike vehicle configurations, can change values, either programmatically
@@ -307,7 +307,7 @@
   </pre>
 
 </section>
-<!------------------------ Availability ------------------------>
+<!-- Availability -->
 <section>
   <h2>Data Availability</h2>
   <p>The availability API allows for developers to determine what attributes are available or not and if not, why.  It also allows for notifications when the availability
@@ -376,7 +376,7 @@
   </pre>
 
 </section>
-<!------------------------ History ------------------------>
+<!-- History -->
 <section>
 <h2>History</h2>
    <p> The History API provides a way for applications to access logged data from the vehicle.  What data is available and how much is up to the implementation.  This section is OPTIONAL.</p>
