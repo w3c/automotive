@@ -59,7 +59,7 @@
 <!-- Introduction -->
 <section class="informative">
   <h2>Introduction</h2>
-  <p>Each data type is accessed through a <a href="vehicle_spec.html#vehicleinterface-interface">VehicleInterface</a> attribute available on the <a href="vehicle_spec.html#vehicle-interface">navigator.vehicle</a> object.  The attribute name corresponds with the Vehicle Type. For example, the attribute <a href="#widl-Vehicle-vehicleSpeed">"vehicle.vehicleSpeed"</a> is the interface to the data type <a href="#vehiclespeed-interface">"VehicleSpeed"</a>.</p>
+  <p>Each data type is accessed through a <a href="http://www.w3.org/TR/vehicle-information-api/#vehicleinterface-interface">VehicleInterface</a> attribute available on the <a href="http://www.w3.org/TR/vehicle-information-api/#vehicle-interface">navigator.vehicle</a> object.  The attribute name corresponds with the Vehicle Type. For example, the attribute <a href="#widl-Vehicle-vehicleSpeed">"vehicle.vehicleSpeed"</a> is the interface to the data type <a href="#vehiclespeed-interface">"VehicleSpeed"</a>.</p>
   
   <p class="note">If an interface is provided, it MUST implement its non-nullable attributes otherwise it's optional. Many of the non-nullable attributes are found in interfaces with only one attribute (for example, <a href="#vehiclespeed-interface">"VehicleSpeed"</a>).</p>
 
@@ -84,7 +84,7 @@
   define new data types that this specification does not define.  This section provides some
   general guidlines on how extending the API should be done.</p>
 
-  <p>All new data types must have two parts: a <a href="vehicle_spec.html#vehicleinterface-interface">VehicleInterface</a>
+  <p>All new data types must have two parts: a <a href="http://www.w3.org/TR/vehicle-information-api/#vehicleinterface-interface">VehicleInterface</a>
   attributed on the navigator.vehicle object and an interface definition that defines the 
   data type.  The following example describes how one would extend the specification to add
   a "whizzer" data feature.</p>
