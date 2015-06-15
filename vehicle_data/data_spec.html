@@ -305,8 +305,8 @@
   information about a vehicle.</p>
 
   <dl title="interface SteeringWheelConfiguration : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute boolean? steeringWheelLeft</dt>
-     <dd>MUST return true if steering wheel is on left side of vehicle</dd>
+     <dt>readonly attribute Zone? steeringWheelLocation</dt>
+     <dd>MUST return the location on the steering wheel within the vehicle</dd> 
      <dt>attribute unsigned short? steeringWheelTelescopingPosition</dt>
      <dd>MUST return steering wheel position as percentage of extension from the dash
      (Unit: percentage, 0%:closest to dash, 100%:farthest from dash)
