@@ -70,10 +70,6 @@
   Bindings defined in the Web IDL specification [[!WEBIDL]], as this
   specification uses that specification and terminology.</p>
   
-  <p>Attribute units have been specified where appropriate. Integers have been
-  used in favor of floating point values in order to preserve precision during 
-  calculations (e.g. meters per hour instead of kilometers per hour).</p>  
-  
 </section>
 
 <!---------------------------- Extending this API ----------------------------------->
@@ -145,6 +141,9 @@
 
       <p>Interfaces relating to vehicle configuration and identification including: make, type size, transmission
       configuration, identification numbers, etc...</p>
+      
+      <p class="ednote">Integers have been used in favor of floating point values in order to preserve 
+      precision during calculations (e.g. meters per hour instead of kilometers per hour).</p>
 
       <dl title="partial interface Vehicle" class="idl">
         <!-- identification and configuration types: -->
@@ -327,6 +326,9 @@
       <h2>Running Status Interfaces</h2>
       <p>Interfaces relating to the running/operation of a vehicle including:  speed, temperatures, acceleration,
       etc...</p>
+      
+      <p class="ednote">Integers have been used in favor of floating point values in order to preserve 
+      precision during calculations (e.g. meters per hour instead of kilometers per hour).</p>
 
       <dl title="partial interface Vehicle" class="idl">
         <!-- running status types: -->
@@ -1217,6 +1219,9 @@
 <section id="drivingsafety-interfaces">
       <h2>DrivingSafety Interfaces</h2>
       <p>Interfaces related to driving safety such as anti-lock braking and airbag status.</p>
+      
+      <p class="ednote">Integers have been used in favor of floating point values in order to preserve 
+      precision during calculations (e.g. meters per hour instead of kilometers per hour).</p>
 
       <dl title="partial interface Vehicle" class="idl">
         <dt>readonly attribute VehicleSignalInterface antilockBrakingSystem</dt>
