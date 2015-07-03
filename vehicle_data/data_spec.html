@@ -145,7 +145,7 @@
       <h2>Configuration and Identification Interfaces</h2>
 
       <p>Interfaces relating to vehicle configuration and identification including: make, type size, transmission
-      configuration, identification numbers, etc...</p>
+      configuration and identification numbers</p>
 
       <dl title="partial interface Vehicle" class="idl">
         <!-- identification and configuration types: -->
@@ -326,8 +326,7 @@
 <!-- Running Status Interfaces -->
 <section id="runningstatus-interfaces">
       <h2>Running Status Interfaces</h2>
-      <p>Interfaces relating to the running/operation of a vehicle including:  speed, temperatures, acceleration,
-      etc...</p>
+      <p>Interfaces relating to the running/operation of a vehicle including:  speed, temperatures and acceleration.</p>
 
       <dl title="partial interface Vehicle" class="idl">
         <!-- running status types: -->
@@ -823,7 +822,7 @@
 <section>
   <h3><a>DrivingMode</a> Interface</h3>
   <p>The <a>DrivingMode</a> interface provides information about whether or not the vehicle is driving.  DrivingMode is an abstract data type that may
-  combine several other data types such as vehicle speed, transmission gear, etc.  Typical usage would be to disable certain functions in the application
+  combine several other data types such as vehicle speed and transmission gear.  Typical usage would be to disable certain functions in the application
   if the vehicle is not safe to operate those functions to avoid driver distraction.</p>
   <dl title="interface DrivingMode : VehicleCommonDataType" class="idl">
     <dt>readonly attribute boolean mode</dt>
@@ -836,7 +835,7 @@
 <section>
   <h3><a>NightMode</a> Interface</h3>
   <p>The <a>NightMode</a> interface provides information about whether or not it is night time.  NightMode is an abstract data type that may
-  combine several other data types such as exterior brightness, time of day, sunrise/sunset, etc to determine whether or not it is night time.
+  combine several other data types such as exterior brightness, time of day and sunrise/sunset, to determine whether or not it is night time.
   Typical usage is to change the UI theme to a darker theme during the night.</p>
   <dl title="interface NightMode : VehicleCommonDataType" class="idl">
     <dt>readonly attribute boolean mode</dt>
@@ -1730,10 +1729,10 @@
                 <h4>Use Cases for RunningStatus</h4>
                 <ul>
                     <li>
-                        Driver able to see driving performance information such as acceleration, speed, gears used, etc...
+                        Driver able to see driving performance information such as acceleration, speed and gears used.
                     </li>
                     <li>
-                        Driver able to see fuel economy, consumption, level, range, etc...
+                        Driver able to see fuel such as economy, consumption, level and range.
                     </li>
                 </ul>
             </section>
@@ -1741,7 +1740,7 @@
                 <h4>Use Cases for Maintenance</h4>
                 <ul>
                     <li>
-                        Driver is able to see current state of key maintenance indicators (fluid states, battery charge, tire pressure, etc...) giving an snapshot of vehicle health while in and out of vehicle.
+                      Driver is able to see current state of key maintenance indicators such as fluid states, battery charge and tire pressure, and is given an snapshot of vehicle health while in and out of vehicle.
                     </li>
                     <li>
                         Driver receives alert notifications in and out of car letting him know of maintenance issues that need to be addressed.
