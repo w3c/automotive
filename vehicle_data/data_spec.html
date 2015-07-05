@@ -235,7 +235,17 @@
 <section>
   <h3><a>FuelConfiguration</a> Interface</h3>
   <p>The <a>FuelConfiguration</a> interface provides information about the fuel
-  configuration of a vehicle.</p>
+  configuration of a vehicle. A dictionary has been used to allow an 
+  associated array of values for vehicles which use multiple fuels.</p>
+
+  <dl class="idl" title="dictionary FuelOptions">
+    <dt>FuelTypeEnum fuelType</dt>
+    <dd>MUST return type of fuel used by vehicle.</dd>
+    <dt>DOMString fuelTypeVariant</dt>
+    <dd>MUST return the specific variant of fuel required by vehicle, such as Premium Unleaded Gasoline or E10 Ethanol.</dd>
+    <dt>Zone refuelPosition</dt>
+    <dd>MUST return location on the vehicle with access to the fuel door for the associated fuel type.</dd>
+  </dl>
 
   <dl title="enum FuelTypeEnum" class="idl">
     <dt>gasoline</dt>
@@ -255,12 +265,10 @@
   </dl>
 
   <dl title="interface FuelConfiguration : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute FuelTypeEnum[]? fuelType</dt>
-     <dd>MUST return type of fuel used by vehicle. If the vehicle uses multiple fuels, fuelType returns an array of fuel types.</dd>
-     <dt>readonly attribute Zone? refuelPosition</dt>
-     <dd>MUST return location on the vehicle with access to the fuel door</dd>
-
+     <dt>readonly attribute FuelOptions[]? fuelOptions</dt>
+     <dd>MUST return a dictionary describing the fuel type, variant and refuel position used by vehicle. If the vehicle uses multiple fuels, fuelOptions returns an array of fuel options.</dd>
   </dl>
+
 </section>
 
 <!-- Interface Transmission Configuration -->
