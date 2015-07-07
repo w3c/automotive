@@ -397,8 +397,8 @@
         <dd>MUST return VehicleSignalInterface for accessing <a>WheelTick</a></dd>
         <dt>readonly attribute VehicleSignalInterface buttonEvent</dt>
         <dd>MUST return VehicleSignalInterface for accessing <a>ButtonEvent</a></dd>
-        <dt>readonly attribute VehicleSignalInterface drivingMode</dt>
-        <dd>MUST return VehicleSignalInterface for accessing <a>DrivingMode</a></dd>
+        <dt>readonly attribute VehicleSignalInterface drivingStatus</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>DrivingStatus</a></dd>
         <dt>readonly attribute VehicleSignalInterface nightMode</dt>
         <dd>MUST return VehicleSignalInterface for accessing <a>NightMode</a></dd>
       </dl>
@@ -839,15 +839,15 @@
   </dl>
 </section>
 
-<!-- Interface DrivingMode -->
+<!-- Interface DrivingStatus -->
 <section>
-  <h3><a>DrivingMode</a> Interface</h3>
-  <p>The <a>DrivingMode</a> interface provides information about whether or not the vehicle is driving.  DrivingMode is an abstract data type that may
+  <h3><a>DrivingStatus</a> Interface</h3>
+  <p>The <a>DrivingStatus</a> interface provides information about whether or not the vehicle is driving.  DrivingStatus is an abstract data type that may
   combine several other data types such as vehicle speed, transmission gear, etc.  Typical usage would be to disable certain functions in the application
   if the vehicle is not safe to operate those functions to avoid driver distraction.</p>
-  <dl title="interface DrivingMode : VehicleCommonDataType" class="idl">
-    <dt>readonly attribute boolean mode</dt>
-    <dd>MUST return true if vehicle is in driving mode</dd>
+  <dl title="interface DrivingStatus : VehicleCommonDataType" class="idl">
+    <dt>readonly attribute boolean status</dt>
+    <dd>MUST return true if vehicle is in state of driving</dd>
   </dl>
 
 </section>
