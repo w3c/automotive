@@ -95,6 +95,7 @@
   specification MUST implement them in a manner consistent with the ECMAScript
   Bindings defined in the Web IDL specification [[!WEBIDL]], as this
   specification uses that specification and terminology.</p>
+  
 </section>
 
 <!-- Extending this API -->
@@ -166,6 +167,9 @@
 
       <p>Interfaces relating to vehicle configuration and identification including: make, type size, transmission
       configuration, identification numbers, etc...</p>
+      
+      <p class="ednote">Integers have been used in favor of floating point values in order to preserve 
+      precision during calculations (e.g. meters per hour instead of kilometers per hour).</p>
 
       <dl title="partial interface Vehicle" class="idl">
         <!-- identification and configuration types: -->
@@ -348,6 +352,9 @@
       <h2>Running Status Interfaces</h2>
       <p>Interfaces relating to the running/operation of a vehicle including:  speed, temperatures, acceleration,
       etc...</p>
+      
+      <p class="ednote">Integers have been used in favor of floating point values in order to preserve 
+      precision during calculations (e.g. meters per hour instead of kilometers per hour).</p>
 
       <dl title="partial interface Vehicle" class="idl">
         <!-- running status types: -->
@@ -520,7 +527,7 @@
     <dt>readonly attribute unsigned long distance</dt>
     <dd>MUST return distance travelled based on trip meter (Unit: meters)</dd>
     <dt>readonly attribute unsigned short? averageSpeed</dt>
-    <dd>MUST return average speed based on trip meter (Unit: kilometers per hour)</dd>
+    <dd>MUST return average speed based on trip meter (Unit: meters per hour)</dd>
     <dt>readonly attribute unsigned short? fuelConsumption</dt>
     <dd>MUST return fuel consumed based on trip meter (Unit: milliliters per 100 kilometers)</dd>
   </dl>
@@ -573,7 +580,7 @@
      <dt>readonly attribute boolean status</dt>
      <dd>MUST return whether or not the Cruise Control system is on (true) or off (false)</dd>
      <dt>readonly attribute unsigned short speed</dt>
-     <dd>MUST return target Cruise Control speed in kilometers per hour (Unit: kilometers per hour)</dd>
+     <dd>MUST return target Cruise Control speed (Unit: meters per hour)</dd>
   </dl>
 </section>
 
@@ -1281,6 +1288,9 @@
 <section id="drivingsafety-interfaces">
       <h2>DrivingSafety Interfaces</h2>
       <p>Interfaces related to driving safety such as anti-lock braking and airbag status.</p>
+      
+      <p class="ednote">Integers have been used in favor of floating point values in order to preserve 
+      precision during calculations (e.g. meters per hour instead of kilometers per hour).</p>
 
       <dl title="partial interface Vehicle" class="idl">
         <dt>readonly attribute VehicleSignalInterface antilockBrakingSystem</dt>
@@ -1351,7 +1361,7 @@
   <dl title="interface TopSpeedLimit : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned short speed</dt>
-    <dd>MUST return vehicle top speed limit (Unit:  kilometers per hour)</dd>
+    <dd>MUST return vehicle top speed limit (Unit: meters per hour)</dd>
   </dl>
 </section>
 
