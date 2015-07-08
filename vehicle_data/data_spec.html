@@ -1042,6 +1042,34 @@
   </dl>
 </section>
 
+
+<!-- Interface  TroubleCode -->
+<section>
+
+    <h3><a>TroubleCode</a> Interface</h3> <p>The <a>TroubleCode</a> interface
+    represents interface to trouble codes produced by vehicle.</p>
+
+  <dl title="enum TroubleCodeType"
+  class="idl">
+    <dt>current</dt>
+    <dd></dd>
+    <dt>pending</dt>
+    <dd></dd>
+    <dt>history</dt>
+    <dd></dd>
+  </dl>
+
+    <dl title="interface TroubleCode : VehicleCommonDataType"
+        class="idl">
+        <dt>readonly attribute TroubleCodeType[] type</dt>
+        <dd>MUST return type of trouble code</dd>
+        
+        <dt>readonly attribute DOMString[] TroubleCodeValue</dt>
+        <dd>MUST return alphanumeric value of trouble code</dd>
+    </dl>
+</section>
+
+
 <!-- Interface  Diagnostic -->
 <section>
 
@@ -1061,6 +1089,8 @@
         <dd>MUST return time elapsed with the malfunction indicator light on (Unit: seconds)</dd>
         <dt>readonly attribute unsigned long timeTroubleCodeClear</dt>
         <dd>MUST return time elapsed since the trouble codes were last cleared (Unit: seconds)</dd>
+        
+        </dd>
     </dl>
 </section>
 
