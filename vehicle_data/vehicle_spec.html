@@ -309,8 +309,8 @@
     <dt>Promise set(object value, optional Zone zone)</dt>
     <dd>MUST return <a href="http://www.w3.org/TR/2013/WD-dom-20131107/#promises">Promise</a>.  The "resolve" callback indicates the set was successful.  No data is passed to resolve.  If there was an error,
     "reject" will be called with a <a>VehicleInterfaceError</a> object</dd>
-    <dt>unsigned short subscribe(VehicleInterfaceCallback callback, optional Zone zone)</dt>
-    <dd>MUST return handle to subscription or 0 if error</dd>
+    <dt>unsigned short subscribe(VehicleInterfaceCallback callback, optional Zone zone, optional unsigned long period)</dt>
+    <dd>MUST return handle to subscription or 0 if error. If 'period' is specified, 'callback' MUST be invoked at most once per 'period' milliseconds.</dd>
     <dt>void unsubscribe(unsigned short handle)</dt>
     <dd>MUST return void.  unsubscribes to value changes on this interface.</dd>
   </dl>
