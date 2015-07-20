@@ -106,15 +106,15 @@
   <pre class="example highlight">
         var vehicle = navigator.vehicle;
 
-        vehicle.vehicleSpeed.get().then(function(vehicleSpeed) {
-          console.log("vehicle speed: " + vehicleSpeed.speed);
+        vehicle.vehicleSpeed.get().then(function (vehicleSpeed) {
+          console.log("Vehicle speed: " + vehicleSpeed.speed);
         },
-        function(error) {
+        function (error) {
           console.log("There was an error");
         });
 
-        var vehicleSpeedSub = vehicle.vehicleSpeed.subscribe(function(vehicleSpeed) {
-          console.log("vehicle speed changed to: " + vehicleSpeed.speed);
+        var vehicleSpeedSub = vehicle.vehicleSpeed.subscribe(function (vehicleSpeed) {
+          console.log("Vehicle speed changed to: " + vehicleSpeed.speed);
           vehicle.vehicleSpeed.unsubscribe(vehicleSpeedSub);
         });
 
@@ -122,15 +122,15 @@
 
         var zones = vehicle.climateControl.zones;
 
-        for(var i = 0, zone; zone = zones[i]; i++) {
-          if(i.equals(zone.driver)) {
+        for (var i = 0, zone; zone = zones[i]; i++) {
+          if (i.equals(zone.driver)) {
             var value = {};
             value["acStatus"] = true;
-            vehicle.climateControl.set(value, zone.driver).then(function() {
-              console.log("successfully set acStatus");
+            vehicle.climateControl.set(value, zone.driver).then(function () {
+              console.log("Successfully set acStatus");
             },
-            function(error) {
-              console.log("there was an error");
+            function (error) {
+              console.log("There was an error");
             });
           }
         }
@@ -225,7 +225,7 @@
 <section>
   <h3><a>VehicleInterfaceCallback</a> Callback</h3>
   <p>The <a>VehicleInterfaceCallback</a> </p>
-  <dl title="callback VehicleInterfaceCallback = void(object value)" class="idl"></dl>
+  <dl title="callback VehicleInterfaceCallback = void (Object value)" class="idl"></dl>
 </section>
 
 <!-- Callback AvailableCallback-->
@@ -280,9 +280,8 @@
   <pre class="example highlight">
   vehicle.vehicleSpeed.get().then(resolve);
 
-  function resolve(data)
-  {
-    //data is of type VehicleSpeed
+  function resolve(data) {
+    // data is of type VehicleSpeed
     console.log("Speed: " + data.speed);
     console.log("Time Stamp: " + data.timestamp);
   }
@@ -319,13 +318,11 @@
   var zone = Zone
   vehicle.door.set({"lock" : true}, zone.driver).then(resolve, reject);
 
-  function resolve()
-  {
-    /// success
+  function resolve() {
+    console.log("Successfully set");
   }
 
-  function reject(errorData)
-  {
+  function reject(errorData) {
     console.log("Error occurred during set: " + errorData.message + " code: " + errorData.error);
   }
   </pre>
@@ -355,7 +352,7 @@
 
    <dl title="partial interface VehicleInterface" class="idl">
      <dt>Availability availableForRetrieval(DOMString attributeName)</dt>
-     <dd>MUST return whether a not this attribute is available for get() or not</dd>
+     <dd>MUST return whether this attribute is available for get() or not</dd>
      <dt>readonly attribute boolean supported</dt>
      <dd>MUST return true if this attribute is supported and available</dd>
      <dt>short availabilityChangedListener( AvailableCallback callback )</dt>
@@ -364,36 +361,33 @@
    </dl>
 
    <pre class="example highlight">
-   if( ( var a = vehicle.vehicleSpeed.availableForRetrieval("speed") ) === "available" )
-   {
-     // we can use it.
+   var speedAvailability = vehicle.vehicleSpeed.availableForRetrieval("speed");
+   
+   if (speedAvailability === "available") {
+     console.log("Vehicle speed available for use");
    }
-   else
-   {
-     // tell us why:
-     console.log(a);
+   else {
+     console.log("Vehicle speed unavailable: " + speedAvailability);
    }
    </pre>
 
    <dl title="partial interface VehicleSignalInterface" class="idl">
      <dt>Availability availableForSubscription(DOMString attributeName)</dt>
-     <dd>MUST return whether a not this attribute is available for subscribe() or not</dd>
+     <dd>MUST return whether this attribute is available for subscribe() or not</dd>
      <dt>Availability availableForSetting(DOMString attributeName)</dt>
-     <dd>MUST return whether a not this attribute is available for set() or not</dd>
+     <dd>MUST return whether this attribute is available for set() or not</dd>
    </dl>
 
    <pre class="example highlight">
-   var canHasVehicleSpeed = vehicle.vehicleSpeed.availableForSubscription("speed") === "available";
+   var speedSubscribable = vehicle.vehicleSpeed.availableForSubscription("speed") === "available";
 
-   vehicle.vehicleSpeed.availabilityChangedListener( function (available) {
-     canHasVehicleSpeed = available === "available";
+   vehicle.vehicleSpeed.availabilityChangedListener(function (available) {
+     speedSubscribable = available === "available";
      checkVehicleSpeed();
    });
 
-   function checkVehicleSpeed()
-   {
-     if(canHasVehicleSpeed)
-     {
+   function checkVehicleSpeed() {
+     if (speedSubscribable) {
        vehicle.vehicleSpeed.get().then(callback);
      }
    }
@@ -426,11 +420,13 @@
    </dl>
 
    <pre class="example highlight">
-   /// check if there is data being logged for vehicleSpeed:
-   if(vehicle.vehicleSpeed.history.isLogged)
-   {
-     /// get all vehicleSpeed since it was first logged:
-	   vehicle.vehicleSpeed.history.get(vehicle.vehicleSpeed.history.from, vehicle.vehicleSpeed.history.to).then( function ( data ) {
+   // check if there is data being logged for vehicleSpeed
+   if (vehicle.vehicleSpeed.history.isLogged) {
+     // get all vehicleSpeed since it was first logged
+     vehicle.vehicleSpeed.history.get(
+       vehicle.vehicleSpeed.history.from, 
+       vehicle.vehicleSpeed.history.to
+     ).then(function (data) {
        console.log(data.length);
      });
    }
