@@ -71,17 +71,17 @@
   <p>
   The W3C Vehicle Information API aims to enable connectivity through in-vehicle infotainment systems and vehicle data access protocols. This API can also be leveraged by web applications running on mobile devices that access the data resources of a connected passenger vehicle.</p>
   <p>
-  This specification does not dictate or describe the access protocol or transport method used for the data connection. Data may come from numerous sources including OBD-II, CAN, LIN, etc. Bluetooth, WiFi, or cloud connections are all possible.</p>
+  This specification does not dictate or describe the access protocol or transport method used for the data connection. Data may come from numerous sources, e.g. OBD-II, MOST, CAN and LIN. Bluetooth, WiFi, or cloud connections are all possible.</p>
   <p>
   The purpose of this specification is to promote an API that enables application development in a consistent manner across participating automotive manufacturers. It is recognized, however, that the mechanisms required for access or control of vehicle Properties may differ between automobile manufacturers, makes and models. Furthermore, different automobile manufacturers can expose different Properties that can be read or set by an application.</p>
   <p>
   As a result of these constraints, this specification shall allow for automobile manufacturer-specific extensions or restrictions. Extensions are only permitted for interfaces that are not already described by this API, and must be implemented to conform within the format and guidelines existing in this specification. If a Property is restricted, the automobile manufacturer would omit the optional feature in their implementation (see the <a>Availability</a> Section).
   </p>
   <p>
-  The target platform supported by the specification is exclusively passenger vehicles. Use of this specification for non-passenger applications (transportation, heavy machinery, marine, airline infotainment, military, etc.) is not prohibited, but is not covered in the design or content of the API and therefore may be insufficient.
+  The target platform supported by the specification is exclusively passenger vehicles. Use of this specification for non-passenger applications, e.g. transportation, heavy machinery, marine, airline infotainment, military, is not prohibited, but is not covered in the design or content of the API and therefore may be insufficient.
   </p>
   <p>
-  Initially, a typical use case of Vehicle Information might be the implementation of a 'Virtual Mechanic' application that provides vehicle status information such as tire pressure, engine oil level, washer fluid level, battery status, etc. Future use case innovations in transportation, safety, navigation, smart energy grid and consumer infotainment and customization are all possible through this specification.
+  Initially, a typical use case of Vehicle Information might be the implementation of a 'Virtual Mechanic' application that provides vehicle status information such as tire pressure, engine oil level, washer fluid level or battery status. Future use case innovations in transportation, safety, navigation, smart energy grid and consumer infotainment and customization are all possible through this specification.
   </p>
   <p>
   Web developers building interoperable applications based upon this API, will help empower a common web platform across consumer devices and passenger vehicles consistent with the Web of Things.
@@ -291,7 +291,7 @@
 <!-- Interface VehicleConfigurationInterface -->
 <section>
   <h3><a>VehicleConfigurationInterface</a> Interface</h3> <p>The <a>VehicleConfigurationInterface</a>
-  interface is to be used to provide access to static vehicle information that never changes: external dimensions, identification, transmission type etc... </p>
+  interface is to be used to provide access to static vehicle information that never changes, e.g. external dimensions, identification or transmission type. </p>
 
   <dl title="[NoInterfaceObject] interface VehicleConfigurationInterface : VehicleInterface"
   class="idl">
