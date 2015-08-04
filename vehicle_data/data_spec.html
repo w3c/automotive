@@ -1026,6 +1026,76 @@
      <dd>MUST return battery current (Unit: amperes).</dd>
      <dt>readonly attribute Zone? zone</dt>
      <dd>MUST return Zone for requested attribute</dd>
+     
+
+     <dt>readonly attribute DOMstring? batteryType</dt>
+     <dd>MUST return battery type (SLI (starting, lighting, ignition), stop-start, hybrid relay, hybrid traction)</dd>
+     <dt>readonly attribute DOMstring? batteryChemistry</dt>
+     <dd>MUST return battery chemistry (Flooded lead acid, AGM, enhanced flooded, lithium)</dd>
+     <dt>readonly attribute short? batteryCCACapacity</dt>
+     <dd>MUST return battery cold cranking amp capacity</dd>
+     
+     <dt>readonly attribute short? batteryReserveCapacity</dt>
+     <dd>MUST return battery reserve capacity</dd>
+     <dt>readonly attribute short? batteryAmpHoursCapacity</dt>
+     <dd>MUST return battery amp-hours capacity</dd>
+     
+     <dt>readonly attribute float? batteryVoltageWake</dt>
+     <dd>MUST return battery voltage at system wake</dd>
+     <dt>readonly attribute float? batteryTempWake</dt>
+     <dd>MUST return battery temperature at system wake</dd>
+
+     <dt>readonly attribute short? engineCrankTime</dt>
+     <dd>MUST return duration (in seconds) of crank cycle for most recent engine start</dd>
+
+     <dt>readonly attribute float? batteryMinVoltCrank</dt>
+     <dd>MUST return minimum battery voltage during engine crank</dd>
+     
+     <dt>readonly attribute float? engineCoolantTemp</dt>
+     <dd>MUST return coolant temperature during engine crank</dd>
+     
+     <dt>readonly attribute float? engineAirTemp</dt>
+     <dd>MUST return ambient air temperature during engine crank</dd>
+     
+     <dt>readonly attribute float? batteryVoltageT0</dt>
+     <dd>MUST return battery voltage at engine start time = 0</dd>
+     <dt>readonly attribute float? batteryTempT0</dt>
+     <dd>MUST return battery temperature at engine start time = 0</dd>
+     
+     <dt>readonly attribute float? batteryVoltageT120</dt>
+     <dd>MUST return battery voltage at engine start time = 120</dd>
+     <dt>readonly attribute float? batteryTempT120</dt>
+     <dd>MUST return battery temperature at engine start time = 120</dd>
+
+     <dt>readonly attribute float[]? batteryVoltageTrip</dt>
+     <dd>MUST return battery voltage at 1200 second intervals during engine run time (trip)</dd>
+     <dt>readonly attribute float[]? batteryTempTrip</dt>
+     <dd>MUST return battery temperature at 1200 second intervals during engine run time (trip)</dd>
+     
+     <dt>readonly attribute float? batteryVoltageESD30</dt>
+     <dd>MUST return battery voltage at 30 seconds after engine shut down</dd>
+     <dt>readonly attribute float? batteryTempESD30</dt>
+     <dd>MUST return battery temperature at 30 seconds after engine shut down</dd>
+     
+     <dt>readonly attribute float? batteryVoltageESD450</dt>
+     <dd>MUST return battery voltage at 450 seconds after engine shut down</dd>
+     <dt>readonly attribute float? batteryTempESD450</dt>
+     <dd>MUST return battery temperature at 450 seconds after engine shut down</dd>
+
+     <dt>readonly attribute float? batteryVoltageESD870</dt>
+     <dd>MUST return battery voltage at 870 seconds after engine shut down</dd>
+     <dt>readonly attribute float? batteryTempESD870</dt>
+     <dd>MUST return battery temperature at 870 seconds after engine shut down</dd>
+
+     <dt>readonly attribute float? batteryVoltageESD1290</dt>
+     <dd>MUST return battery voltage at 1290 seconds after engine shut down</dd>
+     <dt>readonly attribute float? batteryTempESD1290</dt>
+     <dd>MUST return battery temperature at 1290 seconds after engine shut down</dd>
+
+     <dt>readonly attribute float? batteryVoltageESD1710</dt>
+     <dd>MUST return battery voltage at 1710 seconds after engine shut down</dd>
+     <dt>readonly attribute float? batteryTempESD1710</dt>
+     <dd>MUST return battery temperature at 1710 seconds after engine shut down</dd>
   </dl>
 </section>
 
