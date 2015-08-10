@@ -240,9 +240,9 @@
 
   <dl class="idl" title="dictionary FuelOptions">
     <dt>FuelTypeEnum fuelType</dt>
-    <dd>MUST return type of fuel used by vehicle.</dd>
+    <dd>MUST return type of fuel used by the vehicle.</dd>
     <dt>DOMString fuelTypeVariant</dt>
-    <dd>MUST return the specific variant of fuel required by vehicle, such as Premium Unleaded Gasoline or E10 Ethanol.</dd>
+    <dd>MUST return the specific variant of fuel required by the vehicle, such as Premium Unleaded Gasoline or E10 Ethanol.</dd>
     <dt>Zone refuelPosition</dt>
     <dd>MUST return location on the vehicle with access to the fuel door for the associated fuel type.</dd>
   </dl>
@@ -265,8 +265,10 @@
   </dl>
 
   <dl title="interface FuelConfiguration : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute FuelOptions[]? fuelOptions</dt>
-     <dd>MUST return a dictionary describing the fuel type, variant and refuel position used by vehicle. If the vehicle uses multiple fuels, fuelOptions returns an array of fuel options.</dd>
+     <dt>readonly attribute any fuelOptions</dt>
+     <dd>MUST return a dictionary, as defined in <a>FuelOptions</a>, describing the fuel type, 
+     variant and refuel position used by the vehicle. If the vehicle uses multiple fuels, 
+     fuelOptions returns an array of <a>FuelOptions</a>.</dd>
   </dl>
 
 </section>
