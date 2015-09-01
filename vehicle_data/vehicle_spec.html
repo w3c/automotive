@@ -29,35 +29,59 @@
             name: "Justin (Jong Seon) Park", company: "LG Electronics",
             url: "mailto:wonsuk.lee@etri.re.kr",
             companyURL: "http://www.lg.co.kr/"              
+          }, {
+            name: "Kevron Rees (until November 2014)", company: "Intel",
+            url: "",
+            companyURL: "http://www.intel.com/"              
           }],
           edDraftURI:           "http://rawgit.com/w3c/automotive/master/vehicle_data/vehicle_spec.html",
           wg:           "Automotive Working Group",
+
+          otherLinks: [{
+            key: 'Repository and Participation',
+            data: [
+                {
+                    value: 'We are on github.',
+                    href: 'https://github.com/w3c/automotive/'
+                }, {
+                    value: 'File a bug/issue.',
+                    href: 'https://github.com/w3c/automotive/issues'
+                }, {
+                    value: 'Commit history.',
+                    href: 'https://github.com/w3c/automotive/commits'
+                }, {
+                    value: 'Mailing list archive.',
+                    href: 'https://lists.w3.org/Archives/Public/public-automotive/'
+                }
+             ]
+          }],
+
           wgURI:        "http://www.w3.org/auto/wg/",
           wgPublicList: "public-automotive",
-          wgPatentURI:  "",
-      };
+          wgPatentURI: "http://www.w3.org/2004/01/pp-impl/76043/status",
+	  };
     </script>
   </head>
 
   <body>
 
 
-<!------------------------------ Abstract ------------------------------------>
+<!-- Abstract -->
 <section id="abstract">
   <p>
   The W3C Vehicle Information API aims to enable connectivity through in-vehicle infotainment systems and vehicle data access protocols. This API can also be leveraged by web applications running on mobile devices that access the data resources of a connected passenger vehicle.</p>
   <p>
-  This specification does not dictate or describe the access protocol or transport method used for the data connection. Data may come from numerous sources including OBD-II, CAN, LIN, etc. Bluetooth, WiFi, or cloud connections are all possible.</p>
+  This specification does not dictate or describe the access protocol or transport method used for the data connection. Data may come from numerous sources, e.g. OBD-II, MOST, CAN and LIN. Bluetooth, WiFi, or cloud connections are all possible.</p>
   <p>
   The purpose of this specification is to promote an API that enables application development in a consistent manner across participating automotive manufacturers. It is recognized, however, that the mechanisms required for access or control of vehicle Properties may differ between automobile manufacturers, makes and models. Furthermore, different automobile manufacturers can expose different Properties that can be read or set by an application.</p>
   <p>
   As a result of these constraints, this specification shall allow for automobile manufacturer-specific extensions or restrictions. Extensions are only permitted for interfaces that are not already described by this API, and must be implemented to conform within the format and guidelines existing in this specification. If a Property is restricted, the automobile manufacturer would omit the optional feature in their implementation (see the <a>Availability</a> Section).
   </p>
   <p>
-  The target platform supported by the specification is exclusively passenger vehicles. Use of this specification for non-passenger applications (transportation, heavy machinery, marine, airline infotainment, military, etc.) is not prohibited, but is not covered in the design or content of the API and therefore may be insufficient.
+  The target platform supported by the specification is exclusively passenger vehicles. Use of this specification for non-passenger applications, e.g. transportation, heavy machinery, marine, airline infotainment, military, is not prohibited, but is not covered in the design or content of the API and therefore may be insufficient.
   </p>
   <p>
-  Initially, a typical use case of Vehicle Information might be the implementation of a 'Virtual Mechanic' application that provides vehicle status information such as tire pressure, engine oil level, washer fluid level, battery status, etc. Future use case innovations in transportation, safety, navigation, smart energy grid and consumer infotainment and customization are all possible through this specification.
+  Initially, a typical use case of Vehicle Information might be the implementation of a 'Virtual Mechanic' application that provides vehicle status information such as tire pressure, engine oil level, washer fluid level or battery status. Future use case innovations in transportation, safety, navigation, smart energy grid and consumer infotainment and customization are all possible through this specification.
   </p>
   <p>
   Web developers building interoperable applications based upon this API, will help empower a common web platform across consumer devices and passenger vehicles consistent with the Web of Things.
@@ -65,32 +89,32 @@
 
 </section>
 
-<!----------------------- Status of this document ---------------------------->
+<!-- Status of this document -->
 <section id="sotd">
 </section>
 
-<!----------------------------- Introduction --------------------------------->
+<!-- Introduction -->
 <section class="informative">
   <h2>Introduction</h2>
   <p>
     The Vehicle Information API provides operations to get access to the vehicle data
     (henceforth "properties") available from vehicle systems and also to change (write) a number of
-    properties.  Vehicle data types are available in the <a href="data_spec.html">Vehicle Data specification</a>.
+    properties.  Vehicle data types are available in the <a href="http://www.w3.org/TR/vehicle-data/">Vehicle Data specification</a>.
   <p>
     An example of use is provided below:
 
   <pre class="example highlight">
         var vehicle = navigator.vehicle;
 
-        vehicle.vehicleSpeed.get().then(function(vehicleSpeed) {
-          console.log("vehicle speed: " + vehicleSpeed.speed);
+        vehicle.vehicleSpeed.get().then(function (vehicleSpeed) {
+          console.log("Vehicle speed: " + vehicleSpeed.speed);
         },
-        function(error) {
+        function (error) {
           console.log("There was an error");
         });
 
-        var vehicleSpeedSub = vehicle.vehicleSpeed.subscribe(function(vehicleSpeed) {
-          console.log("vehicle speed changed to: " + vehicleSpeed.speed);
+        var vehicleSpeedSub = vehicle.vehicleSpeed.subscribe(function (vehicleSpeed) {
+          console.log("Vehicle speed changed to: " + vehicleSpeed.speed);
           vehicle.vehicleSpeed.unsubscribe(vehicleSpeedSub);
         });
 
@@ -98,22 +122,22 @@
 
         var zones = vehicle.climateControl.zones;
 
-        for(var i = 0, zone; zone = zones[i]; i++) {
-          if(i.equals(zone.driver)) {
+        for (var i = 0, zone; zone = zones[i]; i++) {
+          if (i.equals(zone.driver)) {
             var value = {};
             value["acStatus"] = true;
-            vehicle.climateControl.set(value, zone.driver).then(function() {
-              console.log("successfully set acStatus");
+            vehicle.climateControl.set(value, zone.driver).then(function () {
+              console.log("Successfully set acStatus");
             },
-            function(error) {
-              console.log("there was an error");
+            function (error) {
+              console.log("There was an error");
             });
           }
         }
   </pre>
 </section>
 
-<!---------------------------- Conformance ----------------------------------->
+<!-- Conformance -->
 <section id="conformance">
   <p>This specification defines conformance criteria that apply to a single
   product: the <dfn>user agent</dfn> that implements the interfaces that it
@@ -125,14 +149,14 @@
   specification uses that specification and terminology.
 </section>
 
-<!----------------------------- Terminology ---------------------------------->
+<!-- Terminology -->
 <section id="terminology">
   <h2>Terminology</h2> <p>The <code><a
   href="http://www.w3.org/TR/2013/WD-dom-20131107/#promises">
   Promise</a></code> provide a convenient way to get access to the result of an operation.</p>
 </section>
 
-<!------------------------ Security and privacy ------------------------------>
+<!-- Security and privacy -->
 <section id="security">
       <h2>Security and privacy considerations</h2>
 
@@ -149,7 +173,7 @@
 
 </section>
 
-<!---------------------- Extended interface Navigator ------------------------>
+<!-- Extended interface Navigator -->
 <section>
   <h3><a>Navigator</a> Interface</h3>
     <dl title="partial interface Navigator" class="idl">
@@ -158,7 +182,7 @@
   </dl>
 </section>
 
-<!------------------------ Interface Vehicle ------------------------------->
+<!-- Interface Vehicle -->
 <section>
   <h3><a>Vehicle</a> Interface</h3> <p>The <a>Vehicle</a> interface
   represents the initial entry point for getting access to the vehicle information
@@ -167,20 +191,30 @@
   </dl>
 </section>
 
-<!------------------------ Interface Zone ------------------------>
+<!-- Interface Zone -->
 <section>
   <h3><a>Zone</a> Interface</h3> <p>The <a>Zone</a>
   interface contains the constants that represent physical zones and logical zones</p>
 
   <dl title="enum ZonePosition" class="idl">
     <dt>front</dt>
-    <dt>middle</dt>
-    <dd>the middle position of a row.
-    <dt>right</dt>
-    <dt>left</dt>
-    <dt>rear</dt>
+    <dd>the front of the vehicle in the longitudinal-axis.</dd>
     <dt>center</dt>
-    <dd>the center row</dd>
+    <dd>the center of the vehicle in the longitudinal-axis.</dd>
+    <dt>rear</dt>
+    <dd>the rear of the vehicle in the longitudinal-axis.</dd>
+    <dt>left</dt>
+    <dd>the left side of the vehicle in the horizontal-axis.</dd>
+    <dt>middle</dt>
+    <dd>the middle of the vehicle in the horizontal-axis.</dd>
+    <dt>right</dt>
+    <dd>the right side of the vehicle in the horizontal-axis.</dd>
+    <dt>top</dt>
+    <dd>the top layer of the vehicle in the vertical-axis.</dd>
+    <dt>central</dt>
+    <dd>the central layer of the vehicle in the vertical-axis.</dd>
+    <dt>bottom</dt>
+    <dd>the bottom layer of the vehicle in the vertical-axis.</dd>
   </dl>
 
   <dl title="interface Zone"
@@ -197,21 +231,21 @@
   </dl>
 </section>
 
-<!------------------------ Callback VehicleInterfaceCallback------------------------------>
+<!-- Callback VehicleInterfaceCallback-->
 <section>
   <h3><a>VehicleInterfaceCallback</a> Callback</h3>
   <p>The <a>VehicleInterfaceCallback</a> </p>
-  <dl title="callback VehicleInterfaceCallback = void(object value)" class="idl"></dl>
+  <dl title="callback VehicleInterfaceCallback = void (Object value)" class="idl"></dl>
 </section>
 
-<!------------------------ Callback AvailableCallback------------------------------>
+<!-- Callback AvailableCallback-->
 <section>
   <h3><a>AvailableCallback</a> Callback</h3>
   <p>The <a>AvailableCallback</a> </p>
   <dl title="callback AvailableCallback = void (Availability available)" class="idl"></dl>
 </section>
 
-<!------------------------ Interface VehicleInterfaceError ------------------------>
+<!-- Interface VehicleInterfaceError -->
 
 <section>
    <h3><a>VehicleInterfaceError</a> Interface</h3>
@@ -239,7 +273,7 @@
   </dl>
 </section>
 
-<!------------------------ Interface VehicleInterface ------------------------>
+<!-- Interface VehicleInterface -->
 <section>
   <h3><a>VehicleInterface</a> Interface</h3> <p>The <a>VehicleInterface</a>
   interface represents the base interface to get all vehicle properties.</p>
@@ -256,25 +290,24 @@
   <pre class="example highlight">
   vehicle.vehicleSpeed.get().then(resolve);
 
-  function resolve(data)
-  {
-    //data is of type VehicleSpeed
+  function resolve(data) {
+    // data is of type VehicleSpeed
     console.log("Speed: " + data.speed);
     console.log("Time Stamp: " + data.timestamp);
   }
   </pre>
 </section>
 
-<!------------------------ Interface VehicleConfigurationInterface ------------------------>
+<!-- Interface VehicleConfigurationInterface -->
 <section>
   <h3><a>VehicleConfigurationInterface</a> Interface</h3> <p>The <a>VehicleConfigurationInterface</a>
-  interface is to be used to provide access to static vehicle information that never changes: external dimensions, identification, transmission type etc... </p>
+  interface is to be used to provide access to static vehicle information that never changes, e.g. external dimensions, identification or transmission type. </p>
 
   <dl title="[NoInterfaceObject] interface VehicleConfigurationInterface : VehicleInterface"
   class="idl">
   </dl>
 </section>
-<!------------------------ Interface VehicleSignalInterface ------------------------>
+<!-- Interface VehicleSignalInterface -->
 <section>
   <h3><a>VehicleSignalInterface</a> Interface</h3> <p>The <a>VehicleSignalInterface</a>
   interface represents vehicle signals that, as a rule, and unlike vehicle configurations, can change values, either programmatically
@@ -285,8 +318,8 @@
     <dt>Promise set(object value, optional Zone zone)</dt>
     <dd>MUST return <a href="http://www.w3.org/TR/2013/WD-dom-20131107/#promises">Promise</a>.  The "resolve" callback indicates the set was successful.  No data is passed to resolve.  If there was an error,
     "reject" will be called with a <a>VehicleInterfaceError</a> object</dd>
-    <dt>unsigned short subscribe(VehicleInterfaceCallback callback, optional Zone zone)</dt>
-    <dd>MUST return handle to subscription or 0 if error</dd>
+    <dt>unsigned short subscribe(VehicleInterfaceCallback callback, optional Zone zone, optional unsigned long period)</dt>
+    <dd>MUST return handle to subscription or 0 if error. If 'period' is specified, 'callback' MUST be invoked at most once per 'period' milliseconds.</dd>
     <dt>void unsubscribe(unsigned short handle)</dt>
     <dd>MUST return void.  unsubscribes to value changes on this interface.</dd>
   </dl>
@@ -295,19 +328,17 @@
   var zone = Zone
   vehicle.door.set({"lock" : true}, zone.driver).then(resolve, reject);
 
-  function resolve()
-  {
-    /// success
+  function resolve() {
+    console.log("Successfully set");
   }
 
-  function reject(errorData)
-  {
+  function reject(errorData) {
     console.log("Error occurred during set: " + errorData.message + " code: " + errorData.error);
   }
   </pre>
 
 </section>
-<!------------------------ Availability ------------------------>
+<!-- Availability -->
 <section>
   <h2>Data Availability</h2>
   <p>The availability API allows for developers to determine what attributes are available or not and if not, why.  It also allows for notifications when the availability
@@ -331,7 +362,7 @@
 
    <dl title="partial interface VehicleInterface" class="idl">
      <dt>Availability availableForRetrieval(DOMString attributeName)</dt>
-     <dd>MUST return whether a not this attribute is available for get() or not</dd>
+     <dd>MUST return whether this attribute is available for get() or not</dd>
      <dt>readonly attribute boolean supported</dt>
      <dd>MUST return true if this attribute is supported and available</dd>
      <dt>short availabilityChangedListener( AvailableCallback callback )</dt>
@@ -340,43 +371,40 @@
    </dl>
 
    <pre class="example highlight">
-   if( ( var a = vehicle.vehicleSpeed.availableForRetrieval("speed") ) === "available" )
-   {
-     // we can use it.
+   var speedAvailability = vehicle.vehicleSpeed.availableForRetrieval("speed");
+   
+   if (speedAvailability === "available") {
+     console.log("Vehicle speed available for use");
    }
-   else
-   {
-     // tell us why:
-     console.log(a);
+   else {
+     console.log("Vehicle speed unavailable: " + speedAvailability);
    }
    </pre>
 
    <dl title="partial interface VehicleSignalInterface" class="idl">
      <dt>Availability availableForSubscription(DOMString attributeName)</dt>
-     <dd>MUST return whether a not this attribute is available for subscribe() or not</dd>
+     <dd>MUST return whether this attribute is available for subscribe() or not</dd>
      <dt>Availability availableForSetting(DOMString attributeName)</dt>
-     <dd>MUST return whether a not this attribute is available for set() or not</dd>
+     <dd>MUST return whether this attribute is available for set() or not</dd>
    </dl>
 
    <pre class="example highlight">
-   var canHasVehicleSpeed = vehicle.vehicleSpeed.availableForSubscription("speed") === "available";
+   var speedSubscribable = vehicle.vehicleSpeed.availableForSubscription("speed") === "available";
 
-   vehicle.vehicleSpeed.availabilityChangedListener( function (available) {
-     canHasVehicleSpeed = available === "available";
+   vehicle.vehicleSpeed.availabilityChangedListener(function (available) {
+     speedSubscribable = available === "available";
      checkVehicleSpeed();
    });
 
-   function checkVehicleSpeed()
-   {
-     if(canHasVehicleSpeed)
-     {
+   function checkVehicleSpeed() {
+     if (speedSubscribable) {
        vehicle.vehicleSpeed.get().then(callback);
      }
    }
   </pre>
 
 </section>
-<!------------------------ History ------------------------>
+<!-- History -->
 <section>
 <h2>History</h2>
    <p> The History API provides a way for applications to access logged data from the vehicle.  What data is available and how much is up to the implementation.  This section is OPTIONAL.</p>
@@ -402,11 +430,13 @@
    </dl>
 
    <pre class="example highlight">
-   /// check if there is data being logged for vehicleSpeed:
-   if(vehicle.vehicleSpeed.history.isLogged)
-   {
-     /// get all vehicleSpeed since it was first logged:
-	   vehicle.vehicleSpeed.history.get(vehicle.vehicleSpeed.history.from, vehicle.vehicleSpeed.history.to).then( function ( data ) {
+   // check if there is data being logged for vehicleSpeed
+   if (vehicle.vehicleSpeed.history.isLogged) {
+     // get all vehicleSpeed since it was first logged
+     vehicle.vehicleSpeed.history.get(
+       vehicle.vehicleSpeed.history.from, 
+       vehicle.vehicleSpeed.history.to
+     ).then(function (data) {
        console.log(data.length);
      });
    }
@@ -434,7 +464,7 @@
             Subscribe to single value until unsubscribed.
         </section>
         <section>
-            <h4>Set </h4>
+            <h4>Unsubscribe</h4>
             Unsubscribe to single value.
         </section>
     </section>
