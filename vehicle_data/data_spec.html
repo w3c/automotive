@@ -79,7 +79,8 @@
 <!-- Introduction -->
 <section class="informative">
   <h2>Introduction</h2>
-  <p>Each data type is accessed through a <a href="http://www.w3.org/TR/vehicle-information-api/#vehicleinterface-interface">VehicleInterface</a> attribute available on the <a href="http://www.w3.org/TR/vehicle-information-api/#vehicle-interface">navigator.vehicle</a> object.  The attribute name corresponds with the Vehicle Type. For example, the attribute <a href="#widl-Vehicle-vehicleSpeed">"vehicle.vehicleSpeed"</a> is the interface to the data type <a href="#vehiclespeed-interface">"VehicleSpeed"</a>. Unless otherwise stated, SI units should be used where applicable for all attributes.</p>  
+  <p>Each data type is accessed through a <a href="http://www.w3.org/TR/vehicle-information-api/#vehicleinterface-interface">VehicleInterface</a> attribute available on the <a href="http://www.w3.org/TR/vehicle-information-api/#vehicle-interface">navigator.vehicle</a> object.  The attribute name corresponds with the Vehicle Type. For example, the attribute <a href="#widl-Vehicle-vehicleSpeed">"vehicle.vehicleSpeed"</a> is the interface to the data type <a href="#vehiclespeed-interface">"VehicleSpeed"</a>.</p>
+  <p>Unless otherwise stated, SI units should be used where applicable for all attributes. Notable exceptions for this are temperature, which shall be specified in Celsius, and speed, which shall be specified in meters per hour.</p>  
   <p class="note">If an interface is provided, it MUST implement its non-nullable attributes otherwise it's optional. Many of the non-nullable attributes are found in interfaces with only one attribute (for example, <a href="#vehiclespeed-interface">"VehicleSpeed"</a>).</p>
 
 </section>
@@ -893,8 +894,7 @@
       <h2>Maintenance Interfaces</h2>
 
       <p>Interfaces relating to vehicle maintenance, the act of inspecting or testing the condition of vehicle
-      subsystems (e.g. engine) and servicing or replacing parts and fluids. Temperature attributes within this interface 
-      should be specified in degrees Celsius.</p>
+      subsystems (e.g. engine) and servicing or replacing parts and fluids.</p>
 
       <dl title="partial interface Vehicle" class="idl">
         <!-- maintenance types: -->
