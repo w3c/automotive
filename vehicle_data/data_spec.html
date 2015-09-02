@@ -331,13 +331,13 @@
   <dl title="interface SteeringWheelConfiguration : VehicleCommonDataType" class="idl">
      <dt>readonly attribute Zone? steeringWheelLocation</dt>
      <dd>MUST return the location on the steering wheel within the vehicle</dd> 
-     <dt>attribute unsigned short? steeringWheelTelescopingPosition</dt>
-     <dd>MUST return steering wheel position as percentage of extension from the dash
-     (Unit: percentage, 0%:closest to dash, 100%:farthest from dash)
+     <dt>attribute octet? steeringWheelTelescopingPosition</dt>
+     <dd>MUST return steering wheel position as a percentage of extension from the dash
+     (Unit: 0%: closest to dash, 100%: farthest from dash)
      </dd>
-     <dt>attribute unsigned short? steeringWheelPositionTilt</dt>
-     <dd>MUST return steering wheel position as percentage of tilt
-     (Unit: percentage, 0%:tilted lowest downward-facing position, 100%:highest upward-facing position)
+     <dt>attribute octet? steeringWheelPositionTilt</dt>
+     <dd>MUST return steering wheel position as a percentage of tilt
+     (Unit: 0%: tilted lowest downward-facing position, 100% :highest upward-facing position)
      </dd>
   </dl>
 </section>
@@ -447,7 +447,7 @@
   <dl title="interface EngineSpeed : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute unsigned long speed</dt>
-    <dd>MUST return engine speed (Unit:  rotations per minute)</dd>
+    <dd>MUST return engine speed (Unit: rotations per minute)</dd>
   </dl>
 </section>
 
@@ -498,8 +498,8 @@
 
   <dl title="interface AcceleratorPedalPosition : VehicleCommonDataType"
   class="idl">
-    <dt>readonly attribute unsigned short value</dt>
-    <dd>MUST return accelerator pedal position as a percentage (Unit: percentage, 0%: released pedal, 100%: fully depressed)</dd>
+    <dt>readonly attribute octet value</dt>
+    <dd>MUST return accelerator pedal position as a percentage (Unit: 0%: released pedal, 100%: fully depressed)</dd>
   </dl>
 </section>
 
@@ -512,8 +512,8 @@
 
   <dl title="interface ThrottlePosition : VehicleCommonDataType"
   class="idl">
-    <dt>readonly attribute unsigned short value</dt>
-    <dd>MUST return throttle position as a percentage (Unit: percentage, 0%: closed, 100%: fully open)</dd>
+    <dt>readonly attribute octet value</dt>
+    <dd>MUST return throttle position as a percentage (Unit: 0%: closed, 100%: fully open)</dd>
   </dl>
 </section>
 
@@ -650,8 +650,8 @@
   <h3><a>Fuel</a> Interface</h3>
   <p>The <a>Fuel</a> interface represents vehicle fuel status.
   <dl title="interface Fuel : VehicleCommonDataType" class="idl">
-     <dt>readonly attribute unsigned short? level</dt>
-     <dd>MUST return fuel level as a percentage of fullness</dd>
+     <dt>readonly attribute octet? level</dt>
+     <dd>MUST return fuel level as a percentage (Unit: 0%: empty, 100%: full)</dd>
      <dt>readonly attribute unsigned long? range</dt>
      <dd>MUST return estimated fuel range (Unit:  meters)</dd>
      <dt>readonly attribute unsigned long? instantConsumption</dt>
@@ -670,10 +670,10 @@
   <h3><a>EngineOil</a> Interface</h3>
   <p>The <a>EngineOil</a> interface represents engine oil status.
   <dl title="interface EngineOil : VehicleCommonDataType" class="idl">
-    <dt>readonly attribute unsigned short level</dt>
-    <dd>MUST return engine oil level (Unit: percentage, 0%: empty, 100%: full)</dd>
-     <dt>readonly attribute unsigned short lifeRemaining</dt>
-     <dd>MUST return remaining engine oil life (Unit: percentage, 0%:no life remaining, 100%: full life remaining)</dd>
+    <dt>readonly attribute octet level</dt>
+    <dd>MUST return engine oil level as a percentage (Unit: 0%: empty, 100%: full)</dd>
+     <dt>readonly attribute octet lifeRemaining</dt>
+     <dd>MUST return remaining engine oil life as a percentage (Unit: 0%: no life remaining, 100%: full life remaining)</dd>
      <dt>readonly attribute long temperature</dt>
      <dd>MUST return Engine Oil Temperature (Unit: celsius)</dd>
      <dt>readonly attribute unsigned short pressure</dt>
@@ -706,7 +706,7 @@
   <dl title="interface EngineCoolant : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute octet level</dt>
-    <dd>MUST return engine coolant level (Unit: percentage 0%: empty, 100%: full)</dd>
+    <dd>MUST return engine coolant level as a percentage (Unit: 0%: empty, 100%: full)</dd>
     <dt>readonly attribute short temperature</dt>
     <dd>MUST return engine coolant temperature (Unit: celsius)</dd>
   </dl>
@@ -940,7 +940,7 @@
   <dl title="interface TransmissionOil : VehicleCommonDataType"
   class="idl">
      <dt>readonly attribute octet? wear</dt>
-     <dd>MUST return transmission oil wear (Unit: percentage, 0%: no wear, 100%: completely worn).</dd>
+     <dd>MUST return transmission oil wear as a percentage (Unit: 0%: no wear, 100%: completely worn).</dd>
      <dt>readonly attribute byte? temperature</dt>
      <dd>MUST return current temperature of the transmission oil (Unit: celsius).</dd>
   </dl>
@@ -954,7 +954,7 @@
   <dl title="interface TransmissionClutch : VehicleCommonDataType"
   class="idl">
      <dt>readonly attribute octet wear</dt>
-     <dd>MUST return transmission clutch wear (Unit: percentage, 0%: no wear, 100%: completely worn).</dd>
+     <dd>MUST return transmission clutch wear as a percentage (Unit: 0%: no wear, 100%: completely worn).</dd>
   </dl>
 </section>
 
@@ -966,11 +966,11 @@
   <dl title="interface BrakeMaintenance : VehicleCommonDataType"
   class="idl">
      <dt>readonly attribute octet? fluidLevel</dt>
-     <dd>MUST return brake fluid level (Unit: percentage, 0%: empty, 100%: full).</dd>
+     <dd>MUST return brake fluid level as a percentage (Unit: 0%: empty, 100%: full).</dd>
      <dt>readonly attribute boolean? fluidLevelLow</dt>
      <dd>MUST return true if brake fluid level: low (true), not low (false)</dd>
      <dt>readonly attribute octet? padWear</dt>
-     <dd>MUST return brake pad wear (Unit: percentage, 0%: no wear, 100%: completely worn).</dd>
+     <dd>MUST return brake pad wear as a percentage (Unit: 0%: no wear, 100%: completely worn).</dd>
      <dt>readonly attribute boolean? brakesWorn</dt>
      <dd>MUST return true if brakes are worn: worn (true), not worn (false)</dd>
     <dt>readonly attribute Zone? zone</dt>
@@ -987,8 +987,8 @@
   <dl title="interface WasherFluid : VehicleCommonDataType"
 
   class="idl">
-     <dt>readonly attribute unsigned short? level</dt>
-     <dd>MUST return washer fluid level (Unit: percentage, 0%: empty, 100%: full).</dd>
+     <dt>readonly attribute octet? level</dt>
+     <dd>MUST return washer fluid level as a percentage (Unit: 0%: empty, 100%: full).</dd>
      <dt>readonly attribute boolean? levelLow</dt>
      <dd>MUST return true if washer fluid level is low: low (true), not low: (false)</dd>
   </dl>
@@ -1018,7 +1018,7 @@
 
   class="idl">
      <dt>readonly attribute octet? chargeLevel</dt>
-     <dd>MUST return battery charge level (Unit: percentage, 0%: empty, 100%: full).</dd>
+     <dd>MUST return battery charge level as a percentage (Unit: 0%: empty, 100%: full).</dd>
      <dt>readonly attribute unsigned short? voltage</dt>
      <dd>MUST return battery voltage (Unit: volts).</dd>
      <dt>readonly attribute unsigned short? current</dt>
@@ -1242,11 +1242,11 @@
   in vehicle.
   <dl title="interface Mirror : VehicleCommonDataType" class="idl">
      <dt>attribute byte? mirrorTilt</dt>
-     <dd>MUST return mirror tilt position in percentage distance travelled, from downward-facing to
-     upward-facing position (Unit: percentage, 0%:center position, -100%:fully downward, 100%:full upward)</dd>
+     <dd>MUST return mirror tilt position as a percentage of distance travelled from downward-facing to
+     upward-facing position (Unit: 0%: center position, -100%: fully downward, 100%: full upward)</dd>
      <dt>attribute byte? mirrorPan</dt>
-     <dd>MUST return mirror pan position in percentage distance travelled, from left to right
-     position (Unit: percentage, 0%:center position, -100%:fully left, 100%:fully right)</dd>
+     <dd>MUST return mirror pan position as a percentage of distance travelled from left to right
+     position (Unit: 0%: center position, -100%: fully left, 100%: fully right)</dd>
     <dt>readonly attribute Zone? zone</dt>
     <dd>MUST return Zone for requested attribute</dd>
 
@@ -1261,27 +1261,27 @@
   <dl title="interface SeatAdjustment : VehicleCommonDataType" class="idl">
      <dt>attribute octet? reclineSeatBack</dt>
 
-     <dd>MUST return seat back recline position as percent to completely reclined
-     (Unit: percentage, 0%: fully forward, 100%: fully reclined)</dd>
+     <dd>MUST return seat back recline position as a percentage to completely reclined
+     (Unit: 0%: fully forward, 100%: fully reclined)</dd>
 
      <dt>attribute octet? seatSlide</dt>
-     <dd>MUST return seat slide position as percentage of distance travelled away from forwardmost
-     position (Unit: percentage, 0%: farthest forward, 100%: farthest back)</dd>
+     <dd>MUST return seat slide position as a percentage of distance travelled away from forwardmost
+     position (Unit: 0%: farthest forward, 100%: farthest back)</dd>
      <dt>attribute octet? seatCushionHeight</dt>
 
      <dd>MUST return seat cushion height position as a percentage of upward distance travelled
-     (Unit: percentage, 0%: lowest. 100%: highest)</dd>
+     (Unit: 0%: lowest. 100%: highest)</dd>
 
      <dt>attribute octet? seatHeadrest</dt>
      <dd> MUST return headrest position as a percentage of upward distance travelled
-     (Unit: percentage,  0%: lowest, 100%: highest)</dd>
+     (Unit: 0%: lowest, 100%: highest)</dd>
      <dt>attribute octet? seatBackCushion</dt>
 
      <dd>MUST return back cushion position as a percentage of lumbar curvature
-     (Unit: percentage,  0%: flat, 100%: maximum curvature)</dd>
+     (Unit: 0%: flat, 100%: maximum curvature)</dd>
      <dt>attribute octet? seatSideCushion</dt>
      <dd>MUST return sides of back cushion position as a percentage of curvature
-     (Unit: percentage,  0%: flat, 100%: maximum curvature)</dd>
+     (Unit: 0%: flat, 100%: maximum curvature)</dd>
      <dt>readonly attribute Zone? zone</dt>
      <dd>MUST return Zone for requested attribute</dd>
   </dl>
@@ -1323,7 +1323,7 @@
      <dt>attribute octet? dashboardIllumination</dt>
 
      <dd>MUST return illumination of dashboard as a percentage
-     (Unit: percentage, 0%: none, 100%: maximum illumination)
+     (Unit: 0%: none, 100%: maximum illumination)
 
      </dd>
   </dl>
@@ -1649,9 +1649,9 @@
   <p>The <a>Sunroof</a> interface represents the current status of Sunroof.
   <dl title="interface Sunroof : VehicleCommonDataType" class="idl">
      <dt>attribute octet openness</dt>
-     <dd>MUST return current status of Sunroof as a percentage of openness (0%: closed, 100%: fully opened)</dd>
+     <dd>MUST return current status of Sunroof as a percentage of openness (Unit: 0%: closed, 100%: fully opened)</dd>
      <dt>attribute octet tilt</dt>
-     <dd>MUST return current status of Sunroof as a percentage of tilted (0%: closed, 100%: maximum tilted)</dd>
+     <dd>MUST return current status of Sunroof as a percentage of tilted (Unit: 0%: closed, 100%: maximum tilted)</dd>
     <dt>readonly attribute Zone? zone</dt>
     <dd>MUST return Zone for requested attribute</dd>
   </dl>
@@ -1693,7 +1693,7 @@
     <dt>attribute boolean? lock</dt>
     <dd>MUST return whether or not the window is locked: locked (true) or unlocked (false)</dd>
     <dt>attribute octet? openness</dt>
-    <dd>MUST return current status of the side window as a percentage of openness. (0%: Closed, 100%: Fully Opened)</dd>
+    <dd>MUST return current status of the side window as a percentage of openness. (Unit: 0%: Closed, 100%: Fully Opened)</dd>
     <dt>readonly attribute Zone? zone</dt>
     <dd>MUST return Zone for requested attribute</dd>
   </dl>
