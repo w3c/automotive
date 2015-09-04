@@ -674,7 +674,7 @@
     <dd>MUST return engine oil level (Unit: percentage, 0%: empty, 100%: full)</dd>
      <dt>readonly attribute unsigned short lifeRemaining</dt>
      <dd>MUST return remaining engine oil life (Unit: percentage, 0%:no life remaining, 100%: full life remaining)</dd>
-     <dt>readonly attribute long temperature</dt>
+     <dt>readonly attribute float temperature</dt>
      <dd>MUST return Engine Oil Temperature (Unit: celsius)</dd>
      <dt>readonly attribute unsigned short pressure</dt>
      <dd>MUST return Engine Oil Pressure (Unit: kilopascals)</dd>
@@ -707,7 +707,7 @@
   class="idl">
     <dt>readonly attribute octet level</dt>
     <dd>MUST return engine coolant level (Unit: percentage 0%: empty, 100%: full)</dd>
-    <dt>readonly attribute short temperature</dt>
+    <dt>readonly attribute float temperature</dt>
     <dd>MUST return engine coolant temperature (Unit: celsius)</dd>
   </dl>
 </section>
@@ -941,7 +941,7 @@
   class="idl">
      <dt>readonly attribute octet? wear</dt>
      <dd>MUST return transmission oil wear (Unit: percentage, 0%: no wear, 100%: completely worn).</dd>
-     <dt>readonly attribute byte? temperature</dt>
+     <dt>readonly attribute float? temperature</dt>
      <dd>MUST return current temperature of the transmission oil (Unit: celsius).</dd>
   </dl>
 </section>
@@ -1111,7 +1111,7 @@
      <dd>MUST return true if any tire pressure is low: pressure low (true), pressure not low (false)</dd>
      <dt>readonly attribute unsigned short? pressure</dt>
      <dd>MUST return tire pressure (Unit: kilopascal).</dd>
-     <dt>readonly attribute short? temperature</dt>
+     <dt>readonly attribute float? temperature</dt>
      <dd>MUST return tire temperature (Unit: celsius). </dd>
      <dt>readonly attribute Zone? zone</dt>
      <dd>MUST return Zone for requested attribute</dd>
@@ -1721,7 +1721,7 @@
     <dd>MUST return current status of the direction of the air flow through the ventilation system</dd>
     <dt>attribute octet fanSpeedLevel</dt>
     <dd>MUST return current status of the fan speed of the air flowing (0: off, 1: weakest, 10: strongest )</dd>
-    <dt>attribute byte? targetTemperature</dt>
+    <dt>attribute float? targetTemperature</dt>
     <dd>MUST return current setting of the desired temperature (Unit: celsius)</dd>
     <dt>attribute boolean airConditioning</dt>
     <dd>MUST return current status of the air conditioning system: on (true) or off (false)</dd>
