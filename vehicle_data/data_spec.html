@@ -1781,6 +1781,8 @@
         <dd>MUST return VehicleSignalInterface for accessing <a>Alarm</a></dd>
         <dt>readonly attribute VehicleSignalInterface parkingBrake</dt>
         <dd>MUST return VehicleSignalInterface for accessing <a>ParkingBrake</a></dd>
+        <dt>readonly attribute VehicleSignalInterface parkingSensors</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>ParkingSensors</a></dd>
         <dt>readonly attribute VehicleSignalInterface parkingLights</dt>
         <dd>MUST return VehicleSignalInterface for accessing <a>ParkingLights</a></dd>
       </dl>
@@ -1849,6 +1851,19 @@
   </dl>
  </section>
 
+ <!-- Interface Parking Sensors-->
+<section>
+  <h3><a>ParkingSensors</a> Interface</h3>
+  <p>The <a>ParkingSensors</a> interface represents the current status of the parking sensors.</p>
+  <dl title="interface ParkingSensors : VehicleCommonDataType" class="idl">
+     <dt>readonly attribute short? distanceToObject</dt>
+     <dd>MUST return the approximate distance to the nearest object from the parking sensor. If no objects are sensed this should return null (Unit: millimeters)</dd>
+     <dt>readonly attribute boolean? active</dt>
+     <dd>MUST return true if parking sensors are currently in use</dd>
+     <dt>readonly attribute Zone? zone</dt>
+     <dd>MUST return Zone for requested attribute</dd>
+  </dl>
+ </section>
 </section>
 
 <!-- End of Vision and Parking interfaces -->
