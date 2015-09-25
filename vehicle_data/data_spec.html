@@ -217,7 +217,7 @@
      <dt>readonly attribute DOMString? VIN</dt>
      <dd>MUST return the Vehicle Identification Number (ISO 3833)</dd>
      <dt>readonly attribute DOMString? WMI</dt>
-     <dd>MUST return the World Manufacture Identifier defined by SAE ISO 3780:2009.  3 characters.</dd>
+     <dd>MUST return the World Manufacturer Identifier defined by SAE ISO 3780:2009.  3 characters.</dd>
      <dt>readonly attribute VehicleTypeEnum? vehicleType</dt>
      <dd>MUST return vehicle type</dd>
      <dt>readonly attribute DOMString? brand</dt>
@@ -417,6 +417,8 @@
         <dd>MUST return VehicleSignalInterface for accessing <a>DrivingStatus</a></dd>
         <dt>readonly attribute VehicleSignalInterface nightMode</dt>
         <dd>MUST return VehicleSignalInterface for accessing <a>NightMode</a></dd>
+        <dt>readonly attribute VehicleSignalInterface startStopMode</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>StartStopMode</a></dd>
       </dl>
 
 <!-- Interface VehicleSpeed -->
@@ -1781,8 +1783,6 @@
         <dd>MUST return VehicleSignalInterface for accessing <a>Alarm</a></dd>
         <dt>readonly attribute VehicleSignalInterface parkingBrake</dt>
         <dd>MUST return VehicleSignalInterface for accessing <a>ParkingBrake</a></dd>
-        <dt>readonly attribute VehicleSignalInterface parkingLights</dt>
-        <dd>MUST return VehicleSignalInterface for accessing <a>ParkingLights</a></dd>
       </dl>
 
 <!-- Interface LaneDepartureDetection (Vision) -->
