@@ -1775,6 +1775,8 @@
 
       <p>Interfaces relating to vision and parking such as lane departure and parking brake.</p>
 
+      <p class="ednote">For parkingSensors, it might need to revisit the naming because these sensor might be working while the car is running. For instance, distanceSensors, proximitySensors are might be other options. Depending on the name decision whole of interface might be changed. </p>
+
       <dl title="partial interface Vehicle" class="idl">
         <!-- maintenance types: -->
         <dt>readonly attribute VehicleSignalInterface laneDepartureDetection</dt>
@@ -1783,6 +1785,8 @@
         <dd>MUST return VehicleSignalInterface for accessing <a>Alarm</a></dd>
         <dt>readonly attribute VehicleSignalInterface parkingBrake</dt>
         <dd>MUST return VehicleSignalInterface for accessing <a>ParkingBrake</a></dd>
+        <dt>readonly attribute VehicleSignalInterface parkingSensors</dt>
+        <dd>MUST return VehicleSignalInterface for accessing <a>ParkingSensors</a></dd>         
       </dl>
 
 <!-- Interface LaneDepartureDetection (Vision) -->
@@ -1848,6 +1852,21 @@
      <dd>MUST return current status of parking brake.</dd>
   </dl>
  </section>
+
+ <!-- Interface Parking Sensors-->
+ <section>
+  <h3><a>ParkingSensors</a> Interface</h3>
+    <p>The <a>ParkingSensors</a> interface represents the current status of the parking sensors.</p>
+    <dl title="interface ParkingSensors : VehicleCommonDataType" class="idl">
+       <dt>readonly attribute short? distanceToObject</dt>
+       <dd>MUST return the approximate distance to the nearest object from the parking sensor. If no objects are sensed this should return null (Unit: millimeters)</dd>
+       <dt>readonly attribute boolean? active</dt>
+       <dd>MUST return true if parking sensors are currently in use</dd>
+       <dt>readonly attribute Zone? zone</dt>
+       <dd>MUST return Zone for requested attribute</dd>
+    </dl>
+ </section>
+
 
 </section>
 
