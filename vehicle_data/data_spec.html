@@ -774,11 +774,11 @@
   <p>The <a>Gyro</a> interface represents vehicle angular rates. This interface utilises the ISO 8855 Z-up standard, with positive X forward, positive Y to the left, and positive Z up. 
   <dl title="interface Gyro : VehicleCommonDataType" class="idl">
      <dt>readonly attribute short yawRate</dt>
-     <dd>MUST return yaw rate of vehicle.  (Unit: degrees per second. Yaw left is positive with respect to the driver)</dd>
+     <dd>MUST return yaw rate of vehicle.  (Unit: degrees per second. +: Front of the vehicle moves left, -: Front of the vehicle moves right)</dd>
      <dt>readonly attribute short pitchRate</dt>
-     <dd>MUST return pitch rate of vehicle.  (Unit: degrees per second. Pitch up is positive with respect to the driver)</dd>
+     <dd>MUST return pitch rate of vehicle.  (Unit: degrees per second. +: Front of the vehicle moves up, -: Front of the vehicle moves down)</dd>
      <dt>readonly attribute short rollRate</dt>
-     <dd>MUST return roll rate of vehicle. (Unit: degrees per second. Roll left is positive with respect to the driver)</dd>
+     <dd>MUST return roll rate of vehicle. (Unit: degrees per second. +: Left side of the vehicle moves down, -: Left side of the vehicle moves up)</dd>
   </dl>
 </section>
 
