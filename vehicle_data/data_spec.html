@@ -734,7 +734,7 @@
   <dl title="interface SteeringWheel : VehicleCommonDataType"
   class="idl">
     <dt>readonly attribute short angle</dt>
-    <dd>MUST return angle of steering wheel off centerline (Unit: degrees -:degrees to the left, +:degrees to the right)</dd>
+    <dd>MUST return angle of steering wheel off centerline (Unit: degrees +:degrees to the left, -:degrees to the right)</dd>
   </dl>
 </section>
 
@@ -771,14 +771,14 @@
 <!-- Interface Gyro -->
 <section>
   <h3><a>Gyro</a> Interface</h3>
-  <p>The <a>Gyro</a> interface represents vehicle angular rates.
+  <p>The <a>Gyro</a> interface represents vehicle angular rates. This interface utilises the ISO 8855 Z-up standard, with positive X forward, positive Y to the left, and positive Z up. 
   <dl title="interface Gyro : VehicleCommonDataType" class="idl">
      <dt>readonly attribute short yawRate</dt>
-     <dd>MUST return yaw rate of vehicle.  (Unit:  degrees per second)</dd>
+     <dd>MUST return yaw rate of vehicle.  (Unit: degrees per second. +: Front of the vehicle moves left, -: Front of the vehicle moves right)</dd>
      <dt>readonly attribute short pitchRate</dt>
-     <dd>MUST return pitch rate of vehicle.  (Unit:  degrees per second)</dd>
+     <dd>MUST return pitch rate of vehicle.  (Unit: degrees per second. +: Front of the vehicle moves up, -: Front of the vehicle moves down)</dd>
      <dt>readonly attribute short rollRate</dt>
-     <dd>MUST return roll rate of vehicle. (Unit:  degrees per second)</dd>
+     <dd>MUST return roll rate of vehicle. (Unit: degrees per second. +: Left side of the vehicle moves down, -: Left side of the vehicle moves up)</dd>
   </dl>
 </section>
 
@@ -1255,10 +1255,10 @@
   <dl title="interface Mirror : VehicleCommonDataType" class="idl">
      <dt>attribute byte? mirrorTilt</dt>
      <dd>MUST return mirror tilt position as a percentage of distance travelled from downward-facing to
-     upward-facing position (Unit: 0%: center position, -100%: fully downward, 100%: full upward)</dd>
+     upward-facing position (Unit: 0%: center position, +100%: fully upward, -100%: fully downward)</dd>
      <dt>attribute byte? mirrorPan</dt>
      <dd>MUST return mirror pan position as a percentage of distance travelled from left to right
-     position (Unit: 0%: center position, -100%: fully left, 100%: fully right)</dd>
+     position (Unit: 0%: center position, +100%: fully left, -100%: fully right)</dd>
     <dt>readonly attribute Zone? zone</dt>
     <dd>MUST return Zone for requested attribute</dd>
 
