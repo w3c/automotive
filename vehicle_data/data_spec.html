@@ -432,7 +432,7 @@
 
   <dl title="interface VehicleSpeed : VehicleCommonDataType"
   class="idl">
-    <dt>readonly attribute unsigned short speed</dt>
+    <dt>readonly attribute unsigned long speed</dt>
     <dd>MUST return vehicle speed (Unit: meters per hour)</dd>
   </dl>
 </section>
@@ -444,7 +444,7 @@
 
   <dl title="interface WheelSpeed : VehicleCommonDataType"
       class="idl">
-      <dt>readonly attribute unsigned short speed</dt>
+      <dt>readonly attribute unsigned long speed</dt>
       <dd>MUST return wheel speed (Unit: meters per hour)</dd>
       <dt>readonly attribute Zone? zone</dt>
       <dd>MUST return Zone for requested attribute</dd>
@@ -539,7 +539,7 @@
   class="idl">
     <dt>readonly attribute unsigned long distance</dt>
     <dd>MUST return distance travelled based on trip meter (Unit: meters)</dd>
-    <dt>readonly attribute unsigned short? averageSpeed</dt>
+    <dt>readonly attribute unsigned long? averageSpeed</dt>
     <dd>MUST return average speed based on trip meter (Unit: meters per hour)</dd>
     <dt>readonly attribute unsigned short? fuelConsumption</dt>
     <dd>MUST return fuel consumed based on trip meter (Unit: milliliters per 100 kilometers)</dd>
@@ -592,7 +592,7 @@
   <dl title="interface CruiseControlStatus : VehicleCommonDataType" class="idl">
      <dt>readonly attribute boolean status</dt>
      <dd>MUST return whether or not the Cruise Control system is on (true) or off (false)</dd>
-     <dt>readonly attribute unsigned short speed</dt>
+     <dt>readonly attribute unsigned long speed</dt>
      <dd>MUST return target Cruise Control speed (Unit: meters per hour)</dd>
   </dl>
 </section>
@@ -1447,7 +1447,7 @@
 
   <dl title="interface TopSpeedLimit : VehicleCommonDataType"
   class="idl">
-    <dt>readonly attribute unsigned short speed</dt>
+    <dt>readonly attribute unsigned long speed</dt>
     <dd>MUST return vehicle top speed limit (Unit: meters per hour)</dd>
   </dl>
 </section>
