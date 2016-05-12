@@ -1,100 +1,140 @@
-<!doctype html><html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Security and Privacy consideration on Vehicle APIs</title>
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>Security and Privacy Consideration on Vehicle APIs</title>
   <!--<title>Vehicle APIのセキュリティーとプライバシー</title>-->
-  <link rel="stylesheet" href="w3c-unofficial.css">
-  <style>
-  .example::before {
-    content: "Example";
-    content: "Example " counter(example);
-  }
-  #example + p + p.example::before {
-    content: "";
-  }
-  .overlarge {
-    margin: 0 !important;
-  }
-  .invisible {
-	  display: none;
-  }
-  </style>
+    <meta charset='utf-8'>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
+            async class='remove'></script>
+    <script class='remove'>
+      var respecConfig = {
+          specStatus: "UD",
+          shortName:  "auto-security",
+          editors: [
+                {   name:       "Junichi Hashimoto",
+                    url:        "mailto:ju-hashimoto@kddilabs.jp",
+                    company:    "KDDI",
+                    companyURL: "https://www.kddi.com" }
+          ],
+          previousMaturity: "***",
+          previousPublishDate:  "***",
+          wg:           "Automotive Working Group",
+          wgURI:        "http://www.w3.org/auto/wg/",
+		  wgPublicList: "public-auto-privacy-security",
+		  wgPatentURI:  "http://www.w3.org/2004/01/pp-impl/424242/status",
+		  localBiblio: {
+			  "ISO26262": {
+				  title: "Road vehicles – Functional safety",
+				  href: "http://www.iso.org/iso/catalogue_detail?csnumber=43464",
+				  authors: ["***author"],
+				  status: "***status",
+				  publisher: "***publisher"
+			  },
 
-  <script>
-	  function display(query, on) {
-		  //query = 'p.j'
-		  var pp = document.querySelectorAll(query);
+			  "ISO/IEC15408": {
+				  title: "Common Criteria for Information Technology Security Evaluation",
+				  href: "http://www.commoncriteriaportal.org/cc/",
+				  authors: ["***author"],
+				  status: "***status",
+				  publisher: "***publisher"
+			  },
+			  "CVE": {
+				  title: "Common Vulnerabilities and Exposures",
+				  href: "https://cve.mitre.org/>https://cve.mitre.org/",
+				  authors: ["***author"],
+				  status: "***status",
+				  publisher: "***publisher"
+			  },
+			  "CVSS": {
+				  title: "Common Vulnerability Scoring System v3.0",
+				  href: "https://www.first.org/cvss/specification-document",
+				  authors: ["***author"],
+				  status: "***status",
+				  publisher: "***publisher"
+			  },
+			  /*
+			  "**": {
+				  title: "***"
+				  href: "*"
+				  authors: ["***author"],
+				  status: "***status",
+				  publisher: "***publisher"
+			  },
+			  */
 
-		  [].forEach.call(pp, on ?
-			  function show(p) { p.classList.remove('invisible'); } :
-			  function hide(p) { p.classList.add('invisible'); }
-		  );
-	  }
+			// normative
 
-	  function createToggle(n) {
-		  var lang = n;
-		  return function toggle() {
-			  var mode = (lang ++)%3;
-			  display('.j', (mode&1) == 0);
-			  display('.e', (mode&2) == 0);
+			"HTTPS": {
+				title: "HTTP Over TLS",
+				href:"https://tools.ietf.org/html/rfc2818",
+				authors: ["***author"], status: "***status", publisher: "***publisher"
+			},
+
+
+			"CSP": {
+				title: "Content Security Policy Level 2",
+				href:"https://www.w3.org/TR/CSP/> https://www.w3.org/TR/CSP/",
+				authors: ["***author"], status: "***status", publisher: "***publisher"
+			},
+
+			"CORS": {
+				title: "Cross-Origin Resource Sharing",
+				href:"https://www.w3.org/TR/cors/",
+				authors: ["***author"], status: "***status", publisher: "***publisher"
+			},
+
+
+			"DNT": {
+				title: "Tracking Preference Expression (DNT)",
+				href: "https://www.w3.org/TR/tracking-dnt/",
+				authors: ["***author"], status: "***status", publisher: "***publisher"
+			},
+
+
+			"ORIGIN": {
+				title: "The Web Origin Concept",
+				href:"https://tools.ietf.org/html/rfc6454/",
+				authors: ["***author"], status: "***status", publisher: "***publisher"
+			},
+
+
+			"OAuth": {
+				titile: "OAuth 2.0",
+				href:"http://oauth.net/2/",
+				authors: ["***author"], status: "***status", publisher: "***publisher" },
+
+
+			FIDO: {
+				title: "Member submission FIDO 2.0: Web API for accessing FIDO 2.0 credentials",
+				href: "https://www.w3.org/Submission/2015/SUBM-fido-web-api-20151120/",
+				authors: ["***author"], status: "***status", publisher: "***publisher" },
+
+			RFC2119: {
+				title: "Key words for use in RFCs to Indicate Requirement Levels",
+				href:"https://tools.ietf.org/html/rfc2119",
+				authors: ["S. Bradner"],
+				status: "***status", publisher: "***publisher" },
+
+			/* not refered
+			<dt id="#biblio-mixed">[MIX]
+			<dd> ED, Mixed Content,
+			<a href=https://w3c.github.io/webappsec-mixed-content/> https://w3c.github.io/webappsec-mixed-content/ </a>
+
+			<dt id="#biblio-p3p">[P3P]
+			<dd> The Platform for Privacy Preferences 1.0 (P3P1.0) Specification,
+			<a href=https://www.w3.org/TR/P3P/> https://www.w3.org/TR/P3P/</a>
+			*/
 		  }
-	  }
-	  addEventListener('DOMContentLoaded', function(){
-		  var toggle;
-		  switch ( location.hash ) {
-			  case '#j': toggle = createToggle(2); break;
-			  case '#e': toggle = createToggle(1); break;
-			  default: toggle = createToggle(1); break;
-		  };
-		  toggle();
-		  document.body.addEventListener('keydown', function(e) {
-			  if ( e.keyCode == 84 ) { // t
-					toggle();
-			  }
-		  });
-	  });
+      };
+    </script>
+	<link href="./toggle.css" rel="stylesheet" type="text/css"> 
+	<script src="./toggle.js"></script>
+  </head>
+<body>
 
-  </script>
-</head>
+<section id='abstract'>
+<p> Hit 't' to change languages. </p>
 
-<body class="h-entry">
-	<div class="head">
-		<p><a class="logo" href="http://www.w3.org/">
-			<img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
-		<!-- <h1 id="title"> Security and Privacy consideration on Vehicle APIs</h1> -->
-		<h1 id="title">
-			<span class=j>Vehicle APIsのセキュリティーとプライバシー</span>
-			<span class=e>Security and Privacy Consideration on Vehicle APIs</span>
-			</h1>
-			<h2 id="subtitle">Unofficial Draft, <time class="dt-updated" datetime="2016-04-25">25 April 2016</time></h2>
-			<h2 class=e>hit 't' to toggle language</h2>
-		<div>
-			<dl>
-				<dt>This version:
-				<dd><a class="u-url" href="">XXX</a>
-				<dt>Latest version:
-				<dd><a href="">XXX</a>
-				<dt>Previous Versions:
-				<dd><a href="" rel="previous">XXX</a>
-				<dt>Feedback:
-				<dd><span><a href="">XXX</a></span>
-				<dt>Test Suite:
-				<dd><a href="">XXX</a>
-				<dt>Issue Tracking:
-				<dd><a href="https://github.com"></a>
-				<dd><a href="#issues-index">Inline In Spec</a>
-				<dt class="editor">Editors:
-				<dd class="editor p-author h-card vcard"><a class="p-name fn u-url url" href="">Junichi Hashimoto</a> (<span class="p-org org">KDDI</span>)
-			</dl>
-		</div>
-		<div></div>
-		<p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2015 <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply. </p>
-		<hr title="Separator for header">
-	</div>
-
-<h2 id="abstract">Abstract</h2>
 <p class=j>
 この文書はW3C Vehicle APIs (Vehicle Information Access API 及び Vehicle Data Specification)
 を実装・運用するにあたって留意すべきセキュリティーとプライバシーについて述べたものである。
@@ -110,107 +150,14 @@ the Vehicle APIs (Vehicle Information Access API and Vehicle Data Specification)
 This document imagines an IVI (In-Vehicle Infotainment system), 
 presents typical architectures, recommendation to be referred and privacy protection.
 It also describes best practices of restricting API use for specific developers.
+</section>
 
-<h2 id="status">Status of this document</h2>
 
-<!-- https://www.w3.org/Consortium/Process/NOTE.html -->
-<p>
-This document is a NOTE made available by the W3 Consortium for discussion only. 
-This indicates no endorsement of its content, nor that the Consortium has had any editorial control in it preparation,
-nor that the Consortium has, is, or will be allocating any resources to the issues addressed by the NOTE.
+<section id='sotd'>
+</section>
 
-<p class=j>
-このドキュメントに関する議論はpublic-auto-privacy-security@w3.orgで行われる。
-
-<p class=e>
-Public mailing list public-auto-privacy-security@w3.org
-is preferred for discussion of this NOTE.
-
-<!--
-<p class=j>
-このドキュメントは非公式ドラフトであり、議論のために供されいつでも変更されうる。
-この文書はW3Cの公的な裏付けを持たず、したがって作業中の文書として以外の方法で引用してはならない。
-
-<p class=e> This is a public copy of the editors’ draft.
-It is provided for discussion only and may change at any moment.
-Its publication here does not imply endorsement of its contents by W3C.
-Don’t cite this document other than as work in progress. </p>
-
-<p class=j>
-この文書は	
-<a href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 W3C Patent Policy</a>.
-の元で作成されている。
-<p class=e>
-This document was produced by a group operating under
-the <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 W3C Patent Policy</a>.
-
-<p>
-W3C maintains a <a href="http://www.w3.org/2004/01/pp-impl/32061/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group;
-that page also includes instructions for disclosing a patent.
-An individual who has actual knowledge of a patent which the individual believes contains <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section 6 of the W3C Patent Policy</a>. </p>
-
-<p> This document is governed by the <a href="http://www.w3.org/2015/Process-20150901/" id="w3c_process_revision">1 September 2015 W3C Process Document</a>. </p>
--->
-
-<nav id="toc">
-
-<h2>Table of Contents</h2>
-<ol class="toc" role="directory">
-	<li><a href="#intro"><span class="secno">1</span>
-		<span class=j>導入</span>
-		<span class=e>Introduction</span>
-	</a>
-	<ol>
-		<li><a href="#conventions"><span class="secno">1.1</span>
-			<span class=j> 文書規約</span>
-			<span class=e> Document Conventions</span>
-		</a>
-	</ol>
-	<li> <a href="#**"><span class="secno">2</span>
-		<span class=j>アーキテクチャ</span>
-		<span class=e>Architecture</span>
-	</a>
-	<li> <a href="#**"><span class="secno">3</span>
-		<span class=j> 標準的なWeb Security技術の利用</span>
-		<span class=e> Basic Web Security Techniques</span>
-		</h2>
-		<li> <a href="#**"><span class="secno">4</span>
-			<span class=j> プライバシーの保護</span>
-			<span class=e> Privacy Protection</span>
-		</a>
-		<ol>
-			<li><a href="#norm"><span class="secno">4.1</span>
-				<span class=j> DNTとその例外</span>
-				<span class=e> DNT and its Exception</span>
-			</a>
-		</ol>
-		<li> <a href="#**"><span class="secno">5</span>
-			<span class=j> アクセスコントロールのベストプラクティス</span>
-			<span class=e>Best Practice on Access Control</span>
-		</a>
-		<li> <a href="#**"><span class="secno">A</span>
-			<span class=j>謝辞</span>
-			<span class=e>Acknowledgement</span>
-		</a>
-		<li> <a href="#**"><span class="secno">B</span>
-			<span class=j>リファレンス</a>
-			<span class=e>References</span>
-		</a>
-		<ol>
-			<li><a href="#norm"><span class="secno">B.1</span>
-				<span class=j>引用規格</span>
-				<span class=e>Normative References</span>
-			</a>
-			<li><a href="#info"><span class="secno">B.2</span>
-				<span class=j>参考規格</span>
-				<span class=e>Informative References</span>
-			</a>
-		</ol>
-	</ol>
-	</nav>
-
-<h2 id="intro">
-	<span class="secno">1</span>
+<section>
+<h2>
 	<span class=j>導入</span>
 	<span class=e>Introduction</span></h2>
 <p class=j>
@@ -253,16 +200,16 @@ This document is on security and privacy topic around Vehicle APIs. As for other
 are encouraged to refer appropriate specifications:
 
 <ul>
-	<li class=j> <a href="#biblio-iso26262">[ISO26262]</a>
+	<li class=j> [[ISO26262]]
    	は自動車の電気・電子に関する機能安全についての国際規格である。
 	IVIは車システムの一部として正常に動作しなくてはならない
-	<li class=e> <a href="#biblio-iso26262">[ISO26262]</a>
+	<li class=e> [[ISO26262]]
 	is an international standard for functional safety of electronic system in automobiles.
    	As a part of an automobile IVI must function well
-	<li class=j> <a href="#biblio-isoiec15408">[ISO/IEC15408]</a>
+	<li class=j> [[ISO/IEC15408]]
    	は通称CCと呼ばれる、コンピュータ・セキュリティのための国際規格である。
 	IVIは情報システムとして、不正な利用を排除しなくてはならない。
-	<li class=e> <a href="#biblio-isoiec15408">[ISO/IEC15408]</a>
+	<li class=e> [[ISO/IEC15408]]
 	known as Common Criteria, is an international standard for computer security.
    	As an information processor IVI must reject illegal access.
 	<ul class=j>
@@ -276,21 +223,21 @@ are encouraged to refer appropriate specifications:
 	</ul>
 </ul>
 
-<h3 id="conventions">
-	<span class="secno">1.1 </span>
+<section>
+<h3>
 	<span class=j>文書規約</span>
 	<span class=e>Document Conventions</span></h3>
 
 <p class>Conformance requirements are expressed with a combination of
-descriptive assertions and <a href="#biblio-rfc2119">[RFC2119]</a> terminology. The key words "MUST",
+descriptive assertions and [[!RFC2119]] terminology. The key words "MUST",
 "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT",
 "RECOMMENDED", "MAY", and "OPTIONAL" in the normative parts of this
-document are to be interpreted as described in <a href="#biblio-rfc2119">[RFC2119]</a>
+document are to be interpreted as described in [[!RFC2119]]
 However, for readability, these words do not appear in all uppercase
 letters in this specification. </p>
 
 <p class>All of the text of this specification is normative except sections
-explicitly marked as non-normative, examples, and notes. <a href="#biblio-rfc2119">[RFC2119]</a></p>
+explicitly marked as non-normative, examples, and notes. [[!RFC2119]]</p>
 
 <!--
   <p>Examples in this specification are introduced with the words "for example"
@@ -321,9 +268,12 @@ explicitly marked as non-normative, examples, and notes. <a href="#biblio-rfc211
     and <code>&lt;colgroup&gt;</code> for column groups.
 
 	-->
+</section>
+</section>
 
-<h2 id="architecture">
-	<span class="secno">2 </span>
+<section>
+
+<h2>
 	<span class=j>アーキテクチャ</span>
 	<span class=e>Architecture</span>
 </h2>
@@ -458,8 +408,10 @@ Therefor system must ensure that at most only one content exists at the same tim
 Otherwise one data-point may receive more than two contradict input.
 Or a content may set only one data-point even when the content need to change more than two data-point all together.
 
-<h2 id="standard">
-	<span class="secno">3 </span>
+</section>
+
+<section>
+<h2>
 	<span class=j>標準的なWeb Security技術の利用</span>
 	<span class=e>Basic Web Security Techniques</span>
 	</h2>
@@ -472,14 +424,14 @@ Followings are fundamental recommendation for considering web security,
 User-Agent which implements Vehicle APIs must implement them as well.
 
 <ul>
-	<li class=j> <a href="#biblio-https">[HTTPS]</a> は接続先が詐称されることを防ぎ通信を暗号化する、WebSecurityの基本となる勧告である
-	<li class=e> <a href="#biblio-https">[HTTPS]</a> is an essential recommendation for web security.  It prevents spoofing of destination and encrypts a communication channel.
-	<li class=j> <a href="#biblio-csp">[CSP]</a> は開発者が意図しないリソースの利用を防ぐことでXSSなどの攻撃を効果的に防ぐ勧告である。
-	<li class=e> <a href="#biblio-csp">[CSP]</a> protects service from attacks such as XSS by prohibiting unintentional access to resources.
-	<li class=j> <a href="#biblio-cors">[CORS]</a> はクロスオリジンアクセスを特定のサーバにのみ許諾することで、不特定多数からの攻撃を避けるための勧告である。
-	<li class=e> <a href="#biblio-cors">[CORS]</a> avoids illegal access by allowing cross origin access only by contents from specified servers.
-	<li class=j> <a href="#biblio-dnt">[DNT]</a> はユーザが個人の追跡を拒否することを表明するための勧告である。
-	<li class=e> <a href="#biblio-dnt">[DNT]</a> is a recommendation to assert that an end-user do not wish to be tracked.
+	<li class=j> [[!HTTPS]] は接続先が詐称されることを防ぎ通信を暗号化する、WebSecurityの基本となる勧告である
+	<li class=e> [[!HTTPS]] is an essential recommendation for web security.  It prevents spoofing of destination and encrypts a communication channel.
+	<li class=j> [[!CSP]] は開発者が意図しないリソースの利用を防ぐことでXSSなどの攻撃を効果的に防ぐ勧告である。
+	<li class=e> [[!CSP]] protects service from attacks such as XSS by prohibiting unintentional access to resources.
+	<li class=j> [[!CORS]] はクロスオリジンアクセスを特定のサーバにのみ許諾することで、不特定多数からの攻撃を避けるための勧告である。
+	<li class=e> [[!CORS]] avoids illegal access by allowing cross origin access only by contents from specified servers.
+	<li class=j> [[!DNT]] はユーザが個人の追跡を拒否することを表明するための勧告である。
+	<li class=e> [[!DNT]] is a recommendation to assert that an end-user do not wish to be tracked.
 	<!--
 	<a href="#biblio-mixed">[MIX]</a>
 	<a href="#biblio-rfc2119">[RFC2119]</a>
@@ -508,24 +460,26 @@ Following techniques are such examples.
 </ul>
 
 <p class=j>WebのSecuiryを有効に保つには、セキュリティホールが見つかった際に速やかなアップデートを行うことが必要である。
-<a href="#biblio-cve">[CVE]</a> 
+[[CVE]]
 は幅広くWebRuntimeあるいはOSに脆弱性を報告している。
 IVIの開発者はそれらの情報をもとに、 OSを含めたアップデート方法を予め検討しておくべきである。
 <!--日本語と英語ズレ-->
 脆弱性の深刻度を定量化するには
-<a href="#biblio-cvss">[CVSS]</a> 
+[[CVSS]]
 を利用してもよい。
 
 <p class=e>
 Once a security hole is reported, system must be updated as soon as possible to keep it secure.
-<a href="#biblio-cve">[CVE]</a> 
+[[CVE]]
 continuously announces vulnerabilities of various OS and web-runtime.
 In several layer such as web-runtime, libraries or OS, IVI should be designed to be promptly updatable.
-<a href="#biblio-cvss">[CVSS]</a> 
+[[CVSS]]
 could be a help to quantify vulnerability impact.
 
+</section>
+
+<section>
 <h2 id="privacy">
-	<span class="secno">4 </span>
 	<span class=j>プライバシーの保護</span>
 	<span class=e>Privacy Protection</span>
 	</h2>
@@ -617,14 +571,14 @@ Vehilce APIs実装者はDNTを実装するとともに、API使用に際して�
 DNTが指定されたリクエストに関し、勧告の趣旨に沿った適切な配慮を行うべきである。
 -->
 
-<h3 id="standard">
-	<span class="secno">4.1</span>
+<section>
+<h3>
 	<span class=j>DNTとその例外</span>
 	<span class=e>DNT and its Exception</span>
 </h3>
 
 <p class=j>
-<a href="#biblio-dnt">[DNT]</a>
+[[!DNT]]
 はWeb Applicationに対し自己のトラッキングを行わないように要求するための
 HTTP ヘッダについての勧告であり、広くサポートされている。
 車両では交通事故等、生命・財産の危機に瀕することがあり、
@@ -632,7 +586,7 @@ HTTP ヘッダについての勧告であり、広くサポートされている
 
 <p class=e>
 <!-- 日本語とずれている -->
-The Do Not Track (<a href="#biblio-dnt">[DNT]</a>) is the proposed HTTP header field that requests
+The Do Not Track ([[!DNT]]) is the proposed HTTP header field that requests
 that a web application disable either its tracking or cross-site user tracking of an individual user. 
 
 In view of peculiarity of Automobile, in the event of emergencies to protect the vital interests
@@ -665,9 +619,11 @@ HVAC系については必要であるとの意見もあり、API Spec上は特�
 
 API実装者はエンドユーザの意思を反映するため、Access Control等、何らかの方法でAPIの利用を制限すべきである。
 -->
+</section>
+</section>
 
-<h2 id="ac">
-	<span class="secno">5 </span>
+<section>
+<h2>
 	<span class=j>アクセスコントロールのベストプラクティス</span>
 	<span class=e>Best Practice on Access control</span>
 	</h2>
@@ -677,7 +633,7 @@ WebAPIの利用はオリジン単位で管理され、ユーザの意思に基�
 API実装者はその考え方にしたがって、Vehicle APIの利用に際してユーザに何らかの選択肢を与えるべきである。
 
 <p class=e>
-To access to some kind of Web API, each <a href="#biblio-origin">[ORIGIN]</a> need permission which is granted by User Agent
+To access to some kind of Web API, each [[!ORIGIN]] need permission which is granted by User Agent
 on behalf of end user.
 Implementer should keep this manner and provide option that end-user can present their preference.
 
@@ -695,8 +651,8 @@ Moreover, an implementer may considers users benefit and would like to expose so
 only to certain organizations or authorized contents. Here are some best practice to realize such access control.
 
 <ol>
-	<li class=j> IVIがnative applicatinoをサポートするのであれば
-	NativeOSのパーミッションモデル、NativeOSでのマーケットシステムを利用することにより、APIの利用を制限することができる。
+	<li class=j> IVIがネイティブアプリケーションをサポートするのであれば
+	Native OSのパーミッションモデル、Native OSでのマーケットシステムを利用することにより、APIの利用を制限することができる。
 	<li class=e> If IVI supports native application,
 	permission model of native OS and a market system for the OS could be utilized to reject suspicious applications.
 
@@ -710,118 +666,19 @@ only to certain organizations or authorized contents. Here are some best practic
 	問題があると判断されたVehicle APIの呼び出しをサニタイズすることができる。
 	<li class=e> IVI could obtain sanitized code by running a web-proxy server inside of IVI and passing all data throw the proxy.
 
-	<li class=e> If the API is implemented as a polyfill and it communicate with <i>local</i> web server, the web server
+	<li class=j> APIがポリフィルとして実装され、それがローカルのWebサーバと通信する場合、そのWebサーバは
+	[[!OAuth]] で利用されるHTTPヘッダを使ってリクエストをフィルタすることができる。
+	<li class=e> If the API is implemented as a polyfill and it communicates with <i>local</i> web server, the web server
 	could filter requests by a specific HTTP header that is used in
-	<a href="#biblio-oauth">[OAuth]</a> framework
+	[[!OAuth]] framework
 	
-	<li class=e> If the API is implemented as a polyfill and it communicate with <i>cloud</i> web server, the web server
-	could filter requests by the <a href="#biblio-cors">[CORS]</a> framework.
+	<li class=j> APIがポリフィルとして実装され、それがローカルのWebサーバと通信する場合、そのWebサーバは
+	could filter requests by the [[!CORS]] を利用してリクエストをフィルタすることができる。
+	<li class=e> If the API is implemented as a polyfill and it communicates with <i>cloud</i> web server, the web server
+	could filter requests by the [[!CORS]] framework.
 </ol>
+</section>
 
 
-
-<h2 id="ac">
-	<span class="secno">A</span>
-	<span class=j>謝辞</span>
-	<span class=e>Acknowledgement</span>
-</h2>
-
-...
-
-<h2><span class="secno">B</span>
-	<span class=j>リファレンス</span>
-	<span class=e>References</span></h2>
-<h3><span class="secno">B.1</span>
-	<span class=j>引用規格</span>
-	<span class=e>Normative References</span>
-</h3>
-
-<dl>
-	<!--
-	<a href="#biblio-https">[HTTPS]</a>
-	<a href="#biblio-csp">[CSP]</a>
-	<a href="#biblio-cors">[CORS]</a>
-	<a href="#biblio-dnt">[DNT]</a>
-	<a href="#biblio-mixed">[MIX]</a>
-	<a href="#biblio-rfc2119">[RFC2119]</a>
-	-->
-	<dt id="biblio-https">[HTTPS]
-	<dd> HTTP Over TLS,
-   	<a href=https://tools.ietf.org/html/rfc2818> https://tools.ietf.org/html/rfc2818</a> 
-
-	<dt id="biblio-csp">[CSP]
-	<dd> Content Security Policy Level 2,
-   	<a href=https://www.w3.org/TR/CSP/> https://www.w3.org/TR/CSP/</a>
-
-	<dt id="biblio-cors">[CORS] 
-	<dd> Cross-Origin Resource Sharing,
-   	<a href=https://www.w3.org/TR/cors/> https://www.w3.org/TR/cors/</a>
-
-	<dt id="biblio-dnt">[DNT]
-	<dd> Tracking Preference Expression (DNT),
-   	<a href=https://www.w3.org/TR/tracking-dnt/> https://www.w3.org/TR/tracking-dnt/</a>
-
-	<dt id="biblio-origin">[ORIGIN]
-	<dd> The Web Origin Concept,
-	<a href=https://tools.ietf.org/html/rfc6454/>https://tools.ietf.org/html/rfc6454</a>
-
-	<dt id="biblio-oauth">[OAuth]
-	<dd> OAuth 2.0,
-	<a href=http://oauth.net/2/> http://oauth.net/2/</a>
-
-	<dt id="biblio-p3p">[FIDO]
-	<dd> Member submission FIDO 2.0: Web API for accessing FIDO 2.0 credentials<
-	<a href=https://www.w3.org/Submission/2015/SUBM-fido-web-api-20151120/>https://www.w3.org/Submission/2015/SUBM-fido-web-api-20151120/</a>
-
-	<!-- not refered
-	<dt id="#biblio-mixed">[MIX]
-	<dd> ED, Mixed Content,
-   	<a href=https://w3c.github.io/webappsec-mixed-content/> https://w3c.github.io/webappsec-mixed-content/ </a>
-
-	<dt id="#biblio-p3p">[P3P]
-	<dd> The Platform for Privacy Preferences 1.0 (P3P1.0) Specification,
-	<a href=https://www.w3.org/TR/P3P/> https://www.w3.org/TR/P3P/</a>
-
-
-	-->
-
-	<dt id="biblio-rfc2119">[RFC2119]
-	<dd>S. Bradner. Key words for use in RFCs to Indicate Requirement Levels. March 1997. Best Current Practice.
-   	<a href=https://tools.ietf.org/html/rfc2119>https://tools.ietf.org/html/rfc2119</a>
-
-</dl>
-<!--
-  <dl>
-   <dt id="biblio-css21">[CSS21]
-   <dd>Bert Bos; et al. <a href="http://www.w3.org/TR/CSS2">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>. 7 June 2011. REC. URL: <a href="http://www.w3.org/TR/CSS2">http://www.w3.org/TR/CSS2</a>
-  </dl>
- -->
-<h3><span class="secno">B.2</span>
-	<span class=j>参考規格</span>
-	<span class=e>Informative References</span>
-	</h3>
-<dl>
-	<dt id="biblio-iso26262">[ISO26262]
-	<dd> Road vehicles – Functional safety,
-	<a href=http://www.iso.org/iso/catalogue_detail?csnumber=43464>http://www.iso.org/iso/catalogue_detail?csnumber=43464</a>
-
-	<dt id="biblio-isoiec15408">[ISO/IEC15408]
-	<dd> Common Criteria for Information Technology Security Evaluation,
-	<a href=http://www.commoncriteriaportal.org/cc/>http://www.commoncriteriaportal.org/cc/</a>
-
-	<dt id="biblio-cve">[CVE]
-	<dd> Common Vulnerabilities and Exposures,
-	<a href=https://cve.mitre.org/>https://cve.mitre.org/</a>
-
-	<dt id="biblio-cSS">[CVSS]
-	<dd>Common Vulnerability Scoring System v3.0,
-	<a href=https://www.first.org/cvss/specification-document> https://www.first.org/cvss/specification-document</a>
-</dl>
-<!--
-  <dl>
-   <dt id="biblio-css3-text-decor">[CSS3-TEXT-DECOR]
-   <dd>Elika Etemad; Koji Ishii. <a href="http://www.w3.org/TR/css-text-decor-3/">CSS Text Decoration Module Level 3</a>. 1 August 2013. CR. URL: <a href="http://www.w3.org/TR/css-text-decor-3/">http://www.w3.org/TR/css-text-decor-3/</a>
-  </dl>
--->
-  <script src="//www.w3.org/scripts/TR/2016/fixup.js"></script>
 </body>
+</html>
