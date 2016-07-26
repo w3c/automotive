@@ -2,3 +2,20 @@
   .invisible {
 	  display: none;
   }
+
+  .todo {
+	  color: red;
+	  font-weight: bold;
+  }
+  .note {
+	  display: none;
+  }
+
+  b {
+	  text-decoration: underline;
+	  font-size: 90%;
+  }
+
+  .j {
+	  background-color: silver;
+  }
