@@ -73,8 +73,8 @@
       <h1 id="title">Automotive Working Group Charter</h1>
 
       <p class="mission">The <b>mission</b> of the <a href="/auto/wg/">Automotive Working Group</a> is
-        to develop Open Web Platform specifications for HTML5/JavaScript
-        application developers enabling Web connectivity through in-vehicle
+        to develop Open Web Platform specifications for 
+        application developers, including but not limited to HTML5/JavaScript, enabling Web connectivity through in-vehicle
         infotainment systems and vehicle data access protocols. The
       API is agnostic with regard to the connection used.</p>
 
@@ -145,7 +145,7 @@
 
       <section id="scope" class="scope">
         <h2>Scope</h2>
-        <p> The group will develop APIs to expose vehicle data and information
+        <p> This group will develop service specification protocols and APIs to expose vehicle data and information
           from an automotive network bus(es) (e.g. <a href="http://en.wikipedia.org/wiki/MOST_Bus">MOST
             (Media Oriented Systems Transport)</a> or <a href="http://en.wikipedia.org/wiki/CAN_bus">CAN
             (Controller Area Network))</a> to a Web application. The APIs will
@@ -154,14 +154,11 @@
           wiper position, lights, doors, windows and seat settings as well as
           navigation, trip computer data, climate control data, speed, rpms,
           acceleration, gears and other vehicle sensors.</p>
-        <p>As the variety and types of information that are generated from
-          vehicles varies from OEM (car manufacturer) to OEM it is expected that
-          this specification will be broken into two parts: a <em>Vehicle
-            Information Specification</em> containing durable, unchanging access
-          methods for obtaining vehicle information; and a <em>Vehicle Data
-            Specification</em> to specify agreed upon standardized data elements
-          as well as the method for extending data elements to OEM specific
-          elements. Initially these specifications will be limited to passenger
+          <p>In order to enable multiple clients and flexible usage, the prime specification 
+          for data access will be a service specification, specifying the mechanisms and protocols
+          for accessing vehicle information.  The mechanisms will include WebSockets and
+          REST.  In addition, an API which is intended to use the service will be specified
+          for facility.  Initially these specifications will be limited to passenger
           vehicles. How an implementation obtains this data is not in the scope
           of the group.</p>
         <p>The specification(s) produced by this Working Group will include
@@ -180,8 +177,8 @@
           network and protocols are OEM specific and vary from vehicle to
           vehicle.</p>
         <p>However, to facilitate interoperability among vehicle OEMs and
-          encourage adoption of the API, the group may informatively reference
-          existing suites of protocols, either directly in the Vehicle API
+          encourage adoption of the specifications, the group may informatively reference
+          existing suites of protocols, either directly in the 
           deliverable(s) or in a non-normative companion Note.</p>
         </div>
 
@@ -200,6 +197,7 @@
           Deliverables
         </h2>
         <p class="issue"><b>Issue:</b> I've (not Kaz :) removed the milestones table, which is always wildly inaccurate, and included the milestones as projected completion dates in the description template for each deliverable. Up-to-date milestones tables should be maintained on the group page and linked to from this charter.</p>
+        <p class="issue"><b>Issue:</b>The Editors of the specs are Powell Kinney, Vinli, Wonsuk Lee, ETRI, Kevin Gavigan, JLR, Adam Crofts, JLR.</p>
 
         <p>More detailed milestones and updated publication schedules are available on the <a href="https://www.w3.org/wiki/[groupname]/PubStatus">group publication status page</a>.</p>
 
@@ -214,40 +212,31 @@
           </p>
 
           <dl>
-          <dt id="vehicle-api" class="spec">Vehicle Information Access API &amp; Vehicle Data</dt>
+          <dt id="service-spec" class="spec">Vehicle Information Service Specificatiin</dt>
           <dd>
-            <p>There are two API specification reports that when
-            combined together allow a web application to request
-            vehicle data from the vehicles network bus and sensors.The
-            vehicle data represents a large amount of data but not all
-            of the data a vehicle has since the data can differ from
-            model to model and manufacturer to manufacturer. The
-            initial version of these documents will be copied from
-            the <a href="http://www.w3.org/community/autowebplatform">Automotive
-            and Web Platform Business Group Final Report</a>(s)
-            produced by the W3C Automotive and Web Platform Business
-            Group. Further modifications (if any) will be decided upon
-            by this Working Group.</p>
-
-            <p>The working group may decide to group the API functions
-            in one or more specifications as they see fit.  </p>
+            <p>The Vehicle Information Service exposes vehicle information through standard 
+            web protocols including WebSockets and HTTP.   It defines the semantics of
+            these data access protocols.</p>
 
             <p class="draft-status"><b>Draft state:</b> <i class="todo">[No draft | <a href="#">Use Cases and Requirements</a> | <a href="#">Editor's Draft</a> | <a href="#">Member Submission</a> | <a href="#">Adopted from WG/CG Foo</a> | <a href="#">Working Draft</a>]</i></p>
 
-              <p class="milestone"><b>Expected completion:</b> <i class="todo">[Q1–4 yyyy]</i></p>
-            </dd>
-
-          <dt id="service-spec" class="spec">Vehicle Information Service</dt>
-          <dd>
-            <p>TBD</p>
-
-            <p class="draft-status"><b>Draft state:</b> <i class="todo">[No draft | <a href="#">Use Cases and Requirements</a> | <a href="#">Editor's Draft</a> | <a href="#">Member Submission</a> | <a href="#">Adopted from WG/CG Foo</a> | <a href="#">Working Draft</a>]</i></p>
-
-              <p class="milestone"><b>Expected completion:</b> <i class="todo">[Q1–4 yyyy]</i></p>
+              <p class="milestone"><b>Expected completion:</b> <i class="todo">[Q3 2017]</i></p>
             </dd>
  
           </dl>
+          <dt id="vehicle-api" class="spec">Vehicle Information Access API &amp; Vehicle Data</dt>
+          <dd>
+            <p>The Vehicle Information Access API specifies a JavaScript API for 
+            accessing vehicle data.  It is intended to get its data from the Vehicle
+            Information Services.  However, it is also intended to provide a level of
+            abstraction from the service.  Hence, it is conceivable that it is used/implemented
+            without using the Vehicle Information Service.</p>
 
+
+            <p class="draft-status"><b>Draft state:</b> <i class="todo">[No draft | <a href="#">Use Cases and Requirements</a> | <a href="#">Editor's Draft</a> | <a href="#">Member Submission</a> | <a href="#">Adopted from WG/CG Foo</a> | <a href="#">Working Draft</a>]</i></p>
+
+              <p class="milestone"><b>Expected completion:</b> <i class="todo">[Q3 2017]</i></p>
+            </dd>
         </div>
 
         <div id="ig-other-deliverables">
@@ -293,12 +282,18 @@
           <h3>Timeline</h3>
             <p class="todo">Put here a timeline view of all deliverables.</p>
             <ul class="todo">
-              <li>Month YYYY: First teleconference</li>
-              <li>Month YYYY: First face-to-face meeting</li>
-              <li>Month YYYY: Requirements and Use Cases for FooML</li>
-              <li>Month YYYY: FPWD for FooML</li>
-              <li>Month YYYY: Requirements and Use Cases for BarML</li>
-              <li>Month YYYY: FPWD FooML Primer</li>
+              <li>July 2016: First face-to-face meeting</li>
+              <li>August 2016: First teleconference</li>
+              <li>September 2016: First face-to-face meeting - TPAC</li>
+              <li>October 2016: First face-to-face meeting - GENIVIA AMM</li>
+              <li>September 2016: FPWD of Vehicle Information Service Specification</li>
+              <li>October 2016: FPWD of Vehicle Information Access API Specifiecation</li>
+              <li>March 2017: CR of Vehicle Information Service Specification</li>
+              <li>March 2017: CR of Vehicle Information Access API Specifiecation</li>
+              <li>June 2017: PR of Vehicle Information Service Specification</li>
+              <li>June 2017: PR of Vehicle Information Access API Specifiecation</li>
+              <li>September 2017: REC of Vehicle Information Service Specification</li>
+              <li>September 2017: REC of Vehicle Information Access API Specifiecation</li>
             </ul>
         </div>
       </section>
@@ -412,6 +407,16 @@
 	  <dd>AUTOSAR is an open and standardized automotive software
 	  architecture, jointly developed by automobile manufacturers,
 	  suppliers and tool developers.</dd>
+
+	  <dt><a href="https://openconnectivity.org">Open Connectivity Foundation/IOTIVITY </a></dt>
+	  <dd>The Open Connectivity Foundation (OCF) is an industry group whose stated mission 
+	  is to develop standards and certification for devices involved in the Internet of 
+	  Things (IoT) based around Constrained Application Protocol (CoAP)</dd>
+
+	  <dt><a href="http://openmobilealliance.org/about-oma/work-program/omauto/">OMAUTO</a></dt>
+	  <dd>The OMAUTO mission is to establish a venue for discussion between telecom and 
+	  automotive at a technical and industry level to establish any network, any automobile 
+	  communication</dd>
 
         </dl>
 
