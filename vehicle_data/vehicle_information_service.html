@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vehicle Information Access API</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
+            class='remove'></script>
+    <script class="remove">
+      var respecConfig = {
+          specStatus:           "ED",
+          shortName:            "vehicle-information-api",
+          editors:  [{
+            name: "Adam Crofts", company: "Jaguar Land Rover",
+            url: "mailto:acrofts1@jaguarlandrover.com",
+            companyURL: "http://www.jaguarlandrover.com/" 
+          }, {
+            name: "Kevin Gavigan", company: "Jaguar Land Rover",
+            url: "mailto:kgavigan@jaguarlandrover.com",
+            companyURL: "http://www.jaguarlandrover.com/"              
+          }],
+          edDraftURI:           "http://rawgit.com/w3c/automotive/master/vehicle_data/vehicle_information_service.html",
+          wg:           "Automotive Working Group",
+
+          otherLinks: [{
+            key: 'Repository and Participation',
+            data: [
+                {
+                    value: 'We are on github.',
+                    href: 'https://github.com/w3c/automotive/'
+                }, {
+                    value: 'File a bug/issue.',
+                    href: 'https://github.com/w3c/automotive/issues'
+                }, {
+                    value: 'Commit history.',
+                    href: 'https://github.com/w3c/automotive/commits'
+                }, {
+                    value: 'Mailing list archive.',
+                    href: 'https://lists.w3.org/Archives/Public/public-automotive/'
+                }
+             ]
+          }],
+
+          wgURI:        "http://www.w3.org/auto/wg/",
+          wgPublicList: "public-automotive",
+          wgPatentURI: "http://www.w3.org/2004/01/pp-impl/76043/status",
+	  };
+    </script>
+  </head>
+
+  <body>
+
+
+    <!-- Abstract -->
+    <section id="abstract">
+
+    </section>
+
+    <!-- Status of this document -->
+    <section id="sotd">
+    </section>
+    
+    <!-- Introduction -->
+    <section class="informative">
+      <h2>Introduction</h2>
+
+      <p>The vehicle will expose vehicle signals via a WebSocket, or a
+      RESTful web service interface or both. This will enable a client to
+      GET or SET vehicle signals; to SUBSCRIBE to receive notifications
+      relating to one or more vehicle signals and later to UNSUBSCRIBE
+      from receiving notifications.</p>
+      
+      <p>The W3C WebSocket API is defined here and the WebSocket Protocol
+      <a href="https://tools.ietf.org/html/rfc6455">(RFC6455)</a>.</p>
+      
+      <p>A component or module running on the vehicle is required to open
+      a WebSocket connection and/or to provide a RESTful web service to
+      enable secure access to vehicle signals. In this specification this
+      module will be referred to as the ‘Application Server’ or for
+      simplicity as the ‘Server’.</p>
+      
+      <p>This specification assumes that a single WebSocket is used to
+      enable communication between the client Application and the server
+      in order to reduce processing overhead.</p>
+      
+      <p>N.B It is not explicitly prohibited for the client to request
+      that the server opens more than one WebSocket. However, the server
+      may refuse to open a subsequent connection and the client is
+      responsible for handling this gracefully.</p>
+
+      <p>If more than one WebSocket connection is established between a
+      client Application and the server then each connection will be
+      managed independently. For example, subscriptions created using a
+      particular WebSocket connection will only trigger notifications via
+      that connection and the client must use that WebSocket instance to
+      unsubscribe.</p>
+
+      <p>N.B. If more than one WebSocket connection has been established
+      between one or more clients and a particular server instance, there
+      is a risk that race conditions and concurrency issues could occur,
+      for example when two or more WebSocket connections are used to
+      concurrently update (SET) the same value.</p>
+      
+      <p>Unless explicitly stated otherwise, the client can only assume
+      that the server will implement a simple concurrency model where lost
+      updates and dirty reads could potentially occur if the server has
+      more than one WebSocket connection open.</p>
+      <p>
+	An example of use is provided below:</p>
+
+	<pre class="example highlight">
+	</pre>
+      </section>
+
+      <!-- Conformance -->
+      <section id="conformance">
+	<p>This specification defines conformance criteria that apply to a single
+	product: the <dfn>service</dfn> that implements the interfaces that it
+	contains.
+	
+	<p>Implementations that use ECMAScript to implement the APIs defined in this
+	specification MUST implement them in a manner consistent with the ECMAScript
+      </section>
+      
+      <!-- Terminology -->
+      <section id="terminology">
+	<h2>Terminology</h2> <p>The <code><a
+	href="http://www.w3.org/TR/2013/WD-dom-20131107/#promises">
+	Promise</a></code> provide a convenient way to get access to the result of an operation.</p>
+      </section>
+      
+      <!-- Security and privacy -->
+      <section id="security">
+	<h2>Security and privacy considerations</h2>
+
+	<p>
+	  It is expected that security of vehicle APIs described in this document is based on permissions dictated by:
+	</p>
+	<ul>
+	  <li></li>
+	  <li>The underlying operating system – always</li>
+	</ul>
+
+      </section>
+
+
+      <!-- Initialisation of the Web Socket -->
+      <section>
+	<h3><a>Initialisation</a> of the Web Socket</h3>
+	
+	<p>If the client application is an HTML Application running in a web
+	runtime or is a web page running in a browser, the WebSocket
+	instance can either be initialised natively or created using a
+	WebSocket standards compliant JavaScript library. A WebSocket
+	request can also be initiated from a native (e.g. C++) Application
+	or from an Application written using a managed runtime language like
+	Java or C#. It is assumed that native and managed clients will use a
+	suitable standards compliant WebSocket library to request that a
+	WebSocket connection is opened on the server.</p>
+
+	<p>For browser and web runtime clients, the advantage of
+	initialising the WebSocket natively in the web runtime is that there
+	are fewer overheads for the vehicle signal implementation.</p>
+	
+	<p>A client running on the vehicle will be able to connect to the
+	Application Server instance using the hostname 'wwwivi' and will
+	default to port 443. 'wwwivi' would be mapped to 127.0.0.1 in
+	etc/hosts file.</p>
+	
+	<p>The sub-protocol name will always be VISS and with a version
+	number suffix, e.g. VISS1.0</p>
+
+	<pre class="highlight hljs javascript">
+	  <span class="hljs-keyword">var</span> vehicle  = new WebSocket("wss://wwwivi", "<sub-protocol>");
+	</pre>
+	
+	<p>RESTful web services are out of scope for the first revision of
+	this specification, but could be considered for addition in a later
+	version.</p>
+	
+	<p>There is little advantage to embedding this in a Vehicle object
+	on the navigator interface.</p>
+
+	<p>To support ‘defence in depth’ and a layered security approach,
+	connections between clients and servers will be strongly
+	encrypted. This is to make it more difficult for an attacker that
+	has succeeded in installing malicious code on a vehicle to
+	eavesdrop, hijack security tokens and impersonate valid security
+	principals to get and set sensitive vehicle signals.</p>
+	
+	<p>The client will connect to the server over HTTPS and request that
+	the server opens a WebSocket. All WebSocket communications between
+	the client and server will therefore be over ‘wss’.</p>
+	
+	<p>Non encrypted communication will not be supported, hence the
+	server will refuse ‘ws’ connection requests.</p>
+
+	<p>In many vehicle designs, vehicle signals are made available by
+	Electronic Control Units (ECUs) connected via internal vehicle
+	networks. These include Controller Area Networks (CAN), Media
+	Oriented Systems Transport (MOST) and Local Interconnect Networks
+	(LIN). For security reasons, clients will not be able to connect
+	directly to ECUs or to CAN, MOST or LIN networks. All access will be
+	via WebSocket. This allows the server to securely control access to
+	vehicle signals.</p>
+  
+      </section>
+
+      <!-- Message Structure -->
+      <section>
+	<h3><a>Message</a> Structure</h3>
+
+	<p>Clients can request vehicle signal data from the server by
+	sending a JSON data structure to the server via the WebSocket
+	connection.</p>
+
+	<p>Only the action, path and reqId attributes are required, however
+	multiple other options can be included as described in the table
+	below.</p>
+
+	<pre class="highlight hljs javascript">
+	  vehicle.send('{ "action": "subscribe", "path": "body.mirrors.left",
+	                  "reqId": [some_unique_value] }');
+	</pre>
+	
+	@@table class - parameter?
+	<table>
+	  <tr>
+	    <th>Attribute</th>
+	    <th>Description</th>
+	    <th>Required</th>
+	    <th>Default Value</th>
+	    <th> Source</th>
+	  </tr>
+	  <tr>
+	    <td> action </td>
+	    <td> The desired action from the client (subscribe, unsubscribe, get, set). </td>
+	    <td> Required	</td>
+	    <td> n/a </td>
+	    <td> Client </td>
+	  </tr>
+	  <tr>
+	    <td> path	</td>
+	    <td> The path to the desired vehicle signal(s), as defined by the Vehicle Signal Specification (VSS). </td>
+	    <td> Required	</td>
+	    <td> n/a </td>
+	    <td> Client
+	  </td></tr>
+	  <tr>
+	    <td> reqId	</td>
+	    <td> Unique id value specified by the client. Returned by the server in 
+	    the response and used by client to link the request and response 
+	    messages. May be a Universally Unique Identifier (UUID) </td>
+	    <td> Required	</td>
+	    <td> n/a </td>
+	    <td> Client </td>
+	  </tr>
+	  <tr>
+	    <td> security </td>
+	    <td> Structure containing one or more security token (e.g OAuth2)  name/value pairs. </td>
+	    <td> Optional </td>
+	    <td> Null </td>
+	    <td> Client </td>
+	  </tr>
+	  <tr>
+	    <td> onchange </td>
+	    <td> Request for updates when a signal changes. The value can either be 
+	    ‘true’ (default) or an object can be sent specifying upper and lower 
+	    values and a minimum change in the signal value. </td>
+	    <td> Optional	</td>
+	    <td> True </td>
+	    <td> Client </td>
+	  </tr>
+	  <tr>
+	    <td> subId </td>
+	    <td> Integer handle returned by the server to uniquely identify each new subscription. Also used to unsubscribe. </td>
+	    <td> Required </td>
+	    <td> n/a </td>
+	    <td> Client/Server </td>
+	  </tr>
+	  <tr>
+	    <td> timestamp </td>
+	    <td> A DOMTimestamp value indicating the time that the server returned the response (expressed as number of milliseconds).  </td>
+	    <td> Required </td>
+	    <td> n/a </td>
+	    <td> Server </td>
+	  </tr>
+	  <tr>
+	    <td> value </td>
+	    <td> The data value returned by the server. This could either be a basic
+	    type, or a complex type comprised of nested name/value pairs in JSON 
+	    format. </td>
+	    <td> Required </td>
+	    <td> n/a
+	    </td>
+	    <td> Server</td>
+	  </tr>
+	  <tr>
+	    <td> TTL </td>
+	    <td> Returns the time to live of the authentication token </td>
+	    <td> Required </td>
+	    <td> n/a </td>
+	    <td> Server</td>
+	  </tr>
+	  <tr>
+	    <td> status</td>
+	    <td> Returns success for the ‘set’ and ‘unsubscribe’ methods </td>
+	    <td> Required </td>
+	    <td> n/a </td>
+	    <td> Server</td>
+	  </tr>
+	  <tr>
+	    <td> error number </td>
+	    <td> Integer that identifies the type of error. Will be a HTTP status code if a standard value has been defined for the error type. </td>
+	    <td> Required </td>
+	    <td> n/a </td>
+	    <td> Server</td>
+	  </tr>
+	  <tr>
+	    <td> error code </td>
+	    <td> Error string identifying the particular error code. Different Error
+	    Codes could occur for the same error number. For example, there may be 
+	    more than one reason why a user is forbidden to access a resource (Error
+	    Number: 403) </td>
+	    <td> Required </td>
+	    <td> n/a </td>
+	    <td> Server</td>
+	  </tr>
+	  <tr>
+	    <td> error message </td>
+	    <td> Description of the Error. </td>
+	    <td> Required </td>
+	    <td> n/a </td>
+	    <td> Server</td>
+	  </tr>
+	</table>
+	
+	<h4><a>Action</a></h4>
+	
+	<p>Action can take one of four values describing the desired service for
+	the client. There are described in the table below.</p>
+	
+	<table>
+	  <tr><th>Action</th><th>Description</th></tr>
+	  <tr>
+	    <td>Subscribe</td>
+	    <td>Enables the client to receive a
+	    notification containing a JSON data structure with values for one
+	    or more vehicle signals. The client requests that it is notified
+	    when the signal changes on the server.</td>
+	  </tr>
+	  <tr>
+	    <td>Unsubscribe</td>
+	    <td>Allows the client to notify the server that it should no
+	    longer receive notifications based on that subscription.</td>
+	  </tr>
+	  <tr>
+	    <td>Get</td>
+	    <td>Enables the client to get a value once.</td>
+	  </tr>
+	  <tr>
+	    <td>Set</td>
+	    <td>Enables the client to set a value once.</td>
+	  </tr>
+	</table>
+	<h4><a>Path</a></h4>
+	<p>This is the desired vehicle signal(s) path, as defined by the <a
+	href="https://www.w3.org/auto/wg/wiki/Vehicle_Information_Service_Specification#Data_Model">Vehicle
+	Signal Specification (VSS)</a></p>
+	
+	<h4><a>Subscription</a> Id</h4>
+	<p>When the client makes a request to the server to create a new
+	subscription, a JSON data object will be returned. This will contain
+	the attributes that were passed to the server to make the
+	subscription and a 'subId' integer handle value which is used to
+	uniquely identify the subscription.</p>
+	
+	<pre class="highlight hljs javascript">
+	  client -> { "action": "subscribe", "interval": 100,
+	              "path": "body.mirrors.left",
+	              "reqId":"[some_unique_value]" }
+	  
+          receive on success <- { "subId": 35472, "reqId": "[some_unique_value]" }
+	</pre>
+	
+	<p>The client can use the 'reqId' value to associate the successful
+	subscription response with the original request.</p>
+	
+	<p>The 'subId' value is a unique value, created by the server and
+	which may be used internally by the server to manage subscriptions
+	on that WebSocket instance.</p>
+
+	<p>The subscription id value can be used by the client to
+	unsubscribe from receiving future notifications, by passing the
+	handle value to the server with the unsubscribe action.</p>
+	
+	<p>To differentiate subscription response from responses for ‘GET’
+	requests, subscription responses will additionally include the
+	subscription id value that identifies the subscription that
+	triggered that notification.</p>
+	
+	<p>The server will ensure that a new unique subscription id value is
+	returned for each successful subscription request on a particular
+	WebSocket connection. However the server does not guarantee that
+	subscription handle values are unique between different WebSocket
+	instances.</p>
+      </section>
+      
+      <section>
+	<h3><a>Access</a> Control and Authorization</h3>
+	
+	<p>When a client makes a request to access signal data it is
+	performing the request on behalf of one or more Security Principals
+	(that is, for a user a vehicle or a device). It may be that the
+	client system does not enable users to login, so the request may be
+	from an anonymous user.</p>
+	
+	<p>Access to signals shall be managed and controlled by the
+	server. The server can elect not to enforce access controls on a
+	particular signal or set of signals and to enforce different access
+	controls on other signals.</p>
+	
+	<p>Please see the section on Security [TODO add link] for more
+	information.</p>
+
+	<p>When a client makes a request for a signal or set of signals that
+	are under access control, the request must contain one or more valid
+	security tokens (e.g. OAuth 2.0 tokens), one for each Security
+	Principal type that the server wishes to authorize. </p>
+  
+	<p>In addition to the ‘action’ and ‘path’ attributes, a request for
+	a resource that is under access control must also contain a
+	‘security’ attribute.</p>
+
+	<p>The ‘security’ attribute is a JSON data structure that contains
+	one or more name/value pairs, where each name is the name of a valid
+	security token and the value is the token value.</p>
+	<pre class="highlight hljs javascript">
+	  "security": { "Authorization": [some_token_value], 
+	                "WWW-Vehicle-Device": "[other_token_value]" }
+	</pre>
+	<p>A subscription request for signals data that is only
+	available to suitably authorised Security Principals is shown
+	below:</p>
+	<pre class="highlight hljs javascript">
+	  vehicle.send('{ "action": "subscribe", "path": "body.mirrors.left", 
+	                  "security": { "Authorization": [some_token_value], 
+                                        "WWW-Vehicle-Device": "[other_token_value]" },
+                          "reqId": "[some_unique_value]"');
+	</pre>
+	<p>[TODO Clarify whether need to specify that token value is
+	Base64 encoded]</p>
+
+	<p>For simplicity, many of the subscription examples included
+	in this document do not include a security data object. This
+	is acceptable if the data that is being accessed is not
+	subject to access control restrictions.</p>
+
+      </section>
+      <section>
+      <h3>Server Side <a>Filtering</a></h3>
+      <p>A 'Filter' can be specified to enable Server side filtering
+      to be used in order to throttle the demands of subscriptions on
+      the server. This may enable the reduction of traffic if the
+      developer has received a 429 - Too Many Requests error
+      message. This can be implementation dependant allowing a number
+      of potential filtering mechanisms, such as ranges, intervals and
+      minimum changes. This can be implemented using the "filter"
+      option.</p>
+
+      <p>The subscription currently defaults to sending values to the
+      client only onchange, however this may cause unnecessary
+      processing demands on the vehicle server.</p>
+
+      <pre class="highlight hljs javascript">
+	//client receives data every 100ms
+        { "action": "subscribe", "path": "body.mirrors.left", "filters": { [insert custom tags]  } }
+      </pre>
+      <p>Potential tags could include:</p>
+      <ul>
+	<li>Interval - provide data every X ms allowing the developer
+	to restrict the number of values received for verbose
+	subscriptions</li>
+	<li>Range - provide a value only when within a given range</li>
+	<li>Minimum change - provide data when a value has changed by
+	a specified amount</li>
+      </ul>
+      <p>[TODO - modify the existing filtering mechanisms]</p>
+
+      <p>The 'interval' attribute can be used alongside the
+      'subscribe' action to allow the client to set a time
+      interval. By specifying an interval, the client is requesting
+      that the server sends a notification to the client containing
+      the requested data each time a full interval has elapsed. This
+      data will be sent regardless of whether the signal value has
+      changed. The server will continue to send notifications
+      containing the requested data until the client unsubscribes.</p>
+
+      <p>If the ‘interval’ value is not set or unsupported, and the
+      onchange value is not set or supported, the interval will be
+      determined by the server.</p>
+
+	<pre class="highlight hljs javascript">
+	  //client receives data every 100ms
+	  { "action": "subscribe", "path": "body.mirrors.left", "interval": 100 }
+	</pre>
+      </section>
+      <section>
+	<h3>On <a>Change</a></h3>
+	<p>The ‘onchange’ attribute can be used with the 'subscribe'
+	action to enable the client to subscribe to receive a
+	notification when data changes.</p>
+
+	<p>The onchange attribute can either be set to the Boolean
+	value of ‘true’ or it can be a JSON object which contains an
+	upper and lower value and a minimum change amount (delta) for
+	the signal.</p>
+
+	<p>Setting the onchange attribute to ‘true’ will be valid for
+	any signal type, but is particularly convenient for discrete
+	values. By setting onchange to true, the client is sending a
+	request to the server to send a notification whenever the data
+	changes on the server.</p>
+	<pre class="highlight hljs javascript">
+	  { "action": "subscribe", "onchange": true, "path": "engine.rpm" }
+	</pre>
+
+	<p>If the onchange attribute is set to true and the signal is
+	not discrete, but changes continuously, the server is free to
+	determine how often it notifies the client of a change in the
+	value.</p>
+
+	<p>If the client wants more control with respect to how often
+	it is notified of a continuously changing signal it can
+	specify an upper and lower value for the signal and the
+	minimum amount (delta) that the signal must change before the
+	server should send a notification to the client. Values
+	outside of the specified upper and lower bounds will not cause
+	notifications and will require separate subscriptions,
+	regardless of the specified minimum amount. The upper and
+	lower bound should be inclusive.</p>
+
+	<p>The client should take care to avoid specifying a minimum
+	change amount that is too small in order to prevent
+	unnecessary messages.</p>
+
+	<p>In the following example, the client will receive a
+	notification if the engine.rpm signal value changes by more
+	than 100 regardless of any upper or lower attribute value.</p>
+
+	<p>N.B. In this example and the others that follow, the server
+	response indicating that the subscription was accepted is not
+	shown.</p>
+
+	<pre class="highlight hljs javascript">
+	  client -> { "action": "subscribe", 
+                      "onchange": { "minChange": 100 }, "path": "engine.rpm" } }'
+
+          // sometime later
+	  receive <- '{ "id": 35472, "path": "engine.rpm", "value": 600 }'
+	  receive <- '{ "id": 35472, "path": "engine.rpm", "value": 500 }'
+	  receive <- '{ "id": 35472, "path": "engine.rpm", "value": 600 }'
+	  receive <- '{ "id": 35472, "path": "engine.rpm", "value": 700 }'
+	  receive <- '{ "id": 35472, "path": "engine.rpm", "value": 800 }'
+	</pre>
+	
+	<p>The client receives a notification containing engine oil
+	temperature data whenever the temperature is above 150 degrees
+	or below 10 degrees, provided the temperature has changed by
+	at least 5 degrees since the last notification was sent for
+	the subscription.</p>
+
+	<pre class="highlight hljs javascript">
+client -> { "action": "subscribe", 
+            "onchange": { "above": 150, "below": 10, "minChange": 5 }, 
+            "path": "engine.eot" } }
+
+// sometime later
+receive <- '{ "id": 35489, "path": "engine.eot", "value": 150}'
+receive <- '{ "id": 35489, "path": "engine.eot", "value": 155}'
+receive <- '{ "id": 35489, "path": "engine.eot", "value": 160}'
+receive <- '{ "id": 35489, "path": "engine.eot", "value": 165}'
+receive <- '{ "id": 35489, "path": "engine.eot", "value": 155}'
+receive <- '{ "id": 35489, "path": "engine.eot", "value": 150}'
+	</pre>
+	<p>The client receives power data whenever when the power
+	value is between 10kW and 120kW provided it changes by at
+	least 2kW.</p>
+
+	<pre class="highlight hljs javascript">
+  
+client -> { "action": "subscribe", 
+            "onchange": { "above": 10, "below": 120, "minChange": 2 }, 
+            "path": "engine.power" } }
+
+// sometime later
+receive <- '{"id": 35493, "path": "engine.power", "value": 12}'
+receive <- '{"id": 35493, "path": "engine.power", "value": 14}'
+	</pre>
+	<p>The client can subscribe to receive notifications for any
+	of the signals that are specified by a given path value. In
+	this case a notification is sent containing data for all
+	applicable signals provided that the threshold or change
+	criteria for any of the signals has been met.</p>
+
+	<p>In the following example the client subscribes to receive
+	engine notifications by setting the “path”: “engine”. The
+	client receives ‘power’ and ‘eot’ updates (for simplicity,
+	other engine signals are not shown, but would be included in
+	the response data packet).</p>
+	<pre class="highlight hljs javascript">
+client->{ "action": "subscribe", 
+          "onchange": { 
+             "power": { "above": 10, "below": 120, "minChange": 2 }, 
+             "eot": { "above": 150, "below": 10, "minChange": 5 } ,  
+          "path": "engine" } }
+
+// sometime later
+receive <- '{ "id": 35502, "path": "engine", 
+              "value": { "power": 114, "eot": 151, 
+                          [other engine signal name/value pairs] } }'
+receive <- '{ "id": 35502, "path": "engine", 
+              "value": { "power": 118, "eot": 156, 
+                         [other engine signal name/value pairs] } }'
+	</pre>
+      </section>
+      <section>
+	<h3><a>Errors</a></h3>	
+	<p>If there is an error with any of the client’s requests, the
+	server will respond with an error number, code and
+	message.</p>
+	<pre class="highlight hljs javascript">
+client -> { "action": "subscribe", "onchange": true, “interval”: 100, "path": "body.mirrors.left" }
+receive on error <- { "error": { "number": ERROR_NUM, "code": ERROR_CODE, 
+                                 "message": ERROR_MESSAGE }, 
+                      "interval": 100, "path": "body.mirrors.left" }
+	</pre>
+	<p>These error messages are defined below.</p>
+	<table>
+
+	  <tr>
+	    <th> Error Number </th>
+	    <th> Error Code </th>
+	    <th> Error Message
+	    </th>
+	  </tr>
+	  <tr>
+	    <td> 304 </td>
+	    <td>	TODO Correct	</td>
+	    <td>The subscription is already active, so no changes have
+	    been made by the server.</td>
+	  </tr>
+	  <tr>
+	    <td> 401 </td>
+	    <td>	user_unauthorised		</td>
+	    <td>Error message describing particular reason e.g. token expired.</td>
+	  </tr>
+	  <tr>
+	    <td> 403 </td>
+	    <td> 	user_forbidden			</td>
+	    <td>Error message describing particular reason user is
+	    forbidden from accessing data.</td>
+	  </tr>
+	  <tr>
+	    <td> 404 </td>
+	    <td> 	invalid path			</td>
+	    <td>TODO Includes private branch requests if not authorised (XX Can getVSS got public but not private XX - explain this somewhere)
+	    </td>
+	  </tr>
+	  <tr>
+	    <td> 406 </td>
+	    <td> 	TODO look up (auth but can't because of vehicle state) </td>
+	    <td>TODO Fix Error message </td>
+	  </tr>
+	  <tr>
+	    <td> 429 </td>
+	    <td> 	too many requests		</td>
+	    <td>TODO Fix Error message describing particular reason
+	    user is forbidden from accessing data.</td>
+	  </tr>
+	  <tr>
+	    <td> 502 </td>
+	    <td> 	bad gateway		</td>
+	    <td>TODO Fix Error message describing particular reason
+	    user is forbidden from accessing data.</td>
+	  </tr>
+	  <tr>
+	    <td> 503 </td>
+	    <td> 	service unavailable	</td>
+	    <td>TODO Fix Error message describing particular reason
+	    user is forbidden from accessing data.</td>
+	  </tr>
+	  <tr>
+	    <td> 504 </td>
+	    <td> 	timeout	</td>
+	    <td>TODO Fix Error message (used if server is too
+	    busy)</td>
+	  </tr>
+	  <tr>
+	    <td> &lt;nn&gt; </td>
+	    <td> 	unrecognised_format 		</td>
+	    <td>The server is unable to fulfil the client’s request
+	    due to the format of the data request.</td>
+	  </tr>
+	  <tr>
+	    <td> &lt;nn&gt; </td>
+	    <td>	data_not_supported 		</td>
+	    <td>The server is unable to fulfil the client’s request
+	    since the data is not available on the vehicle.</td>
+	  </tr>
+	  <tr>
+	    <td> &lt;nn&gt; </td>
+	    <td>	none_settable_path		</td>
+	    <td>This will be returned if the specified value does not
+	    match the specified path.</td>
+	  </tr>
+	  <tr>
+	    <td> &lt;nn&gt; </td>
+	    <td>	invalid_ID 			</td>
+	    <td>The specified ID used to unsubscribe is not recognised
+	    by the server</td>
+	  </tr>
+	</table>
+	<p>TODO Add note explaining ReasonCode can be used to describe sub errors e.g. 'invalid_vin'</p>
+
+      </section>
+      <section>
+	<h3>Web Socket <a>Closure</a></h3>
+	<p>The WebSocket can be closed by either the client or the
+	server by invoking the ‘close()’ method on the WebSocket
+	instance.</p>
+
+	<p>The following example shows the lifetime of a WebSocket on
+	the client:</p>
+	<pre class="highlight hljs javascript">
+// Open the WebSocket
+var vehicle  = new WebSocket(“wss://localhost:4343”);
+
+// WebSocket is used to GET, SET, SUBSCRIBE and UNSUBSCRIBE
+…
+
+// Close the WebSocket
+vehicle.close();
+	</pre>
+	<p>The WebSocket server can terminate the WebSocket connection
+	if it has not received a request for a period determined by
+	the server. It is the client’s responsibility to handle this
+	gracefully and to recover and for example request new
+	subscriptions, where these are required.</p> 
+      </section>
+      <section>
+	<h3><a>Dataflow</a> Examples</h3>
+	<h4>Subscribe</h4>
+	<p>Subscribe to an attribute at 100ms interval</p>
+	<pre class="highlight hljs javascript">
+client -> '{ "action": "subscribe", “interval”: 100, "path": "body.trunk" }'
+//confirm subscription
+receive <- '{ "id": 13654, "interval": 100, "path": "body.trunk" }
+//return data every 100ms
+receive <- '{ "id" 13654, "path": "body.trunk", 
+              "value": { "isopen": true, "islocked": false } }
+receive <- '{ "id" 13654, "path": "body.trunk", 
+              "value": { "isopen": true, "islocked": false } }
+receive <- '{ "id": 13654, "path": "body.trunk", 
+              "value": { "isopen": true, "islocked": false } }
+	</pre>
+	<p>Subscribe to an attribute onchange (discrete values
+	therefore no threshold required). The server returns only the
+	changed attribute.</p>
+	<pre class="highlight hljs javascript">
+client -> '{ "action": "subscribe", “onchange”: true, "path": "body.trunk" }'
+//confirm subscription
+receive <- '{ "id": 13658, "onchange": true, "path": "body.trunk" }
+//return data when the trunk is opened
+receive <- '{ "id": 13658, "path": "body.trunk", "value": { "isopen": true, "islocked": false } }
+//return data when the trunk is closed
+receive <- '{ "id": 13658, "path": "body.trunk", "value": { "isopen": false, "islocked": false } }
+//return data when the trunk is locked
+receive <- '{ "id": 13658, "path": "body.trunk", "value": { "isopen": false, "islocked": true }}
+	</pre>
+	<p>Subscribe to an attribute (tps - throttle position) onchange
+	(continuous value without minChange, so minChange determined by the
+	server).</p>
+	<pre class="highlight hljs javascript">
+client -> { "action": "subscribe", "onchange": true, "path": "engine.tps" }}
+receive <- '{ "id": 13661, "path": "engine.tps", "value": 54}'
+receive <- '{ "id": 13661, "path": "engine.tps", "value": 58}'
+	</pre>
+	<p>Subscribe to an attribute (tps - throttle position)
+	onchange (continuous value with minChange and bounds set).</p>
+	<pre class="highlight hljs javascript">
+client -> { "action": "subscribe", "onchange": { "above": 60, "below": 100, "minChange": 20 }, "path": "engine.tps" }}
+receive <- '{ "id": 13662, "path": "engine.tps", "value": 60}'
+receive <- '{ "id": 13662, "path": "engine.tps", "value": 80}'
+	</pre>
+	<h4>Unsubscribe</h4>
+
+	<p>Unsubscribe from a single subscription with valid ID</p>
+	<pre class="highlight hljs javascript">
+client -> '{ "action": "unsubscribe", "id": 35472 }'
+receive <- '{ "status": "success", "action": "unsubscribe", "id": 35472}
+	</pre>
+	<p>Unsubscribe from all subscriptions by sending subscription
+	“id” of ‘0’</p>
+	<pre class="highlight hljs javascript">
+client -> '{ "action": "unsubscribe", “id”: 0 }'
+receive <- '{ "status": "success", "action": "unsubscribe", "id": 0 }
+	</pre>
+	<p>Unsubscribe from a single subscription with an invalid ID</p>
+	<pre class="highlight hljs javascript">
+client -> '{ "action": "unsubscribe", “id”: 3542 }'
+receive <- '{ "error": { "number":[nn], "code": INVALID_ID ,"message": "Invalid ID" }, "action": "unsubscribe", “id”: 3542 }
+         </pre>
+
+	 <p>Where [nn] denotes a numeric integer error number (e.g. HTTP status code).</p>
+
+	 <p>The client should always unsubscribe from receiving notifications when
+	 it is no longer interested in receiving them. Over a long vehicle
+	 journey, this will significantly reduce the processing required by the
+	 server and enable the server to free memory, making it easier for the
+	 server to remain responsive to requests from the client.</p>
+
+	 <h4>Get</h4>
+
+	 <p>The server shall return messages to the client using the
+	 following format, including the path to the signal and the
+	 value held within the signal:</p>
+	<pre class="highlight hljs javascript">
+client -> { "action": "get", "path": "engine.rpm" }
+receive <- { "path": "engine.rpm", "value": 2372 }
+	</pre>
+	<p>In the case where the client has subscribed to a path which
+	returns a complex type, the value shall be returned as name
+	value pairs in a JSON object, as defined in the vehicle signal
+	specification format. Wildcards can be used in order to
+	specify only a subset of data. This can be specified at any
+	level of the Vehicle Signal Specification (VSS) tree.</p>
+
+	<p>Complex type</p>
+	<pre class="highlight hljs javascript">
+client -> { "action": "get", "path": "body.trunk" }
+receive <- { "path": "body.trunk", "value": { "locked": false, "open": true }}
+	</pre>
+	<p>Complex type with nested array. Path: “body.doors.*.lock” -
+	All doors, lock state.</p>
+	<pre class="highlight hljs javascript">
+client -> { "action": "get", "path": " body.doors.*.lock" }
+receive <- { "path": "body.doors.*.lock ", "value": { [ {"locked" : true }, {"locked" : true }, 
+              {"locked" : false }, {"locked" : true } ] } }
+	</pre>
+	<p>Complex type with nested array. Path: “body.doors.*” - All
+	doors, all door attributes (where door has two attributes,
+	lock and window_pos)</p>
+	<pre class="highlight hljs javascript">
+client -> { "action": "get", "path": " body.doors.* " }
+receive <- { "path": "body.doors.*.lock ", "value": { [ {“locked” : true, “windows_pos”: 143 }, {“locked” : true, “windows_pos”: 23 },
+              {“locked” : false, “windows_pos”: 162 }, {“locked” : true, “windows_pos”: 0 } ] }
+	</pre>
+	<p>Request none-existent data</p>
+	<pre class="highlight hljs javascript">
+client -> { "action": "get", "path": "body.flux.capacitor" }
+receive <- '{ "error": { "number":[nn], "code": UNRECOGNISED_FORMAT, "message": "Unrecognised Format" } }
+	</pre>
+	<h4>Set</h4>
+	<p>Successfully set a signal.</p>
+	<pre class="highlight hljs javascript">
+client -> { "action": "set", "path": " body.doors.*.lock", "value":{ [ {“locked” : true }, {“locked” : true }, 
+              {“locked” : false }, {“locked” : true } ] } }
+receive <- { "status": "success",  "path": " body.doors.*.lock", "value":{ [ {“locked” : true }, {“locked” : true }, 
+              {“locked” : false }, {“locked” : true } ] } }
+	</pre>
+	<p>Unsuccessful set. The value cannot be set.</p>
+	<pre class="highlight hljs javascript">
+client -> { "action": "set", "path": "engine.rpm", "value": 2000}
+receive <- receive <- '{ "error": { "number": 403, "code": PERMISSION_DENIED , "message": "User is not authorised to set this value" }, "path": "engine.rpm", "value": 2000 }
+	</pre>
+	<p>Unsuccessful set. The value does not exist in the specified path.</p>
+	<pre class="highlight hljs javascript">
+client -> { "action": "set", "path": "engine.rpm", "value": { [ {“locked” : true } ]} }
+receive <- '{ "error": { "number": [nn], "code": DATA_NOT_SUPPORTED , "message": "Data Not Supported" }, "path": "engine.rpm", "value": { [ {“locked” : true } ]} }
+	</pre>
+      </section>
+    </body>
+</html>
+
