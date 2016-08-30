@@ -107,7 +107,54 @@
 
     <!-- Abstract -->
     <section id="abstract">
+	<p>The W3C Vehicle Signal Server Specification defines a WebSocket based API that enables
+	client applications to get, set, subscribe and unsubscribe to vehicle signals and data in a
+	controlled manner.</p>
 
+	<p>The purpose of this specification is to promote a Server API that enables application 
+	development in a consistent manner across participating automotive manufacturers.</p>
+
+	<p>This Server Specification should be read in conjunction with the W3C Vehicle Signal 
+	Client Specification and the GENIVI Vehicle Signal Specification.</p>
+	
+	</p>The Client Specification defines an API that wraps the data access and security primitives
+	defined in this WebSocket Server Specification. It has been defined to support the development
+	of 'standards-compliant' JavaScript libraries that can be used by web based clients.</p> 
+
+	<p>It is assumed that native clients (written for example in C/C++) and managed runtime clients 
+	(written in languages like Java or C#) will invoke the WebSocket Server API using standard WebSocket
+	libraries that have been created specifically for those languages.</p>
+
+	<p>The GENIVI Vehicle Signal Specification (VSS) defines the set of vehicle signals and data that 
+	are exposed via this Server Specification. The term 'signal' is used here to represent an item of
+	data that can vary over time, for example vehicle speed, whilst the term 'static data' is used to
+	denote a temporally unchanging properties like vehicle width.</p>
+
+	<p>This Server Specification describes a discovery mechanism that defines the set of signals and data
+	that a particular client can access. It is recognized that some automobile manufacturers may expose 
+	more signals and data than others. The Vehicle Signal Specification supports both extensibility and
+	the ability to define private branches.</p>
+	
+	<p>In addition, the 'tree' of signals that is accessible at any point in time may also vary depending
+	on normal access control principles. That is, it can vary based on the identity of the user (person or
+	organisation) requesting the data and/or the device (e.g. vehicle) where the request originates.</p>
+
+	<p>To support this, the Server Specification also describes a token based mechanism that can optionally
+	be used to pass tokens to the WebSocket Server to represent the user of an application and the device that
+	the application is running on.</p>
+
+	<p>The target platform supported by the specification is exclusively passenger vehicles. Use of this 
+	specification for non-passenger applications (transportation, heavy machinery, marine, airline 
+	infotainment, military, etc.) is not prohibited, but is not covered in the design or content of the
+	API and therefore may be insufficient.</p>
+
+	<p>Initially, a typical use case of Vehicle Information might be the implementation of a 'Smart Mechanic'
+	application that provides vehicle status information such as tire pressure, engine oil level, washer
+	fluid level, battery status, etc. Future use case innovations in transportation, safety, navigation, 
+	smart energy grid and consumer infotainment and customization are all possible through this specification.</p>
+
+	<p>Web developers building interoperable applications based upon this API, will help empower a common web platform
+	across consumer devices and passenger vehicles consistent with the Web of Things.</p>
     </section>
 
     <!-- Status of this document -->
