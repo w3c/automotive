@@ -12,25 +12,25 @@
           editors:  [{
             name: "Adam Crofts", company: "Jaguar Land Rover",
             url: "mailto:acrofts1@jaguarlandrover.com",
-	    companyURL: "http://www.jaguarlandrover.com/",
+	    companyURL: "http://www.jaguarlandrover.com/"
 	    w3cid: 74857
           }, {
             name: "Kevin Gavigan", company: "Jaguar Land Rover",
             url: "mailto:kgavigan@jaguarlandrover.com",
-	    companyURL: "http://www.jaguarlandrover.com/",
+	    companyURL: "http://www.jaguarlandrover.com/"
 	    w3cid: 71411
           }, {
             name: "이원석(Wonsuk Lee)", company: "한국전자통신연구원(ETRI)",
             url: "mailto:wonsuk.lee@etri.re.kr",
-	    companyURL: "https://www.etri.re.kr/",
+	    companyURL: "https://www.etri.re.kr/"
 	    w3cid: 34457
           }, {
             name: "Powell Kinney", company: "Vinli",
             url: "mailto:powell@vin.li",
-	    companyURL: "https://www.vin.li/",
+	    companyURL: "https://www.vin.li/"
 	    w3cid: 83094
           }],
-          edDraftURI:           "https://w3c.github.io/automotive/vehicle_data/vehicle_information_service.html",
+          edDraftURI:           "http://rawgit.com/w3c/automotive/gh-pages/vehicle_data/vehicle_information_service.html",
           wg:           "Automotive Working Group",
 
           otherLinks: [{
@@ -317,15 +317,6 @@
 	    <td> Client </td>
 	  </tr>
 	  <tr>
-	    <td> onchange </td>
-	    <td> Request for updates when a signal changes. The value can either be 
-	    ‘true’ (default) or an object can be sent specifying upper and lower 
-	    values and a minimum change in the signal value. </td>
-	    <td> Optional	</td>
-	    <td> True </td>
-	    <td> Client </td>
-	  </tr>
-	  <tr>
 	    <td> subId </td>
 	    <td> Integer handle returned by the server to uniquely identify each new subscription. Also used to unsubscribe. </td>
 	    <td> Required </td>
@@ -422,42 +413,6 @@
 	href="https://www.w3.org/auto/wg/wiki/Vehicle_Information_Service_Specification#Data_Model">Vehicle
 	Signal Specification (VSS)</a></p>
 	
-	<h4><a>Subscription</a> Id</h4>
-	<p>When the client makes a request to the server to create a new
-	subscription, a JSON data object will be returned. This will contain
-	the attributes that were passed to the server to make the
-	subscription and a 'subId' integer handle value which is used to
-	uniquely identify the subscription.</p>
-	
-	<pre class="highlight hljs javascript">
-	  client -> { "action": "subscribe", "interval": 100,
-	              "path": "body.mirrors.left",
-	              "reqId":"[some_unique_value]" }
-	  
-          receive on success <- { "subId": 35472, "reqId": "[some_unique_value]" }
-	</pre>
-	
-	<p>The client can use the 'reqId' value to associate the successful
-	subscription response with the original request.</p>
-	
-	<p>The 'subId' value is a unique value, created by the server and
-	which may be used internally by the server to manage subscriptions
-	on that WebSocket instance.</p>
-
-	<p>The subscription id value can be used by the client to
-	unsubscribe from receiving future notifications, by passing the
-	handle value to the server with the unsubscribe action.</p>
-	
-	<p>To differentiate subscription response from responses for ‘GET’
-	requests, subscription responses will additionally include the
-	subscription id value that identifies the subscription that
-	triggered that notification.</p>
-	
-	<p>The server will ensure that a new unique subscription id value is
-	returned for each successful subscription request on a particular
-	WebSocket connection. However the server does not guarantee that
-	subscription handle values are unique between different WebSocket
-	instances.</p>
       </section>
       
       <section>
@@ -512,6 +467,161 @@
 
       </section>
       <section>
+
+	<h3><a>Get - Examples to be updated</a></h3>
+ 	<p>The server shall return messages to the client using the
+	 following format, including the path to the signal and the
+	 value held within the signal:</p>
+	<pre class="highlight hljs javascript">
+		client -> { "action": "get", "path": "engine.rpm" }
+		receive <- { "path": "engine.rpm", "value": 2372 }
+	</pre>
+	<p>In the case where the client has subscribed to a path which
+	returns a complex type, the value shall be returned as name
+	value pairs in a JSON object, as defined in the vehicle signal
+	specification format. Wildcards can be used in order to
+	specify only a subset of data. This can be specified at any
+	level of the Vehicle Signal Specification (VSS) tree.</p>
+
+	<p>Complex type</p>
+	<pre class="highlight hljs javascript">
+		client -> { "action": "get", "path": "body.trunk" }
+		receive <- { "path": "body.trunk", "value": { "locked": false, "open": true }}
+	</pre>
+	<p>Complex type with nested array. Path: “body.doors.*.lock” -
+	All doors, lock state.</p>
+	<pre class="highlight hljs javascript">
+		client -> { "action": "get", "path": " body.doors.*.lock" }
+		receive <- { "path": "body.doors.*.lock ", "value": { [ {"locked" : true }, {"locked" : true }, 
+              {"locked" : false }, {"locked" : true } ] } }
+	</pre>
+	<p>Complex type with nested array. Path: “body.doors.*” - All
+	doors, all door attributes (where door has two attributes,
+	lock and window_pos)</p>
+	<pre class="highlight hljs javascript">
+		client -> { "action": "get", "path": " body.doors.* " }
+		receive <- { "path": "body.doors.*.lock ", "value": { [ {“locked” : true, “windows_pos”: 143 }, {“locked” : true, “windows_pos”: 23 },
+              {“locked” : false, “windows_pos”: 162 }, {“locked” : true, “windows_pos”: 0 } ] }
+	</pre>
+	<p>Request none-existent data</p>
+	<pre class="highlight hljs javascript">
+		client -> { "action": "get", "path": "body.flux.capacitor" }
+		receive <- '{ "error": { "number":[nn], "code": UNRECOGNISED_FORMAT, "message": "Unrecognised Format" } }
+	</pre>
+
+	<pre class="highlight hljs javascript">
+	</pre>
+
+
+	<pre class="example highlight">
+	</pre>
+
+
+      </section>
+
+      <section>
+
+	<h3><a>Set  - Examples to be updated</a></h3>
+
+	<p>Successfully set a signal.</p>
+	<pre class="highlight hljs javascript">
+		client -> { "action": "set", "path": " body.doors.*.lock", "value":{ [ {“locked” : true }, {“locked” : true }, 
+		              {“locked” : false }, {“locked” : true } ] } }
+		receive <- { "status": "success",  "path": " body.doors.*.lock", "value":{ [ {“locked” : true }, {“locked” : true }, 
+		              {“locked” : false }, {“locked” : true } ] } }
+	</pre>
+	<p>Unsuccessful set. The value cannot be set.</p>
+	<pre class="highlight hljs javascript">
+		client -> { "action": "set", "path": "engine.rpm", "value": 2000}
+		receive <- receive <- '{ "error": { "number": 403, "code": PERMISSION_DENIED , "message": "User is not authorised to set this value" }, "path": "engine.rpm", "value": 2000 }
+	</pre>
+	<p>Unsuccessful set. The value does not exist in the specified path.</p>
+	<pre class="highlight hljs javascript">
+		client -> { "action": "set", "path": "engine.rpm", "value": { [ {“locked” : true } ]} }
+		receive <- '{ "error": { "number": [nn], "code": DATA_NOT_SUPPORTED , "message": "Data Not Supported" }, "path": "engine.rpm", "value": { [ {“locked” : true } ]} }
+	</pre>
+
+
+	<pre class="highlight hljs javascript">
+	</pre>
+
+	<pre class="example highlight">
+	</pre>
+    </section>
+    <section>
+	<h3><a>Subscribe</a></h3>
+	<p>Vehicle data subscriptions provide data to the client whenever the signal changes on the server, unless otherwise specified using Server Side Filtering. The server may reduce the amount of notifications sent to the client in order to reduce processing demands, particularly when the client has subscribed to continuously varying signals.</p>
+
+	<p>When the client makes a request to the server to create a new
+	subscription, a JSON data object will be returned. This will contain
+	the attributes that were passed to the server to make the
+	subscription and a 'subId' integer handle value which is used to
+	uniquely identify the subscription.</p>
+	
+	<pre class="highlight hljs javascript">
+	  client -> { "action": "subscribe",
+	              "path": "[any_vss_path]",
+	              "reqId":"[some_unique_value]" }
+	  
+          receive on success <- { "subId": 35472, "reqId": "[some_unique_value]" }
+	</pre>
+	
+	<p>The client can use the 'reqId' value to associate the successful
+	subscription response with the original request.</p>
+	
+	<p>The 'subId' value is a unique value, created by the server and
+	which may be used internally by the server to manage subscriptions
+	on that WebSocket instance.</p>
+
+	<p>The subscription id value can be used by the client to
+	unsubscribe from receiving future notifications, by passing the
+	handle value to the server with the unsubscribe action.</p>
+	
+	<p>To differentiate subscription response from responses for ‘GET’
+	requests, subscription responses will additionally include the
+	subscription id value that identifies the subscription that
+	triggered that notification.</p>
+	
+	<p>The server will ensure that a new unique subscription id value is
+	returned for each successful subscription request on a particular
+	WebSocket connection. However the server does not guarantee that
+	subscription handle values are unique between different WebSocket
+	instances.</p>
+
+	<pre class="example highlight">
+	</pre>
+
+    </section>
+
+	<h3><a>Unsubscribe</a></h3>
+	<p>The client should always unsubscribe from receiving notifications when it is no longer interested in receiving them. Over a long vehicle journey, this will significantly reduce the processing required by the server and enable the server to free memory, making it easier for the server to remain responsive to requests from the client.</p>
+
+	<p>The client sends the unsubscribe action with the ID of the subscription which needs to be unsubscribed. If the client wihsed to unsibscribe from all of its clients, it can send a subscription ID of 0. If an invalid ID is sent teh server will return an error, as shown in the following examples. Where [nn] denotes a numeric integer error number (e.g. HTTP status code).</p>
+
+	<pre class="highlight hljs javascript">
+		// unsubscribe from a single subscription
+	  	client -> { "action": "unsubscribe", "subId": 102 }
+	  	receive <- { "status": "success", "action": "unsubscribe", "subId": 102 }
+
+	  	// unsubscribe from all subscriptions
+	  	client -> { "action": "unsubscribe", "subId": 0 }
+		receive <- { "status": "success", "action": "unsubscribe", "id": 0 }
+
+		// error case - invalid ID
+		client -> '{ "action": "unsubscribe", “id”: 3542 }'
+		receive <- '{ "error": { "number":[nn], "code": INVALID_ID ,"message": "Invalid ID" }, 
+						"action": "unsubscribe", “id”: 3542 }
+	</pre>
+
+	<pre class="example highlight">
+	</pre>
+
+
+    </section>
+
+
+
+      <section>
       <h3>Server Side <a>Filtering</a></h3>
       <p>A 'Filter' can be specified to enable Server side filtering
       to be used in order to throttle the demands of subscriptions on
@@ -527,7 +637,7 @@
       processing demands on the vehicle server.</p>
 
       <pre class="highlight hljs javascript">
-	//client receives data every 100ms
+		//client receives data every 100ms
         { "action": "subscribe", "path": "body.mirrors.left", "filters": { [insert custom tags]  } }
       </pre>
       <p>Potential tags could include:</p>
@@ -541,143 +651,49 @@
       </ul>
       <p>[TODO - modify the existing filtering mechanisms]</p>
 
-      <p>The 'interval' attribute can be used alongside the
-      'subscribe' action to allow the client to set a time
-      interval. By specifying an interval, the client is requesting
-      that the server sends a notification to the client containing
-      the requested data each time a full interval has elapsed. This
-      data will be sent regardless of whether the signal value has
-      changed. The server will continue to send notifications
-      containing the requested data until the client unsubscribes.</p>
-
-      <p>If the ‘interval’ value is not set or unsupported, and the
-      onchange value is not set or supported, the interval will be
+      <p>If the filter is not set or unsupported the notifcaiton frequency will be
       determined by the server.</p>
 
-	<pre class="highlight hljs javascript">
-	  //client receives data every 100ms
-	  { "action": "subscribe", "path": "body.mirrors.left", "interval": 100 }
-	</pre>
+      <pre class="highlight hljs javascript">
+		//client receives data every 100ms
+        { "action": "subscribe", "path": "<any_path>", 
+        	"filters": { "interval": 100ms }, 
+        	"reqId": "101" }
+
+		//client receives data when the value is between 100 and 200 (inclusive)
+        { "action": "subscribe", "path": "<any_path>", 
+        	"filters": { "range": { "above": 100, "below": 200 } }, 
+        	"reqId": "102" }
+
+		//client receives data when the value is below 100 (inclusive)
+        { "action": "subscribe", "path": "<any_path>", 
+        	"filters": { "range": { "below": 100 } }, 
+        	"reqId": "102" }
+
+		//client receives data when the value changes by 100 units
+        { "action": "subscribe", "path": "<any_path>", 
+        	"filters": { "minChange": 100 }, 
+        	"reqId": "102" }
+
+		//client receives data when the value changes by 100 units
+        { "action": "subscribe", "path": "<any_path>", 
+        	"filters": { "minChange": 100 }, 
+        	"reqId": "102" }
+
+		//client receives data when the value is above 200 (inclusive) and the value changes by 20 units
+        { "action": "subscribe", "path": "<any_path>", 
+        	"filters": { "range": { "below": 200 }, "minChange": 20}, 
+        	"reqId": "102" }
+      </pre>      
+
+      <p>When the range filter is used a final message will be sent when the value returned is outside of the specified range. For example, if the the range states { "below": 100 }, a final value may be received at 101 to indicate that the value is now out of range.</p>
+
+      <p>The client should take care to avoid specifying a minimum
+		change amount that is too small in order to prevent
+		unnecessary messages. The server may provide a TOO_MANY_REQUESTS error if this is the case.</p>
+
       </section>
-      <section>
-	<h3>On <a>Change</a></h3>
-	<p>The ‘onchange’ attribute can be used with the 'subscribe'
-	action to enable the client to subscribe to receive a
-	notification when data changes.</p>
 
-	<p>The onchange attribute can either be set to the Boolean
-	value of ‘true’ or it can be a JSON object which contains an
-	upper and lower value and a minimum change amount (delta) for
-	the signal.</p>
-
-	<p>Setting the onchange attribute to ‘true’ will be valid for
-	any signal type, but is particularly convenient for discrete
-	values. By setting onchange to true, the client is sending a
-	request to the server to send a notification whenever the data
-	changes on the server.</p>
-	<pre class="highlight hljs javascript">
-	  { "action": "subscribe", "onchange": true, "path": "engine.rpm" }
-	</pre>
-
-	<p>If the onchange attribute is set to true and the signal is
-	not discrete, but changes continuously, the server is free to
-	determine how often it notifies the client of a change in the
-	value.</p>
-
-	<p>If the client wants more control with respect to how often
-	it is notified of a continuously changing signal it can
-	specify an upper and lower value for the signal and the
-	minimum amount (delta) that the signal must change before the
-	server should send a notification to the client. Values
-	outside of the specified upper and lower bounds will not cause
-	notifications and will require separate subscriptions,
-	regardless of the specified minimum amount. The upper and
-	lower bound should be inclusive.</p>
-
-	<p>The client should take care to avoid specifying a minimum
-	change amount that is too small in order to prevent
-	unnecessary messages.</p>
-
-	<p>In the following example, the client will receive a
-	notification if the engine.rpm signal value changes by more
-	than 100 regardless of any upper or lower attribute value.</p>
-
-	<p>N.B. In this example and the others that follow, the server
-	response indicating that the subscription was accepted is not
-	shown.</p>
-
-	<pre class="highlight hljs javascript">
-	  client -> { "action": "subscribe", 
-                      "onchange": { "minChange": 100 }, "path": "engine.rpm" } }'
-
-          // sometime later
-	  receive <- '{ "id": 35472, "path": "engine.rpm", "value": 600 }'
-	  receive <- '{ "id": 35472, "path": "engine.rpm", "value": 500 }'
-	  receive <- '{ "id": 35472, "path": "engine.rpm", "value": 600 }'
-	  receive <- '{ "id": 35472, "path": "engine.rpm", "value": 700 }'
-	  receive <- '{ "id": 35472, "path": "engine.rpm", "value": 800 }'
-	</pre>
-	
-	<p>The client receives a notification containing engine oil
-	temperature data whenever the temperature is above 150 degrees
-	or below 10 degrees, provided the temperature has changed by
-	at least 5 degrees since the last notification was sent for
-	the subscription.</p>
-
-	<pre class="highlight hljs javascript">
-client -> { "action": "subscribe", 
-            "onchange": { "above": 150, "below": 10, "minChange": 5 }, 
-            "path": "engine.eot" } }
-
-// sometime later
-receive <- '{ "id": 35489, "path": "engine.eot", "value": 150}'
-receive <- '{ "id": 35489, "path": "engine.eot", "value": 155}'
-receive <- '{ "id": 35489, "path": "engine.eot", "value": 160}'
-receive <- '{ "id": 35489, "path": "engine.eot", "value": 165}'
-receive <- '{ "id": 35489, "path": "engine.eot", "value": 155}'
-receive <- '{ "id": 35489, "path": "engine.eot", "value": 150}'
-	</pre>
-	<p>The client receives power data whenever when the power
-	value is between 10kW and 120kW provided it changes by at
-	least 2kW.</p>
-
-	<pre class="highlight hljs javascript">
-  
-client -> { "action": "subscribe", 
-            "onchange": { "above": 10, "below": 120, "minChange": 2 }, 
-            "path": "engine.power" } }
-
-// sometime later
-receive <- '{"id": 35493, "path": "engine.power", "value": 12}'
-receive <- '{"id": 35493, "path": "engine.power", "value": 14}'
-	</pre>
-	<p>The client can subscribe to receive notifications for any
-	of the signals that are specified by a given path value. In
-	this case a notification is sent containing data for all
-	applicable signals provided that the threshold or change
-	criteria for any of the signals has been met.</p>
-
-	<p>In the following example the client subscribes to receive
-	engine notifications by setting the “path”: “engine”. The
-	client receives ‘power’ and ‘eot’ updates (for simplicity,
-	other engine signals are not shown, but would be included in
-	the response data packet).</p>
-	<pre class="highlight hljs javascript">
-client->{ "action": "subscribe", 
-          "onchange": { 
-             "power": { "above": 10, "below": 120, "minChange": 2 }, 
-             "eot": { "above": 150, "below": 10, "minChange": 5 } ,  
-          "path": "engine" } }
-
-// sometime later
-receive <- '{ "id": 35502, "path": "engine", 
-              "value": { "power": 114, "eot": 151, 
-                          [other engine signal name/value pairs] } }'
-receive <- '{ "id": 35502, "path": "engine", 
-              "value": { "power": 118, "eot": 156, 
-                         [other engine signal name/value pairs] } }'
-	</pre>
-      </section>
       <section>
 	<h3><a>Errors</a></h3>	
 	<p>If there is an error with any of the client’s requests, the
@@ -803,7 +819,7 @@ vehicle.close();
 	subscriptions, where these are required.</p> 
       </section>
       <section>
-	<h3><a>Dataflow</a> Examples</h3>
+	<h3><a>Dataflow</a> Examples - For Editors' Reference. To be removed</h3>
 	<h4>Subscribe</h4>
 	<p>Subscribe to an attribute at 100ms interval</p>
 	<pre class="highlight hljs javascript">
