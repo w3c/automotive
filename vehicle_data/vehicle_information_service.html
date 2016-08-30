@@ -12,19 +12,23 @@
           editors:  [{
             name: "Adam Crofts", company: "Jaguar Land Rover",
             url: "mailto:acrofts1@jaguarlandrover.com",
-            companyURL: "http://www.jaguarlandrover.com/" 
+	    companyURL: "http://www.jaguarlandrover.com/"
+	    w3cid: 74857
           }, {
             name: "Kevin Gavigan", company: "Jaguar Land Rover",
             url: "mailto:kgavigan@jaguarlandrover.com",
-            companyURL: "http://www.jaguarlandrover.com/"              
+	    companyURL: "http://www.jaguarlandrover.com/"
+	    w3cid: 71411
           }, {
             name: "이원석(Wonsuk Lee)", company: "한국전자통신연구원(ETRI)",
             url: "mailto:wonsuk.lee@etri.re.kr",
-            companyURL: "https://www.etri.re.kr/"              
+	    companyURL: "https://www.etri.re.kr/"
+	    w3cid: 34457
           }, {
             name: "Powell Kinney", company: "Vinli",
             url: "mailto:powell@vin.li",
-            companyURL: "https://www.vin.li/"              
+	    companyURL: "https://www.vin.li/"
+	    w3cid: 83094
           }],
           edDraftURI:           "http://rawgit.com/w3c/automotive/gh-pages/vehicle_data/vehicle_information_service.html",
           wg:           "Automotive Working Group",
@@ -53,6 +57,49 @@
           wgPatentURI: "http://www.w3.org/2004/01/pp-impl/76043/status",
 	  };
     </script>
+        <style>
+        table.parameters, table.exceptions {
+            border-spacing: 0;
+            border-collapse:    collapse;
+            margin: 0.5em 0;
+            width:  100%;
+        }
+        table.parameters { border-bottom:  1px solid #90b8de; }
+        table.exceptions { border-bottom:  1px solid #deb890; }
+
+        .parameters th, .exceptions th {
+            color:  inherit;
+            padding:    3px 5px;
+            text-align: left;
+            font-weight:    normal;
+        }
+        .parameters th { color: #fff; background: #005a9c; }
+        .exceptions th { background: #deb890; }
+
+        .parameters td, .exceptions td {
+            padding:    3px 10px;
+            border-top: 1px solid #ddd;
+            vertical-align: top;
+        }
+
+        .parameters tr:first-child td, .exceptions tr:first-child td {
+            border-top: none;
+        }
+
+        .parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {
+            width:  100px;
+        }
+
+        .parameters td.prmType {
+            width:  120px;
+        }
+
+        table.exceptions table {
+            border-spacing: 0;
+            border-collapse:    collapse;
+            width:  100%;
+        }
+    </style>
   </head>
 
   <body>
