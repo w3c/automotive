@@ -515,7 +515,7 @@
 
 	<pre class="highlight hljs javascript">
 		client -> { "action": "get", "path": "engine.rpm" }
-		receive <- { "path": "engine.rpm", "value": 2372 }
+		receive <- { "action": "get", "path": "engine.rpm", "value": 2372, "timestamp": DOMTimeStamp }
 	</pre>
 
 	<p>In the case where the client has subscribed to a path which
@@ -528,29 +528,32 @@
 	<p>Complex type</p>
 	<pre class="highlight hljs javascript">
 		client -> { "action": "get", "path": "body.trunk" }
-		receive <- { "path": "body.trunk", "value": { "locked": false, "open": true }}
+		receive <- { "action": "get", "path": "body.trunk", "value": { "locked": false, "open": true }, "timestamp": DOMTimeStamp}
 	</pre>
 	<p>Complex type with nested array. Path: “body.doors.*.lock” -
 	All doors, lock state.</p>
 	<pre class="highlight hljs javascript">
 		client -> { "action": "get", "path": " body.doors.*.lock" }
-		receive <- { "path": "body.doors.*.lock ", "value": { 
+		receive <- { "action": "get", "path": "body.doors.*.lock ", "value": { 
 			[ {"locked" : true }, {"locked" : true }, 
-			{"locked" : false }, {"locked" : true } ] } }
+			{"locked" : false }, {"locked" : true } ] },
+			"timestamp": DOMTimeStamp }
 	</pre>
 	<p>Complex type with nested array. Path: “body.doors.*” - All
 	doors, all door attributes (where door has two attributes,
 	lock and window_pos)</p>
 	<pre class="highlight hljs javascript">
 		client -> { "action": "get", "path": " body.doors.* " }
-		receive <- { "path": "body.doors.*.lock ", "value": { 
+		receive <- { "action": "get", "path": "body.doors.*.lock ", "value": { 
 			[ {“locked” : true, “windows_pos”: 143 }, {“locked” : true, “windows_pos”: 23 },
-			{“locked” : false, “windows_pos”: 162 }, {“locked” : true, “windows_pos”: 0 } ] }
+			{“locked” : false, “windows_pos”: 162 }, {“locked” : true, “windows_pos”: 0 } ], 
+			"timestamp": DOMTimeStamp }
 	</pre>
 	<p>Request none-existent data</p>
 	<pre class="highlight hljs javascript">
 		client -> { "action": "get", "path": "body.flux.capacitor" }
-		receive <- { "error": { "number":[nn], "code": UNRECOGNISED_FORMAT, 
+		receive <- { "action": "get", "path": "body.flux.capacitor", 
+		"error": { "number":[nn], "code": UNRECOGNISED_FORMAT, 
 				"message": "Unrecognised Format" } }
 	</pre>
 
@@ -582,20 +585,19 @@
 		client -> { "action": "set", "path": " body.doors.*.lock", "value":{ 
 				[ {“locked” : true }, {“locked” : true }, 
 				{“locked” : false }, {“locked” : true } ] } }
-		receive <- { "status": "success",  "path": " body.doors.*.lock", "value":{ 
+		receive <- { "action": "set", "path": " body.doors.*.lock", "value":{ 
 				[ {“locked” : true }, {“locked” : true }, 
-		              	{“locked” : false }, {“locked” : true } ] } }
+		              	{“locked” : false }, {“locked” : true } ] }, "timestamp": DOMTimeStamp}
 	</pre>
 	<p>Unsuccessful set. The value cannot be set.</p>
 	<pre class="highlight hljs javascript">
 		client -> { "action": "set", "path": "engine.rpm", "value": 2000}
-		receive <- receive <- '{ "error": { "number": 403, "code": PERMISSION_DENIED , "message": "User is not authorised to set this value" }, "path": "engine.rpm", "value": 2000 }
+		receive <- { "action": "set", "path": "engine.rpm", "error": { "number": 403, "code": PERMISSION_DENIED , "message": "User is not authorised to set this value" } }
 	</pre>
 	<p>Unsuccessful set. The value does not exist in the specified path.</p>
 	<pre class="highlight hljs javascript">
 		client -> { "action": "set", "path": "engine.rpm", "value": { [ {“locked” : true } ]} }
-		receive <- '{ "error": { "number": [nn], "code": DATA_NOT_SUPPORTED , "message": "Data Not Supported" }, 
-				"path": "engine.rpm", "value": { [ {“locked” : true } ]} }
+		receive <- { "action": "set", "path": "engine.rpm", "error": { "number": [nn], "code": DATA_NOT_SUPPORTED , "message": "Data Not Supported" } }
 	</pre>
 
 	<h2><a>Subscribe</a></h2>
@@ -612,7 +614,7 @@
       interface subscribeRequest {
         attribute Action action;
         attribute DOMString path;
-        attribute object filters;
+        attribute object? filters;
         attribute string requestId;
       };
 
@@ -700,17 +702,19 @@
 
 	<pre class="highlight hljs javascript">
 		// unsubscribe from a single subscription
-		client -> { "action": "unsubscribe", "subscriptionId": 102 }
-	  	receive <- { "status": "success", "action": "unsubscribe", "subscriptionId": 102 }
+		client -> { "action": "unsubscribe", "subscriptionId": 102, "requestID": 5264 }
+	  	receive <- { "action": "unsubscribe", "subscriptionId": 102, 
+	  					"requestID": 5264, "timestamp": DOMTimeStamp }
 
 	  	// unsubscribe from all subscriptions
-		client -> { "action": "unsubscribe", "subscriptionId": 0 }
-		receive <- { "status": "success", "action": "unsubscribe", "subscriptionId": 0 }
+		client -> { "action": "unsubscribe", "subscriptionId": 0, "requestID": 3468 }
+		receive <- { "action": "unsubscribe", "subscriptionId": 0,
+	  					"requestID": 3468, "timestamp": DOMTimeStamp }
 
 		// error case - invalid ID
-		client -> '{ "action": "unsubscribe", "subscriptionId": 3542 }'
-		receive <- { "error": { "number":[nn], "code": INVALID_ID ,"message": "Invalid ID" }, 
-						"action": "unsubscribe", "subscriptionId": 3542 }
+		client -> { "action": "unsubscribe", "subscriptionId": 3542, "requestID": 7846 }
+		receive <- { "action": "unsubscribe", "error": { "number":[nn], "code": INVALID_ID, 
+						"message": "Invalid ID" },  "subscriptionId": 3542, "requestID": 7846 }
 	</pre>
 
 	<pre class="example highlight">
@@ -722,7 +726,7 @@
 			var msg = JSON.parse(event.data);
 			// success case
 			if(msg.hasOwnProperty("status")){
-				console.log("Successfully unsubscribed for id " + msg.id);
+				console.log("Successfully unsubscribed for id " + msg.subscriptionId);
 			// error case
 			} else if (msg.hasOwnProperty("error")) {
 				console.log("Unsuccessful unsubscribe. " + msg.error.message)
@@ -769,10 +773,11 @@
 	available to suitably authorised Security Principals is shown
 	below:</p>
 	<pre class="highlight hljs javascript">
+
+	  vehicle.send('{ "action": "authorization", "token": [some_token_value]');
+
 	  vehicle.send('{ "action": "subscribe", "path": "body.mirrors.left", 
-	                  "security": { "Authorization": [some_token_value], 
-                                        "WWW-Vehicle-Device": "[other_token_value]" },
-                          "reqId": "[some_unique_value]"');
+                          "requestId": "[some_unique_value]"');
 	</pre>
 	<p>[TODO Clarify whether need to specify that token value is
 	Base64 encoded]</p>
@@ -800,7 +805,6 @@
       processing demands on the vehicle server.</p>
 
       <pre class="highlight hljs javascript">
-		//client receives data every 100ms
         { "action": "subscribe", "path": "body.mirrors.left", 
         	"filters": { [insert custom tags]  } }
       </pre>
@@ -822,33 +826,33 @@
 		//client receives data every 100ms
 	{ "action": "subscribe", "path": "<any_path>", 
         	"filters": { "interval": 100ms }, 
-        	"reqId": "101" }
+        	"requestId": "101" }
 
 		//client receives data when the value is between 100 and 200 (inclusive)
 	{ "action": "subscribe", "path": "<any_path>", 
         	"filters": { "range": { "above": 100, "below": 200 } }, 
-        	"reqId": "102" }
+        	"requestId": "102" }
 
 		//client receives data when the value is below 100 (inclusive)
 	{ "action": "subscribe", "path": "<any_path>", 
         	"filters": { "range": { "below": 100 } }, 
-        	"reqId": "102" }
+        	"requestId": "102" }
 
 		//client receives data when the value changes by 100 units
 	{ "action": "subscribe", "path": "<any_path>", 
         	"filters": { "minChange": 100 }, 
-        	"reqId": "102" }
+        	"requestId": "102" }
 
 		//client receives data when the value changes by 100 units
 	{ "action": "subscribe", "path": "<any_path>", 
         	"filters": { "minChange": 100 }, 
-        	"reqId": "102" }
+        	"requestId": "102" }
 
 		//client receives data when the value is above 200 (inclusive) 
 		//and the value changes by 20 units
         { "action": "subscribe", "path": "<any_path>", 
         	"filters": { "range": { "below": 200 }, "minChange": 20}, 
-        	"reqId": "102" }
+        	"requestId": "102" }
       </pre>      
 
       <p>When the range filter is used a final message will be sent when the value returned is outside of the specified range. For example, if the the range states { "below": 100 }, a final value may be received at 101 to indicate that the value is now out of range.</p>
