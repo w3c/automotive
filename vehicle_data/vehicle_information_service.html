@@ -316,14 +316,22 @@
 	sending a JSON data structure to the server via the WebSocket
 	connection.</p>
 
-	<p>Only the action, path and reqId attributes are required, however
+	<p>Only the action, path and requestId attributes are required, however
 	multiple other options can be included as described in the table
 	below.</p>
 
 	<pre class="highlight hljs javascript">
 	  vehicle.send('{ "action": "subscribe", "path": "body.mirrors.left",
-	                  "reqId": [some_unique_value] }');
+	                  "requestId": [some_unique_value] }');
 	</pre>
+
+	<pre class="idl">
+		WebSocket.send(getRequest request);
+		WebSocket.send(setRequest request);
+		WebSocket.send(subscribeRequest request);
+		WebSocket.send(unsubcribeRequest request);
+	</pre>
+
 	
 	@@table class - parameter?
 	<table class="parameters">
@@ -349,7 +357,7 @@
 	    <td> Client
 	  </td></tr>
 	  <tr>
-	    <td> reqId	</td>
+	    <td> requestId	</td>
 	    <td> Unique id value specified by the client. Returned by the server in 
 	    the response and used by client to link the request and response 
 	    messages. May be a Universally Unique Identifier (UUID) </td>
@@ -365,7 +373,7 @@
 	    <td> Client </td>
 	  </tr>
 	  <tr>
-	    <td> subId </td>
+	    <td> subscriptionId </td>
 	    <td> Integer handle returned by the server to uniquely identify each new subscription. Also used to unsubscribe. </td>
 	    <td> Required </td>
 	    <td> n/a </td>
@@ -433,35 +441,296 @@
 	<p>Action can take one of four values describing the desired service for
 	the client. There are described in the table below.</p>
 	
-	<table class="parameters">
-	  <tr><th>Action</th><th>Description</th></tr>
-	  <tr>
-	    <td>Subscribe</td>
-	    <td>Enables the client to receive a
-	    notification containing a JSON data structure with values for one
-	    or more vehicle signals. The client requests that it is notified
-	    when the signal changes on the server.</td>
-	  </tr>
-	  <tr>
-	    <td>Unsubscribe</td>
-	    <td>Allows the client to notify the server that it should no
-	    longer receive notifications based on that subscription.</td>
-	  </tr>
-	  <tr>
-	    <td>Get</td>
-	    <td>Enables the client to get a value once.</td>
-	  </tr>
-	  <tr>
-	    <td>Set</td>
-	    <td>Enables the client to set a value once.</td>
-	  </tr>
-	</table>
+	<dl title="enum Action" class="idl">
+		<dt>get</dt>
+		<dd>Enables the client to get a value once.</dd>
+		<dt>set</dt>
+		<dd>Enables the client to set a value once.</dd>		
+		<dt>subscribe</dt>
+		<dd>Enables the client to receive a notification containing a JSON data structure with values for one or more vehicle signals. The client requests that it is notified when the signal changes on the server.</dd>
+		<dt>unsubscribe</dt>
+		<dd>Allows the client to notify the server that it should no
+	    longer receive notifications based on that subscription.</dd>
+		<dt>authorization</dt>
+		<dd>Establish user permissions.</dd>
+	</dl>
+
+
 	<h4><a>Path</a></h4>
 	<p>This is the desired vehicle signal(s) path, as defined by the <a
 	href="https://www.w3.org/auto/wg/wiki/Vehicle_Information_Service_Specification#Data_Model">Vehicle
 	Signal Specification (VSS)</a></p>
+
+	<h2><a>Authorization</a></h2>
+ 	<p>TODO</p>
+      <pre class="idl">
+      interface authorizationRequest
+      {
+        attribute Action action;
+        attribute TBC token;
+      };
+
+      interface authorizationSuccessResponse
+      {
+        attribute Action action;
+        attribute int statusCode;
+        attribute int TTL;
+      };
+      
+      interface authorizationErrorResponse
+      {
+        attribute Action action;
+      	attribute Error error;
+      };
+      </pre>
+
+
+	<h2><a>Get</a></h2>
+ 	<p>The server shall return messages to the client using the
+	 following format, including the path to the signal and the
+	 value held within the signal:</p>
+
+      <pre class="idl">
+      interface getRequest
+      {
+        attribute Action action;
+        attribute DOMString path;
+      };
+
+      interface getSuccessResponse
+      {
+        attribute Action action;
+        attribute DOMString path;
+        attribute any value;
+        attribute DOMTimeStamp timestamp;
+      };
+      
+      interface getErrorResponse
+      {
+        attribute Action action;
+        attribute DOMString path;
+        attribute Error error;
+      };
+      </pre>
+
+	<pre class="highlight hljs javascript">
+		client -> { "action": "get", "path": "engine.rpm" }
+		receive <- { "path": "engine.rpm", "value": 2372 }
+	</pre>
+
+	<p>In the case where the client has subscribed to a path which
+	returns a complex type, the value shall be returned as name
+	value pairs in a JSON object, as defined in the vehicle signal
+	specification format. Wildcards can be used in order to
+	specify only a subset of data. This can be specified at any
+	level of the Vehicle Signal Specification (VSS) tree.</p>
+
+	<p>Complex type</p>
+	<pre class="highlight hljs javascript">
+		client -> { "action": "get", "path": "body.trunk" }
+		receive <- { "path": "body.trunk", "value": { "locked": false, "open": true }}
+	</pre>
+	<p>Complex type with nested array. Path: “body.doors.*.lock” -
+	All doors, lock state.</p>
+	<pre class="highlight hljs javascript">
+		client -> { "action": "get", "path": " body.doors.*.lock" }
+		receive <- { "path": "body.doors.*.lock ", "value": { 
+			[ {"locked" : true }, {"locked" : true }, 
+			{"locked" : false }, {"locked" : true } ] } }
+	</pre>
+	<p>Complex type with nested array. Path: “body.doors.*” - All
+	doors, all door attributes (where door has two attributes,
+	lock and window_pos)</p>
+	<pre class="highlight hljs javascript">
+		client -> { "action": "get", "path": " body.doors.* " }
+		receive <- { "path": "body.doors.*.lock ", "value": { 
+			[ {“locked” : true, “windows_pos”: 143 }, {“locked” : true, “windows_pos”: 23 },
+			{“locked” : false, “windows_pos”: 162 }, {“locked” : true, “windows_pos”: 0 } ] }
+	</pre>
+	<p>Request none-existent data</p>
+	<pre class="highlight hljs javascript">
+		client -> { "action": "get", "path": "body.flux.capacitor" }
+		receive <- { "error": { "number":[nn], "code": UNRECOGNISED_FORMAT, 
+				"message": "Unrecognised Format" } }
+	</pre>
+
+	<h2><a>Set</a></h2>
+
+      <pre class="idl">
+      interface setRequest {
+        attribute Action action;
+        attribute DOMString path;
+        attribute any value;
+      };
+
+      interface setSuccessResponse {
+		attribute Action action;
+        attribute DOMString path;
+        attribute any value;
+        attribute DOMTimeStamp timestamp;
+      };
+
+      interface setErrorResponse {
+        attribute Action action;
+        attribute DOMString path;
+        attribute Error error;
+      };
+      </pre>
+
+	<p>Successfully set a signal.</p>
+	<pre class="highlight hljs javascript">
+		client -> { "action": "set", "path": " body.doors.*.lock", "value":{ 
+				[ {“locked” : true }, {“locked” : true }, 
+				{“locked” : false }, {“locked” : true } ] } }
+		receive <- { "status": "success",  "path": " body.doors.*.lock", "value":{ 
+				[ {“locked” : true }, {“locked” : true }, 
+		              	{“locked” : false }, {“locked” : true } ] } }
+	</pre>
+	<p>Unsuccessful set. The value cannot be set.</p>
+	<pre class="highlight hljs javascript">
+		client -> { "action": "set", "path": "engine.rpm", "value": 2000}
+		receive <- receive <- '{ "error": { "number": 403, "code": PERMISSION_DENIED , "message": "User is not authorised to set this value" }, "path": "engine.rpm", "value": 2000 }
+	</pre>
+	<p>Unsuccessful set. The value does not exist in the specified path.</p>
+	<pre class="highlight hljs javascript">
+		client -> { "action": "set", "path": "engine.rpm", "value": { [ {“locked” : true } ]} }
+		receive <- '{ "error": { "number": [nn], "code": DATA_NOT_SUPPORTED , "message": "Data Not Supported" }, 
+				"path": "engine.rpm", "value": { [ {“locked” : true } ]} }
+	</pre>
+
+	<h2><a>Subscribe</a></h2>
+	<p>Vehicle data subscriptions provide data to the client whenever the signal changes on the server, unless otherwise specified using Server Side Filtering. The server may reduce the amount of notifications sent to the client in order to reduce processing demands, particularly when the client has subscribed to continuously varying signals.</p>
+
+	<p>When the client makes a request to the server to create a new
+	subscription, a JSON data object will be returned. This will contain
+	the attributes that were passed to the server to make the
+	subscription and a 'subscriptionId' integer handle value which is used to
+	uniquely identify the subscription.</p>
+
+      <pre class="idl">
+
+      interface subscribeRequest {
+        attribute Action action;
+        attribute DOMString path;
+        attribute object filters;
+        attribute string requestId;
+      };
+
+      interface subscribeSuccessResponse {
+        attribute Action action;
+        attribute string requestId;
+        attribute string subscriptionId;
+      };
+
+      interface subscribeErrorResponse {
+        attribute DOMString path;
+        attribute string requestId;
+        attribute Error error;
+      };
+
+      interface subscriptionNotification {
+        attribute string requestId;
+        attribute string subscriptionId;
+        attribute DOMString path;
+        attribute DOMTimeStamp timestamp;
+        attribute any value;
+      };
+      </pre>
+
 	
-      </section>
+	<pre class="highlight hljs javascript">
+		client -> { "action": "subscribe",
+	              "path": "[any_vss_path]",
+	              "requestId":"[some_unique_value]" }
+		receive on success <- { "subscriptionId": 35472, "requestId": "[some_unique_value]" }
+	</pre>
+	
+	<p>The client can use the 'requestId' value to associate the successful
+	subscription response with the original request.</p>
+	
+	<p>The 'subscriptionId' value is a unique value, created by the server and
+	which may be used internally by the server to manage subscriptions
+	on that WebSocket instance.</p>
+
+	<p>The subscription id value can be used by the client to
+	unsubscribe from receiving future notifications, by passing the
+	handle value to the server with the unsubscribe action.</p>
+	
+	<p>To differentiate subscription response from responses for ‘GET’
+	requests, subscription responses will additionally include the
+	subscription id value that identifies the subscription that
+	triggered that notification.</p>
+	
+	<p>The server will ensure that a new unique subscription id value is
+	returned for each successful subscription request on a particular
+	WebSocket connection. However the server does not guarantee that
+	subscription handle values are unique between different WebSocket
+	instances.</p>
+
+	<pre class="example highlight">
+	</pre>
+
+	<h2><a>Unsubscribe</a></h2>
+	<p>The client should always unsubscribe from receiving notifications when it is no longer interested in receiving them. Over a long vehicle journey, this will significantly reduce the processing required by the server and enable the server to free memory, making it easier for the server to remain responsive to requests from the client.</p>
+
+	<p>The client sends the unsubscribe action with the ID of the subscription which needs to be unsubscribed. If the client wished to unsubscribe from all of it's clients, it can send a subscription ID of 0. If an invalid ID is sent the server will return an error, as shown in the following examples. Where [nn] denotes a numeric integer error number (e.g. HTTP status code).</p>
+
+      <pre class="idl">
+      interface unsubscribeRequest {
+        attribute Action action;
+        attribute string subscriptionId;
+        attribute string requestId;
+      };
+
+      interface unsubscribeSuccessResponse {
+        attribute Action action;
+        attribute string requestId;
+        attribute string subscriptionId;
+        attribute DOMTimeStamp timestamp;
+      };
+
+      interface unsubscribeErrorResponse {
+        attribute Action action;
+        attribute Error error;
+        attribute string requestId;
+        attribute string subscriptionId;
+      };
+      </pre>
+
+
+	<pre class="highlight hljs javascript">
+		// unsubscribe from a single subscription
+		client -> { "action": "unsubscribe", "subscriptionId": 102 }
+	  	receive <- { "status": "success", "action": "unsubscribe", "subscriptionId": 102 }
+
+	  	// unsubscribe from all subscriptions
+		client -> { "action": "unsubscribe", "subscriptionId": 0 }
+		receive <- { "status": "success", "action": "unsubscribe", "subscriptionId": 0 }
+
+		// error case - invalid ID
+		client -> '{ "action": "unsubscribe", "subscriptionId": 3542 }'
+		receive <- { "error": { "number":[nn], "code": INVALID_ID ,"message": "Invalid ID" }, 
+						"action": "unsubscribe", "subscriptionId": 3542 }
+	</pre>
+
+	<pre class="example highlight">
+		// send unsubscribe message
+		vehicle.send({ "action": "unsubscribe", "subscriptionId": 102 });
+
+		// set handler
+		vehicle.onmesssage(function(event){
+			var msg = JSON.parse(event.data);
+			// success case
+			if(msg.hasOwnProperty("status")){
+				console.log("Successfully unsubscribed for id " + msg.id);
+			// error case
+			} else if (msg.hasOwnProperty("error")) {
+				console.log("Unsuccessful unsubscribe. " + msg.error.message)
+			}
+		});
+	</pre>
+
+    </section>
       
       <section>
 	<h3><a>Access</a> Control and Authorization</h3>
@@ -514,148 +783,7 @@
 	subject to access control restrictions.</p>
 
       </section>
-      <section>
-
-	<h3><a>Get - Examples to be updated</a></h3>
- 	<p>The server shall return messages to the client using the
-	 following format, including the path to the signal and the
-	 value held within the signal:</p>
-	<pre class="highlight hljs javascript">
-		client -> { "action": "get", "path": "engine.rpm" }
-		receive <- { "path": "engine.rpm", "value": 2372 }
-	</pre>
-	<p>In the case where the client has subscribed to a path which
-	returns a complex type, the value shall be returned as name
-	value pairs in a JSON object, as defined in the vehicle signal
-	specification format. Wildcards can be used in order to
-	specify only a subset of data. This can be specified at any
-	level of the Vehicle Signal Specification (VSS) tree.</p>
-
-	<p>Complex type</p>
-	<pre class="highlight hljs javascript">
-		client -> { "action": "get", "path": "body.trunk" }
-		receive <- { "path": "body.trunk", "value": { "locked": false, "open": true }}
-	</pre>
-	<p>Complex type with nested array. Path: “body.doors.*.lock” -
-	All doors, lock state.</p>
-	<pre class="highlight hljs javascript">
-		client -> { "action": "get", "path": " body.doors.*.lock" }
-		receive <- { "path": "body.doors.*.lock ", "value": { 
-			[ {"locked" : true }, {"locked" : true }, 
-			{"locked" : false }, {"locked" : true } ] } }
-	</pre>
-	<p>Complex type with nested array. Path: “body.doors.*” - All
-	doors, all door attributes (where door has two attributes,
-	lock and window_pos)</p>
-	<pre class="highlight hljs javascript">
-		client -> { "action": "get", "path": " body.doors.* " }
-		receive <- { "path": "body.doors.*.lock ", "value": { 
-			[ {“locked” : true, “windows_pos”: 143 }, {“locked” : true, “windows_pos”: 23 },
-			{“locked” : false, “windows_pos”: 162 }, {“locked” : true, “windows_pos”: 0 } ] }
-	</pre>
-	<p>Request none-existent data</p>
-	<pre class="highlight hljs javascript">
-		client -> { "action": "get", "path": "body.flux.capacitor" }
-		receive <- { "error": { "number":[nn], "code": UNRECOGNISED_FORMAT, 
-				"message": "Unrecognised Format" } }
-	</pre>
-
-	<pre class="highlight hljs javascript">
-	</pre>
-      </section>
-
-      <section>
-
-	<h3><a>Set  - Examples to be updated</a></h3>
-
-	<p>Successfully set a signal.</p>
-	<pre class="highlight hljs javascript">
-		client -> { "action": "set", "path": " body.doors.*.lock", "value":{ 
-				[ {“locked” : true }, {“locked” : true }, 
-				{“locked” : false }, {“locked” : true } ] } }
-		receive <- { "status": "success",  "path": " body.doors.*.lock", "value":{ 
-				[ {“locked” : true }, {“locked” : true }, 
-		              	{“locked” : false }, {“locked” : true } ] } }
-	</pre>
-	<p>Unsuccessful set. The value cannot be set.</p>
-	<pre class="highlight hljs javascript">
-		client -> { "action": "set", "path": "engine.rpm", "value": 2000}
-		receive <- receive <- '{ "error": { "number": 403, "code": PERMISSION_DENIED , "message": "User is not authorised to set this value" }, "path": "engine.rpm", "value": 2000 }
-	</pre>
-	<p>Unsuccessful set. The value does not exist in the specified path.</p>
-	<pre class="highlight hljs javascript">
-		client -> { "action": "set", "path": "engine.rpm", "value": { [ {“locked” : true } ]} }
-		receive <- '{ "error": { "number": [nn], "code": DATA_NOT_SUPPORTED , "message": "Data Not Supported" }, 
-				"path": "engine.rpm", "value": { [ {“locked” : true } ]} }
-	</pre>
-    </section>
-    <section>
-	<h3><a>Subscribe</a></h3>
-	<p>Vehicle data subscriptions provide data to the client whenever the signal changes on the server, unless otherwise specified using Server Side Filtering. The server may reduce the amount of notifications sent to the client in order to reduce processing demands, particularly when the client has subscribed to continuously varying signals.</p>
-
-	<p>When the client makes a request to the server to create a new
-	subscription, a JSON data object will be returned. This will contain
-	the attributes that were passed to the server to make the
-	subscription and a 'subId' integer handle value which is used to
-	uniquely identify the subscription.</p>
-	
-	<pre class="highlight hljs javascript">
-		client -> { "action": "subscribe",
-	              "path": "[any_vss_path]",
-	              "reqId":"[some_unique_value]" }
-		receive on success <- { "subId": 35472, "reqId": "[some_unique_value]" }
-	</pre>
-	
-	<p>The client can use the 'reqId' value to associate the successful
-	subscription response with the original request.</p>
-	
-	<p>The 'subId' value is a unique value, created by the server and
-	which may be used internally by the server to manage subscriptions
-	on that WebSocket instance.</p>
-
-	<p>The subscription id value can be used by the client to
-	unsubscribe from receiving future notifications, by passing the
-	handle value to the server with the unsubscribe action.</p>
-	
-	<p>To differentiate subscription response from responses for ‘GET’
-	requests, subscription responses will additionally include the
-	subscription id value that identifies the subscription that
-	triggered that notification.</p>
-	
-	<p>The server will ensure that a new unique subscription id value is
-	returned for each successful subscription request on a particular
-	WebSocket connection. However the server does not guarantee that
-	subscription handle values are unique between different WebSocket
-	instances.</p>
-
-	<pre class="example highlight">
-	</pre>
-
-    </section>
-    <section>
-	<h3><a>Unsubscribe</a></h3>
-	<p>The client should always unsubscribe from receiving notifications when it is no longer interested in receiving them. Over a long vehicle journey, this will significantly reduce the processing required by the server and enable the server to free memory, making it easier for the server to remain responsive to requests from the client.</p>
-
-	<p>The client sends the unsubscribe action with the ID of the subscription which needs to be unsubscribed. If the client wihsed to unsibscribe from all of its clients, it can send a subscription ID of 0. If an invalid ID is sent teh server will return an error, as shown in the following examples. Where [nn] denotes a numeric integer error number (e.g. HTTP status code).</p>
-
-	<pre class="highlight hljs javascript">
-		// unsubscribe from a single subscription
-		client -> { "action": "unsubscribe", "subId": 102 }
-	  	receive <- { "status": "success", "action": "unsubscribe", "subId": 102 }
-
-	  	// unsubscribe from all subscriptions
-		client -> { "action": "unsubscribe", "subId": 0 }
-		receive <- { "status": "success", "action": "unsubscribe", "id": 0 }
-
-		// error case - invalid ID
-		client -> '{ "action": "unsubscribe", “id”: 3542 }'
-		receive <- { "error": { "number":[nn], "code": INVALID_ID ,"message": "Invalid ID" }, 
-						"action": "unsubscribe", “id”: 3542 }
-	</pre>
-
-	<pre class="example highlight">
-	</pre>
-    </section>
+     
     <section>
       <h3>Server Side <a>Filtering</a></h3>
       <p>A 'Filter' can be specified to enable Server side filtering
@@ -736,6 +864,15 @@
 	<p>If there is an error with any of the client’s requests, the
 	server will respond with an error number, code and
 	message.</p>
+
+      <pre class="idl">
+      interface Error {
+        attribute int number;
+        attribute string code;
+        attribute string message;
+      };
+      </pre>
+	
 	<pre class="highlight hljs javascript">
 	client -> { "action": "subscribe", "onchange": true, “interval”: 100, 
 			"path": "body.mirrors.left" }
