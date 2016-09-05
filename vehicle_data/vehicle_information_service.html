@@ -886,6 +886,121 @@
 	</pre>
 	<p>These error messages are defined below.</p>
 	<table class="parameters">
+	  <tr>
+	    <th> Error Number</th>
+	    <th> Error Code </th>
+	    <th> Error Reason</th>
+	    <th> Error Message</th>
+	  </tr>
+	  <tr>
+	    <td>304</td>
+	    <td>Not Modified</td>
+	    <td>not_modified</td>
+	    <td>No changes have been made by the server.</td>
+	  </tr>
+	  <tr>
+	    <td>401</td>
+	    <td>Unauthorised</td>
+	    <td>user_token_expired</td>
+	    <td>User token has expired. Token should be refreshed and the request retried.</td>
+	  </tr>
+	  <tr>
+	    <td>401</td>
+	    <td>Unauthorised</td>
+	    <td>user_token_invalid</td>
+	    <td>User token is invalid. A new token should be requested and the request retried.</td>
+	  </tr>
+	  <tr>
+	    <td>401</td>
+	    <td>Unauthorised</td>
+	    <td>device_token_expired</td>
+	    <td>Device token has expired. Token should be refreshed and the request retried.</td>
+	  </tr>
+	  <tr>
+	    <td>401</td>
+	    <td>Unauthorised</td>
+	    <td>device_token_invalid</td>
+	    <td>Device token is invalid. A new token should be requested and the request retried.</td>
+	  </tr>
+	  <tr>
+	    <td>403</td>
+	    <td>Forbidden</td>
+	    <td>Forbidden</td>
+	    <td>Error message describing particular reason user is
+	    forbidden from accessing data.</td>
+	  </tr>
+	  <tr>
+	    <td>404</td>
+	    <td>invalid path</td>
+	    <td>invalid path</td>
+	    <td>Error message that describes why the path is invalid. This may be because the VSS path is for signals in a private branch and the request is not authorised to access these signals)
+	    </td>
+	  </tr>
+	  <tr>
+	    <td>406</td>
+	    <td> 	TODO look up (auth but can't because of vehicle state) </td>
+	    <td> 	TODO look up (auth but can't because of vehicle state) </td>
+	    <td>TODO Fix Error message </td>
+	  </tr>
+	  <tr>
+	    <td> 429 </td>
+	    <td> 	too many requests		</td>
+	    <td> 	too many requests		</td>
+	    <td>TODO Fix Error message describing particular reason
+	    user is forbidden from accessing data.</td>
+	  </tr>
+	  <tr>
+	    <td> 502 </td>
+	    <td> 	bad gateway		</td>
+	    <td> 	bad gateway		</td>
+	    <td>TODO Fix Error message describing particular reason
+	    user is forbidden from accessing data.</td>
+	  </tr>
+	  <tr>
+	    <td> 503 </td>
+	    <td> 	service unavailable	</td>
+	    <td> 	service unavailable	</td>
+	    <td>TODO Fix Error message describing particular reason
+	    user is forbidden from accessing data.</td>
+	  </tr>
+	  <tr>
+	    <td> 504 </td>
+	    <td> 	timeout	</td>
+	    <td> 	timeout	</td>
+	    <td>TODO Fix Error message (used if server is too
+	    busy)</td>
+	  </tr>
+	  <tr>
+	    <td> &lt;nn&gt; </td>
+	    <td> 	unrecognised_format 		</td>
+	    <td> 	unrecognised_format 		</td>
+	    <td>The server is unable to fulfil the client’s request
+	    due to the format of the data request.</td>
+	  </tr>
+	  <tr>
+	    <td> &lt;nn&gt; </td>
+	    <td>	data_not_supported 		</td>
+	    <td>	data_not_supported 		</td>
+	    <td>The server is unable to fulfil the client’s request
+	    since the data is not available on the vehicle.</td>
+	  </tr>
+	  <tr>
+	    <td> &lt;nn&gt; </td>
+	    <td>	non_settable_path		</td>
+	    <td>	non_settable_path		</td>
+	    <td>This will be returned if the specified value does not
+	    match the specified path.</td>
+	  </tr>
+	  <tr>
+	    <td> &lt;nn&gt; </td>
+	    <td>	invalid_ID 			</td>
+	    <td>	invalid_ID 			</td>
+	    <td>The specified ID used to unsubscribe is not recognised
+	    by the server</td>
+	  </tr>
+	</table>
+	<p>XX</p>
+	<table class="parameters">
 
 	  <tr>
 	    <th> Error Number </th>
