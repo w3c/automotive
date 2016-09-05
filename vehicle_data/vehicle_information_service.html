@@ -876,7 +876,13 @@
         attribute string message;
       };
       </pre>
-	
+
+        <p>For some error codes, for example '401 (Unauthorised)' there can be more cause. 
+        The Error Number that is returned will be the HTTP Status Code Number (e.g. 401). 
+        An Error Reason will also be returned, this will contain a pre-defined string value that
+        can be used to distinguish between errors that have the same code (e.g. '401 Unauthorized)' but a difference cause.
+        The Error Message will be used to provide message text describing the cause.</p>
+
 	<pre class="highlight hljs javascript">
 	client -> { "action": "subscribe", "onchange": true, “interval”: 100, 
 			"path": "body.mirrors.left" }
@@ -884,208 +890,129 @@
                                  "message": ERROR_MESSAGE }, 
                       "interval": 100, "path": "body.mirrors.left" }
 	</pre>
-	<p>These error messages are defined below.</p>
+
+	<p>The server implementation will support at least the error codes and reasons listed in the table below.</p>
+      
 	<table class="parameters">
 	  <tr>
-	    <th> Error Number</th>
 	    <th> Error Code </th>
 	    <th> Error Reason</th>
 	    <th> Error Message</th>
 	  </tr>
 	  <tr>
-	    <td>304</td>
-	    <td>Not Modified</td>
-	    <td>not_modified</td>
+	    <td>304 (Not Modified)</td>
+        <td>not_modified</td>
 	    <td>No changes have been made by the server.</td>
 	  </tr>
 	  <tr>
-	    <td>401</td>
-	    <td>Unauthorised</td>
+	    <td>400 (Bad Request)</td>
+	    <td>bad_request	</td>
+	    <td>The server is unable to fulfil the client request because the request is malformed.</td>
+	  </tr>
+	  <tr>
+	    <td>401 (Unauthorised)</td>
 	    <td>user_token_expired</td>
-	    <td>User token has expired. Token should be refreshed and the request retried.</td>
+	    <td>User token has expired.</td>
 	  </tr>
 	  <tr>
-	    <td>401</td>
-	    <td>Unauthorised</td>
+	    <td>401 (Unauthorised)</td>
 	    <td>user_token_invalid</td>
-	    <td>User token is invalid. A new token should be requested and the request retried.</td>
+	    <td>User token is invalid.</td>
 	  </tr>
 	  <tr>
-	    <td>401</td>
-	    <td>Unauthorised</td>
+	    <td>401 (Unauthorised)</td>
+	    <td>user_token_missing</td>
+	    <td>User token is missing.</td>
+	  </tr>
+	  <tr>
+	    <td>401 (Unauthorised)</td>
 	    <td>device_token_expired</td>
-	    <td>Device token has expired. Token should be refreshed and the request retried.</td>
+	    <td>Device token has expired.</td>
 	  </tr>
 	  <tr>
-	    <td>401</td>
-	    <td>Unauthorised</td>
+	    <td>401 (Unauthorised)</td>
 	    <td>device_token_invalid</td>
-	    <td>Device token is invalid. A new token should be requested and the request retried.</td>
+	    <td>Device token is invalid.</td>
 	  </tr>
 	  <tr>
-	    <td>403</td>
-	    <td>Forbidden</td>
-	    <td>Forbidden</td>
-	    <td>Error message describing particular reason user is
-	    forbidden from accessing data.</td>
+	    <td>401 (Unauthorised)</td>
+	    <td>device_token_missing</td>
+	    <td>Device token is missing.</td>
 	  </tr>
 	  <tr>
-	    <td>404</td>
-	    <td>invalid path</td>
-	    <td>invalid path</td>
-	    <td>Error message that describes why the path is invalid. This may be because the VSS path is for signals in a private branch and the request is not authorised to access these signals)
+	    <td>403 (Forbidden)</td>
+	    <td>user_forbidden</td>
+	    <td>The user is not permitted to access the requested resource. Retrying will not help.</td>
+	  </tr>
+	  <tr>
+	    <td>403 (Forbidden)</td>
+	    <td>user_unknown</td>
+	    <td>The user is unknown. Retrying will not help.</td>
+	  </tr>
+	  <tr>
+	    <td>403 (Forbidden)</td>
+	    <td>device_forbidden</td>
+	    <td>The device is not permitted to access the requested resource. Retrying will not help.</td>
+	  </tr>
+	  <tr>
+	    <td>403 (Forbidden)</td>
+	    <td>device_unknown</td>
+	    <td>The device is unknown. Retrying will not help.</td>
+	  </tr>
+	  <tr>
+	    <td>404 (Not Found)</td>
+	    <td>invalid_path</td>
+	    <td>The specified data path does not exist.</td>
+	  </tr>
+	  <tr>
+	    <td>404 (Not Found)</td>
+	    <td>private_path</td>
+	    <td>The specified data path is private and the request is not authorised to access signals on this path.
 	    </td>
 	  </tr>
 	  <tr>
-	    <td>406</td>
-	    <td> 	TODO look up (auth but can't because of vehicle state) </td>
-	    <td> 	TODO look up (auth but can't because of vehicle state) </td>
-	    <td>TODO Fix Error message </td>
+	    <td>404 (Not Found)</td>
+	    <td>invalid_subscriptionId</td>
+	    <td>The specified subscription was not found.
+	    </td>
 	  </tr>
 	  <tr>
-	    <td> 429 </td>
-	    <td> 	too many requests		</td>
-	    <td> 	too many requests		</td>
-	    <td>TODO Fix Error message describing particular reason
-	    user is forbidden from accessing data.</td>
+	    <td>406 (Not Acceptable)</td>
+	    <td>not_acceptable</td>
+	    <td>The server is unable to generate content that is acceptable to the client</td>
 	  </tr>
 	  <tr>
-	    <td> 502 </td>
-	    <td> 	bad gateway		</td>
-	    <td> 	bad gateway		</td>
-	    <td>TODO Fix Error message describing particular reason
-	    user is forbidden from accessing data.</td>
+	    <td>429 (Too Many Requests)</td>
+	    <td>too_many_requests</td>
+	    <td>The client has sent the server too many requests in a given amount of time.</td>
 	  </tr>
 	  <tr>
-	    <td> 503 </td>
-	    <td> 	service unavailable	</td>
-	    <td> 	service unavailable	</td>
-	    <td>TODO Fix Error message describing particular reason
-	    user is forbidden from accessing data.</td>
+	    <td>502 (Bad Gateway)</td>
+	    <td>Bad Gateway</td>
+	    <td>bad_gateway</td>
+	    <td>The server was acting as a gateway or proxy and received an invalid response from an upstream server.</td>
 	  </tr>
 	  <tr>
-	    <td> 504 </td>
-	    <td> 	timeout	</td>
-	    <td> 	timeout	</td>
-	    <td>TODO Fix Error message (used if server is too
-	    busy)</td>
+	    <td>503 (Service Unavailable)</td>
+	    <td>service_unavailable</td>
+	    <td>The server is currently unable to handle the request due to a temporary overload or scheduled maintenance (which may be alleviated after some delay).</td>
 	  </tr>
 	  <tr>
-	    <td> &lt;nn&gt; </td>
-	    <td> 	unrecognised_format 		</td>
-	    <td> 	unrecognised_format 		</td>
-	    <td>The server is unable to fulfil the client’s request
-	    due to the format of the data request.</td>
-	  </tr>
-	  <tr>
-	    <td> &lt;nn&gt; </td>
-	    <td>	data_not_supported 		</td>
-	    <td>	data_not_supported 		</td>
-	    <td>The server is unable to fulfil the client’s request
-	    since the data is not available on the vehicle.</td>
-	  </tr>
-	  <tr>
-	    <td> &lt;nn&gt; </td>
-	    <td>	non_settable_path		</td>
-	    <td>	non_settable_path		</td>
-	    <td>This will be returned if the specified value does not
-	    match the specified path.</td>
-	  </tr>
-	  <tr>
-	    <td> &lt;nn&gt; </td>
-	    <td>	invalid_ID 			</td>
-	    <td>	invalid_ID 			</td>
-	    <td>The specified ID used to unsubscribe is not recognised
-	    by the server</td>
+	    <td>504 (Gateway Timeout)</td>
+	    <td>Gateway Timeout	</td>
+	    <td>gateway_timeout</td>
+	    <td>The server did not receive a timely response from an upstream server it needed to access in order to complete the request.</td>
 	  </tr>
 	</table>
-	<p>XX</p>
-	<table class="parameters">
 
-	  <tr>
-	    <th> Error Number </th>
-	    <th> Error Code </th>
-	    <th> Error Message
-	    </th>
-	  </tr>
-	  <tr>
-	    <td> 304 </td>
-	    <td>	TODO Correct	</td>
-	    <td>The subscription is already active, so no changes have
-	    been made by the server.</td>
-	  </tr>
-	  <tr>
-	    <td> 401 </td>
-	    <td>	user_unauthorised		</td>
-	    <td>Error message describing particular reason e.g. token expired.</td>
-	  </tr>
-	  <tr>
-	    <td> 403 </td>
-	    <td> 	user_forbidden			</td>
-	    <td>Error message describing particular reason user is
-	    forbidden from accessing data.</td>
-	  </tr>
-	  <tr>
-	    <td> 404 </td>
-	    <td> 	invalid path			</td>
-	    <td>TODO Includes private branch requests if not authorised (XX Can getVSS got public but not private XX - explain this somewhere)
-	    </td>
-	  </tr>
-	  <tr>
-	    <td> 406 </td>
-	    <td> 	TODO look up (auth but can't because of vehicle state) </td>
-	    <td>TODO Fix Error message </td>
-	  </tr>
-	  <tr>
-	    <td> 429 </td>
-	    <td> 	too many requests		</td>
-	    <td>TODO Fix Error message describing particular reason
-	    user is forbidden from accessing data.</td>
-	  </tr>
-	  <tr>
-	    <td> 502 </td>
-	    <td> 	bad gateway		</td>
-	    <td>TODO Fix Error message describing particular reason
-	    user is forbidden from accessing data.</td>
-	  </tr>
-	  <tr>
-	    <td> 503 </td>
-	    <td> 	service unavailable	</td>
-	    <td>TODO Fix Error message describing particular reason
-	    user is forbidden from accessing data.</td>
-	  </tr>
-	  <tr>
-	    <td> 504 </td>
-	    <td> 	timeout	</td>
-	    <td>TODO Fix Error message (used if server is too
-	    busy)</td>
-	  </tr>
-	  <tr>
-	    <td> &lt;nn&gt; </td>
-	    <td> 	unrecognised_format 		</td>
-	    <td>The server is unable to fulfil the client’s request
-	    due to the format of the data request.</td>
-	  </tr>
-	  <tr>
-	    <td> &lt;nn&gt; </td>
-	    <td>	data_not_supported 		</td>
-	    <td>The server is unable to fulfil the client’s request
-	    since the data is not available on the vehicle.</td>
-	  </tr>
-	  <tr>
-	    <td> &lt;nn&gt; </td>
-	    <td>	none_settable_path		</td>
-	    <td>This will be returned if the specified value does not
-	    match the specified path.</td>
-	  </tr>
-	  <tr>
-	    <td> &lt;nn&gt; </td>
-	    <td>	invalid_ID 			</td>
-	    <td>The specified ID used to unsubscribe is not recognised
-	    by the server</td>
-	  </tr>
-	</table>
-	<p>TODO Add note explaining ReasonCode can be used to describe sub errors e.g. 'invalid_vin'</p>
+    <p>The server may optionally return additional error codes. It is expected that if this is the case, they will be defined in the Server Documentation.
+         Wherever possible the Server will return a standard HTTP error code where one has been defined for the error condition. 
+       See for example <a href="https://tools.ietf.org/html/rfc7231">RFC7231</a>, <a href="https://tools.ietf.org/html/rfc7235">RFC7235</a>,  
+        and <a href="https://tools.ietf.org/html/rfc6585">RFC6585</a>.</p>
+
+
+
+
 
       </section>
       <section>
