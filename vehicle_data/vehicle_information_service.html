@@ -922,24 +922,25 @@
       </pre>
 
         <p>For some error codes, for example '401 (Unauthorised)' there can be more cause. 
-        The Error Number that is returned will be the HTTP Status Code Number (e.g. 401). 
-        An Error Reason will also be returned, this will contain a pre-defined string value that
+        The error number that is returned will be the HTTP Status Code Number (e.g. 401). 
+        An error reason will also be returned, this will contain a pre-defined string value that
         can be used to distinguish between errors that have the same code (e.g. '401 Unauthorized)' but a difference cause.
-        The Error Message will be used to provide message text describing the cause.</p>
+        The error message will be used to provide message text describing the cause.</p>
 
 	<pre class="highlight hljs javascript">
-	client -> { "action": "subscribe", "onchange": true, “interval”: 100, 
-			"path": "body.mirrors.left" }
-	receive on error <- { "error": { "number": ERROR_NUM, "code": ERROR_CODE, 
-                                 "message": ERROR_MESSAGE }, 
-                      "interval": 100, "path": "body.mirrors.left" }
+	client -> { "action": "subscribe", "filters": { &lt;filter_expression&gt; }, 
+	            "path": "&lt;any_vss_path&gt;", "requestId": "&lt;some_unique_value&gt;" }
+	receive on error <- { "error": { "number": &lt;error_num&gt;, "reason": "&lt;error_reason&gt;", 
+                                 "message": "&lt;error_message&gt;" }, 
+                        "path": "&lt;any_vss_path&gt;",
+											  "requestId": "&lt;some_unique_value&gt;" }
 	</pre>
 
-	<p>The server implementation will support at least the error codes and reasons listed in the table below.</p>
+	<p>The server implementation will support at least the errorcodes and reasons listed in the table below.</p>
       
 	<table class="parameters">
 	  <tr>
-	    <th> Error Code </th>
+	    <th> Error Number(Code) </th>
 	    <th> Error Reason</th>
 	    <th> Error Message</th>
 	  </tr>
@@ -1034,7 +1035,7 @@
 	    <td>The server was acting as a gateway or proxy and received an invalid response from an upstream server.</td>
 	  </tr>
 	  <tr>
-	    <td>503 (Service Unavailable)</td>
+	    <td>503&nbsp;(Service&nbsp;Unavailable)</td>
 	    <td>service_unavailable</td>
 	    <td>The server is currently unable to handle the request due to a temporary overload or scheduled maintenance (which may be alleviated after some delay).</td>
 	  </tr>
@@ -1050,11 +1051,8 @@
        See for example <a href="https://tools.ietf.org/html/rfc7231">RFC7231</a>, <a href="https://tools.ietf.org/html/rfc7235">RFC7235</a>,  
         and <a href="https://tools.ietf.org/html/rfc6585">RFC6585</a>.</p>
 
-
-
-
-
       </section>
+
       <section>
 	<h3>Web Socket <a>Closure</a></h3>
 	<p>The WebSocket can be closed by either the client or the
