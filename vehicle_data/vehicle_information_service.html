@@ -782,57 +782,41 @@
       
       <section>
 	<h3><a>Access</a> Control and Authorization</h3>
+
+	<p>When a client makes a request to access signal data it is performing the request on behalf of one or more 
+	Security Principals (that is, for a particular user and/or vehicle or device).</p>
+
+	<p>Access to signals will be managed and controlled by the server. The server can elect not to enforce access 
+	controls on a particular signal or set of signals and to enforce different access controls on other signals.</p>
+
+	<p>For each security principal that must be authorised by the server, the client will obtain and pass a security token
+	e.g. an OAuth 2.0 token (see <a href="https://tools.ietf.org/html/rfc6749">RFC6749</a>) to the server using a message
+	containing an 'authorize' action (see section TODO).</p>
+
+	<p>A server implementation may require that a request for a particular signal includes a security token for
+	both the driver of the vehicle (user) and for the vehicle instance (device). A request for a different set of vehicle signals
+	may require that only the user is authorized or that a particular device is authorized to access those vehicle signals.</p>
+
+	<p>After receiving a message with an 'authorize' action the server will attempt to verify the tokens e.g. by checking 
+        with the issuing Security Authority. If all of the tokens that are passed to the server are valid, it will return
+        a success response and all subsequent requests received by the WebSocket instance will have elevated access control
+        privileges. Specifically, each of the GET, SET, SUBSCRIBE and UNSUBSCRIBE actions will have the access control rights
+        that the server deems to be appropriate for the security principals represented by the token(s).</p>
+
+    	<p>If the client sends a subsequent 'authorize' message to the server with different token value(s). If one or more of these
+        are invalid, then the server will return an error response and the WebSocket access control status will remain unchanged. 
+        However, if the new token values are valid, then the server will return a success response and the access control 
+        privileges associated with the new token(s) only, will apply for all requests from that point.</p>
+
+    	<p>If the client or the server close the WebSocket connection and a new WebSocket instance is opened, then it will be
+        opened without elevated access control privileges. 
 	
-	<p>When a client makes a request to access signal data it is
-	performing the request on behalf of one or more Security Principals
-	(that is, for a user a vehicle or a device). It may be that the
-	client system does not enable users to login, so the request may be
-	from an anonymous user.</p>
-	
-	<p>Access to signals shall be managed and controlled by the
-	server. The server can elect not to enforce access controls on a
-	particular signal or set of signals and to enforce different access
-	controls on other signals.</p>
-	
-	<p>Please see the section on Security [TODO add link] for more
-	information.</p>
-
-	<p>When a client makes a request for a signal or set of signals that
-	are under access control, the request must contain one or more valid
-	security tokens (e.g. OAuth 2.0 tokens), one for each Security
-	Principal type that the server wishes to authorize. </p>
-  
-	<p>In addition to the ‘action’ and ‘path’ attributes, a request for
-	a resource that is under access control must also contain a
-	‘security’ attribute.</p>
-
-	<p>The ‘security’ attribute is a JSON data structure that contains
-	one or more name/value pairs, where each name is the name of a valid
-	security token and the value is the token value.</p>
-	<pre class="highlight hljs javascript">
-	  "security": { "Authorization": [some_token_value], 
-	                "WWW-Vehicle-Device": "[other_token_value]" }
-	</pre>
-	<p>A subscription request for signals data that is only
-	available to suitably authorised Security Principals is shown
-	below:</p>
-	<pre class="highlight hljs javascript">
-
-	  vehicle.send('{ "action": "authorization", "token": [some_token_value]');
-
-	  vehicle.send('{ "action": "subscribe", "path": "body.mirrors.left", 
-                          "requestId": "[some_unique_value]"');
-	</pre>
-	<p>[TODO Clarify whether need to specify that token value is
-	Base64 encoded]</p>
-
-	<p>For simplicity, many of the subscription examples included
-	in this document do not include a security data object. This
-	is acceptable if the data that is being accessed is not
-	subject to access control restrictions.</p>
-
+	<p>This server specification defines a standarized, token based approach for access control that includes specific error
+        reponses for common access control behaviours. The server is free to implement any type of token that is consistent
+         with this standardized approach. It is expected that the precise type of security tokens that are supported by a 
+         particular server implementation and the format of those tokens will be defined in the server documentation.</p>
       </section>
-     
+
     <section>
       <h3>Server Side <a>Filtering</a></h3>
       <p>A 'Filter' can be specified to enable Server side filtering
