@@ -166,7 +166,7 @@
 
       <p>The vehicle will expose vehicle signals via a WebSocket. This will
       enable a client to GET or SET vehicle signals; to SUBSCRIBE to receive
-      notifications relating to one or more vehicle signals and later to UNSUBSCRIBE
+      notifications relating to one or more vehicle signals and to UNSUBSCRIBE
       from receiving notifications.</p>
       
       <p>A future revision of this specification may consider additionally exposing vehicle signals
@@ -179,7 +179,7 @@
       <p>A component or module running on the vehicle is required to open
       a WebSocket connection to enable secure access to vehicle signals. 
       In this specification this module will be referred to as the ‘Application 
-      Server’ or for simplicity as the ‘Server’.</p>
+      Server’ or for simplicity as ‘the server’.</p>
       
       <p>This specification assumes that a single WebSocket is used to
       enable communication between the client Application and the server
@@ -187,7 +187,7 @@
       
       <p>N.B It is not explicitly prohibited for the client to request
       that the server opens more than one WebSocket. However, the server
-      may refuse to open a subsequent connection and the client is
+      may refuse to open a subsequent WebSocket connection and the client is
       responsible for handling this gracefully.</p>
 
       <p>If more than one WebSocket connection is established between a
@@ -199,9 +199,9 @@
 
       <p>N.B. If more than one WebSocket connection has been established
       between one or more clients and a particular server instance, there
-      is a risk that race conditions and concurrency issues could occur,
-      for example when two or more WebSocket connections are used to
-      concurrently update (SET) the same value.</p>
+      is a risk that race conditions and concurrency issues could occur.
+      An example of this would be, where two or more WebSocket connections 
+      are used to update a particular setting at the same time.</p>
       
       <p>Unless explicitly stated otherwise, the client can only assume
       that the server will implement a simple concurrency model where lost
