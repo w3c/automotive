@@ -230,21 +230,39 @@
 	href="http://www.w3.org/TR/2013/WD-dom-20131107/#promises">
 	Promise</a></code> provide a convenient way to get access to the result of an operation.</p>
       </section>
+
       
       <!-- Security and privacy -->
       <section id="security">
 	<h2>Security and privacy considerations</h2>
 
-	<p>
-	  It is expected that security of vehicle APIs described in this document is based on permissions dictated by:
-	</p>
-	<ul>
-	  <li></li>
-	  <li>The underlying operating system – always</li>
-	</ul>
+	<p>The server implementation can optionally restrict access to one or more vehicle signals so that they can only 
+	be accessed in response to a request from an authorized user or device. This could be for a variety of 
+	reasons, including safety, privacy or commercial concerns.</p>
 
+	<p>Hence, a request to GET, SET, SUBSCRIBE or UNSUBSCRIBE to data may require the client to demonstrate
+	to the server that the request is from one or more suitably authorized security principals.</p>
+
+	<p>The types of security principal can include:</p>
+
+	<table class="parameters">
+	  <tr>
+	    <th>Type</th>
+	    <th>Description</th>
+	  </tr>
+	  <tr>
+	    <td>User</td>
+	    <td>A person, system or organisation responsible for making the request e.g. driver, Emergency Services, 
+	        Smart City Traffic Management System.</td>
+	  </tr>
+	  <tr>
+	    <td>Device</td>
+	    <td>Vehicle or device where the request originates. Could for example be a user's Consumer Electronics 
+		(CE) device connected to the vehicle's WiFi hotspot or another vehicle in a convoy;  an Electronic Control
+		Unit (ECU) on the same vehicle or any internet connected system e.g. a Web of Things (WoT) device.</td>
+	  </tr>
+	</table>
       </section>
-
 
       <!-- Initialisation of the Web Socket -->
       <section>
