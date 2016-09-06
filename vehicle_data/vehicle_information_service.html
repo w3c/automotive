@@ -473,19 +473,21 @@
 		<dd>Establish user permissions.</dd>
 	</dl>
 
-
 	<h4><a>Path</a></h4>
 	<p>This is the desired vehicle signal(s) path, as defined by the <a
 	href="https://www.w3.org/auto/wg/wiki/Vehicle_Information_Service_Specification#Data_Model">Vehicle
 	Signal Specification (VSS)</a></p>
 
 	<h2><a>Authorization</a></h2>
- 	<p>TODO</p>
+ 	<p>To enable access to signals that are under access control, the client can optionally pass a message with an
+         'authorize' action to the server. The structure of the message and the associated success and error responses
+         are defined below.</p>
       <pre class="idl">
       interface authorizationRequest
       {
         attribute Action action;
-        attribute TBC token;
+        attribute string tokens;
+        attribute string requestId;
       };
 
       interface authorizationSuccessResponse
@@ -493,15 +495,39 @@
         attribute Action action;
         attribute int statusCode;
         attribute int TTL;
+        attribute string requestId;
       };
       
       interface authorizationErrorResponse
       {
         attribute Action action;
       	attribute Error error;
+        attribute string requestId;
       };
       </pre>
 
+    <p>The 'tokens' JSON fragment may contain just an 'authorization' name/value pair to pass only 
+        the user token or just a 'www-vehicle-device' pair to pass the only the vehicle token or it can include both 
+        name/value pairs as illustrated below:</p>
+
+	<pre class="example highlight">
+        // Pass user token only
+        vehicle.send('{ "action": "authorize", 
+                        "tokens": { "authorization": "&lt;user_token_value&gt;" },
+                        "requestId": "&lt;some_unique_value&gt;"');
+
+        // Pass vehicle or device token only
+        vehicle.send('{ "action": "authorize", 
+                        "tokens": { "www-vehicle-device": "&lt;device_token_value&gt;" },
+                        "requestId": "&lt;some_unique_value&gt;"');
+
+        // Pass tokens for user and device            
+        vehicle.send('{ "action": "authorize", 
+                        "tokens": { "authorization": "&lt;user_token_value&gt;", 
+                                    "www-vehicle-device": "&lt;device_token_value&gt;" },
+                        "requestId": "&lt;some_unique_value&gt;"');
+                        
+	</pre>
 
 	<h2><a>Get</a></h2>
  	<p>The server shall return messages to the client using the
