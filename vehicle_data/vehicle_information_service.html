@@ -269,7 +269,7 @@
       <section id="security">
         <h2>Security and Privacy Considerations</h2>
         <h3>Introduction</h3>
-        <p>The server implementation can optionally restrict access to one or more vehicle signals so that they can only 
+        <p>The server implementation may optionally restrict access to one or more vehicle signals so that they can only 
 	be accessed in response to a request from an authorized user or device. This could be for a variety of 
 	reasons, including safety, privacy or commercial concerns.</p>
 
@@ -279,7 +279,7 @@
         <p>The different types of Security Principal, the approach taken to control access to signals and the importance of data privacy are described in the sections that follow.</p>
 
         <h3>Security Principals</h3>
-	<p>The types of security principal can include:</p>
+	<p>The types of security principal may include:</p>
 
         <table class="parameters">
 	  <tr>
@@ -303,7 +303,7 @@
         <p>When a client makes a request to access signal data it is performing the request on behalf of one or more 
         Security Principals, that is, for a particular user and/or vehicle/device.</p>
 
-        <p>Access to signals will be managed and controlled by the server. The server can elect not to enforce access 
+        <p>Access to signals will be managed and controlled by the server. The server may elect not to enforce access 
         controls on a particular signal or set of signals and to enforce different access controls on other signals.</p>
 
         <p>For each security principal that must be authorised by the server, the client will obtain and pass a security token
@@ -341,7 +341,7 @@
 	
 	<p>If the client application is an HTML Application running in a web
 	runtime or is a web page running in a browser, the WebSocket
-	instance can either be initialised natively or created using a
+	instance may either be initialised natively or created using a
 	WebSocket standards compliant JavaScript library. A WebSocket
 	request can also be initiated from a native (e.g. C++) Application
 	or from an Application written using a managed runtime language like
@@ -406,7 +406,7 @@
 	connection.</p>
 
 	<p>Only the action, path and requestId attributes are required, however
-	multiple other options can be included as described in the table
+	multiple other options may be included as described in the table
 	below.</p>
 
 	<pre class="highlight hljs javascript">
@@ -527,7 +527,7 @@
 	
 	<h4>Action</h4>
 	
-	<p>Action can take one of four values describing the desired service for
+	<p>Action may take one of four values describing the desired service for
 	the client. There are described in the table below.</p>
 	
 	<dl title="enum Action" class="idl">
@@ -578,7 +578,7 @@
       </pre>
 
     <p>The 'tokens' JSON fragment may contain just an 'authorization' name/value pair to pass only 
-        the user token or just a 'www-vehicle-device' pair to pass the only the vehicle token or it can include both 
+        the user token or just a 'www-vehicle-device' pair to pass the only the vehicle token or it may include both 
         name/value pairs as illustrated below:</p>
 
 	<pre class="example highlight">
@@ -645,7 +645,7 @@
 	<p>In the case where the client has subscribed to a path which
 	returns a complex type, the value shall be returned as name
 	value pairs in a JSON object, as defined in the vehicle signal
-	specification format. Wildcards can be used in order to
+	specification format. Wildcards may be used in order to
 	specify only a subset of data. This can be specified at any
 	level of the Vehicle Signal Specification (VSS) tree.</p>
 
@@ -714,10 +714,10 @@
 	</pre>
 	<h2><a>Set</a></h2>
 
-	<p>A set request can be sent by the client in order to set the value of a signal on the vehicle, 
+	<p>A set request may be sent by the client in order to set the value of a signal on the vehicle, 
 	such as locking doors, opening windows and setting HVAC. The server shall respond  
 	with a success or error response. The ability to set a signal is dependant upon appropriate 
-	authorization and can be denied by the OEM.</p>
+	authorization and may be denied by the server implementation.</p>
 
       <pre class="idl">
       interface setRequest {
@@ -848,15 +848,15 @@
 	subscription response with the original request.</p>
 	
 	<p>The 'subscriptionId' value is a unique value, created by the server and
-	which may be used internally by the server to manage subscriptions
+	which will be used internally by the server to manage subscriptions
 	on that WebSocket instance.</p>
 
-	<p>The subscription id value can be used by the client to
+	<p>The subscription id value may be used by the client to
 	unsubscribe from receiving future notifications, by passing the
 	handle value to the server with the unsubscribe action.</p>
 	
 	<p>To differentiate subscription response from responses for ‘GET’
-	requests, subscription responses will additionally include the
+	requests, subscription responses shall additionally include the
 	subscription id value that identifies the subscription that
 	triggered that notification.</p>
 	
@@ -959,47 +959,10 @@
 		});
 	</pre>
     </section>
-      
-      <section>
-	<h3><a>Access</a> Control and Authorization</h3>
-
-	<p>When a client makes a request to access signal data it is performing the request on behalf of one or more 
-	Security Principals (that is, for a particular user and/or vehicle or device).</p>
-
-	<p>Access to signals will be managed and controlled by the server. The server can elect not to enforce access 
-	controls on a particular signal or set of signals and to enforce different access controls on other signals.</p>
-
-	<p>For each security principal that must be authorised by the server, the client will obtain and pass a security token
-	e.g. an OAuth 2.0 token (see <a href="https://tools.ietf.org/html/rfc6749">RFC6749</a>) to the server using a message
-	containing an 'authorize' action (see section TODO).</p>
-
-	<p>A server implementation may require that a request for a particular signal includes a security token for
-	both the driver of the vehicle (user) and for the vehicle instance (device). A request for a different set of vehicle signals
-	may require that only the user is authorized or that a particular device is authorized to access those vehicle signals.</p>
-
-	<p>After receiving a message with an 'authorize' action the server will attempt to verify the tokens e.g. by checking 
-        with the issuing Security Authority. If all of the tokens that are passed to the server are valid, it will return
-        a success response and all subsequent requests received by the WebSocket instance will have elevated access control
-        privileges. Specifically, each of the GET, SET, SUBSCRIBE and UNSUBSCRIBE actions will have the access control rights
-        that the server deems to be appropriate for the security principals represented by the token(s).</p>
-
-    	<p>If the client sends a subsequent 'authorize' message to the server with different token value(s). If one or more of these
-        are invalid, then the server will return an error response and the WebSocket access control status will remain unchanged. 
-        However, if the new token values are valid, then the server will return a success response and the access control 
-        privileges associated with the new token(s) only, will apply for all requests from that point.</p>
-
-    	<p>If the client or the server close the WebSocket connection and a new WebSocket instance is opened, then it will be
-        opened without elevated access control privileges. 
-	
-	<p>This server specification defines a standarized, token based approach for access control that includes specific error
-        reponses for common access control behaviours. The server is free to implement any type of token that is consistent
-         with this standardized approach. It is expected that the precise type of security tokens that are supported by a 
-         particular server implementation and the format of those tokens will be defined in the server documentation.</p>
-      </section>
 
     <section>
       <h3>Server Side <a>Filtering</a></h3>
-      <p>A 'Filter' can be specified to enable Server side filtering
+      <p>A 'Filter' may be specified to enable Server side filtering
       to be used in order to throttle the demands of subscriptions on
       the server. This may enable the reduction of traffic if the
       developer has received a 429 - Too Many Requests error
@@ -1085,11 +1048,11 @@
       };
       </pre>
 
-        <p>For some error codes, for example '401 (Unauthorised)' there can be more cause. 
-        The error number that is returned will be the HTTP Status Code Number (e.g. 401). 
+        <p>For some error codes, for example '401 (Unauthorised)' there can be more than one cause. 
+        The error number that is returned will be the HTTP Status Code Number e.g. 401. 
         An error reason will also be returned, this will contain a pre-defined string value that
         can be used to distinguish between errors that have the same code (e.g. '401 Unauthorized)' but a difference cause.
-        The error message will be used to provide message text describing the cause.</p>
+        The error message will be used to provide message text describing the cause in more detail.</p>
 
 	<pre class="highlight hljs javascript">
 	client -> { "action": "subscribe", "filters": { &lt;filter_expression&gt; }, 
@@ -1219,7 +1182,7 @@
 
       <section>
 	<h3>Web Socket <a>Closure</a></h3>
-	<p>The WebSocket can be closed by either the client or the
+	<p>The WebSocket may be closed by either the client or the
 	server by invoking the ‘close()’ method on the WebSocket
 	instance.</p>
 
@@ -1235,7 +1198,7 @@ var vehicle  = new WebSocket(“wss://localhost:4343”);
 // Close the WebSocket
 vehicle.close();
 	</pre>
-	<p>The WebSocket server can terminate the WebSocket connection
+	<p>The WebSocket server may terminate the WebSocket connection
 	if it has not received a request for a period determined by
 	the server. It is the client’s responsibility to handle this
 	gracefully and to recover and for example request new
@@ -1325,7 +1288,7 @@ receive <- { "path": "engine.rpm", "value": 2372 }
 	<p>In the case where the client has subscribed to a path which
 	returns a complex type, the value shall be returned as name
 	value pairs in a JSON object, as defined in the vehicle signal
-	specification format. Wildcards can be used in order to
+	specification format. Wildcards may be used in order to
 	specify only a subset of data. This can be specified at any
 	level of the Vehicle Signal Specification (VSS) tree.</p>
 
