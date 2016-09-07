@@ -206,7 +206,8 @@
       updates and dirty reads could potentially occur if the server has
       more than one WebSocket connection open.</p>
       <p>
-	An example of use is provided below:</p>
+	An example of the usage of this API is provided below for illustration purposes. 
+	This is not intended to be commercial code.</p>
 
 	<pre class="example highlight">
 		// open WebSocket
@@ -214,14 +215,14 @@
 
 		// establish authorization
 		vehicle.onopen = function () {
-			vehicle.send({"action": "authorize", "token": "&lt;valid-token&gt;", "requestId": 103});
+			vehicle.send({"action": "authorize", "tokens": {"authorization": "<user_token_value>"}, "requestId": 103});
 		};
 		
 		// request a signal
 		if (vehicle.readyState === OPEN) {
 			vehicle.send({"action": "get", "path": "signal.public.global.speed"});
 
-			// set message response
+			// process messages from the server
 			vehicle.onmessage = function(event){
 				var msg = JSON.parse(event.data);
 				if(msg.path == "signal.public.global.speed" && msg.value){
@@ -229,7 +230,11 @@
 				}
 			};
 		}
-
+		
+		// close the WebSocket
+		vehicle.close();
+	</pre>
+	<pre class="example highlight">
 		// set a subscription
 		if (vehicle.readyState === OPEN) {
 			vehicle.send({"action": "subscribe", "path": "signal.public.drivetrain.rpm", 
@@ -241,11 +246,6 @@
 				}
 			};
 		}
-
-		// close the WebSocket
-		vehicle.close();
-		
-		
 	</pre>
       </section>
 
@@ -975,7 +975,7 @@
 
       <pre class="highlight hljs javascript">
         { "action": "subscribe", "path": "&lt;any_path&gt;", 
-        	"filters": { &lt;insert custom tags&lt;  } }
+        	"filters": { &lt;insert_custom_tags&gt;  } }
       </pre>
       <p>Potential tags could include:</p>
       <ul>
