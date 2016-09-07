@@ -268,23 +268,21 @@
 	Promise</a></code> provide a convenient way to get access to the result of an operation.</p>
       </section>
 
+      
       <!-- Security and privacy -->
       <section id="security">
-        <h2>Security and Privacy Considerations</h2>
-        <h3>Introduction</h3>
-        <p>The server implementation can optionally restrict access to one or more vehicle signals so that they can only 
+	<h2>Security and privacy considerations</h2>
+
+	<p>The server implementation can optionally restrict access to one or more vehicle signals so that they can only 
 	be accessed in response to a request from an authorized user or device. This could be for a variety of 
 	reasons, including safety, privacy or commercial concerns.</p>
 
 	<p>Hence, a request to GET, SET, SUBSCRIBE or UNSUBSCRIBE to data may require the client to demonstrate
-	to the server that the request is from one or more suitably authorized Security Principals.</p>
+	to the server that the request is from one or more suitably authorized security principals.</p>
 
-        <p>The different types of Security Principal, the approach taken to control access to signals and the importance of data privacy are described in the sections that follow.</p>
-
-        <h3>Security Principals</h3>
 	<p>The types of security principal can include:</p>
 
-        <table class="parameters">
+	<table class="parameters">
 	  <tr>
 	    <th>Type</th>
 	    <th>Description</th>
@@ -300,41 +298,7 @@
 		(CE) device connected to the vehicle's WiFi hotspot or another vehicle in a convoy;  an Electronic Control
 		Unit (ECU) on the same vehicle or any internet connected system e.g. a Web of Things (WoT) device.</td>
 	  </tr>
-        </table>
-
-	<h3>Access Control and Authorization</h3>
-        <p>When a client makes a request to access signal data it is performing the request on behalf of one or more 
-        Security Principals, that is, for a particular user and/or vehicle/device.</p>
-
-        <p>Access to signals will be managed and controlled by the server. The server can elect not to enforce access 
-        controls on a particular signal or set of signals and to enforce different access controls on other signals.</p>
-
-        <p>For each security principal that must be authorised by the server, the client will obtain and pass a security token
-        e.g. an OAuth 2.0 token (see <a href="https://tools.ietf.org/html/rfc6749">RFC6749</a>) to the server using a message
-        containing an 'authorize' action (see section TODO).</p>
-
-        <p>A server implementation may require that a request for a particular signal includes a security token for
-        both the driver of the vehicle (user) and for the vehicle instance (device). A request for a different set of vehicle signals
-        may require that only the user is authorized or that a particular device is authorized to access those vehicle signals.</p>
-
-        <p>After receiving a message with an 'authorize' action the server will attempt to verify the tokens e.g. by checking 
-        with the issuing Security Authority. If all of the tokens that are passed to the server are valid, it will return
-        a success response and all subsequent requests received by the WebSocket instance will have elevated access control
-        privileges. Specifically, each of the GET, SET, SUBSCRIBE and UNSUBSCRIBE actions will have the access control rights
-        that the server deems to be appropriate for the security principals represented by the token(s).</p>
-
-        <p>If the client sends a subsequent 'authorize' message to the server with different token value(s). If one or more of these
-        are invalid, then the server will return an error response and the WebSocket access control status will remain unchanged. 
-        However, if the new token values are valid, then the server will return a success response and the access control 
-        privileges associated with the new token(s) only, will apply for all requests from that point.</p>
-
-        <p>If the client or the server close the WebSocket connection and a new WebSocket instance is opened, then it will be
-        opened without elevated access control privileges. 
-  
-        <p>This server specification defines a standarized, token based approach for access control that includes specific error
-        reponses for common access control behaviours. The server is free to implement any type of token that is consistent
-        with this standardized approach. It is expected that the precise type of security tokens that are supported by a 
-        particular server implementation and the format of those tokens will be defined in the server documentation.</p>
+	</table>
       </section>
 
       <!-- Initialisation of the Web Socket -->
@@ -631,8 +595,17 @@
       </pre>
 
 	<pre class="highlight hljs javascript">
-		client -> { "action": "get", "path": "engine.rpm" }
-		receive <- { "action": "get", "path": "engine.rpm", "value": 2372, "timestamp": DOMTimeStamp }
+	client -> { 
+		"action": "get", 
+		"path": "engine.rpm" 
+	}
+	
+	receive <- { 
+		"action": "get", 
+		"path": "engine.rpm", 
+		"value": 2372, 
+		"timestamp": &lt;DOMTimeStamp&gt;
+	}
 	</pre>
 
 	<p>In the case where the client has subscribed to a path which
@@ -644,37 +617,73 @@
 
 	<p>Complex type</p>
 	<pre class="highlight hljs javascript">
-		client -> { "action": "get", "path": "body.trunk" }
-		receive <- { "action": "get", "path": "body.trunk", "value": { "locked": false, "open": true }, "timestamp": DOMTimeStamp}
+	client -> { 
+		"action": "get", 
+		"path": "body.trunk"
+	}
+	
+	receive <- { 
+		"action": "get", 
+		"path": "body.trunk", 
+		"value": { "locked": false,
+			"open": true }, 
+		"timestamp": &lt;DOMTimeStamp&gt;
+	}
 	</pre>
-	<p>Complex type with nested array. Path: “body.doors.*.lock” -
+	<p>Complex type with nested array. Path: "body.doors.*.lock" -
 	All doors, lock state.</p>
 	<pre class="highlight hljs javascript">
-		client -> { "action": "get", "path": " body.doors.*.lock" }
-		receive <- { "action": "get", "path": "body.doors.*.lock ", "value": { 
-			[ {"locked" : true }, {"locked" : true }, 
-			{"locked" : false }, {"locked" : true } ] },
-			"timestamp": DOMTimeStamp }
+	client -> { 
+		"action": "get", 
+		"path": " body.doors.*.lock"
+	}
+	
+	receive <- { 
+		"action": "get", 
+		"path": "body.doors.*.lock ", 
+		"value": [ {"locked" : true }, {"locked" : true }, 
+			{"locked" : false }, {"locked" : true } ],
+		"timestamp": &lt;DOMTimeStamp&gt;
+	}
 	</pre>
-	<p>Complex type with nested array. Path: “body.doors.*” - All
+	<p>Complex type with nested array. Path: "body.doors.*" - All
 	doors, all door attributes (where door has two attributes,
 	lock and window_pos)</p>
 	<pre class="highlight hljs javascript">
-		client -> { "action": "get", "path": " body.doors.* " }
-		receive <- { "action": "get", "path": "body.doors.*.lock ", "value": { 
-			[ {“locked” : true, “windows_pos”: 143 }, {“locked” : true, “windows_pos”: 23 },
-			{“locked” : false, “windows_pos”: 162 }, {“locked” : true, “windows_pos”: 0 } ], 
-			"timestamp": DOMTimeStamp }
+	client -> { 
+		"action": "get", 
+		"path": " body.doors.* "
+	}
+	
+	receive <- { 
+		"action": "get", 
+		"path": "body.doors.*.lock ", 
+		"value": [ {"locked" : true, "windows_pos": 143 }, {"locked" : true, "windows_pos": 23 },
+			{"locked" : false, "windows_pos": 162 }, {"locked": true, "windows_pos": 0 } ], 
+		"timestamp": &lt;DOMTimeStamp&gt;
+	}
 	</pre>
 	<p>Request none-existent data</p>
 	<pre class="highlight hljs javascript">
-		client -> { "action": "get", "path": "body.flux.capacitor" }
-		receive <- { "action": "get", "path": "body.flux.capacitor", 
-		"error": { "number":[nn], "code": UNRECOGNISED_FORMAT, 
-				"message": "Unrecognised Format" } }
+	client -> { 
+		"action": "get", 
+		"path": "body.flux.capacitor"
+	}
+	
+	receive <- { 
+		"action": "get", 
+		"path": "body.flux.capacitor", 
+		"error": { "number":404, 
+			"reason": "invalid_path", 
+			"message": "The specified data path does not exist." }
+	}
 	</pre>
-
 	<h2><a>Set</a></h2>
+
+	<p>A set request can be sent by the client in order to set the value of a signal on the vehicle, 
+	such as locking doors, opening windows and setting HVAC. The server shall respond  
+	with a success or error response. The ability to set a signal is dependant upon appropriate 
+	authorization and can be denied by the OEM.</p>
 
       <pre class="idl">
       interface setRequest {
@@ -684,7 +693,7 @@
       };
 
       interface setSuccessResponse {
-		attribute Action action;
+	attribute Action action;
         attribute DOMString path;
         attribute any value;
         attribute DOMTimeStamp timestamp;
@@ -699,24 +708,56 @@
 
 	<p>Successfully set a signal.</p>
 	<pre class="highlight hljs javascript">
-		client -> { "action": "set", "path": " body.doors.*.lock", "value":{ 
-				[ {“locked” : true }, {“locked” : true }, 
-				{“locked” : false }, {“locked” : true } ] } }
-		receive <- { "action": "set", "path": " body.doors.*.lock", "value":{ 
-				[ {“locked” : true }, {“locked” : true }, 
-		              	{“locked” : false }, {“locked” : true } ] }, "timestamp": DOMTimeStamp}
+	client -> { 
+		"action": "set", 
+		"path": " body.doors.*.lock", 
+		"value":{ [ {"locked" : true }, {"locked" : true }, 
+				{"locked" : false }, {"locked" : true } ] } 
+		}
+		
+	receive <- { 
+		"action": "set", 
+		"path": " body.doors.*.lock", 
+		"value":{ [ {"locked" : true }, {"locked" : true }, 
+				{"locked" : false }, {"locked" : true } ] }, 
+		"timestamp": &lt;DOMTimeStamp&gt;
+	}
 	</pre>
 	<p>Unsuccessful set. The value cannot be set.</p>
 	<pre class="highlight hljs javascript">
-		client -> { "action": "set", "path": "engine.rpm", "value": 2000}
-		receive <- { "action": "set", "path": "engine.rpm", "error": { "number": 403, "code": PERMISSION_DENIED , "message": "User is not authorised to set this value" } }
+	client -> {
+		"action": "set", 
+		"path": "engine.rpm", 
+		"value": 2000
+	}
+	
+	receive <- { 
+		"action": "set", 
+		"path": "engine.rpm", 
+		"error": { "number": 403, 
+			"reason": "device_forbidden", 
+			"message": "User is not authorised to set this value" 
+			} 
+		}
 	</pre>
 	<p>Unsuccessful set. The value does not exist in the specified path.</p>
 	<pre class="highlight hljs javascript">
-		client -> { "action": "set", "path": "engine.rpm", "value": { [ {“locked” : true } ]} }
-		receive <- { "action": "set", "path": "engine.rpm", "error": { "number": [nn], "code": DATA_NOT_SUPPORTED , "message": "Data Not Supported" } }
+	client -> { 
+		"action": "set", 
+		"path": "engine.rpm", 
+		"value": { "locked" : true } 
+	}
+	
+	receive <- { 
+		"action": "set", 
+		"path": "engine.rpm", 
+		"error": { "number": 400, 
+			"reason": "bad_request" , 
+			"message": "The server is unable to fulfil the client 
+					request because the request is malformed." 
+			}
+		}
 	</pre>
-
 	<h2><a>Subscribe</a></h2>
 	<p>Vehicle data subscriptions provide data to the client whenever the signal changes on the server, unless otherwise specified using Server Side Filtering. The server may reduce the amount of notifications sent to the client in order to reduce processing demands, particularly when the client has subscribed to continuously varying signals.</p>
 
@@ -758,12 +799,17 @@
 
 	
 	<pre class="highlight hljs javascript">
-		client -> { "action": "subscribe",
-	              "path": "[any_vss_path]",
-	              "requestId":"[some_unique_value]" }
-		receive on success <- { "subscriptionId": 35472, "requestId": "[some_unique_value]" }
-	</pre>
+	client -> { 
+		"action": "subscribe",
+		"path": "&lt;any_vss_path&gt;",
+		"requestId":"&lt;some_unique_value&gt;" 
+	}
 	
+	receive <- { 
+		"subscriptionId": 35472, 
+		"requestId":"&lt;some_unique_value&gt;" 
+	}
+	</pre>
 	<p>The client can use the 'requestId' value to associate the successful
 	subscription response with the original request.</p>
 	
@@ -815,23 +861,51 @@
         attribute string subscriptionId;
       };
       </pre>
-
-
+	Unsubscribe from a single subscription.
 	<pre class="highlight hljs javascript">
-		// unsubscribe from a single subscription
-		client -> { "action": "unsubscribe", "subscriptionId": 102, "requestID": 5264 }
-	  	receive <- { "action": "unsubscribe", "subscriptionId": 102, 
-	  					"requestID": 5264, "timestamp": DOMTimeStamp }
+	client -> { 
+		"action": "unsubscribe", 
+		"subscriptionId": 102, 
+		"requestID": 5264 
+	}
 
-	  	// unsubscribe from all subscriptions
-		client -> { "action": "unsubscribe", "subscriptionId": 0, "requestID": 3468 }
-		receive <- { "action": "unsubscribe", "subscriptionId": 0,
-	  					"requestID": 3468, "timestamp": DOMTimeStamp }
-
-		// error case - invalid ID
-		client -> { "action": "unsubscribe", "subscriptionId": 3542, "requestID": 7846 }
-		receive <- { "action": "unsubscribe", "error": { "number":[nn], "code": INVALID_ID, 
-						"message": "Invalid ID" },  "subscriptionId": 3542, "requestID": 7846 }
+	receive <- { 
+		"action": "unsubscribe", 
+		"subscriptionId": 102,
+		"requestID": 5264, 
+		"timestamp": &lt;DOMTimeStamp&gt;
+	}
+	</pre>
+	Unsubscribe from all subscriptions.
+	<pre class="highlight hljs javascript">
+	client -> { 
+		"action": "unsubscribe", 
+		"subscriptionId": 0, 
+		"requestID": 3468
+	}
+	
+	receive <- { 
+		"action": "unsubscribe", 
+		"subscriptionId": 0,
+		"requestID": 3468, 
+		"timestamp": &lt;DOMTimeStamp&gt;
+	}
+	</pre>
+	Error case - invalid ID
+	<pre class="highlight hljs javascript">
+	client -> { 
+		"action": "unsubscribe", 
+		"subscriptionId": 3542, 
+		"requestID": 7846 
+	}
+	receive <- { 
+		"action": "unsubscribe", 
+		"error": { "number":404, 
+			"reason": "invalid_subscriptionId", 
+			"message": "The specified subscription was not found." },  
+		"subscriptionId": 3542, 
+		"requestID": 7846 
+	}
 	</pre>
 
 	<pre class="example highlight">
@@ -850,8 +924,44 @@
 			}
 		});
 	</pre>
-
     </section>
+      
+      <section>
+	<h3><a>Access</a> Control and Authorization</h3>
+
+	<p>When a client makes a request to access signal data it is performing the request on behalf of one or more 
+	Security Principals (that is, for a particular user and/or vehicle or device).</p>
+
+	<p>Access to signals will be managed and controlled by the server. The server can elect not to enforce access 
+	controls on a particular signal or set of signals and to enforce different access controls on other signals.</p>
+
+	<p>For each security principal that must be authorised by the server, the client will obtain and pass a security token
+	e.g. an OAuth 2.0 token (see <a href="https://tools.ietf.org/html/rfc6749">RFC6749</a>) to the server using a message
+	containing an 'authorize' action (see section TODO).</p>
+
+	<p>A server implementation may require that a request for a particular signal includes a security token for
+	both the driver of the vehicle (user) and for the vehicle instance (device). A request for a different set of vehicle signals
+	may require that only the user is authorized or that a particular device is authorized to access those vehicle signals.</p>
+
+	<p>After receiving a message with an 'authorize' action the server will attempt to verify the tokens e.g. by checking 
+        with the issuing Security Authority. If all of the tokens that are passed to the server are valid, it will return
+        a success response and all subsequent requests received by the WebSocket instance will have elevated access control
+        privileges. Specifically, each of the GET, SET, SUBSCRIBE and UNSUBSCRIBE actions will have the access control rights
+        that the server deems to be appropriate for the security principals represented by the token(s).</p>
+
+    	<p>If the client sends a subsequent 'authorize' message to the server with different token value(s). If one or more of these
+        are invalid, then the server will return an error response and the WebSocket access control status will remain unchanged. 
+        However, if the new token values are valid, then the server will return a success response and the access control 
+        privileges associated with the new token(s) only, will apply for all requests from that point.</p>
+
+    	<p>If the client or the server close the WebSocket connection and a new WebSocket instance is opened, then it will be
+        opened without elevated access control privileges. 
+	
+	<p>This server specification defines a standarized, token based approach for access control that includes specific error
+        reponses for common access control behaviours. The server is free to implement any type of token that is consistent
+         with this standardized approach. It is expected that the precise type of security tokens that are supported by a 
+         particular server implementation and the format of those tokens will be defined in the server documentation.</p>
+      </section>
 
     <section>
       <h3>Server Side <a>Filtering</a></h3>
@@ -936,7 +1046,7 @@
       <pre class="idl">
       interface Error {
         attribute int number;
-        attribute string code;
+        attribute string reason;
         attribute string message;
       };
       </pre>
