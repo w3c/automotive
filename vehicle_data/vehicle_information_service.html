@@ -211,11 +211,11 @@
 
 	<pre class="example highlight">
 		// open WebSocket
-		var vehicle  = new WebSocket("wss://wwwivi", "");
+		var vehicle  = new WebSocket("wss://wwwivi", "VISS1.0");
 
 		// establish authorization
 		vehicle.onopen = function () {
-			vehicle.send({"action": "authorize", "tokens": {"authorization": "<user_token_value>"}, "requestId": 103});
+			vehicle.send({"action": "authorize", "tokens": {"authorization": "&lt;user_token_value&gt;"}, "requestId": 103});
 		};
 		
 		// request a signal
@@ -235,7 +235,7 @@
 		vehicle.close();
 	</pre>
 	<pre class="example highlight">
-		// set a subscription
+		// set a subscription, assuming the same authorization and set up from Example 1
 		if (vehicle.readyState === OPEN) {
 			vehicle.send({"action": "subscribe", "path": "signal.public.drivetrain.rpm", 
 					"requestId": 104});
@@ -360,7 +360,7 @@
 	number suffix, e.g. VISS1.0</p>
 
 	<pre class="highlight hljs javascript">
-	  <span class="hljs-keyword">var</span> vehicle  = new WebSocket("wss://wwwivi", "<sub-protocol>");
+	  <span class="hljs-keyword">var</span> vehicle  = new WebSocket("wss://wwwivi", "&lt;sub-protocol&gt;");
 	</pre>
 	
 	<p>RESTful web services are out of scope for the first revision of
