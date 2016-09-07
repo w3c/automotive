@@ -211,6 +211,43 @@
 	An example of use is provided below:</p>
 
 	<pre class="example highlight">
+		// open WebSocket
+		var vehicle  = new WebSocket("wss://wwwivi", "");
+
+		// establish authorization
+		vehicle.onopen = function () {
+			vehicle.send({"action": "authorize", "token": "&lt;valid-token&gt;", "requestId": 103});
+		};
+		
+		// request a signal
+		if (vehicle.readyState === OPEN) {
+			vehicle.send({"action": "get", "path": "signal.public.global.speed"});
+
+			// set message response
+			vehicle.onmessage = function(event){
+				var msg = JSON.parse(event.data);
+				if(msg.path == "signal.public.global.speed" && msg.value){
+					console.log("The current speed is " + msg.value);
+				}
+			};
+		}
+
+		// set a subscription
+		if (vehicle.readyState === OPEN) {
+			vehicle.send({"action": "subscribe", "path": "signal.public.drivetrain.rpm", 
+					"requestId": 104});
+			vehicle.onmessage = function(event){
+				var msg = JSON.parse(event.data);
+				if(msg.hasOwnProperty("requestId") && msg.requestId == 104){
+					console.log("Latest RPM is " + msg.value);
+				}
+			};
+		}
+
+		// close the WebSocket
+		vehicle.close();
+		
+		
 	</pre>
       </section>
 
@@ -454,7 +491,7 @@
 	  </tr>
 	</table>
 	
-	<h4><a>Action</a></h4>
+	<h4>Action</h4>
 	
 	<p>Action can take one of four values describing the desired service for
 	the client. There are described in the table below.</p>
@@ -469,7 +506,7 @@
 		<dt>unsubscribe</dt>
 		<dd>Allows the client to notify the server that it should no
 	    longer receive notifications based on that subscription.</dd>
-		<dt>authorization</dt>
+		<dt>authorize</dt>
 		<dd>Establish user permissions.</dd>
 	</dl>
 
