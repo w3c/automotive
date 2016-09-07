@@ -966,7 +966,7 @@
       developer has received a 429 - Too Many Requests error
       message. This can be implementation dependant allowing a number
       of potential filtering mechanisms, such as ranges, intervals and
-      minimum changes. This can be implemented using the "filter"
+      minimum changes. This can be implemented using the "filters"
       option.</p>
 
       <p>The subscription currently defaults to sending values to the
@@ -974,8 +974,8 @@
       processing demands on the vehicle server.</p>
 
       <pre class="highlight hljs javascript">
-        { "action": "subscribe", "path": "body.mirrors.left", 
-        	"filters": { [insert custom tags]  } }
+        { "action": "subscribe", "path": "&lt;any_path&gt;", 
+        	"filters": { &lt;insert custom tags&lt;  } }
       </pre>
       <p>Potential tags could include:</p>
       <ul>
@@ -986,49 +986,50 @@
 	<li>Minimum change - provide data when a value has changed by
 	a specified amount</li>
       </ul>
-      <p>[TODO - modify the existing filtering mechanisms]</p>
 
       <p>If the filter is not set or unsupported the notifcaiton frequency will be
       determined by the server.</p>
 
       <pre class="highlight hljs javascript">
-		//client receives data every 100ms
-	{ "action": "subscribe", "path": "<any_path>", 
-        	"filters": { "interval": 100ms }, 
-        	"requestId": "101" }
+	//client receives data every 100ms
+	{ "action": "subscribe", "path": "&lt;any_path&gt;", 
+        	"filters": { "interval": 100 }, 
+        	"requestId": "&lt;some_unique_value&gt;" }
 
-		//client receives data when the value is between 100 and 200 (inclusive)
-	{ "action": "subscribe", "path": "<any_path>", 
+	//client receives data when the value is between 100 and 200 (inclusive)
+	{ "action": "subscribe", "path": "&lt;any_path&gt;", 
         	"filters": { "range": { "above": 100, "below": 200 } }, 
-        	"requestId": "102" }
+        	"requestId": "&lt;some_unique_value&gt;" }
 
-		//client receives data when the value is below 100 (inclusive)
-	{ "action": "subscribe", "path": "<any_path>", 
+	//client receives data when the value is below 100 (inclusive)
+	{ "action": "subscribe", "path": "&lt;any_path&gt;", 
         	"filters": { "range": { "below": 100 } }, 
-        	"requestId": "102" }
+        	"requestId": "&lt;some_unique_value&gt;" }
 
-		//client receives data when the value changes by 100 units
-	{ "action": "subscribe", "path": "<any_path>", 
+	//client receives data when the value changes by 100 units
+	{ "action": "subscribe", "path": "&lt;any_path&gt;", 
         	"filters": { "minChange": 100 }, 
-        	"requestId": "102" }
+        	"requestId": "&lt;some_unique_value&gt;" }
 
-		//client receives data when the value changes by 100 units
-	{ "action": "subscribe", "path": "<any_path>", 
+	//client receives data when the value changes by 100 units
+	{ "action": "subscribe", "path": "&lt;any_path&gt;", 
         	"filters": { "minChange": 100 }, 
-        	"requestId": "102" }
+        	"requestId": "&lt;some_unique_value&gt;" }
 
-		//client receives data when the value is above 200 (inclusive) 
-		//and the value changes by 20 units
-        { "action": "subscribe", "path": "<any_path>", 
+	//client receives data when the value is above 200 (inclusive) 
+	//and the value changes by 20 units
+	{ "action": "subscribe", "path": "&lt;any_path&gt;", 
         	"filters": { "range": { "below": 200 }, "minChange": 20}, 
-        	"requestId": "102" }
+        	"requestId": "&lt;some_unique_value&gt;" }
       </pre>      
 
-      <p>When the range filter is used a final message will be sent when the value returned is outside of the specified range. For example, if the the range states { "below": 100 }, a final value may be received at 101 to indicate that the value is now out of range.</p>
+      <p>When the range filter is used a final message will be sent when the value returned is outside 
+      of the specified range. For example, if the the range states { "below": 100 }, a final value may 
+      be received at 101 to indicate that the value is now out of range.</p>
 
       <p>The client should take care to avoid specifying a minimum
 		change amount that is too small in order to prevent
-		unnecessary messages. The server may provide a TOO_MANY_REQUESTS error if this is the case.</p>
+		unnecessary messages. The server may provide a 429 - Too Many Request error if this is the case.</p>
 
       </section>
 
