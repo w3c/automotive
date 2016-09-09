@@ -421,8 +421,8 @@
 	
 	<table class="parameters">
 	  <tr>
-	    <th>Valid Request Objects</th>
-	    <th>Valid Response Objects</th>
+	    <th>Request Objects</th>
+	    <th>Response Objects</th>
 	  </tr>
 	  <tr>
 	    <td><a>authorizationRequest</a></td>
@@ -896,6 +896,30 @@
 			}
 		});
 	</pre>
+
+	<h2><a>VSS Request</a></h2>
+	<p>The client may request the current vehicle signal structure from the server. 
+	This will be in the format defined in TODO - LINK and will be subject to the 
+	current access permissions of the client. </p>
+
+      <pre class="idl">
+      interface vssRequest {
+        attribute Action action;
+        attribute string path;
+      };
+
+      interface vssSuccessResponse {
+        attribute Action action;
+        attribute string path;
+        attribute object vss;
+      };
+
+      interface vssErrorResponse {
+        attribute Action action;
+        attribute Error error;
+      };
+      </pre>
+
     </section>
 
     <section>
