@@ -320,7 +320,7 @@
         privileges. Specifically, each of the GET, SET, SUBSCRIBE and UNSUBSCRIBE actions will have the access control rights
         that the server deems to be appropriate for the security principals represented by the token(s).</p>
 
-        <p>If the client sends a subsequent 'authorize' message to the server with different token value(s). If one or more of these
+        <p>The client may send a subsequent 'authorize' message to the server with different token value(s). If one or more of these
         are invalid, then the server will return an error response and the WebSocket access control status will remain unchanged. 
         However, if the new token values are valid, then the server will return a success response and the access control 
         privileges associated with the new token(s) only, will apply for all requests from that point.</p>
