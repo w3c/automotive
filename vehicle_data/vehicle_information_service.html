@@ -320,7 +320,7 @@
         privileges. Specifically, each of the GET, SET, SUBSCRIBE and UNSUBSCRIBE actions will have the access control rights
         that the server deems to be appropriate for the security principals represented by the token(s).</p>
 
-        <p>The client may send a subsequent 'authorize' message to the server with different token value(s). If one or more of these
+        <p>If the client sends a subsequent 'authorize' message to the server with different token value(s). If one or more of these
         are invalid, then the server will return an error response and the WebSocket access control status will remain unchanged. 
         However, if the new token values are valid, then the server will return a success response and the access control 
         privileges associated with the new token(s) only, will apply for all requests from that point.</p>
@@ -405,126 +405,64 @@
 	sending a JSON data structure to the server via the WebSocket
 	connection.</p>
 
-	<p>Only the action, path and requestId attributes are required, however
-	multiple other options may be included as described in the table
-	below.</p>
-
+	<p>The client shall send data requests to the server using the WebSockets send API.</p>
 	<pre class="highlight hljs javascript">
-	  vehicle.send('{ "action": "subscribe", "path": "body.mirrors.left",
-	                  "requestId": "&lt;some_unique_value&gt;" }');
+		boolean WebSocket.send(object request);
 	</pre>
+	<p>The request object MUST be one of the valid request objects defined in the table below.</p>
 
-	<pre class="idl">
-		WebSocket.send(getRequest request);
-		WebSocket.send(setRequest request);
-		WebSocket.send(subscribeRequest request);
-		WebSocket.send(unsubcribeRequest request);
+	<p>The client shall receive data requests from the server using the WebSockets onmessage API, as follows:</p>
+	<pre class="highlight hljs javascript">
+		WebSocket.onmessage = function(object){
+			// process data
+		}
 	</pre>
-
+	<p>The response object shall correspond to the client's request and MUST be one of valid response objects defined in the table below.</p>	
 	
-	@@table class - parameter?
 	<table class="parameters">
 	  <tr>
-	    <th>Attribute</th>
-	    <th>Description</th>
-	    <th>Required</th>
-	    <th>Default Value</th>
-	    <th> Source</th>
+	    <th>Valid Request Objects</th>
+	    <th>Valid Response Objects</th>
 	  </tr>
 	  <tr>
-	    <td> action </td>
-	    <td> The desired action from the client (subscribe, unsubscribe, get, set). </td>
-	    <td> Required	</td>
-	    <td> n/a </td>
-	    <td> Client </td>
+	    <td><a>authorizationRequest</a></td>
+	    <td>
+	    	<a>authorizationSuccessResponse</a><br>
+			<a>authorizationErrorResponse</a>
+		</td>
 	  </tr>
 	  <tr>
-	    <td> path	</td>
-	    <td> The path to the desired vehicle signal(s), as defined by the Vehicle Signal Specification (VSS). </td>
-	    <td> Required	</td>
-	    <td> n/a </td>
-	    <td> Client
-	  </td></tr>
-	  <tr>
-	    <td> requestId	</td>
-	    <td> Unique id value specified by the client. Returned by the server in 
-	    the response and used by client to link the request and response 
-	    messages. May be a Universally Unique Identifier (UUID) </td>
-	    <td> Required	</td>
-	    <td> n/a </td>
-	    <td> Client </td>
+	    <td><a>getRequest</a></td>
+	    <td>
+	    	<a>getSuccessResponse</a><br>
+			<a>getErrorResponse</a>
+		</td>
 	  </tr>
 	  <tr>
-	    <td> security </td>
-	    <td> Structure containing one or more security token (e.g OAuth2)  name/value pairs. </td>
-	    <td> Optional </td>
-	    <td> Null </td>
-	    <td> Client </td>
+	    <td><a>setRequest</a></td>
+	    <td>
+	    	<a>setSuccessResponse</a><br>
+			<a>setErrorResponse</a>
+		</td>
 	  </tr>
 	  <tr>
-	    <td> subscriptionId </td>
-	    <td> Integer handle returned by the server to uniquely identify each new subscription. Also used to unsubscribe. </td>
-	    <td> Required </td>
-	    <td> n/a </td>
-	    <td> Client/Server </td>
+	    <td><a>subscribeRequest</a></td>
+	    <td>
+	    	<a>subscribeSuccessResponse</a><br>
+			<a>subscribeErrorResponse</a><br>
+			<a>subscriptionNotification</a>
+		</td>
 	  </tr>
 	  <tr>
-	    <td> timestamp </td>
-	    <td> A DOMTimestamp value indicating the time that the server returned the response (expressed as number of milliseconds).  </td>
-	    <td> Required </td>
-	    <td> n/a </td>
-	    <td> Server </td>
-	  </tr>
-	  <tr>
-	    <td> value </td>
-	    <td> The data value returned by the server. This could either be a basic
-	    type, or a complex type comprised of nested name/value pairs in JSON 
-	    format. </td>
-	    <td> Required </td>
-	    <td> n/a
-	    </td>
-	    <td> Server</td>
-	  </tr>
-	  <tr>
-	    <td> TTL </td>
-	    <td> Returns the time to live of the authentication token </td>
-	    <td> Required </td>
-	    <td> n/a </td>
-	    <td> Server</td>
-	  </tr>
-	  <tr>
-	    <td> status</td>
-	    <td> Returns success for the ‘set’ and ‘unsubscribe’ methods </td>
-	    <td> Required </td>
-	    <td> n/a </td>
-	    <td> Server</td>
-	  </tr>
-	  <tr>
-	    <td> error number </td>
-	    <td> Integer that identifies the type of error. Will be a HTTP status code if a standard value has been defined for the error type. </td>
-	    <td> Required </td>
-	    <td> n/a </td>
-	    <td> Server</td>
-	  </tr>
-	  <tr>
-	    <td> error code </td>
-	    <td> Error string identifying the particular error code. Different Error
-	    Codes could occur for the same error number. For example, there may be 
-	    more than one reason why a user is forbidden to access a resource (Error
-	    Number: 403) </td>
-	    <td> Required </td>
-	    <td> n/a </td>
-	    <td> Server</td>
-	  </tr>
-	  <tr>
-	    <td> error message </td>
-	    <td> Description of the Error. </td>
-	    <td> Required </td>
-	    <td> n/a </td>
-	    <td> Server</td>
+	    <td><a>unsubscribeRequest</a></td>
+	    <td>
+	    	<a>unsubscribeSuccessResponse</a><br>
+			<a>unsubscribeErrorResponse</a>
+		</td>
 	  </tr>
 	</table>
-	
+
+
 	<h4>Action</h4>
 	
 	<p>Action may take one of four values describing the desired service for
@@ -1336,7 +1274,114 @@ receive <- receive <- '{ "error": { "number": 403, "code": PERMISSION_DENIED , "
 client -> { "action": "set", "path": "engine.rpm", "value": { [ {“locked” : true } ]} }
 receive <- '{ "error": { "number": [nn], "code": DATA_NOT_SUPPORTED , "message": "Data Not Supported" }, "path": "engine.rpm", "value": { [ {“locked” : true } ]} }
 	</pre>
+
+
+	@@table class - parameter?
+	<table class="parameters">
+	  <tr>
+	    <th>Attribute</th>
+	    <th>Description</th>
+	    <th>Required</th>
+	    <th>Default Value</th>
+	    <th> Source</th>
+	  </tr>
+	  <tr>
+	    <td> action </td>
+	    <td> The desired action from the client (subscribe, unsubscribe, get, set). </td>
+	    <td> Required	</td>
+	    <td> n/a </td>
+	    <td> Client </td>
+	  </tr>
+	  <tr>
+	    <td> path	</td>
+	    <td> The path to the desired vehicle signal(s), as defined by the Vehicle Signal Specification (VSS). </td>
+	    <td> Required	</td>
+	    <td> n/a </td>
+	    <td> Client
+	  </td></tr>
+	  <tr>
+	    <td> requestId	</td>
+	    <td> Unique id value specified by the client. Returned by the server in 
+	    the response and used by client to link the request and response 
+	    messages. May be a Universally Unique Identifier (UUID) </td>
+	    <td> Required	</td>
+	    <td> n/a </td>
+	    <td> Client </td>
+	  </tr>
+	  <tr>
+	    <td> security </td>
+	    <td> Structure containing one or more security token (e.g OAuth2)  name/value pairs. </td>
+	    <td> Optional </td>
+	    <td> Null </td>
+	    <td> Client </td>
+	  </tr>
+	  <tr>
+	    <td> subscriptionId </td>
+	    <td> Integer handle returned by the server to uniquely identify each new subscription. Also used to unsubscribe. </td>
+	    <td> Required </td>
+	    <td> n/a </td>
+	    <td> Client/Server </td>
+	  </tr>
+	  <tr>
+	    <td> timestamp </td>
+	    <td> A DOMTimestamp value indicating the time that the server returned the response (expressed as number of milliseconds).  </td>
+	    <td> Required </td>
+	    <td> n/a </td>
+	    <td> Server </td>
+	  </tr>
+	  <tr>
+	    <td> value </td>
+	    <td> The data value returned by the server. This could either be a basic
+	    type, or a complex type comprised of nested name/value pairs in JSON 
+	    format. </td>
+	    <td> Required </td>
+	    <td> n/a
+	    </td>
+	    <td> Server</td>
+	  </tr>
+	  <tr>
+	    <td> TTL </td>
+	    <td> Returns the time to live of the authentication token </td>
+	    <td> Required </td>
+	    <td> n/a </td>
+	    <td> Server</td>
+	  </tr>
+	  <tr>
+	    <td> status</td>
+	    <td> Returns success for the ‘set’ and ‘unsubscribe’ methods </td>
+	    <td> Required </td>
+	    <td> n/a </td>
+	    <td> Server</td>
+	  </tr>
+	  <tr>
+	    <td> error number </td>
+	    <td> Integer that identifies the type of error. Will be a HTTP status code if a standard value has been defined for the error type. </td>
+	    <td> Required </td>
+	    <td> n/a </td>
+	    <td> Server</td>
+	  </tr>
+	  <tr>
+	    <td> error code </td>
+	    <td> Error string identifying the particular error code. Different Error
+	    Codes could occur for the same error number. For example, there may be 
+	    more than one reason why a user is forbidden to access a resource (Error
+	    Number: 403) </td>
+	    <td> Required </td>
+	    <td> n/a </td>
+	    <td> Server</td>
+	  </tr>
+	  <tr>
+	    <td> error message </td>
+	    <td> Description of the Error. </td>
+	    <td> Required </td>
+	    <td> n/a </td>
+	    <td> Server</td>
+	  </tr>
+	</table>
+
+
       </section>
+
     </body>
 </html>
 
