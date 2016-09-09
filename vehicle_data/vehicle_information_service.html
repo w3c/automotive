@@ -215,7 +215,9 @@
 
 		// establish authorization
 		vehicle.onopen = function () {
-			vehicle.send({"action": "authorize", "tokens": {"authorization": "&lt;user_token_value&gt;"}, "requestId": 103});
+			vehicle.send({"action": "authorize", 
+				"tokens": {"authorization": "&lt;user_token_value&gt;"}, 
+				"requestId": 103});
 		};
 		
 		// request a signal
