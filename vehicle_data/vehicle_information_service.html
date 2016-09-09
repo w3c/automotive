@@ -236,6 +236,7 @@
 		// close the WebSocket
 		vehicle.close();
 	</pre>
+	<p>The following example shows a JavaScript client subscription request and response.</p>
 	<pre class="example highlight">
 		// set a subscription, assuming the same authorization and set up from Example 1
 		if (vehicle.readyState === OPEN) {
@@ -462,10 +463,75 @@
 	  </tr>
 	</table>
 
+	<p>The request and response parameters contain a limited number of attributes, defined in the tabel below.</p>
+
+	<table class="parameters">
+	  <tr>
+	    <th>Attribute</th>
+	    <th>Type</th>
+	    <th>Description</th>
+	  </tr>
+	  <tr>
+	    <td> <dfn>action</dfn></td>
+	    <td> <a>Action</a></td>
+	    <td> The desired action of the client.</td>
+	  </tr>
+	  <tr>
+	    <td> <dfn>path</dfn></td>
+	    <td>string</td>
+	    <td>The path to the desired vehicle signal(s), as defined by the <a href="https://www.w3.org/auto/wg/wiki/Vehicle_Information_Service_Specification#Data_Model">Vehicle
+	Signal Specification (VSS)</a>.</td>
+	  </tr>
+	  <tr>
+	    <td> <dfn>requestId</dfn></td>
+	    <td>string</td>
+	    <td> Unique id value specified by the client. Returned by the server in 
+	    the response and used by client to link the request and response 
+	    messages. May be a Universally Unique Identifier (UUID). </td>
+	  </tr>
+	  <tr>
+	    <td> <dfn>subscriptionId</dfn> </td>
+	    <td>string</td>
+	    <td> Integer handle returned by the server to uniquely identify each subscription.</td>
+	  </tr>
+	  <tr>
+	    <td> <dfn>token</dfn> </td>
+	    <td>object</td>
+	    <td> Structure containing one or more security token (e.g OAuth2) name/value pairs.</td>
+	  </tr>
+	  <tr>
+	    <td> <dfn>timestamp</dfn> </td>
+	    <td>DOMTimestamp</td>
+	    <td> The time that the server returned the response (expressed as number of milliseconds).</td>
+	  </tr>
+	  <tr>
+	    <td> <dfn>value</dfn> </td>
+	    <td> any </td>
+	    <td> The data value returned by the server. This could either be a basic
+	    type, or a complex type comprised of nested name/value pairs in JSON 
+	    format.</td>
+	  </tr>
+	  <tr>
+	    <td> <dfn>TTL</dfn> </td>
+	    <td> int </td>
+	    <td> Returns the time to live of the authentication token.</td>
+	  </tr>
+	  <tr>
+	    <td> <dfn>filters</dfn> </td>
+	    <td> object </td>
+	    <td>Provides a filtering mechanism to reduce the demands of a sbscription on the server.</td>
+	  </tr>
+	  <tr>
+	    <td> <dfn>error</dfn> </td>
+	    <td> <a>Error</a> </td>
+	    <td> Returns an error code, reason and message.</td>
+	  </tr>
+	</table>
+
 
 	<h4>Action</h4>
 	
-	<p>Action may take one of four values describing the desired service for
+	<p>Action may take one of six values describing the desired service for
 	the client. There are described in the table below.</p>
 	
 	<dl title="enum Action" class="idl">
@@ -480,12 +546,9 @@
 	    longer receive notifications based on that subscription.</dd>
 		<dt>authorize</dt>
 		<dd>Establish user permissions.</dd>
+		<dt>getVSS</dt>
+		<dd>Allows the client to request the structure of the vehicle signal specification.</dd>
 	</dl>
-
-	<h4><a>Path</a></h4>
-	<p>This is the desired vehicle signal(s) path, as defined by the <a
-	href="https://www.w3.org/auto/wg/wiki/Vehicle_Information_Service_Specification#Data_Model">Vehicle
-	Signal Specification (VSS)</a></p>
 
 	<h2><a>Authorize</a></h2>
  	<p>To enable access to signals that are under access control, the client can optionally pass a message with an
@@ -898,14 +961,13 @@
 	</pre>
 
 	<h2><a>VSS Request</a></h2>
-	<p>The client may request the current vehicle signal structure from the server. 
-	This will be in the format defined in TODO - LINK and will be subject to the 
-	current access permissions of the client. </p>
+	<p>The client may request the current vehicle signal structure from the server using the getVSS action. The server will return the VSS structure currently available to the user, available to them under the current access control. The client is able to request the structure from any point in the VSS tree, such as only those signals within the chassis branch of the tree, by specifying the desired path. If the path is not set, the response will contain the entire tree.
+	</p>
 
       <pre class="idl">
       interface vssRequest {
         attribute Action action;
-        attribute string path;
+        attribute string? path;
       };
 
       interface vssSuccessResponse {
@@ -916,9 +978,25 @@
 
       interface vssErrorResponse {
         attribute Action action;
+        attribute string path;
         attribute Error error;
       };
       </pre>
+
+    The following data flow example shows a request for the signal structure within the signal.public.global branch.
+
+	<pre class="highlight hljs javascript">
+	client -> { 
+		"action": "getVSS", 
+		"path": "signal.public.global", 
+	}
+	receive <- { 
+		"action": "getVSS", 
+		"path": "signal.public.global", 
+		"vss": { },  
+	}
+	</pre>
+
 
     </section>
 
@@ -1298,111 +1376,6 @@ receive <- receive <- '{ "error": { "number": 403, "code": PERMISSION_DENIED , "
 client -> { "action": "set", "path": "engine.rpm", "value": { [ {“locked” : true } ]} }
 receive <- '{ "error": { "number": [nn], "code": DATA_NOT_SUPPORTED , "message": "Data Not Supported" }, "path": "engine.rpm", "value": { [ {“locked” : true } ]} }
 	</pre>
-
-
-	@@table class - parameter?
-	<table class="parameters">
-	  <tr>
-	    <th>Attribute</th>
-	    <th>Description</th>
-	    <th>Required</th>
-	    <th>Default Value</th>
-	    <th> Source</th>
-	  </tr>
-	  <tr>
-	    <td> action </td>
-	    <td> The desired action from the client (subscribe, unsubscribe, get, set). </td>
-	    <td> Required	</td>
-	    <td> n/a </td>
-	    <td> Client </td>
-	  </tr>
-	  <tr>
-	    <td> path	</td>
-	    <td> The path to the desired vehicle signal(s), as defined by the Vehicle Signal Specification (VSS). </td>
-	    <td> Required	</td>
-	    <td> n/a </td>
-	    <td> Client
-	  </td></tr>
-	  <tr>
-	    <td> requestId	</td>
-	    <td> Unique id value specified by the client. Returned by the server in 
-	    the response and used by client to link the request and response 
-	    messages. May be a Universally Unique Identifier (UUID) </td>
-	    <td> Required	</td>
-	    <td> n/a </td>
-	    <td> Client </td>
-	  </tr>
-	  <tr>
-	    <td> security </td>
-	    <td> Structure containing one or more security token (e.g OAuth2)  name/value pairs. </td>
-	    <td> Optional </td>
-	    <td> Null </td>
-	    <td> Client </td>
-	  </tr>
-	  <tr>
-	    <td> subscriptionId </td>
-	    <td> Integer handle returned by the server to uniquely identify each new subscription. Also used to unsubscribe. </td>
-	    <td> Required </td>
-	    <td> n/a </td>
-	    <td> Client/Server </td>
-	  </tr>
-	  <tr>
-	    <td> timestamp </td>
-	    <td> A DOMTimestamp value indicating the time that the server returned the response (expressed as number of milliseconds).  </td>
-	    <td> Required </td>
-	    <td> n/a </td>
-	    <td> Server </td>
-	  </tr>
-	  <tr>
-	    <td> value </td>
-	    <td> The data value returned by the server. This could either be a basic
-	    type, or a complex type comprised of nested name/value pairs in JSON 
-	    format. </td>
-	    <td> Required </td>
-	    <td> n/a
-	    </td>
-	    <td> Server</td>
-	  </tr>
-	  <tr>
-	    <td> TTL </td>
-	    <td> Returns the time to live of the authentication token </td>
-	    <td> Required </td>
-	    <td> n/a </td>
-	    <td> Server</td>
-	  </tr>
-	  <tr>
-	    <td> status</td>
-	    <td> Returns success for the ‘set’ and ‘unsubscribe’ methods </td>
-	    <td> Required </td>
-	    <td> n/a </td>
-	    <td> Server</td>
-	  </tr>
-	  <tr>
-	    <td> error number </td>
-	    <td> Integer that identifies the type of error. Will be a HTTP status code if a standard value has been defined for the error type. </td>
-	    <td> Required </td>
-	    <td> n/a </td>
-	    <td> Server</td>
-	  </tr>
-	  <tr>
-	    <td> error code </td>
-	    <td> Error string identifying the particular error code. Different Error
-	    Codes could occur for the same error number. For example, there may be 
-	    more than one reason why a user is forbidden to access a resource (Error
-	    Number: 403) </td>
-	    <td> Required </td>
-	    <td> n/a </td>
-	    <td> Server</td>
-	  </tr>
-	  <tr>
-	    <td> error message </td>
-	    <td> Description of the Error. </td>
-	    <td> Required </td>
-	    <td> n/a </td>
-	    <td> Server</td>
-	  </tr>
-	</table>
-
 
       </section>
 
