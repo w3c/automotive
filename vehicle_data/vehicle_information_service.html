@@ -115,7 +115,7 @@
 	Client Specification and the GENIVI Vehicle Signal Specification.</p>
 	
 	</p>The Vehicle Signal Client Specification defines an API that wraps the data access and security primitives
-	defined in this WebSocket Server Specification. It has been defined to support the development
+	defined in this Server Specification. It has been defined to support the development
 	of 'standards-compliant' JavaScript libraries that can be used by web based clients.</p> 
 
 	<p>It is assumed that native clients (written for example in C/C++) and managed runtime clients 
@@ -176,8 +176,8 @@
       
       <p>A component or module running on the vehicle is required to open
       a WebSocket connection to enable secure access to vehicle signals. 
-      In this specification this module will be referred to as the ‘Application 
-      Server’ or for simplicity as ‘the server’.</p>
+      In this specification this module will be referred to as the ‘WebSocket Vehicle Signal Server’ (WVSS)
+      or for simplicity as ‘the server’.</p>
       
       <p>This specification assumes that a single WebSocket is used to
       enable communication between the client Application and the server
@@ -255,8 +255,8 @@
       <!-- Conformance -->
       <section id="conformance">
 	<p>This specification defines conformance criteria that apply to a single product: specifically the 'in-vehicle' 
-	<dfn>Application Server</dfn> module that implements the interfaces, semantics and behaviour
-	defined in this document.</p>
+	<dfn>WebSocket Vehicle Signal Server</dfn> module that implements the interfaces, semantics and behaviour
+	defined in this document. For simplicity, this will generally be referred to as 'the server'</p>
       </section>
       
       <!-- Terminology -->
@@ -280,7 +280,7 @@
         <p>The different types of Security Principal, the approach taken to control access to signals and the importance of data privacy are described in the sections that follow.</p>
 
         <h3>Security Principals</h3>
-	<p>The types of security principal may include:</p>
+	<p>The types of security principal will include:</p>
 
         <table class="parameters">
 	  <tr>
@@ -330,9 +330,11 @@
         opened without elevated access control privileges. 
   
         <p>This server specification defines a standarized, token based approach for access control that includes specific error
-        reponses for common access control behaviours. The server is free to implement any type of token that is consistent
-        with this standardized approach. It is expected that the precise type of security tokens that are supported by a 
-        particular server implementation and the format of those tokens will be defined in the server documentation.</p>
+        reponses for common user and device access control scenarios. It is important however, that the security model is extensible.
+        Hence, the server may implement any type of token that is  consistent with this standardized approach and may optionally 
+        define additional token(s) for other Security Principal type(s). If this is the case, it is expected that the precise type of security tokens that are supported by a particular server 
+        implementation, the format of those tokens and all additional error codes and reasons (e.g. to indicate that an 
+        additional token type has expired and needs to be renewed) will be defined in the Server's documentation.</p>
       </section>
 
 
