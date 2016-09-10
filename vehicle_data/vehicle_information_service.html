@@ -270,8 +270,26 @@
       <section id="tof"></section>
 
       <!-- Architecture -->
-      <section id="architecture">
+      <section id="architecture" class="informative">
         <h2>Architecture</h2>
+      	<p>The following diagram provides a component view of a vehicle system that implements the W3C Vehicle Signal 
+      	Client and Vehicle Signal Server APIs.</p>
+      	
+      	<p>Specifically, it shows the vehicle 'System' that exposes vehicle signals and data in a tree like structure (or graph), 
+      	as defined by the 'Vehicle Signal Specification (VSS)' TODO Add link. Clients running on the vehicle can access VSS signals
+      	and data by invoking the methods defined in this specification and implemented on an interface exposed by the WebSocket Server.
+      	The diagram shows two main types of clients: 'Applications' and 'Agents'.</p>
+      	
+      	<p><dfn>Applications</dfn> can access vehicle signals and data and have a User Interface that the driver or passengers in the
+      	vehicle can interact with.</p>
+      	
+      	<p><dfn>Agents</dfn> typically have no user interface but can
+      	invoke methods exposed on the WebSocket Server and push data to off-board (V2X) internet Servers.</p>
+      	
+      	<p>Two types of Application and Agent are shown running on the vehicle. It is expected that Web Applications and Web Agents
+      	will typically access vehicle signals and data via a JavaScript Library that implements the W3C Vehicle Signal Client API and
+      	which wraps the W3C Vehicle Server Specication API.</p>
+
           <figure>
             <img src="W3C_Vehicle_APIs_Component_Diagram_v1_3.png" alt="">
             <figcaption>Component Diagram showing Components that implement W3C Vehicle APIs and their clients</figcaption>
