@@ -106,13 +106,13 @@
     <!-- Abstract -->
     <section id="abstract">
 	<p>The W3C Vehicle Signal Server Specification defines a WebSocket based API that enables
-	client applications to get, set, subscribe and unsubscribe to vehicle signals and data.</p>
+	client applications to get, set, subscribe and unsubscribe to vehicle signals and data attributes.</p>
 
 	<p>The purpose of this specification is to promote a Server API that enables application 
 	development in a consistent manner across participating automotive manufacturers.</p>
 
-	<p>It is recommended that this Vehicle Signal Server Specification is read in conjunction with the W3C Vehicle Signal 
-	Client Specification and the GENIVI Vehicle Signal Specification.</p>
+	<p>It is recommended that this Vehicle Signal Server Specification (VSSS) is read in conjunction with the 
+	W3C Vehicle Signal Client Specification (VSCS) and the GENIVI Vehicle Signal Specification (VSS).</p>
 	
 	</p>The Vehicle Signal Client Specification defines an API that wraps the data access and security primitives
 	defined in this Server Specification. It has been defined to support the development
@@ -303,17 +303,22 @@
       vehicle structures (e.g. body, engine) are at or near the top of the tree and the logical assemblies and components that 
       comprise them, are defined as their child nodes. Each of these child nodes is further decomposed into it's logical constituents
       and the process repeated. The final 'leaf nodes' (in what is formally, a Directed Acyclic Graph) represent the signals and data
-      exposed by ECUs. An example VSS tree (for illustrative purposes only) is shown below:</p>
+      exposed by ECUs. An example VSS tree is shown below:</p>
 
       <figure>
-        <img src="VSS_Tree_Simple_Example_v1" alt="Diagram showing an example Vehicle Signal tree">
+        <img src="VSS_Tree_Simple_Example_v1.png" alt="Diagram showing an example Vehicle Signal tree">
         <figcaption>Diagram showing an example Vehicle Signal Tree</figcaption>
       </figure>
 
       <p>Signals are named according to their path using the dot notation e.g. engine.rpm.</p>
 
-      <p>Different types of clients running on the vehicle can access VSS signals and data by invoking methods implemented on the
-      interface exposed by the WebSocket Server. The clients running on the vehicle fall into one of two major categories:</p>
+      <N.B.>Please note that the VSS tree shown in the diagram is for illustrative purposes only. The particular set of vehicle
+      signals that are exposed by the WebSocket Server can be obtained by invoking the server's 'getVSS method. Invoking this method
+      will return metadata that describes which signals and data attributes could potentially be returned provided that the user and/or
+      device is suitably authorised. This and other valid WebSocket actions are defined in more detail here (TODO Convert to Link).</p>
+
+      <p>The methods defined on the WebSocket Server interface may be invoked by different types of on-board and off-board clients. 
+      The clients running on the vehicle fall into one of two major categories:</p>
 
       <p><dfn>Applications</dfn> can access vehicle signals and data and have a User Interface that the driver or passengers in the
       vehicle can interact with.</p>
@@ -332,9 +337,9 @@
       W3C Vehicle Signal Client API. (TODO Add Link). The Client API is designed to 'wrap' the W3C Vehicle Server Specification
       API to make it easier for Web based clients to access vehicle signals and data in a controlled way.</p>
 
-      <p>N.B. For clariyy, 'in-vehicle' clients include both those client's that are running on a physical ECU in the vehicle itself,
-      e.g. on an ECU that implements an <dfn>In Vehicle Infotainment (IVI)</dfn>system, but also on User Devices (e.g. phones, tablets)
-      that are connected to the vehicle via the vehicle's WiFi client (if one exists on the vehicle).</p>
+      <p>N.B. For clarity, 'in-vehicle' clients include both those client's that are running on an ECU in the vehicle itself,
+      e.g. on an ECU that implements an <dfn>In Vehicle Infotainment (IVI)</dfn> system, but also to Applications running on a user's 
+      device, for example a phone or tablet, that is connected to the vehicle via the vehicle's WiFi client (if one exists).</p>
 
       <p>In addition to local, in-vehicle Applications and Agents, a variety of internet-based clients and servers may request
       access to vehicle signals and data.</p>
