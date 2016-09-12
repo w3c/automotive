@@ -295,8 +295,8 @@
         <figcaption>Component Diagram showing Components that implement W3C Vehicle APIs and their clients</figcaption>
       </figure>
 
-      <p>The Web Socket Server will in turn expose vehicle signals and data to its clients in a controlled way by implementing the
-      interface, methods and behaviour defined in this <dfn>WebSocket Vehicle Signal Server (WVSS)</dfn> specification.
+      <p>The <dfn>>Web Socket Server</dfn will in turn expose vehicle signals and data to its clients in a controlled way by 
+      implementing the interface, methods and behaviour defined in this <dfn>Vehicle Signal Server Specification(VSSS)</dfn>.</p>
 
       <p>One of the responsibilities of the WebSocket Server is ensuring that signals and data are exposed in a way that is consistent
       with the Vehicle Signal Server (VSS) specification. This defines a 'tree-like' logical taxonomy of the vehicle, where major
@@ -344,20 +344,14 @@
       information with other internet based clients and servers, which are then able to send messages to the vehicle.</p>
       
       <p>The component diagram shows four different types of internet based clients. A user may use a <dfn>Web Page</dfn> or a <dfn>
-      	Web Application</dfn> running on a phone or tablet to request access to vehicle signals on a particular vehicle. Or these signals
-      	could be accessed using a <dfn>Native or Managed Runtime Application</dfn> or via another automated <dfn>Client System</dfn> or 
-      	service</p>
+      Web Application</dfn> running on a phone or tablet to request access to vehicle signals on a particular vehicle. Alternatively 
+      these signals could be accessed using a <dfn>Native or Managed Runtime Application</dfn> or via another automated 
+      <dfn>Client System</dfn> or service e.f. the Traffic Management System in a 'Smart City'.</p>
       	
-      	<p>N.B. Once a vehicle has registered its current IP address with a server, it is possible for the server to pass the vehicle's current
-      	IP address to other clients, that could then send messages to the vehicle directly. For simplicity, this is not shown, in part because
-      	this only becomes possible after the vehicle has registered with at least one off-board server (as shown) but primarily as it does not
-      	affect the interface and behaviours defined in this WebSocket Server Specification</p>
-      
-      <p>The component diagram shows different types of internet based clients</p>
-
-      <p>When a vehicle is not running it may not be connected to the internet, that is, it may not have been assigned an IP address.
-      As a consequence, Typically, when a vehicle is not running it The vehicle needs to connect to the internetwill not have an Internet ProtTODO Explain internet layer</p>
-
+      <p>N.B. Once a vehicle has registered its current IP address with a server, it is possible for the server to pass the vehicle's
+      current IP address to other clients, that could then send messages to the vehicle directly. For simplicity, this is not shown,
+      in part because this only becomes possible after the vehicle has registered with at least one off-board server (as shown) but 
+      also because these scenarios do not affect the interface and behaviours defined in this WebSocket Server Specification</p>
       </section>
 
       <!-- Security and privacy -->
