@@ -358,10 +358,7 @@
       <p>When a vehicle is not running it may not be connected to the internet, that is, it may not have been assigned an IP address.
       As a consequence, Typically, when a vehicle is not running it The vehicle needs to connect to the internetwill not have an Internet ProtTODO Explain internet layer</p>
 
-
-
-       </section>
-
+      </section>
 
       <!-- Security and privacy -->
       <section id="security">
@@ -634,6 +631,8 @@
 	the client. There are described in the table below.</p>
 	
 	<dl title="enum Action" class="idl">
+		<dt>authorize</dt>
+		<dd>Establish user permissions.</dd>
 		<dt>get</dt>
 		<dd>Enables the client to get a value once.</dd>
 		<dt>set</dt>
@@ -641,10 +640,7 @@
 		<dt>subscribe</dt>
 		<dd>Enables the client to receive a notification containing a JSON data structure with values for one or more vehicle signals. The client requests that it is notified when the signal changes on the server.</dd>
 		<dt>unsubscribe</dt>
-		<dd>Allows the client to notify the server that it should no
-	    longer receive notifications based on that subscription.</dd>
-		<dt>authorize</dt>
-		<dd>Establish user permissions.</dd>
+		<dd>Allows the client to notify the server that it should no longer receive notifications based on that subscription.</dd>
 		<dt>getVSS</dt>
 		<dd>Allows the client to request the structure of the vehicle signal specification.</dd>
 	</dl>
@@ -687,7 +683,7 @@
                         "tokens": { "authorization": "&lt;user_token_value&gt;" },
                         "requestId": "&lt;some_unique_value&gt;"');
 
-        // Pass vehicle or device token only
+        // Pass vehicle/device token only
         vehicle.send('{ "action": "authorize", 
                         "tokens": { "www-vehicle-device": "&lt;device_token_value&gt;" },
                         "requestId": "&lt;some_unique_value&gt;"');
