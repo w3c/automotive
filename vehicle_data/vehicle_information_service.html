@@ -290,6 +290,11 @@
       the <dfn>Web Socket Server</dfn>. The interface and communication mechanisms that are used between the vehicle System and the
       Web Socket Server are outside of the scope of this specification.</p>
 
+      <figure>
+        <img src="W3C_Vehicle_APIs_Component_Diagram_v1_3.png" alt="">
+        <figcaption>Component Diagram showing Components that implement W3C Vehicle APIs and their clients</figcaption>
+      </figure>
+
       <p>The Web Socket Server will in turn expose vehicle signals and data to its clients in a controlled way by implementing the
       interface, methods and behaviour defined in this <dfn>WebSocket Vehicle Signal Server (WVSS)</dfn> specification.
 
@@ -317,34 +322,41 @@
 
       <p>Web Applications and Web Agents may directly invoke the Vehicle Signal Server interface exposed by the WebSocker server
       but it is expected that they will typically access vehicle signals and data via a JavaScript Library that implements the 
-      W3C Vehicle Signal Client API. (TODO Add Link)</p>
+      W3C Vehicle Signal Client API. (TODO Add Link). The Client API is designed to 'wrap' the W3C Vehicle Server Specification
+      API to make it easier for Web based clients to access vehicle signals and data in a controlled way.</p>
 
-      <p>The Client API is designed to 'wrap' the W3C Vehicle Server Specification API to make it easier for Web based clients to
-      access vehicle signals and data in a controlled way.</p>
+      <p>N.B. For clariyy, 'in-vehicle' clients include both those client's that are running on a physical ECU in the vehicle itself,
+      e.g. on an ECU that implements an <dfn>In Vehicle Infotainment (IVI)</dfn>system, but also on User Devices (e.g. phones, tablets)
+      that are connected to the vehicle via the vehicle's WiFi client (if one exists on the vehicle).</p>
 
-          <figure>
-            <img src="W3C_Vehicle_APIs_Component_Diagram_v1_3.png" alt="">
-            <figcaption>Component Diagram showing Components that implement W3C Vehicle APIs and their clients</figcaption>
-          </figure>
+      <p>In addition to local, in-vehicle Applications and Agents, a variety of internet-based clients and servers may request
+      access to vehicle signals and data.</p>
+      
+      <p>However, when a vehicle is not being used, most electrical systems will be shut down in order to maximise battery life. This
+      may include the systems that enable connectivity. Then, when the vehicle is powered up, various systems will start-up, including
+      those that provide off-board connectivity and the vehicle will typically connect either to a local WiFi network or to a Mobile 
+      Network Operator and dynamically be assigned an IP address.</p>
+      
+      <p>At this point, internet based clients and servers do not know the dynamic IP address that was assigned to a specific vehicle.
+      So normally, a vehicle will have to connect to a well known endpoint (e.g. a <dfn>Vehicle to Everything (V2X) Server</dfn>, mutually
+      authenticate and 'register' with the server passing it a unique identifier e.g. it's Vehicle Identification Number (VIN). 
+      From that point on, the server has the IP address that is currently assigned to a vehicle with a particular VIN, and can share this
+      information with other internet based clients and servers, which are then able to send messages to the vehicle.</p>
+      
+      <p>The component diagram shows four different types of internet based clients. A user may use a <dfn>Web Page</dfn> or a <dfn>
+      	Web Application</dfn> running on a phone or tablet to request access to vehicle signals on a particular vehicle. Or these signals
+      	could be accessed using a <dfn>Native or Managed Runtime Application</dfn> or via another automated <dfn>Client System</dfn> or 
+      	service</p>
+      	
+      	<p>N.B. Once a vehicle has registered its current IP address with a server, it is possible for the server to pass the vehicle's current
+      	IP address to other clients, that could then send messages to the vehicle directly. For simplicity, this is not shown, in part because
+      	this only becomes possible after the vehicle has registered with at least one off-board server (as shown) but primarily as it does not
+      	affect the interface and behaviours defined in this WebSocket Server Specification</p>
+      
+      <p>The component diagram shows different types of internet based clients</p>
 
-      	<p>The diagram shows two main types of on-vehicle clients:</p>
-      	
-      	<p><dfn>Applications</dfn> can access vehicle signals and data and have a User Interface that the driver or passengers in the
-      	vehicle can interact with.</p>
-      	
-      	<p><dfn>Agents</dfn> typically have no user interface but can
-      	invoke methods exposed on the WebSocket Server and push data to off-board (V2X) internet Servers.</p>
-      	
-      	<p>Two types of Application and Agent are shown running on the vehicle. It is expected that Web Applications and Web Agents
-      	will typically access vehicle signals and data via a JavaScript Library that implements the W3C Vehicle Signal Client API.
-      	The Client API is designed to 'wrap' the W3C Vehicle Server Specification API to make it easier for Web based clients to access
-      	vehicle signals and data in a controlled way.</p>
-      	
-      	<p>The diagram also shows <dfn>Native or Managed Runtime Applications and Agents</dfn> running on the vehicle. These are similar to 
-      	Web Applications and Web Agents except that they are written in either a native language like (C,C++,Qt) or a Managed Runtim
-      	language like C# or Java</p>
-      	
-      	<p>TODO Explain internet layer</p>
+      <p>When a vehicle is not running it may not be connected to the internet, that is, it may not have been assigned an IP address.
+      As a consequence, Typically, when a vehicle is not running it The vehicle needs to connect to the internetwill not have an Internet ProtTODO Explain internet layer</p>
 
 
 
