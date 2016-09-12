@@ -273,12 +273,54 @@
       <!-- Architecture -->
       <section id="architecture" class="informative">
         <h2>Architecture</h2>
-      	<p>The following diagram provides a component view of a vehicle system that implements the W3C Vehicle Signal 
-      	Client and Vehicle Signal Server APIs.</p>
-      	
-      	<p>Specifically, it shows the vehicle 'System' that exposes vehicle signals and data in a tree like structure (or graph), 
-      	as defined by the 'Vehicle Signal Specification (VSS)' TODO Add link. Clients running on the vehicle can access VSS signals
-      	and data by invoking the methods defined in this specification and implemented on an interface exposed by the WebSocket Server.</p>
+        
+      <p>In a typical vehicle design, signals and data are transmitted between Electronic Control Units (ECUs) connected
+      via internal vehicle networks. These include Controller Area Networks (CAN), Media Oriented Systems Transport (MOST)
+      and Local Interconnect Networks (LIN). ECUs on these networks broadcast messages on network buses, and other ECUs on the
+      bus respond to the messages.</p> 
+
+      <p>In the component diagram included below, the internal vehicle CAN, MOST and LIN networks and the ECUs that communicate
+      via these networks are abstracted and for simplicity, represented by the <dfn>System</dfn> component.</p>
+
+      <p>For safety, security and commercial reasons not all clients should be able GET, SET or SUBSCRIBE to particular vehicle
+      signals. As a consequence, access-control must be managed and so clients cannot simply connect directly to ECUs or to CAN,
+      MOST or LIN network buses.</p>
+
+      <p>The vehicle signals and data that are available within the wider vehicle System will be exposed in a controlled manner to
+      the <dfn>Web Socket Server</dfn>. The interface and communication mechanisms that are used between the vehicle System and the
+      Web Socket Server are outside of the scope of this specification.</p>
+
+      <p>The Web Socket Server will in turn expose vehicle signals and data to its clients in a controlled way by implementing the
+      interface, methods and behaviour defined in this <dfn>WebSocket Vehicle Signal Server (WVSS)</dfn> specification.
+
+      <p>One of the responsibilities of the WebSocket Server is ensuring that signals and data are exposed in a way that is consistent
+      with the Vehicle Signal Server (VSS) specification. This defines a 'tree-like' logical taxonomy of the vehicle, where major
+      vehicle structures (e.g. body, engine) are at or near the top of the tree and the logical assemblies and components that 
+      comprise them, are defined as their child nodes. Each of these child nodes is further decomposed into it's logical constituents
+      and the process repeated. The final 'leaf nodes' (in what is formally, a Directed Acyclic Graph) represent the signals and data
+      exposed by ECUs.</p>
+
+      <p>Different types of clients running on the vehicle can access VSS signals and data by invoking methods implemented on the
+      interface exposed by the WebSocket Server. The Clients running on the vehicle fall into one of two major categories:</p>
+
+      <p><dfn>Applications</dfn> can access vehicle signals and data and have a User Interface that the driver or passengers in the
+      vehicle can interact with.</p>
+
+      <p><dfn>Agents</dfn> typically have no user interface and may be implemented as a 'service'. The can also invoke methods 
+      exposed on the WebSocket Server but unlike Applications they can connect to one or more off-board (V2X) internet Servers
+      in order to send data off-board.</p>
+
+      <p>Both Applications and Agents can be subdivided into those that are 'Web Based' and implemented using Web Standards 
+      (HTML, CSS, JavaScript) and run in a 'Web Runtime' and those that run in their own process, implemented using Native languages
+      and libraries (e.g. C,C++ or Qt) and those that run in a Managed Runtime Environment and are written using languages like 
+      C# or Java.</p>
+
+      <p>Web Applications and Web Agents may directly invoke the Vehicle Signal Server interface exposed by the WebSocker server
+      but it is expected that they will typically access vehicle signals and data via a JavaScript Library that implements the 
+      W3C Vehicle Signal Client API. (TODO Add Link)</p>
+
+      <p>The Client API is designed to 'wrap' the W3C Vehicle Server Specification API to make it easier for Web based clients to
+      access vehicle signals and data in a controlled way.</p>
 
           <figure>
             <img src="W3C_Vehicle_APIs_Component_Diagram_v1_3.png" alt="">
