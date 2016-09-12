@@ -292,10 +292,10 @@
 
       <figure>
         <img src="W3C_Vehicle_APIs_Component_Diagram_v1_3.png" alt="">
-        <figcaption>Component Diagram showing Components that implement W3C Vehicle APIs and their clients</figcaption>
+        <figcaption>Diagram showing Components that implement the W3C Vehicle Signal APIs</figcaption>
       </figure>
 
-      <p>The <dfn>>Web Socket Server</dfn will in turn expose vehicle signals and data to its clients in a controlled way by 
+      <p>The <dfn>Web Socket Server</dfn> will in turn expose vehicle signals and data to its clients in a controlled way by 
       implementing the interface, methods and behaviour defined in this <dfn>Vehicle Signal Server Specification(VSSS)</dfn>.</p>
 
       <p>One of the responsibilities of the WebSocket Server is ensuring that signals and data are exposed in a way that is consistent
@@ -303,10 +303,17 @@
       vehicle structures (e.g. body, engine) are at or near the top of the tree and the logical assemblies and components that 
       comprise them, are defined as their child nodes. Each of these child nodes is further decomposed into it's logical constituents
       and the process repeated. The final 'leaf nodes' (in what is formally, a Directed Acyclic Graph) represent the signals and data
-      exposed by ECUs.</p>
+      exposed by ECUs. An example VSS tree (for illustrative purposes only) is shown below:</p>
+
+      <figure>
+        <img src="VSS_Tree_Simple_Example_v1" alt="Diagram showing an example Vehicle Signal tree">
+        <figcaption>Diagram showing an example Vehicle Signal Tree</figcaption>
+      </figure>
+
+      <p>Signals are named according to their path using the dot notation e.g. engine.rpm.</p>
 
       <p>Different types of clients running on the vehicle can access VSS signals and data by invoking methods implemented on the
-      interface exposed by the WebSocket Server. The Clients running on the vehicle fall into one of two major categories:</p>
+      interface exposed by the WebSocket Server. The clients running on the vehicle fall into one of two major categories:</p>
 
       <p><dfn>Applications</dfn> can access vehicle signals and data and have a User Interface that the driver or passengers in the
       vehicle can interact with.</p>
