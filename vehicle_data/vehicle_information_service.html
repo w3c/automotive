@@ -283,7 +283,7 @@
       via these networks are abstracted and for simplicity, represented by the <dfn>System</dfn> component.</p>
 
       <p>For safety, security and commercial reasons not all clients should be able to GET, SET or SUBSCRIBE to particular vehicle
-      signals. As a consequence, access-control must be managed and so clients cannot simply connect directly to ECUs or to CAN,
+      signals. As a consequence, access-control must be managed so clients cannot simply connect directly to ECUs or to CAN,
       MOST or LIN network buses.</p>
 
       <p>The vehicle signals and data that are available within the wider vehicle System will be exposed in a controlled manner to
@@ -299,7 +299,7 @@
       implementing the interface, methods and behaviour defined in this <dfn>Vehicle Signal Server Specification(VSSS)</dfn>.</p>
 
       <p>One of the responsibilities of the WebSocket Server is ensuring that signals and data are exposed in a way that is consistent
-      with the Vehicle Signal Server (VSS) specification. This defines a 'tree-like' logical taxonomy of the vehicle, where major
+      with the Vehicle Signal Specification (VSS). This defines a 'tree-like' logical taxonomy of the vehicle, where major
       vehicle structures (e.g. body, engine) are at or near the top of the tree and the logical assemblies and components that 
       comprise them, are defined as their child nodes. Each of these child nodes is further decomposed into its logical constituents
       and the process repeated. The final 'leaf nodes' (in what is formally, a Directed Acyclic Graph) represent the signals and data
@@ -362,7 +362,7 @@
       	
       <p>N.B. Once a vehicle has registered its current IP address with a server, it would be possible for the server to pass the
       vehicle's IP address to other systems. From that point, any system that has the vehicle's IP address could potentially send 
-      messages directly to an endpoint exposed on the vehicle. However, if the vehicle loses loses connectivity and is dynamically
+      messages directly to an endpoint exposed on the vehicle. However, if the vehicle loses connectivity and is dynamically
       assigned a new IP address, it will need to re-register its new IP address, and the new address will need to be communicated to
       any interested parties. For simplicity, this is not shown, in part because this connectivity only becomes possible after the 
       vehicle has registered with at least one off-board server (as shown) but also because these scenarios do not affect the interface
