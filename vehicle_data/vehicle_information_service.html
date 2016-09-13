@@ -977,7 +977,7 @@
 	<h2><a>Unsubscribe</a></h2>
 	<p>The client should always unsubscribe from receiving notifications when it is no longer interested in receiving them. Over a long vehicle journey, this will significantly reduce the processing required by the server and enable the server to free memory, making it easier for the server to remain responsive to requests from the client.</p>
 
-	<p>The client sends the unsubscribe action with the ID of the subscription which needs to be unsubscribed. If the client wished to unsubscribe from all of its clients, it can send a subscription ID of 0. If an invalid ID is sent the server will return an error, as shown in the following examples. Where [nn] denotes a numeric integer error number (e.g. HTTP status code).</p>
+	<p>The client sends the unsubscribe action with the ID of the subscription which needs to be unsubscribed. If the client wished to unsubscribe from all of its clients, it can send a subscription ID of 0. If an invalid ID is sent the server will return an error, as shown in the following examples.</p>
 
       <pre class="idl">
       interface unsubscribeRequest {
