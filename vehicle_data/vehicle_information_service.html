@@ -1152,15 +1152,15 @@
       </pre>
       <p>Potential tags could include:</p>
       <ul>
-	<li>Interval - provide data every X ms allowing the developer
-	to restrict the number of values received for verbose
-	subscriptions</li>
+	<li>Interval - request that the server provides a notification every 'n' milliseconds. 
+	If the client does not need the data more frequently, this allows the client to reduce the
+	load on the server.</li>
 	<li>Range - provide a value only when within a given range</li>
 	<li>Minimum change - provide data when a value has changed by
 	a specified amount</li>
       </ul>
 
-      <p>If the filter is not set or unsupported the notifcaiton frequency will be
+      <p>If the filter is not set or unsupported the notification frequency will be
       determined by the server.</p>
 
       <pre class="highlight hljs javascript">
@@ -1376,140 +1376,6 @@ vehicle.close();
 	gracefully and to recover and for example request new
 	subscriptions, where these are required.</p> 
       </section>
-      <section>
-	<h3><a>Dataflow</a> Examples - For Editors' Reference. To be removed</h3>
-	<h4>Subscribe</h4>
-	<p>Subscribe to an attribute at 100ms interval</p>
-	<pre class="highlight hljs javascript">
-client -> '{ "action": "subscribe", “interval”: 100, "path": "body.trunk" }'
-//confirm subscription
-receive <- '{ "id": 13654, "interval": 100, "path": "body.trunk" }
-//return data every 100ms
-receive <- '{ "id" 13654, "path": "body.trunk", 
-              "value": { "isopen": true, "islocked": false } }
-receive <- '{ "id" 13654, "path": "body.trunk", 
-              "value": { "isopen": true, "islocked": false } }
-receive <- '{ "id": 13654, "path": "body.trunk", 
-              "value": { "isopen": true, "islocked": false } }
-	</pre>
-	<p>Subscribe to an attribute onchange (discrete values
-	therefore no threshold required). The server returns only the
-	changed attribute.</p>
-	<pre class="highlight hljs javascript">
-client -> '{ "action": "subscribe", “onchange”: true, "path": "body.trunk" }'
-//confirm subscription
-receive <- '{ "id": 13658, "onchange": true, "path": "body.trunk" }
-//return data when the trunk is opened
-receive <- '{ "id": 13658, "path": "body.trunk", "value": { "isopen": true, "islocked": false } }
-//return data when the trunk is closed
-receive <- '{ "id": 13658, "path": "body.trunk", "value": { "isopen": false, "islocked": false } }
-//return data when the trunk is locked
-receive <- '{ "id": 13658, "path": "body.trunk", "value": { "isopen": false, "islocked": true }}
-	</pre>
-	<p>Subscribe to an attribute (tps - throttle position) onchange
-	(continuous value without minChange, so minChange determined by the
-	server).</p>
-	<pre class="highlight hljs javascript">
-client -> { "action": "subscribe", "onchange": true, "path": "engine.tps" }}
-receive <- '{ "id": 13661, "path": "engine.tps", "value": 54}'
-receive <- '{ "id": 13661, "path": "engine.tps", "value": 58}'
-	</pre>
-	<p>Subscribe to an attribute (tps - throttle position)
-	onchange (continuous value with minChange and bounds set).</p>
-	<pre class="highlight hljs javascript">
-client -> { "action": "subscribe", "onchange": { "above": 60, "below": 100, "minChange": 20 }, "path": "engine.tps" }}
-receive <- '{ "id": 13662, "path": "engine.tps", "value": 60}'
-receive <- '{ "id": 13662, "path": "engine.tps", "value": 80}'
-	</pre>
-	<h4>Unsubscribe</h4>
-
-	<p>Unsubscribe from a single subscription with valid ID</p>
-	<pre class="highlight hljs javascript">
-client -> '{ "action": "unsubscribe", "id": 35472 }'
-receive <- '{ "status": "success", "action": "unsubscribe", "id": 35472}
-	</pre>
-	<p>Unsubscribe from all subscriptions by sending subscription
-	“id” of ‘0’</p>
-	<pre class="highlight hljs javascript">
-client -> '{ "action": "unsubscribe", “id”: 0 }'
-receive <- '{ "status": "success", "action": "unsubscribe", "id": 0 }
-	</pre>
-	<p>Unsubscribe from a single subscription with an invalid ID</p>
-	<pre class="highlight hljs javascript">
-client -> '{ "action": "unsubscribe", “id”: 3542 }'
-receive <- '{ "error": { "number":[nn], "code": INVALID_ID ,"message": "Invalid ID" }, "action": "unsubscribe", “id”: 3542 }
-         </pre>
-
-	 <p>Where [nn] denotes a numeric integer error number (e.g. HTTP status code).</p>
-
-	 <p>The client should always unsubscribe from receiving notifications when
-	 it is no longer interested in receiving them. Over a long vehicle
-	 journey, this will significantly reduce the processing required by the
-	 server and enable the server to free memory, making it easier for the
-	 server to remain responsive to requests from the client.</p>
-
-	 <h4>Get</h4>
-
-	 <p>The server shall return messages to the client using the
-	 following format, including the path to the signal and the
-	 value held within the signal:</p>
-	<pre class="highlight hljs javascript">
-client -> { "action": "get", "path": "engine.rpm" }
-receive <- { "path": "engine.rpm", "value": 2372 }
-	</pre>
-	<p>In the case where the client has subscribed to a path which
-	returns a complex type, the value shall be returned as name
-	value pairs in a JSON object, as defined in the vehicle signal
-	specification format. Wildcards may be used in order to
-	specify only a subset of data. This can be specified at any
-	level of the Vehicle Signal Specification (VSS) tree.</p>
-
-	<p>Complex type</p>
-	<pre class="highlight hljs javascript">
-client -> { "action": "get", "path": "body.trunk" }
-receive <- { "path": "body.trunk", "value": { "locked": false, "open": true }}
-	</pre>
-	<p>Complex type with nested array. Path: “body.doors.*.lock” -
-	All doors, lock state.</p>
-	<pre class="highlight hljs javascript">
-client -> { "action": "get", "path": " body.doors.*.lock" }
-receive <- { "path": "body.doors.*.lock ", "value": { [ {"locked" : true }, {"locked" : true }, 
-              {"locked" : false }, {"locked" : true } ] } }
-	</pre>
-	<p>Complex type with nested array. Path: “body.doors.*” - All
-	doors, all door attributes (where door has two attributes,
-	lock and window_pos)</p>
-	<pre class="highlight hljs javascript">
-client -> { "action": "get", "path": " body.doors.* " }
-receive <- { "path": "body.doors.*.lock ", "value": { [ {“locked” : true, “windows_pos”: 143 }, {“locked” : true, “windows_pos”: 23 },
-              {“locked” : false, “windows_pos”: 162 }, {“locked” : true, “windows_pos”: 0 } ] }
-	</pre>
-	<p>Request none-existent data</p>
-	<pre class="highlight hljs javascript">
-client -> { "action": "get", "path": "body.flux.capacitor" }
-receive <- '{ "error": { "number":[nn], "code": UNRECOGNISED_FORMAT, "message": "Unrecognised Format" } }
-	</pre>
-	<h4>Set</h4>
-	<p>Successfully set a signal.</p>
-	<pre class="highlight hljs javascript">
-client -> { "action": "set", "path": " body.doors.*.lock", "value":{ [ {“locked” : true }, {“locked” : true }, 
-              {“locked” : false }, {“locked” : true } ] } }
-receive <- { "status": "success",  "path": " body.doors.*.lock", "value":{ [ {“locked” : true }, {“locked” : true }, 
-              {“locked” : false }, {“locked” : true } ] } }
-	</pre>
-	<p>Unsuccessful set. The value cannot be set.</p>
-	<pre class="highlight hljs javascript">
-client -> { "action": "set", "path": "engine.rpm", "value": 2000}
-receive <- receive <- '{ "error": { "number": 403, "code": PERMISSION_DENIED , "message": "User is not authorized to set this value" }, "path": "engine.rpm", "value": 2000 }
-	</pre>
-	<p>Unsuccessful set. The value does not exist in the specified path.</p>
-	<pre class="highlight hljs javascript">
-client -> { "action": "set", "path": "engine.rpm", "value": { [ {“locked” : true } ]} }
-receive <- '{ "error": { "number": [nn], "code": DATA_NOT_SUPPORTED , "message": "Data Not Supported" }, "path": "engine.rpm", "value": { [ {“locked” : true } ]} }
-	</pre>
-
-      </section>
-
     </body>
 </html>
 
