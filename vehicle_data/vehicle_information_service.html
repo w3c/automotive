@@ -183,7 +183,7 @@
       enable communication between the client Application and the server
       in order to reduce processing overhead.</p>
       
-      <p>N.B It is not explicitly prohibited for the client to request
+      <p>It is not explicitly prohibited for the client to request
       that the server opens more than one WebSocket. However, the server
       may refuse to open a subsequent WebSocket connection and the client is
       responsible for handling this gracefully.</p>
@@ -195,7 +195,7 @@
       that connection and the client must use that WebSocket instance to
       unsubscribe.</p>
 
-      <p>N.B. If more than one WebSocket connection has been established
+      <p>If more than one WebSocket connection has been established
       between one or more clients and a particular server instance, there
       is a risk that race conditions and concurrency issues could occur.
       An example of this would be, where two or more WebSocket connections 
@@ -310,9 +310,9 @@
         <figcaption>Diagram showing an example Vehicle Signal Tree</figcaption>
       </figure>
 
-      <p>N.B. Signals are named according to their path using the dot notation e.g. engine.rpm.</p>
+      <p>Signals are named according to their path using the dot notation e.g. engine.rpm.</p>
 
-      <N.B.>Please note that the VSS tree shown in the diagram is for illustrative purposes only. The particular set of vehicle
+      <p>Please note that the VSS tree shown in the diagram is for illustrative purposes only. The particular set of vehicle
       signals that are exposed by the WebSocket Server can be obtained by invoking the server's 'getVSS method. Invoking this method
       will return metadata that describes which signals and data attributes could potentially be returned provided that the user and/or
       device is suitably authorised. This and other valid WebSocket actions are defined in more detail here (TODO Convert to Link).</p>
@@ -337,7 +337,7 @@
       W3C Vehicle Signal Client API. (TODO Add Link). The Client API is designed to 'wrap' the W3C Vehicle Server Specification
       API to make it easier for Web based clients to access vehicle signals and data in a controlled way.</p>
 
-      <p>N.B. For clarity, 'in-vehicle' clients include both those clients that are running on an ECU in the vehicle itself,
+      <p>For clarity, 'in-vehicle' clients include both those clients that are running on an ECU in the vehicle itself,
       e.g. on an ECU that implements an <dfn>In Vehicle Infotainment (IVI)</dfn> system, but also to Applications running on a user's 
       device, for example a phone or tablet, that is connected to the vehicle via the vehicle's WiFi client (if one exists).</p>
 
@@ -360,7 +360,7 @@
       these signals could be accessed using a <dfn>Native or Managed Runtime Application</dfn> or via another automated 
       <dfn>Client System</dfn> or service e.g. the Traffic Management System in a 'Smart City'.</p>
       	
-      <p>N.B. Once a vehicle has registered its current IP address with a server, it would be possible for the server to pass the
+      <p>Once a vehicle has registered its current IP address with a server, it would be possible for the server to pass the
       vehicle's IP address to other systems. From that point, any system that has the vehicle's IP address could potentially send 
       messages directly to an endpoint exposed on the vehicle. However, if the vehicle loses connectivity and is dynamically
       assigned a new IP address, it will need to re-register its new IP address, and the new address will need to be communicated to
@@ -1366,7 +1366,7 @@
 	the client:</p>
 	<pre class="highlight hljs javascript">
 // Open the WebSocket
-var vehicle  = new WebSocket(“wss://localhost:4343”);
+var vehicle  = new WebSocket("wss://localhost:4343", "VISS1.0");
 
 // WebSocket is used to GET, SET, SUBSCRIBE and UNSUBSCRIBE
 …
