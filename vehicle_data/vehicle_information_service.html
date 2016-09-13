@@ -419,7 +419,7 @@
 
         <h3>WebSocket Channel Authorization</h3>
         <p>The client may send a message with an 'authorize' action to modify the access-control state of the WebSocket channel.
-        The message structurs is defined in detail in section TODO add link</p>
+        The message structure is defined in detail in section TODO add link</p>
         
         <p>The following diagram illustrates a scenario where the client requests vehicle speed. In this example scenario, this 
         signal is not under access control and so the server returns a message containing the requested data. The client then 
@@ -539,15 +539,12 @@
 
 	<p>Clients can request vehicle signal data from the server by
 	sending a JSON data structure to the server via the WebSocket
-	connection.</p>
-
-	<p>The client shall send data requests to the server using the WebSockets send API.</p>
+	connection.The client shall send data requests to the server using the WebSockets send API.</p>
+	
 	<pre class="highlight hljs javascript">
 		boolean WebSocket.send(object request);
 	</pre>
-	<p>The request object MUST be one of the valid request objects defined in the table below.</p>
-
-	<p>The client shall receive data requests from the server using the WebSockets onmessage API, as follows:</p>
+	<p>The request object MUST be one of the request objects defined in this section. The client shall receive data requests from the server using the WebSockets onmessage API, as follows:</p>
 	<pre class="highlight hljs javascript">
 		WebSocket.onmessage = function(object){
 			// process data
