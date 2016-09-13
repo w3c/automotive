@@ -310,7 +310,7 @@
         <figcaption>Diagram showing an example Vehicle Signal Tree</figcaption>
       </figure>
 
-      <p>Signals are named according to their path using the dot notation e.g. engine.rpm.</p>
+      <p>N.B. Signals are named according to their path using the dot notation e.g. engine.rpm.</p>
 
       <N.B.>Please note that the VSS tree shown in the diagram is for illustrative purposes only. The particular set of vehicle
       signals that are exposed by the WebSocket Server can be obtained by invoking the server's 'getVSS method. Invoking this method
@@ -427,6 +427,11 @@
         requests that the server sets the vehicle trunk status to open and the server demands that the client passes access-control
         credentials before satisfying the request. The steps are shown in more detail in the diagram below:</p>
         
+        <figure>
+          <img src="WebSocket_Security_Flow_1_600px.png" alt="WebSocket Security token flow">
+          <figcaption>Diagram showing WebSocket Security Token flow</figcaption>
+        </figure>
+
         <p>After receiving a message with an 'authorize' action the server will attempt to verify the tokens e.g. by checking 
         with the issuing Security Authority. If all of the tokens that are passed to the server are valid, it will return
         a success response and all subsequent requests received by the WebSocket instance will have elevated access control
