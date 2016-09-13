@@ -453,8 +453,8 @@
         additional token type has expired and needs to be renewed) will be defined in the Server's documentation.</p>
 
         <h3>Use of Encryption</h3>
-        <p></p>To support a layered security model and to help establish a 'defence in depth', all vehicle signal communication 
-        between the client and server will be strongly encrypted. This makes it more difficult for an attacker to eavesdrop or 
+        <p></p>To support a layered security model and to help establish a 'defence in depth', all vehicle signal communications 
+        between the client and server will be strongly encrypted. This is to make it more difficult for an attacker to eavesdrop or 
         tamper with the security tokens; the request data or the response payload.</p>
 
         <p>One way in which this may be implemented is for the client and the server to use a Public Key Infrastructure (PKI) 
@@ -462,19 +462,17 @@
         the server negotiate to establish a secure Transport Layer Security (TLS) 'tunnel'.</p>
 
         <p>The WebSocket protocol mandates that if a client requests that the server opens a WebSocket connection and the request 
-        is received over HTTPS, then the WebSocket will be establised over TLS, that is, a secure 'wss' connection will be created. 
-        Hence all messages containing vehicle signals, whether passed via RESTful web services or using WebSockets will be strongly 
-        encrypted.</p>
+        is received over HTTPS, then the WebSocket will be establised over TLS, that is, a secure 'wss' connection will be created.</p>
 
         <h3>Token Renewal</h3>
-        <p>Each security token will have a particular lifetime during which it is valid. If on receiving a request that includes a 
-        security token, the server determines that the request is unauthorised because the token has expired, the server will return 
-        an error response indicating the fact and the client will request a new token from the Security Authority and repeat the 
-        request.</p>
+        <p>Each security token will have a specified lifetime during which it is valid. If on receiving a request for signals that are
+        subject to access-control, the server determines that the request is unauthorised because the token has expired, the server 
+        will return an error response indicating the fact and the client will request a new token from the Security Authority and 
+        repeat the request.</p>
 
-        <p>If the server returns an error code indicating that the request is forbidden (and so just renewing the security token will 
-        not make the request valid), then the client should not repeat the request unless some other change has been made and the 
-        client now believes that the request is valid.</p>
+        <p>If the server returns an error response indicating that the request is forbidden,  renewing the security token will 
+        not make the request valid. In this case, the client should not repeat the request unless some other change has been made 
+        that may mean the request is now valid.</p>
       </section>
 
 
