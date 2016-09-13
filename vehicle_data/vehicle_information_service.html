@@ -358,12 +358,15 @@
       <p>The component diagram shows four different types of internet based clients. A user may use a <dfn>Web Page</dfn> or a <dfn>
       Web Application</dfn> running on a phone or tablet to request access to vehicle signals on a particular vehicle. Alternatively 
       these signals could be accessed using a <dfn>Native or Managed Runtime Application</dfn> or via another automated 
-      <dfn>Client System</dfn> or service e.f. the Traffic Management System in a 'Smart City'.</p>
+      <dfn>Client System</dfn> or service e.g. the Traffic Management System in a 'Smart City'.</p>
       	
-      <p>N.B. Once a vehicle has registered its current IP address with a server, it is possible for the server to pass the vehicle's
-      current IP address to other clients, that could then send messages to the vehicle directly. For simplicity, this is not shown,
-      in part because this only becomes possible after the vehicle has registered with at least one off-board server (as shown) but 
-      also because these scenarios do not affect the interface and behaviours defined in this WebSocket Server Specification</p>
+      <p>N.B. Once a vehicle has registered its current IP address with a server, it would be possible for the server to pass the
+      vehicle's IP address to other systems. From that point, any system that has the vehicle's IP address could potentially send 
+      messages directly to an endpoint exposed on the vehicle. However, if the vehicle loses loses connectivity and is dynamically
+      assigned a new IP address, it will need to re-register its new IP address, and the new address will need to be communicated to
+      any interested parties. For simplicity, this is not shown, in part because this connectivity only becomes possible after the 
+      vehicle has registered with at least one off-board server (as shown) but also because these scenarios do not affect the interface
+      and behaviours defined in this WebSocket Server Specification</p>
       </section>
 
       <!-- Security and privacy -->
