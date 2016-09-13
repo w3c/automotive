@@ -101,13 +101,6 @@
             </td>
           </tr>
 
-          <tr class="todo">
-            <th>Charter extension</th>
-            <td>See <a href="#history">Change History</a>.
-              <span class="issue">(<b>Note:</b> Only include this row if this is a charter extension.)</span>
-            </td>
-          </tr>
-
           <tr>
             <th>
               Chairs
@@ -139,7 +132,6 @@
           </tr>
         </table>
 
-        <p class="issue"><b>Note:</b> The <a href="https://www.w3.org/2015/Process-20150901/#WGCharter">W3C Process Document (2015)</a> requires “The level of confidentiality of the group's proceedings and deliverables”; however, it does not mandate where this appears. Since all W3C Working Groups should be chartered as public, this notice has been moved from the essentials table to the <a href="#public">communication section</a>.</p>
       </section>
 
 
@@ -150,21 +142,21 @@
           from an automotive network bus(es) (e.g. <a href="http://en.wikipedia.org/wiki/MOST_Bus">MOST
             (Media Oriented Systems Transport)</a> or <a href="http://en.wikipedia.org/wiki/CAN_bus">CAN
             (Controller Area Network))</a> to a Web application. The APIs will
-          expose information like the vehicle brand, model, year, fuel type,
+          expose information such as the vehicle brand, model, year, fuel type,
           transmission type, steering wheel position, tire pressure, oil level,
           wiper position, lights, doors, windows and seat settings as well as
-          navigation, trip computer data, climate control data, speed, rpms,
-          acceleration, gears and other vehicle sensors.</p>
+          navigation, trip computer data, climate control data, speed, RPMs,
+          acceleration, gears and other vehicle sensor data.</p>
           <p>In order to enable multiple clients and flexible usage, the prime specification 
           for data access will be a service specification, specifying the mechanisms and protocols
           for accessing vehicle information.  The mechanisms will include WebSockets and
-          REST.  In addition, an API which is intended to use the service will be specified
-          for facility.  Initially these specifications will be limited to passenger
+          REST.  In addition, a higher level API which is intended to use the service will be specified
+          for facility to web developers.  Initially these specifications will be limited to passenger
           vehicles. How an implementation obtains this data is not in the scope
           of the group.</p>
         <p>The specification(s) produced by this Working Group will include
           security and privacy considerations. The APIs developed by this group
-          may use a different security model than the traditional browser
+          may use a different security model from the traditional browser
           security model.</p>
         <p>Members of the Working Group should review other working groups'
           deliverables that are identified as being relevant to the Working
@@ -187,7 +179,7 @@
           <h3>Success Criteria</h3>
           <p>In order to advance to <a href="https://www.w3.org/2015/Process-20150901/#RecsCR" title="Proposed Recommendation">Proposed Recommendation</a>, each specification is expected to have at least two independent implementations of each of feature defined in the specification.</p>
           <p>Each specification should contain a section detailing any known security or privacy implications for implementers, Web authors, and end users.</p>
-          <p><i class="todo">For specifications of technologies that directly impact user experience, such as content technologies, as well as protocols and APIs which impact content: </i>Each specification should contain a section describing known impacts on accessibility to users with disabilities, ways the specification features address them, and recommendations for minimizing accessibility problems in implementation.</p>
+
         </div>
       </section>
 
@@ -197,12 +189,10 @@
         <h2>
           Deliverables
         </h2>
-        <p class="issue"><b>Issue:</b> I've (not Kaz :) removed the milestones table, which is always wildly inaccurate, and included the milestones as projected completion dates in the description template for each deliverable. Up-to-date milestones tables should be maintained on the group page and linked to from this charter.</p>
         <p class="issue"><b>Issue:</b>The Editors of the specs are Powell Kinney, Vinli, Wonsuk Lee, ETRI, Kevin Gavigan, JLR, Adam Crofts, JLR.</p>
 
         <p>More detailed milestones and updated publication schedules are available on the <a href="https://www.w3.org/wiki/[groupname]/PubStatus">group publication status page</a>.</p>
 
-        <p><i>Draft state</i> indicates the state of the deliverable at the time of the charter approval. <i>Expected completion</i> indicates when the deliverable is projected to become a Recommendation, or otherwise reach a stable state.</p>
 
         <div id="normative">
           <h3>
@@ -215,7 +205,7 @@
           <dl>
           <dt id="service-spec" class="spec">Vehicle Signal Server Specification</dt>
           <dd>
-            <p>The Vehicle Signal Server Specification defines the semantics of exposing vehicle information through the WebSockets protocol. This specification is dependant upon the Vehicle Signal Specification, as defined by GENIVI.</p>
+            <p>The Vehicle Signal Server Specification defines the semantics of exposing vehicle information through the WebSockets protocol. This specification is dependent upon the Vehicle Signal Specification, as defined by GENIVI.</p>
 
             <p class="draft-status"><a href="https://w3c.github.io/automotive/vehicle_data/vehicle_information_service.html">Editor's Draft</a></p>
 
@@ -279,20 +269,15 @@
         
         <div id="timeline">
           <h3>Timeline</h3>
-            <p class="todo">Put here a timeline view of all deliverables.</p>
-            <ul class="todo">
-              <li>July 2016: First face-to-face meeting</li>
-              <li>August 2016: First teleconference</li>
-              <li>September 2016: First face-to-face meeting - TPAC</li>
-              <li>October 2016: First face-to-face meeting - GENIVIA AMM</li>
-              <li>September 2016: FPWD of Vehicle Information Service Specification</li>
-              <li>October 2016: FPWD of Vehicle Information Access API Specifiecation</li>
-              <li>March 2017: CR of Vehicle Information Service Specification</li>
-              <li>March 2017: CR of Vehicle Information Access API Specifiecation</li>
-              <li>June 2017: PR of Vehicle Information Service Specification</li>
-              <li>June 2017: PR of Vehicle Information Access API Specifiecation</li>
-              <li>September 2017: REC of Vehicle Information Service Specification</li>
-              <li>September 2017: REC of Vehicle Information Access API Specifiecation</li>
+            <ul>
+              <li>October 2016: FPWD of Vehicle Information Service Specification</li>
+              <li>November 2016: FPWD of Vehicle Information Access API Specifiecation</li>
+              <li>April 2017: CR of Vehicle Information Service Specification</li>
+              <li>April 2017: CR of Vehicle Information Access API Specifiecation</li>
+              <li>July 2017: PR of Vehicle Information Service Specification</li>
+              <li>July 2017: PR of Vehicle Information Access API Specifiecation</li>
+              <li>October 2017: REC of Vehicle Information Service Specification</li>
+              <li>October 2017: REC of Vehicle Information Access API Specifiecation</li>
             </ul>
         </div>
       </section>
@@ -305,9 +290,7 @@
         <p class="issue"><b>Issue:</b> The paragraph above replaces line-item liaisons and dependencies with individual horizontal groups. There's been a suggestion to name and individually link the specific horizontal groups inline, instead of pointing to a page that lists them.</p>
         <p class="issue"><b>Issue:</b> The requirement for an invitation to review after FPWD and before CR may seem a bit overly restrictive, but it only requires an invitation, not a review, a commitment to review, or even a response from the horizontal group. This compromise offers early notification without introducing a bottleneck.</p>
 
-        <p>Additional technical coordination with the following Groups will be made, per the <a href="https://www.w3.org/2015/Process-20150901/#WGCharter">W3C Process Document</a>:</p>
-      	
-      	<p class="todo">In addition to the above catch-all reference to horizontal review which includes accessibility review, please check with chairs and staff contacts of the <a href="https://www.w3.org/WAI/APA/">Accessible Platform Architectures Working Group</a> to determine if an additional liaison statement with more specific information about concrete review issues is needed in the list below.</p>
+        <p>Additional technical coordination with the following Groups will be made, per the <a href="https://www.w3.org/2015/Process-20150901/#WGCharter">W3C Process Document</a>:</p>      	
 
         <div>
           <h3 id="w3c-coordination">W3C Groups</h3>
@@ -601,7 +584,7 @@
 
       <p class="copyright">
         <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> ©
-        <i class="todo">[yyyy]</i>
+        2016
         <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup>
         (
         <a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
