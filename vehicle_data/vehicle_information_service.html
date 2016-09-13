@@ -1198,9 +1198,9 @@
       of the specified range. For example, if the the range states { "below": 100 }, a final value may 
       be received at 101 to indicate that the value is now out of range.</p>
 
-      <p>The client should take care to avoid specifying a minimum
-		change amount that is too small in order to prevent
-		unnecessary messages. The server may provide a 429 - Too Many Request error if this is the case.</p>
+      <p>The client should not specify a minimum change amount that is smaller than it needs - in order to prevent
+	adding unecessary load on the server. The server may return a '429 - Too Many Request' error response if
+	it is unable to fulfil the request made by the client.</p>
 
       </section>
 
