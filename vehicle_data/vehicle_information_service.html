@@ -282,7 +282,7 @@
       <p>In the component diagram included below, the internal vehicle CAN, MOST and LIN networks and the ECUs that communicate
       via these networks are abstracted and for simplicity, represented by the <dfn>System</dfn> component.</p>
 
-      <p>For safety, security and commercial reasons not all clients should be able GET, SET or SUBSCRIBE to particular vehicle
+      <p>For safety, security and commercial reasons not all clients should be able to GET, SET or SUBSCRIBE to particular vehicle
       signals. As a consequence, access-control must be managed and so clients cannot simply connect directly to ECUs or to CAN,
       MOST or LIN network buses.</p>
 
@@ -301,7 +301,7 @@
       <p>One of the responsibilities of the WebSocket Server is ensuring that signals and data are exposed in a way that is consistent
       with the Vehicle Signal Server (VSS) specification. This defines a 'tree-like' logical taxonomy of the vehicle, where major
       vehicle structures (e.g. body, engine) are at or near the top of the tree and the logical assemblies and components that 
-      comprise them, are defined as their child nodes. Each of these child nodes is further decomposed into it's logical constituents
+      comprise them, are defined as their child nodes. Each of these child nodes is further decomposed into its logical constituents
       and the process repeated. The final 'leaf nodes' (in what is formally, a Directed Acyclic Graph) represent the signals and data
       exposed by ECUs. An example VSS tree is shown below:</p>
 
@@ -323,7 +323,7 @@
       <p><dfn>Applications</dfn> can access vehicle signals and data and have a User Interface that the driver or passengers in the
       vehicle can interact with.</p>
 
-      <p><dfn>Agents</dfn> typically have no user interface and may be implemented as a 'service'. The can also invoke methods 
+      <p><dfn>Agents</dfn> typically have no user interface and may be implemented as a 'service'. This can also invoke methods 
       exposed on the WebSocket Server but unlike Applications they can connect to one or more off-board (V2X) internet Servers
       in order to send data off-board.</p>
 
@@ -337,7 +337,7 @@
       W3C Vehicle Signal Client API. (TODO Add Link). The Client API is designed to 'wrap' the W3C Vehicle Server Specification
       API to make it easier for Web based clients to access vehicle signals and data in a controlled way.</p>
 
-      <p>N.B. For clarity, 'in-vehicle' clients include both those client's that are running on an ECU in the vehicle itself,
+      <p>N.B. For clarity, 'in-vehicle' clients include both those clients that are running on an ECU in the vehicle itself,
       e.g. on an ECU that implements an <dfn>In Vehicle Infotainment (IVI)</dfn> system, but also to Applications running on a user's 
       device, for example a phone or tablet, that is connected to the vehicle via the vehicle's WiFi client (if one exists).</p>
 
@@ -351,7 +351,7 @@
       
       <p>At this point, internet based clients and servers do not know the dynamic IP address that was assigned to a specific vehicle.
       So normally, a vehicle will have to connect to a well known endpoint (e.g. a <dfn>Vehicle to Everything (V2X) Server</dfn>, mutually
-      authenticate and 'register' with the server passing it a unique identifier e.g. it's Vehicle Identification Number (VIN). 
+      authenticate and 'register' with the server passing it a unique identifier e.g. its Vehicle Identification Number (VIN). 
       From that point on, the server has the IP address that is currently assigned to a vehicle with a particular VIN, and can share this
       information with other internet based clients and servers, which are then able to send messages to the vehicle.</p>
       
@@ -432,8 +432,8 @@
         <p>If the client or the server close the WebSocket connection and a new WebSocket instance is opened, then it will be
         opened without elevated access control privileges. 
   
-        <p>This server specification defines a standarized, token based approach for access control that includes specific error
-        reponses for common user and device access control scenarios. It is important however, that the security model is extensible.
+        <p>This server specification defines a standardized, token based approach for access control that includes specific error
+        responses for common user and device access control scenarios. It is important however, that the security model is extensible.
         Hence, the server may implement any type of token that is  consistent with this standardized approach and may optionally 
         define additional token(s) for other Security Principal type(s). If this is the case, it is expected that the precise type of security tokens that are supported by a particular server 
         implementation, the format of those tokens and all additional error codes and reasons (e.g. to indicate that an 
@@ -568,7 +568,7 @@
 	  </tr>
 	</table>
 
-	<p>The request and response parameters contain a limited number of attributes, defined in the tabel below.</p>
+	<p>The request and response parameters contain a limited number of attributes, defined in the table below.</p>
 
 	<table class="parameters">
 	  <tr>
@@ -821,7 +821,7 @@
 
 	<p>A set request may be sent by the client in order to set the value of a signal on the vehicle, 
 	such as locking doors, opening windows and setting HVAC. The server shall respond  
-	with a success or error response. The ability to set a signal is dependant upon appropriate 
+	with a success or error response. The ability to set a signal is dependent upon appropriate 
 	authorization and may be denied by the server implementation.</p>
 
       <pre class="idl">
@@ -977,7 +977,7 @@
 	<h2><a>Unsubscribe</a></h2>
 	<p>The client should always unsubscribe from receiving notifications when it is no longer interested in receiving them. Over a long vehicle journey, this will significantly reduce the processing required by the server and enable the server to free memory, making it easier for the server to remain responsive to requests from the client.</p>
 
-	<p>The client sends the unsubscribe action with the ID of the subscription which needs to be unsubscribed. If the client wished to unsubscribe from all of it's clients, it can send a subscription ID of 0. If an invalid ID is sent the server will return an error, as shown in the following examples. Where [nn] denotes a numeric integer error number (e.g. HTTP status code).</p>
+	<p>The client sends the unsubscribe action with the ID of the subscription which needs to be unsubscribed. If the client wished to unsubscribe from all of its clients, it can send a subscription ID of 0. If an invalid ID is sent the server will return an error, as shown in the following examples. Where [nn] denotes a numeric integer error number (e.g. HTTP status code).</p>
 
       <pre class="idl">
       interface unsubscribeRequest {
@@ -1110,7 +1110,7 @@
       to be used in order to throttle the demands of subscriptions on
       the server. This may enable the reduction of traffic if the
       developer has received a 429 - Too Many Requests error
-      message. This can be implementation dependant allowing a number
+      message. This can be implementation dependent allowing a number
       of potential filtering mechanisms, such as ranges, intervals and
       minimum changes. This can be implemented using the "filters"
       option.</p>
@@ -1473,7 +1473,7 @@ receive <- { "status": "success",  "path": " body.doors.*.lock", "value":{ [ {â€
 	<p>Unsuccessful set. The value cannot be set.</p>
 	<pre class="highlight hljs javascript">
 client -> { "action": "set", "path": "engine.rpm", "value": 2000}
-receive <- receive <- '{ "error": { "number": 403, "code": PERMISSION_DENIED , "message": "User is not authorised to set this value" }, "path": "engine.rpm", "value": 2000 }
+receive <- receive <- '{ "error": { "number": 403, "code": PERMISSION_DENIED , "message": "User is not authorized to set this value" }, "path": "engine.rpm", "value": 2000 }
 	</pre>
 	<p>Unsuccessful set. The value does not exist in the specified path.</p>
 	<pre class="highlight hljs javascript">
