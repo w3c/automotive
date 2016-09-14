@@ -314,7 +314,8 @@
       <p>Please note that the VSS tree shown in the diagram is for illustrative purposes only. The particular set of vehicle
       signals that are exposed by the WebSocket Server can be obtained by invoking the server's 'getVSS method. Invoking this method
       will return metadata that describes which signals and data attributes could potentially be returned provided that the user and/or
-      device is suitably authorised. This and other valid WebSocket actions are defined in more detail here (TODO Convert to Link).</p>
+      device is suitably authorised. This and other valid WebSocket Signal Server actions are defined in more detail 
+      <a href="#action">here</a>.</p>
 
       <p>The methods defined on the WebSocket Server interface may be invoked by different types of on-board and off-board clients. 
       The clients running on the vehicle fall into one of two major categories:</p>
@@ -411,7 +412,7 @@
 
         <p>For each security principal that must be authorised by the server, the client will obtain and pass a security token
         e.g. an OAuth 2.0 token (see <a href="https://tools.ietf.org/html/rfc6749">RFC6749</a>) to the server using a message
-        containing an 'authorize' action (see section TODO).</p>
+        containing an 'authorize' action as defined <a href="#authorize">here</a>.</p>
 
         <p>A server implementation may require that a request for a particular signal includes a security token for
         both the driver of the vehicle (user) and for the vehicle instance (device). A request for a different set of vehicle signals
@@ -419,7 +420,7 @@
 
         <h3>WebSocket Channel Authorization</h3>
         <p>The client may send a message with an 'authorize' action to modify the access-control state of the WebSocket channel.
-        The message structure is defined in detail in section TODO add link</p>
+        The message structure is defined in detail <a href="#message-structure">here</a>.</p>
         
         <p>The following diagram illustrates a scenario where the client requests vehicle speed. In this example scenario, this 
         signal is not under access control and so the server returns a message containing the requested data. The client then 
