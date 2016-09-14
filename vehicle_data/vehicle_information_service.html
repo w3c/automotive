@@ -934,7 +934,10 @@
 		}
 	</pre>
 	<h2><a>Subscribe</a></h2>
-	<p>Vehicle data subscriptions provide data to the client whenever the signal changes on the server, unless otherwise specified using Server Side Filtering. The server may reduce the amount of notifications sent to the client in order to reduce processing demands, particularly when the client has subscribed to continuously varying signals.</p>
+	<p>Vehicle data subscriptions provide data to the client whenever the signal changes on the server, 
+	unless otherwise specified using Server Side Filtering. The server MAY reduce the number of notifications 
+	sent to the client in order to reduce processing demands, particularly when the client has subscribed to 
+	continuously varying signals.</p>
 
 	<p>When the client makes a request to the server to create a new
 	subscription, a JSON data object will be returned. This will contain
