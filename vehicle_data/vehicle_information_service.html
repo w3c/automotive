@@ -158,13 +158,12 @@
     </section>
     
     <!-- Introduction -->
-    <section class="informative">
+    <section>
       <h2>Introduction</h2>
 
-      <p>The vehicle will expose vehicle signals via a WebSocket. This will
-      enable a client to GET or SET vehicle signals; to SUBSCRIBE to receive
-      notifications relating to one or more vehicle signals and to UNSUBSCRIBE
-      from receiving notifications.</p>
+      <p>The vehicle SHALL expose vehicle signals via a WebSocket. This will
+      enable a client to GET or SET vehicle signals and data; to SUBSCRIBE to receive
+      notifications and to UNSUBSCRIBE from receiving notifications.</p>
       
       <p>A future revision of this specification may consider additionally exposing vehicle signals
       via a RESTful web service but this is out of scope for this version of the specification.</p>
@@ -184,8 +183,8 @@
       
       <p>It is not explicitly prohibited for the client to request
       that the server opens more than one WebSocket. However, the server
-      may refuse to open a subsequent WebSocket connection and the client is
-      responsible for handling this gracefully.</p>
+      MAY refuse to open a subsequent WebSocket connection and the client will 
+      be responsible for handling this gracefully.</p>
 
       <p>If more than one WebSocket connection is established between a
       client Application and the server then each connection will be
@@ -373,9 +372,9 @@
       <section id="security">
         <h2>Security and Privacy Considerations</h2>
         <h3>Introduction</h3>
-        <p>The server implementation may optionally restrict access to one or more vehicle signals so that they can only 
-	be accessed in response to a request from an authorized user or device. This could be for a variety of 
-	reasons, including safety, privacy or commercial concerns.</p>
+        <p>The server implementation MAY optionally restrict access to one or more vehicle signals so that they can only 
+	be accessed in response to a request from an authorized user and/or device. This could be for a variety of 
+	reasons, including safety, privacy or commercial considerations.</p>
 
 	<p>Hence, a request to GET, SET, SUBSCRIBE or UNSUBSCRIBE to data may require the client to demonstrate
 	to the server that the request is from one or more suitably authorized Security Principals.</p>
@@ -407,19 +406,20 @@
         <p>When a client makes a request to access signal data it is performing the request on behalf of one or more 
         Security Principals, that is, for a particular user and/or vehicle/device.</p>
 
-        <p>Access to signals will be managed and controlled by the server. The server may elect not to enforce access 
+        <p>Access to signals will be managed and controlled by the server. The server MAY elect not to enforce access 
         controls on a particular signal or set of signals and to enforce different access controls on other signals.</p>
 
-        <p>For each security principal that must be authorised by the server, the client will obtain and pass a security token
+        <p>For each security principal that must be authorised by the server, the client SHALL obtain and pass a security token
         e.g. an OAuth 2.0 token (see <a href="https://tools.ietf.org/html/rfc6749">RFC6749</a>) to the server using a message
         containing an 'authorize' action as defined <a href="#authorize">here</a>.</p>
 
-        <p>A server implementation may require that a request for a particular signal includes a security token for
-        both the driver of the vehicle (user) and for the vehicle instance (device). A request for a different set of vehicle signals
-        may require that only the user is authorized or that a particular device is authorized to access those vehicle signals.</p>
+        <p>A server implementation MAY require that a request for a particular signal includes a security token for
+        both the user (e.g. driver of the vehicle) and for the device (e.g. the vehicle) that is hosting the client. 
+        A request for a different set of vehicle signals MAY require that only the user is authorized or that only the device
+        is authorized to access particular signals.</p>
 
         <h3>WebSocket Channel Authorization</h3>
-        <p>The client may send a message with an 'authorize' action to modify the access-control state of the WebSocket channel.
+        <p>The client MAY send a message with an 'authorize' action to modify the access-control state of the WebSocket channel.
         The message structure is defined in detail <a href="#message-structure">here</a>.</p>
         
         <p>The following diagram illustrates a scenario where the client requests vehicle speed. In this example scenario, this 
@@ -448,14 +448,14 @@
   
         <p>This server specification defines a standardized, token based approach for access control that includes specific error
         responses for common user and device access control scenarios. It is important however, that the security model is extensible.
-        Hence, the server may implement any type of token that is  consistent with this standardized approach and may optionally 
+        Hence, the server MAY implement any type of token that is  consistent with this standardized approach and MAY optionally 
         define additional token(s) for other Security Principal type(s). If this is the case, it is expected that the precise type of security tokens that are supported by a particular server 
         implementation, the format of those tokens and all additional error codes and reasons (e.g. to indicate that an 
         additional token type has expired and needs to be renewed) will be defined in the Server's documentation.</p>
 
         <h3>Use of Encryption</h3>
         <p></p>To support a layered security model and to help establish a 'defence in depth', all vehicle signal communications 
-        between the client and server will be strongly encrypted. This is to make it more difficult for an attacker to eavesdrop or 
+        between the client and server MUST be strongly encrypted. This is to make it more difficult for an attacker to eavesdrop or 
         tamper with the security tokens; the request data or the response payload.</p>
 
         <p>One way in which this may be implemented is for the client and the server to use a Public Key Infrastructure (PKI) 
@@ -466,7 +466,7 @@
         is received over HTTPS, then the WebSocket will be establised over TLS, that is, a secure 'wss' connection will be created.</p>
 
         <h3>Token Renewal</h3>
-        <p>Each security token will have a specified lifetime during which it is valid. If on receiving a request for signals that are
+        <p>Each security token SHALL have a specified lifetime during which it is valid. If on receiving a request for signals that are
         subject to access-control, the server determines that the request is unauthorised because the token has expired, the server 
         will return an error response indicating the fact and the client will request a new token from the Security Authority and 
         repeat the request.</p>
@@ -483,18 +483,14 @@
 	
 	<p>If the client application is an HTML Application running in a web
 	runtime or is a web page running in a browser, the WebSocket
-	instance may either be initialised natively or created using a
-	WebSocket standards compliant JavaScript library. A WebSocket
-	request can also be initiated from a native (e.g. C++) Application
-	or from an Application written using a managed runtime language like
+	instance may either be instantiated natively or be created using a
+	'standards compliant' WebSocket JavaScript library.</p>
+	<p>A WebSocket	request can also be initiated from a native (e.g. C++) Application
+	or from an Application written using a 'Managed Runtime' language like
 	Java or C#. It is assumed that native and managed clients will use a
 	suitable standards compliant WebSocket library to request that a
 	WebSocket connection is opened on the server.</p>
 
-	<p>For browser and web runtime clients, the advantage of
-	initialising the WebSocket natively in the web runtime is that there
-	are fewer overheads for the vehicle signal implementation.</p>
-	
 	<p>A client running on the vehicle will be able to connect to the
 	Application Server instance using the hostname 'wwwivi' and will
 	default to port 443. 'wwwivi' would be mapped to 127.0.0.1 in
@@ -628,7 +624,7 @@
 	    <td>string</td>
 	    <td> Unique id value specified by the client. Returned by the server in 
 	    the response and used by client to link the request and response 
-	    messages. Value MAY be a Universally Unique Identifier (UUID). </td>
+	    messages. The value MAY be a Universally Unique Identifier (UUID). </td>
 	  </tr>
 	  <tr>
 	    <td> <dfn>subscriptionId</dfn> </td>
@@ -684,7 +680,8 @@
 		<dt>set</dt>
 		<dd>Enables the client to set a value once.</dd>		
 		<dt>subscribe</dt>
-		<dd>Enables the client to receive a notification containing a JSON data structure with values for one or more vehicle signals. The client requests that it is notified when the signal changes on the server.</dd>
+		<dd>Enables the client to receive a notification containing a JSON data structure with values for one or more 
+		vehicle signals and/or data attributes. The client requests that it is notified when the signal changes on the server.</dd>
 		<dt>unsubscribe</dt>
 		<dd>Allows the client to notify the server that it should no longer receive notifications based on that subscription.</dd>
 		<dt>getVSS</dt>
