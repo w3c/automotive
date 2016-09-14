@@ -628,7 +628,7 @@
 	    <td>string</td>
 	    <td> Unique id value specified by the client. Returned by the server in 
 	    the response and used by client to link the request and response 
-	    messages. May be a Universally Unique Identifier (UUID). </td>
+	    messages. Value MAY be a Universally Unique Identifier (UUID). </td>
 	  </tr>
 	  <tr>
 	    <td> <dfn>subscriptionId</dfn> </td>
@@ -672,8 +672,9 @@
 
 	<h4>Action</h4>
 	
-	<p>Action may take one of six values describing the desired service for
-	the client. There are described in the table below.</p>
+	<p>The Action enumeration is used to define the type of action requested by the client. 
+	All client messages MUST contain a JSON structure that has an 'action' name/value pair and the 
+	value of the 'action' property MUST be one of the values specified in the enumeration:</p>
 	
 	<dl title="enum Action" class="idl">
 		<dt>authorize</dt>
