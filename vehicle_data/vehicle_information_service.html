@@ -742,7 +742,7 @@
 	</pre>
 
 	<h2><a>Get</a></h2>
- 	<p>The server shall return messages to the client using the
+ 	<p>The server SHALL return messages to the client using the
 	 following format, including the path to the signal and the
 	 value held within the signal:</p>
 
@@ -785,10 +785,8 @@
 
 	<p>In the case where the client has subscribed to a path which
 	returns a complex type, the value shall be returned as name
-	value pairs in a JSON object, as defined in the vehicle signal
-	specification format. Wildcards may be used in order to
-	specify only a subset of data. This can be specified at any
-	level of the Vehicle Signal Specification (VSS) tree.</p>
+	value pairs in a JSON object. The format MUST be as defined
+	by the Vehicle Signal Specification.<p>
 
 	<p>Complex type</p>
 	<pre class="highlight hljs javascript">
@@ -805,8 +803,12 @@
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
-	<p>Complex type with nested array. Path: "body.doors.*.lock" -
-	All doors, lock state.</p>
+		
+	<p>One or more wildcards (denoted by asterisk '*') MAY be included at 
+	any level in the path to specify that any node at that level is to be included.</p>		
+		
+	<p>See below for an example that has a path that includes a wildcard in 
+	order to request the 'lock' state (only) for all doors.</p>
 	<pre class="highlight hljs javascript">
 	client -> { 
 		"action": "get", 
