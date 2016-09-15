@@ -496,8 +496,7 @@
 	default 443. The hostname 'wwwivi' may locally be be mapped to the localhost
 	IP address 127.0.0.1 e.g. by adding an entry to the etc/hosts file.</p>
 	
-	<p>The sub-protocol name will always be 'wvss' with a version
-	number suffix, e.g. wvss1.0</p>
+	<p>The sub-protocol name will always be 'wvss' with a version number suffix, e.g. wvss1.0</p>
 
 	<pre class="highlight hljs javascript">
 	  <span class="hljs-keyword">var</span> vehicle  = new WebSocket("wss://wwwivi", "wvss1.0");
@@ -511,21 +510,18 @@
 	connections between clients and servers will be strongly
 	encrypted. This is to make it more difficult for an attacker that
 	has succeeded in installing malicious code on a vehicle to
-	eavesdrop, hijack security tokens and impersonate valid security
-	principals to get and set sensitive vehicle signals.</p>
+	eavesdrop, hijack security tokens or impersonate valid security
+	principals in order to get and set sensitive vehicle signals.</p>
 	
-	<p>The client will connect to the server over HTTPS and request that
+	<p>The client SHALL connect to the server over HTTPS and request that
 	the server opens a WebSocket. All WebSocket communications between
-	the client and server will therefore be over ‘wss’.</p>
-	
-	<p>Non encrypted communication will not be supported, hence the
-	server will refuse ‘ws’ connection requests.</p>
+	the client and server MUST be over ‘wss’. Non encrypted communication
+	will not be supported, hence the server MUST refuse ‘ws’ connection requests.</p>
 
 	<p>For security reasons, clients will not be able to connect
 	directly to ECUs or to CAN, MOST or LIN networks. All access will be
 	via WebSocket. This allows the server to securely control access to
 	vehicle signals.</p>
-  
       </section>
 
       <!-- Message Structure -->
