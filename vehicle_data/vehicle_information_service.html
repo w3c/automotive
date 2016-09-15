@@ -209,7 +209,7 @@
 
 	<pre class="example highlight">
 		// open WebSocket
-		var vehicle  = new WebSocket("wss://wwwivi", "VISS1.0");
+		var vehicle  = new WebSocket("wss://wwwivi", "wvss1.0");
 
 		// establish authorization
 		vehicle.onopen = function () {
@@ -485,22 +485,22 @@
 	runtime or is a web page running in a browser, the WebSocket
 	instance may either be instantiated natively or be created using a
 	'standards compliant' WebSocket JavaScript library.</p>
-	<p>A WebSocket	request can also be initiated from a native (e.g. C++) Application
+	<p>A WebSocket can also be initiated from a native (e.g. C++) Application
 	or from an Application written using a 'Managed Runtime' language like
 	Java or C#. It is assumed that native and managed clients will use a
 	suitable standards compliant WebSocket library to request that a
 	WebSocket connection is opened on the server.</p>
 
 	<p>A client running on the vehicle will be able to connect to the
-	Application Server instance using the hostname 'wwwivi' and will
-	default to port 443. 'wwwivi' would be mapped to 127.0.0.1 in
-	etc/hosts file.</p>
+	WebSocket Server instance using the hostname 'wwwivi' and will use the
+	default 443. The hostname 'wwwivi' may locally be be mapped to the localhost
+	IP address 127.0.0.1 e.g. by adding an entry to the etc/hosts file.</p>
 	
-	<p>The sub-protocol name will always be VISS and with a version
-	number suffix, e.g. VISS1.0</p>
+	<p>The sub-protocol name will always be 'wvss' with a version
+	number suffix, e.g. wvss1.0</p>
 
 	<pre class="highlight hljs javascript">
-	  <span class="hljs-keyword">var</span> vehicle  = new WebSocket("wss://wwwivi", "VISS1.0");
+	  <span class="hljs-keyword">var</span> vehicle  = new WebSocket("wss://wwwivi", "wvss1.0");
 	</pre>
 	
 	<p>RESTful web services are out of scope for the first revision of
