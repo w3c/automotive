@@ -540,18 +540,7 @@
 			// process data
 		}
 	</pre>
-	<p>Where 'obj' is of type DOMString and contains the response message sent by the server. The DOMString 
-	argument MUST contain a JSON structure that defines a request object, the format and content of which is 
-	defined later in this section.</p>
-        
-        <p>The client SHALL receive data requests from the server using the WebSockets onmessage API, as follows:</p>
-	<pre class="highlight hljs javascript">
-		WebSocket.onmessage = function(object){
-			// process data
-		}
-	</pre>
-	<p>The response object shall correspond to the client's request and MUST be one of valid response objects defined 
-	in the table below.</p>	
+	<p>The message returned by the server MUST be one of the response objects defined in the table below.</p>	
 	
 	<table class="parameters">
 	  <tr>
@@ -559,10 +548,10 @@
 	    <th>Response Objects</th>
 	  </tr>
 	  <tr>
-	    <td><a>authorizationRequest</a></td>
+	    <td><a>authorizeRequest</a></td>
 	    <td>
-	    	<a>authorizationSuccessResponse</a><br>
-			<a>authorizationErrorResponse</a>
+	    	<a>authorizeSuccessResponse</a><br>
+			<a>authorizeErrorResponse</a>
 		</td>
 	  </tr>
 	  <tr>
@@ -607,35 +596,36 @@
 	  <tr>
 	    <td> <dfn>action</dfn></td>
 	    <td> <a>Action</a></td>
-	    <td> The desired action of the client.</td>
+	    <td> The action that the server is requested to perform.</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn>path</dfn></td>
-	    <td>string</td>
+	    <td>DOMString</td>
 	    <td>The path to the desired vehicle signal(s), as defined by the <a href="https://www.w3.org/auto/wg/wiki/Vehicle_Information_Service_Specification#Data_Model">Vehicle
 	Signal Specification (VSS)</a>.</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn>requestId</dfn></td>
-	    <td>string</td>
+	    <td>DOMString</td>
 	    <td> Unique id value specified by the client. Returned by the server in 
 	    the response and used by client to link the request and response 
-	    messages. The value MAY be a Universally Unique Identifier (UUID). </td>
+	    messages. The value MAY be an integer or a Universally Unique Identifier (UUID).</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn>subscriptionId</dfn> </td>
-	    <td>string</td>
-	    <td> Integer handle returned by the server to uniquely identify each subscription.</td>
+	    <td>DOMString</td>
+	    <td>Value returned by the server to uniquely identify each subscription.
+	    The value MAY be an integer or a Universally Unique Identifier (UUID).</td>
 	  </tr>
 	  <tr>
-	    <td> <dfn>token</dfn> </td>
+	    <td><dfn>tokens</dfn> </td>
 	    <td>object</td>
-	    <td> Structure containing one or more security token (e.g OAuth2) name/value pairs.</td>
+	    <td>Structure containing one or more security token (e.g OAuth2) name/value pairs.</td>
 	  </tr>
 	  <tr>
-	    <td> <dfn>timestamp</dfn> </td>
+	    <td><dfn>timestamp</dfn> </td>
 	    <td>DOMTimestamp</td>
-	    <td> The time that the server returned the response (expressed as number of milliseconds).</td>
+	    <td>The Coordinated Universal Time (UTC) time that the server returned the response (expressed as number of milliseconds).</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn>value</dfn> </td>
@@ -670,7 +660,7 @@
 	
 	<dl title="enum Action" class="idl">
 		<dt>authorize</dt>
-		<dd>Establish user permissions.</dd>
+		<dd>Enables client to pass security tokens for Security Principals to the server to support access-control.</dd>
 		<dt>get</dt>
 		<dd>Enables the client to get a value once.</dd>
 		<dt>set</dt>
@@ -681,7 +671,7 @@
 		<dt>unsubscribe</dt>
 		<dd>Allows the client to notify the server that it should no longer receive notifications based on that subscription.</dd>
 		<dt>getVSS</dt>
-		<dd>Allows the client to request the structure of the vehicle signal specification.</dd>
+		<dd>Allows the client to request metadata describing signals and data attributes that are potentially accessible.</dd>
 	</dl>
 
 	<h2><a>Authorize</a></h2>
