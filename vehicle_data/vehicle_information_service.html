@@ -158,13 +158,12 @@
     </section>
     
     <!-- Introduction -->
-    <section class="informative">
+    <section>
       <h2>Introduction</h2>
 
-      <p>The vehicle will expose vehicle signals via a WebSocket. This will
-      enable a client to GET or SET vehicle signals; to SUBSCRIBE to receive
-      notifications relating to one or more vehicle signals and to UNSUBSCRIBE
-      from receiving notifications.</p>
+      <p>The vehicle SHALL expose vehicle signals via a WebSocket. This will
+      enable a client to GET or SET vehicle signals and data; to SUBSCRIBE to receive
+      notifications and to UNSUBSCRIBE from receiving notifications.</p>
       
       <p>A future revision of this specification may consider additionally exposing vehicle signals
       via a RESTful web service but this is out of scope for this version of the specification.</p>
@@ -184,8 +183,8 @@
       
       <p>It is not explicitly prohibited for the client to request
       that the server opens more than one WebSocket. However, the server
-      may refuse to open a subsequent WebSocket connection and the client is
-      responsible for handling this gracefully.</p>
+      MAY refuse to open a subsequent WebSocket connection and the client will 
+      be responsible for handling this gracefully.</p>
 
       <p>If more than one WebSocket connection is established between a
       client Application and the server then each connection will be
@@ -210,7 +209,7 @@
 
 	<pre class="example highlight">
 		// open WebSocket
-		var vehicle  = new WebSocket("wss://wwwivi", "VISS1.0");
+		var vehicle  = new WebSocket("wss://wwwivi", "wvss1.0");
 
 		// establish authorization
 		vehicle.onopen = function () {
@@ -286,7 +285,7 @@
       MOST or LIN network buses.</p>
 
       <p>The vehicle signals and data that are available within the wider vehicle System will be exposed in a controlled manner to
-      the <dfn>Web Socket Server</dfn>. The interface and communication mechanisms that are used between the vehicle System and the
+      the Web Socket Server. The interface and communication mechanisms that are used between the vehicle System and the
       Web Socket Server are outside of the scope of this specification.</p>
 
       <figure>
@@ -294,7 +293,7 @@
         <figcaption>Diagram showing Components that implement the W3C Vehicle Signal APIs</figcaption>
       </figure>
 
-      <p>The <dfn>Web Socket Server</dfn> will in turn expose vehicle signals and data to its clients in a controlled way by 
+      <p>The <dfn>WebSocket Server</dfn> will in turn expose vehicle signals and data to its clients in a controlled way by 
       implementing the interface, methods and behaviour defined in this <dfn>Vehicle Signal Server Specification(VSSS)</dfn>.</p>
 
       <p>One of the responsibilities of the WebSocket Server is ensuring that signals and data are exposed in a way that is consistent
@@ -314,7 +313,8 @@
       <p>Please note that the VSS tree shown in the diagram is for illustrative purposes only. The particular set of vehicle
       signals that are exposed by the WebSocket Server can be obtained by invoking the server's 'getVSS method. Invoking this method
       will return metadata that describes which signals and data attributes could potentially be returned provided that the user and/or
-      device is suitably authorised. This and other valid WebSocket actions are defined in more detail here (TODO Convert to Link).</p>
+      device is suitably authorised. This and other valid WebSocket Signal Server actions are defined in more detail 
+      <a href="#action">here</a>.</p>
 
       <p>The methods defined on the WebSocket Server interface may be invoked by different types of on-board and off-board clients. 
       The clients running on the vehicle fall into one of two major categories:</p>
@@ -372,9 +372,9 @@
       <section id="security">
         <h2>Security and Privacy Considerations</h2>
         <h3>Introduction</h3>
-        <p>The server implementation may optionally restrict access to one or more vehicle signals so that they can only 
-	be accessed in response to a request from an authorized user or device. This could be for a variety of 
-	reasons, including safety, privacy or commercial concerns.</p>
+        <p>The server implementation MAY optionally restrict access to one or more vehicle signals so that they can only 
+	be accessed in response to a request from an authorized user and/or device. This could be for a variety of 
+	reasons, including safety, privacy or commercial considerations.</p>
 
 	<p>Hence, a request to GET, SET, SUBSCRIBE or UNSUBSCRIBE to data may require the client to demonstrate
 	to the server that the request is from one or more suitably authorized Security Principals.</p>
@@ -406,20 +406,21 @@
         <p>When a client makes a request to access signal data it is performing the request on behalf of one or more 
         Security Principals, that is, for a particular user and/or vehicle/device.</p>
 
-        <p>Access to signals will be managed and controlled by the server. The server may elect not to enforce access 
+        <p>Access to signals will be managed and controlled by the server. The server MAY elect not to enforce access 
         controls on a particular signal or set of signals and to enforce different access controls on other signals.</p>
 
-        <p>For each security principal that must be authorised by the server, the client will obtain and pass a security token
+        <p>For each security principal that must be authorised by the server, the client SHALL obtain and pass a security token
         e.g. an OAuth 2.0 token (see <a href="https://tools.ietf.org/html/rfc6749">RFC6749</a>) to the server using a message
-        containing an 'authorize' action (see section TODO).</p>
+        containing an 'authorize' action as defined <a href="#authorize">here</a>.</p>
 
-        <p>A server implementation may require that a request for a particular signal includes a security token for
-        both the driver of the vehicle (user) and for the vehicle instance (device). A request for a different set of vehicle signals
-        may require that only the user is authorized or that a particular device is authorized to access those vehicle signals.</p>
+        <p>A server implementation MAY require that a request for a particular signal includes a security token for
+        both the user (e.g. driver of the vehicle) and for the device (e.g. the vehicle) that is hosting the client. 
+        A request for a different set of vehicle signals MAY require that only the user is authorized or that only the device
+        is authorized to access particular signals.</p>
 
         <h3>WebSocket Channel Authorization</h3>
-        <p>The client may send a message with an 'authorize' action to modify the access-control state of the WebSocket channel.
-        The message structure is defined in detail in section TODO add link</p>
+        <p>The client MAY send a message with an 'authorize' action to modify the access-control state of the WebSocket channel.
+        The message structure is defined in detail <a href="#message-structure">here</a>.</p>
         
         <p>The following diagram illustrates a scenario where the client requests vehicle speed. In this example scenario, this 
         signal is not under access control and so the server returns a message containing the requested data. The client then 
@@ -447,14 +448,14 @@
   
         <p>This server specification defines a standardized, token based approach for access control that includes specific error
         responses for common user and device access control scenarios. It is important however, that the security model is extensible.
-        Hence, the server may implement any type of token that is  consistent with this standardized approach and may optionally 
+        Hence, the server MAY implement any type of token that is  consistent with this standardized approach and MAY optionally 
         define additional token(s) for other Security Principal type(s). If this is the case, it is expected that the precise type of security tokens that are supported by a particular server 
         implementation, the format of those tokens and all additional error codes and reasons (e.g. to indicate that an 
         additional token type has expired and needs to be renewed) will be defined in the Server's documentation.</p>
 
         <h3>Use of Encryption</h3>
         <p></p>To support a layered security model and to help establish a 'defence in depth', all vehicle signal communications 
-        between the client and server will be strongly encrypted. This is to make it more difficult for an attacker to eavesdrop or 
+        between the client and server MUST be strongly encrypted. This is to make it more difficult for an attacker to eavesdrop or 
         tamper with the security tokens; the request data or the response payload.</p>
 
         <p>One way in which this may be implemented is for the client and the server to use a Public Key Infrastructure (PKI) 
@@ -465,7 +466,7 @@
         is received over HTTPS, then the WebSocket will be establised over TLS, that is, a secure 'wss' connection will be created.</p>
 
         <h3>Token Renewal</h3>
-        <p>Each security token will have a specified lifetime during which it is valid. If on receiving a request for signals that are
+        <p>Each security token SHALL have a specified lifetime during which it is valid. If on receiving a request for signals that are
         subject to access-control, the server determines that the request is unauthorised because the token has expired, the server 
         will return an error response indicating the fact and the client will request a new token from the Security Authority and 
         repeat the request.</p>
@@ -482,30 +483,23 @@
 	
 	<p>If the client application is an HTML Application running in a web
 	runtime or is a web page running in a browser, the WebSocket
-	instance may either be initialised natively or created using a
-	WebSocket standards compliant JavaScript library. A WebSocket
-	request can also be initiated from a native (e.g. C++) Application
-	or from an Application written using a managed runtime language like
+	instance may either be instantiated natively or be created using a
+	'standards compliant' WebSocket JavaScript library.</p>
+	<p>A WebSocket can also be initiated from a native (e.g. C++) Application
+	or from an Application written using a 'Managed Runtime' language like
 	Java or C#. It is assumed that native and managed clients will use a
 	suitable standards compliant WebSocket library to request that a
 	WebSocket connection is opened on the server.</p>
 
-	<p>For browser and web runtime clients, the advantage of
-	initialising the WebSocket natively in the web runtime is that there
-	are fewer overheads for the vehicle signal implementation.</p>
-	
 	<p>A client running on the vehicle will be able to connect to the
-	Application Server instance using the hostname 'wwwivi' and will
-	default to port 443. 'wwwivi' would be mapped to 127.0.0.1 in
-	etc/hosts file.</p>
+	WebSocket Server instance using the hostname 'wwwivi' and will use the
+	default 443. The hostname 'wwwivi' may locally be be mapped to the localhost
+	IP address 127.0.0.1 e.g. by adding an entry to the etc/hosts file.</p>
 	
-	<p>The sub-protocol name will always be VISS and with a version
-	number suffix, e.g. VISS1.0</p>
-
+	<p>The sub-protocol name will always be 'wvss' with a version number suffix, e.g. wvss1.0</p>
 	<pre class="highlight hljs javascript">
-	  <span class="hljs-keyword">var</span> vehicle  = new WebSocket("wss://wwwivi", "VISS1.0");
+	  <span class="hljs-keyword">var</span> vehicle  = new WebSocket("wss://wwwivi", "wvss1.0");
 	</pre>
-	
 	<p>RESTful web services are out of scope for the first revision of
 	this specification, but could be considered for addition in a later
 	version.</p>
@@ -514,41 +508,39 @@
 	connections between clients and servers will be strongly
 	encrypted. This is to make it more difficult for an attacker that
 	has succeeded in installing malicious code on a vehicle to
-	eavesdrop, hijack security tokens and impersonate valid security
-	principals to get and set sensitive vehicle signals.</p>
+	eavesdrop, hijack security tokens or impersonate valid security
+	principals in order to get and set sensitive vehicle signals.</p>
 	
-	<p>The client will connect to the server over HTTPS and request that
+	<p>The client SHALL connect to the server over HTTPS and request that
 	the server opens a WebSocket. All WebSocket communications between
-	the client and server will therefore be over ‘wss’.</p>
-	
-	<p>Non encrypted communication will not be supported, hence the
-	server will refuse ‘ws’ connection requests.</p>
+	the client and server MUST be over ‘wss’. Non encrypted communication
+	will not be supported, hence the server MUST refuse ‘ws’ connection requests.</p>
 
 	<p>For security reasons, clients will not be able to connect
 	directly to ECUs or to CAN, MOST or LIN networks. All access will be
 	via WebSocket. This allows the server to securely control access to
 	vehicle signals.</p>
-  
       </section>
 
       <!-- Message Structure -->
       <section>
-	<h3><a>Message</a> Structure</h3>
+      <h3><a>Message</a> Structure</h3>
 
-	<p>Clients can request vehicle signal data from the server by
-	sending a JSON data structure to the server via the WebSocket
-	connection.The client shall send data requests to the server using the WebSockets send API.</p>
-	
+       <p>The client MUST use the WebSocket <dfn>send</dfn> method, defined 
+       <a href="https://www.w3.org/TR/2011/WD-websockets-20110929/#the-websocket-interface">here</a>, 
+        to pass request messages to the server. The message signature SHALL be:</p>
+
 	<pre class="highlight hljs javascript">
-		boolean WebSocket.send(object request);
+		void WebSocket.send(DOMString request)
 	</pre>
-	<p>The request object MUST be one of the request objects defined in this section. The client shall receive data requests from the server using the WebSockets onmessage API, as follows:</p>
+	<p>The request object MUST be one of the request objects defined in this section. The client SHALL
+	receive responses from the server using the WebSocket <dfn>>onmessage</dfn method, as follows:</p>
 	<pre class="highlight hljs javascript">
-		WebSocket.onmessage = function(object){
+		WebSocket.onmessage = function(obj){
 			// process data
 		}
 	</pre>
-	<p>The response object shall correspond to the client's request and MUST be one of valid response objects defined in the table below.</p>	
+	<p>The message returned by the server MUST be one of the response objects defined in the table below.</p>	
 	
 	<table class="parameters">
 	  <tr>
@@ -556,10 +548,10 @@
 	    <th>Response Objects</th>
 	  </tr>
 	  <tr>
-	    <td><a>authorizationRequest</a></td>
+	    <td><a>authorizeRequest</a></td>
 	    <td>
-	    	<a>authorizationSuccessResponse</a><br>
-			<a>authorizationErrorResponse</a>
+	    	<a>authorizeSuccessResponse</a><br>
+			<a>authorizeErrorResponse</a>
 		</td>
 	  </tr>
 	  <tr>
@@ -604,35 +596,36 @@
 	  <tr>
 	    <td> <dfn>action</dfn></td>
 	    <td> <a>Action</a></td>
-	    <td> The desired action of the client.</td>
+	    <td> The action that the server is requested to perform.</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn>path</dfn></td>
-	    <td>string</td>
+	    <td>DOMString</td>
 	    <td>The path to the desired vehicle signal(s), as defined by the <a href="https://www.w3.org/auto/wg/wiki/Vehicle_Information_Service_Specification#Data_Model">Vehicle
 	Signal Specification (VSS)</a>.</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn>requestId</dfn></td>
-	    <td>string</td>
+	    <td>DOMString</td>
 	    <td> Unique id value specified by the client. Returned by the server in 
 	    the response and used by client to link the request and response 
-	    messages. May be a Universally Unique Identifier (UUID). </td>
+	    messages. The value MAY be an integer or a Universally Unique Identifier (UUID).</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn>subscriptionId</dfn> </td>
-	    <td>string</td>
-	    <td> Integer handle returned by the server to uniquely identify each subscription.</td>
+	    <td>DOMString</td>
+	    <td>Value returned by the server to uniquely identify each subscription.
+	    The value MAY be an integer or a Universally Unique Identifier (UUID).</td>
 	  </tr>
 	  <tr>
-	    <td> <dfn>token</dfn> </td>
+	    <td><dfn>tokens</dfn> </td>
 	    <td>object</td>
-	    <td> Structure containing one or more security token (e.g OAuth2) name/value pairs.</td>
+	    <td>Structure containing one or more security token (e.g OAuth2) name/value pairs.</td>
 	  </tr>
 	  <tr>
-	    <td> <dfn>timestamp</dfn> </td>
+	    <td><dfn>timestamp</dfn> </td>
 	    <td>DOMTimestamp</td>
-	    <td> The time that the server returned the response (expressed as number of milliseconds).</td>
+	    <td>The Coordinated Universal Time (UTC) time that the server returned the response (expressed as number of milliseconds).</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn>value</dfn> </td>
@@ -661,45 +654,46 @@
 
 	<h4>Action</h4>
 	
-	<p>Action may take one of six values describing the desired service for
-	the client. There are described in the table below.</p>
+	<p>The Action enumeration is used to define the type of action requested by the client. 
+	All client messages MUST contain a JSON structure that has an 'action' name/value pair and the 
+	value of the 'action' property MUST be one of the values specified in the enumeration:</p>
 	
 	<dl title="enum Action" class="idl">
 		<dt>authorize</dt>
-		<dd>Establish user permissions.</dd>
+		<dd>Enables client to pass security tokens for Security Principals to the server to support access-control.</dd>
 		<dt>get</dt>
 		<dd>Enables the client to get a value once.</dd>
 		<dt>set</dt>
 		<dd>Enables the client to set a value once.</dd>		
 		<dt>subscribe</dt>
-		<dd>Enables the client to receive a notification containing a JSON data structure with values for one or more vehicle signals. The client requests that it is notified when the signal changes on the server.</dd>
+		<dd>Enables the client to receive a notification containing a JSON data structure with values for one or more 
+		vehicle signals and/or data attributes. The client requests that it is notified when the signal changes on the server.</dd>
 		<dt>unsubscribe</dt>
 		<dd>Allows the client to notify the server that it should no longer receive notifications based on that subscription.</dd>
 		<dt>getVSS</dt>
-		<dd>Allows the client to request the structure of the vehicle signal specification.</dd>
+		<dd>Allows the client to request metadata describing signals and data attributes that are potentially accessible.</dd>
 	</dl>
 
 	<h2><a>Authorize</a></h2>
- 	<p>To enable access to signals that are under access control, the client can optionally pass a message with an
-         'authorize' action to the server. The structure of the message and the associated success and error responses
+ 	<p>To enable access to signals and data attributes that are under access control, the client MAY optionally pass a message 
+ 	with an 'authorize' action to the server. The structure of the message and the associated success and error responses
          are defined below.</p>
       <pre class="idl">
-      interface authorizationRequest
+      interface authorizeRequest
       {
         attribute Action action;
         attribute string tokens;
         attribute string requestId;
       };
 
-      interface authorizationSuccessResponse
+      interface authorizeSuccessResponse
       {
         attribute Action action;
-        attribute int statusCode;
         attribute int TTL;
         attribute string requestId;
       };
       
-      interface authorizationErrorResponse
+      interface authorizeErrorResponse
       {
         attribute Action action;
       	attribute Error error;
@@ -707,9 +701,32 @@
       };
       </pre>
 
-    <p>The 'tokens' JSON fragment may contain just an 'authorization' name/value pair to pass only 
-        the user token or just a 'www-vehicle-device' pair to pass the only the vehicle token or it may include both 
-        name/value pairs as illustrated below:</p>
+    <p>The server SHALL provide support the following security token types and names:</p>
+
+    <table class="parameters">
+      <tr>
+        <th>Security&nbsp;Principal</th>
+        <th>Token Name</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td> <dfn>User</dfn></td>
+        <td> <a>authorization</a></td>
+        <td> The user that the client is making requests on behalf of. This MAY be a person e.g. driver or passenger, it MAY be
+        an organisation e.g. Emergency Services or MAY be any other legal entity.</td>
+      </tr>
+      <tr>
+        <td> <dfn>Device</dfn></td>
+        <td> <a>www-vehicle-device</a></td>
+        <td> The originating device that is making the request to the server. This MAY an ECU in the vehice that is hosting the 
+        WebSocket Server or MAY a device that it connected to the vehicle via a WiFi hotspot or MAY be any other device.</td>
+      </tr>
+    </table>
+
+    <p>The 'tokens' JSON fragment MAY contain an 'authorization' structure that contains just a single name/value pair, for example,
+    to pass only the user token. Or it may contain only the 'www-vehicle-device' name/value pair to pass the just the vehicle token; 
+    Alternatively it MAY include name/value pairs for both the 'authorization' and 'www-vehicle-device' tokens. 
+    These alternatives are illustrated in the following example:</p>
 
 	<pre class="example highlight">
         // Pass user token only
@@ -731,7 +748,7 @@
 	</pre>
 
 	<h2><a>Get</a></h2>
- 	<p>The server shall return messages to the client using the
+ 	<p>The server SHALL return messages to the client using the
 	 following format, including the path to the signal and the
 	 value held within the signal:</p>
 
@@ -774,10 +791,8 @@
 
 	<p>In the case where the client has subscribed to a path which
 	returns a complex type, the value shall be returned as name
-	value pairs in a JSON object, as defined in the vehicle signal
-	specification format. Wildcards may be used in order to
-	specify only a subset of data. This can be specified at any
-	level of the Vehicle Signal Specification (VSS) tree.</p>
+	value pairs in a JSON object. The format MUST be as defined
+	by the Vehicle Signal Specification.<p>
 
 	<p>Complex type</p>
 	<pre class="highlight hljs javascript">
@@ -794,8 +809,12 @@
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
-	<p>Complex type with nested array. Path: "body.doors.*.lock" -
-	All doors, lock state.</p>
+		
+	<p>One or more wildcards (denoted by asterisk '*') MAY be included at 
+	any level in the path to specify that any node at that level is to be included.</p>		
+		
+	<p>See below for an example that has a path that includes a wildcard in 
+	order to request the 'lock' state (only) for all doors.</p>
 	<pre class="highlight hljs javascript">
 	client -> { 
 		"action": "get", 
@@ -923,7 +942,10 @@
 		}
 	</pre>
 	<h2><a>Subscribe</a></h2>
-	<p>Vehicle data subscriptions provide data to the client whenever the signal changes on the server, unless otherwise specified using Server Side Filtering. The server may reduce the amount of notifications sent to the client in order to reduce processing demands, particularly when the client has subscribed to continuously varying signals.</p>
+	<p>Vehicle data subscriptions provide data to the client whenever the signal changes on the server, 
+	unless otherwise specified using Server Side Filtering. The server MAY reduce the number of notifications 
+	sent to the client in order to reduce processing demands, particularly when the client has subscribed to 
+	continuously varying signals.</p>
 
 	<p>When the client makes a request to the server to create a new
 	subscription, a JSON data object will be returned. This will contain
