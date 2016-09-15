@@ -675,7 +675,7 @@
 	</dl>
 
 	<h2><a>Authorize</a></h2>
- 	<p>To enable access to signals and data attributes that are under access control, the client can optionally pass a message 
+ 	<p>To enable access to signals and data attributes that are under access control, the client MAY optionally pass a message 
  	with an 'authorize' action to the server. The structure of the message and the associated success and error responses
          are defined below.</p>
       <pre class="idl">
@@ -705,7 +705,7 @@
 
     <table class="parameters">
       <tr>
-        <th>Security Principal Type</th>
+        <th>Security&nbsp;Principal&nbsp;Type</th>
         <th>Token Name</th>
         <th>Description</th>
       </tr>
@@ -713,7 +713,7 @@
         <td> <dfn>User</dfn></td>
         <td> <a>authorization</a></td>
         <td> The user that the client is making requests on behalf of. This MAY be a person e.g. driver or passenger, it MAY be
-        an organisation e.g. Emergency Services or MAY be another legal entity.</td>
+        an organisation e.g. Emergency Services or MAY be any other legal entity.</td>
       </tr>
       <tr>
         <td> <dfn>Device</dfn></td>
@@ -725,7 +725,7 @@
 
     <p>The 'tokens' JSON fragment MAY contain an 'authorization' structure that contains just a single name/value pair, for example
     to pass only the user token or just the 'www-vehicle-device' name/value pair to pass the only the vehicle token; or it MAY 
-    include both name/value pairs. Each of these alternatives is illustrated below:</p>
+    include both name/value pairs. These alternatives are illustrated in the following example:</p>
 
 	<pre class="example highlight">
         // Pass user token only
