@@ -723,9 +723,10 @@
       </tr>
     </table>
 
-    <p>The 'tokens' JSON fragment MAY contain an 'authorization' structure that contains just a single name/value pair, for example
-    to pass only the user token or just the 'www-vehicle-device' name/value pair to pass the only the vehicle token; or it MAY 
-    include both name/value pairs. These alternatives are illustrated in the following example:</p>
+    <p>The 'tokens' JSON fragment MAY contain an 'authorization' structure that contains just a single name/value pair, for example,
+    to pass only the user token. Or it may contain only the 'www-vehicle-device' name/value pair to pass the just the vehicle token; 
+    Alternatively it MAY include name/value pairs for both the 'authorization' and 'www-vehicle-device' tokens. 
+    These alternatives are illustrated in the following example:</p>
 
 	<pre class="example highlight">
         // Pass user token only
