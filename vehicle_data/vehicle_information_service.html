@@ -526,21 +526,23 @@
       <section>
       <h3><a>Message</a> Structure</h3>
 
-       <p>The client SHALL use the WebSocket <dfn>send</dfn> method, defined 
+       <p>The client MUST use the WebSocket <dfn>send</dfn> method, defined 
        <a href="https://www.w3.org/TR/2011/WD-websockets-20110929/#the-websocket-interface">here</a>, 
-        to pass request messages to the server. The message signature will be:</p>
+        to pass request messages to the server. The message signature SHALL be:</p>
 
 	<pre class="highlight hljs javascript">
 		void WebSocket.send(DOMString request);
 	</pre>
-	<p>The request object MUST be one of the request objects defined in this section. The client shall receive data requests from the server using the WebSockets onmessage API, as follows:</p>
+	<p>The request object MUST be one of the request objects defined in this section. The client SHALL
+	receive responses from the server using the WebSocket <dfn>>onmessage</dfn method, as follows:</p>
 	<pre class="highlight hljs javascript">
-		WebSocket.onmessage = function(object){
+		WebSocket.onmessage = function(obj){
 			// process data
 		}
 	</pre>
-	<p>The DOMString argument MUST contain a JSON structure that defines a request object, 
-	the format and content of which is defined later in this section.</p>
+	<p>Where 'obj' is of type DOMString and contains the response message sent by the server. The DOMString 
+	argument MUST contain a JSON structure that defines a request object, the format and content of which is 
+	defined later in this section.</p>
         
         <p>The client SHALL receive data requests from the server using the WebSockets onmessage API, as follows:</p>
 	<pre class="highlight hljs javascript">
