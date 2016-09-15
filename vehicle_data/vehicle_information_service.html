@@ -675,26 +675,25 @@
 	</dl>
 
 	<h2><a>Authorize</a></h2>
- 	<p>To enable access to signals that are under access control, the client can optionally pass a message with an
-         'authorize' action to the server. The structure of the message and the associated success and error responses
+ 	<p>To enable access to signals and data attributes that are under access control, the client can optionally pass a message 
+ 	with an 'authorize' action to the server. The structure of the message and the associated success and error responses
          are defined below.</p>
       <pre class="idl">
-      interface authorizationRequest
+      interface authorizeRequest
       {
         attribute Action action;
         attribute string tokens;
         attribute string requestId;
       };
 
-      interface authorizationSuccessResponse
+      interface authorizeSuccessResponse
       {
         attribute Action action;
-        attribute int statusCode;
         attribute int TTL;
         attribute string requestId;
       };
       
-      interface authorizationErrorResponse
+      interface authorizeErrorResponse
       {
         attribute Action action;
       	attribute Error error;
