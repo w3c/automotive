@@ -776,6 +776,8 @@
       };
       </pre>
 
+      <p>The example below shows the JSON structure for a 'getRequest' message sent by the client to obtain the engine RPM value
+      and a 'getSuccessResponse' returned by the server.</p>
 	<pre class="highlight hljs javascript">
 	client -> { 
 		"action": "get", 
@@ -790,12 +792,12 @@
 	}
 	</pre>
 
-	<p>In the case where the client has subscribed to a path which
-	returns a complex type, the value shall be returned as name
-	value pairs in a JSON object. The format MUST be as defined
-	by the Vehicle Signal Specification.<p>
+	<p>In the case where the server returns a value that is a <dfn>complex type</dfn>, i.e. a value that
+	is not a single basic type (e.g. string, number, boolean), the value SHALL be returned as a set of name/value pairs
+	in a JSON object. The format MUST be as defined	by the Vehicle Signal Specification.<p>
 
-	<p>Complex type</p>
+	<p>The following shows an example of a 'getRequest' that results in the server returning a 'getSuccessResponse' with a value
+	that is a complex type</p>
 	<pre class="highlight hljs javascript">
 	client -> { 
 		"action": "get", 
