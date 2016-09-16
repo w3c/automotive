@@ -10,15 +10,15 @@
           specStatus:           "ED",
           shortName:            "vehicle-signal-server-api",
           editors:  [{
-            name: "Adam Crofts", company: "Jaguar Land Rover",
-            url: "mailto:acrofts1@jaguarlandrover.com",
-	    companyURL: "http://www.jaguarlandrover.com/",
-	    w3cid: 74857
-          }, {
             name: "Kevin Gavigan", company: "Jaguar Land Rover",
             url: "mailto:kgavigan@jaguarlandrover.com",
 	    companyURL: "http://www.jaguarlandrover.com/",
 	    w3cid: 71411
+          }, {
+            name: "Adam Crofts", company: "Jaguar Land Rover",
+            url: "mailto:acrofts1@jaguarlandrover.com",
+	    companyURL: "http://www.jaguarlandrover.com/",
+	    w3cid: 74857
           }, {
             name: "이원석(Wonsuk Lee)", company: "한국전자통신연구원(ETRI)",
             url: "mailto:wonsuk.lee@etri.re.kr",
@@ -748,9 +748,10 @@
 	</pre>
 
 	<h2><a>Get</a></h2>
- 	<p>The server SHALL return messages to the client using the
-	 following format, including the path to the signal and the
-	 value held within the signal:</p>
+	<p>The client MAY send a request to the server to get the value of one or more vehicle signals and data attributes.
+	It does this by sending a 'getRequest' message to the server. If the server is able to satisy the request it SHALL
+	return a 'getSuccessResponse' message. If the server is unable to satisfy the request, e.g. because an error has occurred
+	then the server SHALL return a 'getErrorResponse'. The structure of these message objects is defined below:</p>
 
       <pre class="idl">
       interface getRequest
