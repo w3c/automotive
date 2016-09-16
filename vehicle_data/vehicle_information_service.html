@@ -533,8 +533,8 @@
 	<pre class="highlight hljs javascript">
 		void WebSocket.send(DOMString request)
 	</pre>
-	<p>The request object MUST be one of the request objects defined in this section. The client SHALL
-	receive responses from the server using the WebSocket <dfn>>onmessage</dfn method, as follows:</p>
+	<p>The request message MUST be comprised of one the request objects defined in this section. The client SHALL
+	receive responses from the server using the WebSocket <dfn>onmessage</dfn> method, as follows:</p>
 	<pre class="highlight hljs javascript">
 		WebSocket.onmessage = function(obj){
 			// process data
@@ -601,8 +601,9 @@
 	  <tr>
 	    <td> <dfn>path</dfn></td>
 	    <td>DOMString</td>
-	    <td>The path to the desired vehicle signal(s), as defined by the <a href="https://www.w3.org/auto/wg/wiki/Vehicle_Information_Service_Specification#Data_Model">Vehicle
-	Signal Specification (VSS)</a>.</td>
+	    <td>The path to the desired vehicle signal(s), as defined by the 
+	    <a href="https://www.w3.org/auto/wg/wiki/Vehicle_Information_Service_Specification#Data_Model">
+	    	Vehicle	Signal Specification (VSS)</a>.</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn>requestId</dfn></td>
