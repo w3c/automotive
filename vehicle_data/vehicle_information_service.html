@@ -777,6 +777,9 @@
       };
       </pre>
 
+      <p>It is important to note that all examples involving paths are illustrative. Valid path values and the signals and data 
+      attributes that correspond to a particular path are defined in the Vehicle Signal specification.</p>
+
       <p>The example below shows the JSON structure for a 'getRequest' message sent by the client to obtain the engine RPM value
       and a 'getSuccessResponse' returned by the server.</p>
 	<pre class="highlight hljs javascript">
@@ -818,11 +821,11 @@
 	any level in the path to specify that all nodes at that level are to be included.</p>		
 		
 	<p>In the example below, the path in the 'getRequest' includes a wildcard at the level above
-	the leaf (signal) node, in order to request just the 'lock' state only for all doors.</p>
+	the leaf (signal) node, in order to request just the 'locked' state for all doors.</p>
 	<pre class="highlight hljs javascript">
 	client -> { 
 		"action": "get", 
-		"path": " body.doors.*.lock"
+		"path": " body.doors.*.locked"
 	}
 	
 	receive <- { 
@@ -833,9 +836,10 @@
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
+
 	<p>In this example, a complex type with a nested array is returned in response to the Path: "body.doors.*"
 	which denotes: 'Return all signals and data attributes for all doors'. For simplicity, the example
-	assumes that the VSS definition for each door only has two attributes 'lock' and 'window_pos')</p>
+	assumes that the VSS definition for each door only has two attributes 'lock' and 'window_pos'.</p>
 	<pre class="highlight hljs javascript">
 	client -> { 
 		"action": "get", 
