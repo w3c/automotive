@@ -793,8 +793,8 @@
 	</pre>
 
 	<p>In the case where the server returns a value that is a <dfn>complex type</dfn>, i.e. a value that
-	is not a single basic type (e.g. string, number, boolean), the value SHALL be returned as a set of name/value pairs
-	in a JSON object. The format MUST be as defined	by the Vehicle Signal Specification.<p>
+	is not a single basic JavaScript type (e.g. string, number, boolean), the value SHALL be returned as
+	a set of name/value pairs in a JSON object strcuture. The format MUST be as defined by the Vehicle Signal Specification.<p>
 
 	<p>The following shows an example of a 'getRequest' that results in the server returning a 'getSuccessResponse' with a value
 	that is a complex type</p>
@@ -814,10 +814,10 @@
 	</pre>
 		
 	<p>One or more wildcards (denoted by asterisk '*') MAY be included at 
-	any level in the path to specify that any node at that level is to be included.</p>		
+	any level in the path to specify that all nodes at that level are to be included.</p>		
 		
-	<p>See below for an example that has a path that includes a wildcard in 
-	order to request the 'lock' state (only) for all doors.</p>
+	<p>In the example below, the path in the 'getRequest' includes a wildcard at the level above
+	the leaf (signal) node, in order to request just the 'lock' state only for all doors.</p>
 	<pre class="highlight hljs javascript">
 	client -> { 
 		"action": "get", 
@@ -832,9 +832,9 @@
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
-	<p>Complex type with nested array. Path: "body.doors.*" - All
-	doors, all door attributes (where door has two attributes,
-	lock and window_pos)</p>
+	<p>In this example, a complex type with a nested array is returned in response to the Path: "body.doors.*"
+	which denotes: 'Return all signals and data attributes for all doors'. For simplicity, the example
+	assumes that the VSS definition for each door only has two attributes 'lock' and 'window_pos')</p>
 	<pre class="highlight hljs javascript">
 	client -> { 
 		"action": "get", 
@@ -1384,7 +1384,7 @@
 
 	<p>The following example shows the lifetime of a WebSocket on
 	the client:</p>
-	<pre class="highlight hljs javascript">
+	<pre class="example highlight">
 // Open the WebSocket
 var vehicle  = new WebSocket("wss://localhost:4343", "wvss1.0");
 
