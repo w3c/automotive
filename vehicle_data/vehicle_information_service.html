@@ -749,11 +749,10 @@
 	</pre>
 
 	<h2><a>Get</a></h2>
-	<p>The client MAY send a request to the server to get the value of one or more vehicle signals and data attributes.
-	It does this by sending a 'getRequest' message to the server. If the server is able to satisy the request it SHALL
-	return a 'getSuccessResponse' message. If the server is unable to satisfy the request, e.g. because an error has occurred
-	or the client is not authorised to retrieve one or more of the signals, then the server SHALL return a 'getErrorResponse'.
-	The structure of these message objects is defined below:</p>
+	<p>The client MAY send a 'getRequest' message to the server to get the value of one or more vehicle signals and data 
+	attributes. If the server is able to satisfy the request it SHALL return a 'getSuccessResponse' message. If the server 
+	is unable to fulfil the request, e.g. because the client is not authorised to retrieve one or more of the signals, 
+	then the server SHALL return a 'getErrorResponse'. The structure of these message objects is defined below:</p>
 
       <pre class="idl">
       interface getRequest
