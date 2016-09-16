@@ -751,7 +751,8 @@
 	<p>The client MAY send a request to the server to get the value of one or more vehicle signals and data attributes.
 	It does this by sending a 'getRequest' message to the server. If the server is able to satisy the request it SHALL
 	return a 'getSuccessResponse' message. If the server is unable to satisfy the request, e.g. because an error has occurred
-	then the server SHALL return a 'getErrorResponse'. The structure of these message objects is defined below:</p>
+	or the client is not authorised to retrieve one or more of the signals, then the server SHALL return a 'getErrorResponse'.
+	The structure of these message objects is defined below:</p>
 
       <pre class="idl">
       interface getRequest
@@ -794,7 +795,7 @@
 
 	<p>In the case where the server returns a value that is a <dfn>complex type</dfn>, i.e. a value that
 	is not a single basic JavaScript type (e.g. string, number, boolean), the value SHALL be returned as
-	a set of name/value pairs in a JSON object strcuture. The format MUST be as defined by the Vehicle Signal Specification.<p>
+	a set of name/value pairs in a JSON object structure. The format MUST be as defined by the Vehicle Signal Specification.<p>
 
 	<p>The following shows an example of a 'getRequest' that results in the server returning a 'getSuccessResponse' with a value
 	that is a complex type</p>
@@ -849,7 +850,7 @@
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
-	<p>Request non-existent data</p>
+	<p>The following shows a request for non-existent data</p>
 	<pre class="highlight hljs javascript">
 	client -> { 
 		"action": "get", 
@@ -866,10 +867,10 @@
 	</pre>
 	<h2><a>Set</a></h2>
 
-	<p>A set request may be sent by the client in order to set the value of a signal on the vehicle, 
-	such as locking doors, opening windows and setting HVAC. The server shall respond  
-	with a success or error response. The ability to set a signal is dependent upon appropriate 
-	authorization and may be denied by the server implementation.</p>
+	<p>The client may request that the server sets the value of a signal e.g. to lock a door or open a window by sending
+	a 'setRequest' message to the server. If the server is able to satisfy the request it SHALL return a 'setSuccessResponse'
+	message. If an error occurs e.g. because the client is not authorised to set the requested value, or the value is read-only,
+	the server SHALL return a 'setErrorResponse' message.<p>
 
       <pre class="idl">
       interface setRequest {
