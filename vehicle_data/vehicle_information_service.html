@@ -1028,12 +1028,13 @@
   	<p>An example of a subscription can be found <a href="#introduction">here</a>.</p>
 
 	<h2><a>Unsubscribe</a></h2>
-        <p>To unsubscribe from a subscription, the client SHALL send an 'unsubscribeRequest' message to the server. This is comprised of a JSON 
-        structure which contains an action property set to 'unsubscribe' and a string containing the 'subscriptionId'.</p>
+        <p>To unsubscribe from a subscription, the client SHALL send an 'unsubscribeRequest' message to the server. This is 
+        comprised of a JSON structure which contains an action property set to 'unsubscribe' and a string containing the 
+        'subscriptionId'. If an error occurs e.g. because an invalid subscriptionId is passed to the server, an 
+        'unsubscribeErrorResponse' will be returned.</p>
         
 	<p>The client MAY unsubscribe from all of its subscriptions by sending an 'unsubscribeRequest' with the subscriptionId set 
-	to zero. If the server is able to satisfy the request it will return an 'unsubscribeSuccessResponse'. If an error occurs 
-	e.g. because an	invalid subscriptionId is passed to the server, an 'unsubscribeErrorResponse' will be returned.</p>
+	to 0 (zero). If the server is able to satisfy the request it will return an 'unsubscribeSuccessResponse'.</p>
 	
 	<p>If the client has created more than one WebSocket instance, it MUST always unsubscribe using the same WebSocket instance
 	that was originally used to create the subscription.</p>
