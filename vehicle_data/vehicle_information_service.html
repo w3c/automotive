@@ -159,7 +159,7 @@
     
     <!-- Introduction -->
     <section>
-      <h2>Introduction</h2>
+      <h2><a>Introduction</a></h2>
 
       <p>The vehicle SHALL expose vehicle signals via a WebSocket. This will
       enable a client to GET or SET vehicle signals and data; to SUBSCRIBE to receive
@@ -738,19 +738,18 @@
         // Pass user token only
         vehicle.send('{ "action": "authorize", 
                         "tokens": { "authorization": "&lt;user_token_value&gt;" },
-                        "requestId": "&lt;some_unique_value&gt;"');
+                        "requestId": "&lt;some_unique_value&gt;" }');
 
         // Pass vehicle/device token only
         vehicle.send('{ "action": "authorize", 
                         "tokens": { "www-vehicle-device": "&lt;device_token_value&gt;" },
-                        "requestId": "&lt;some_unique_value&gt;"');
+                        "requestId": "&lt;some_unique_value&gt;" }');
 
         // Pass tokens for user and device            
         vehicle.send('{ "action": "authorize", 
                         "tokens": { "authorization": "&lt;user_token_value&gt;", 
                                     "www-vehicle-device": "&lt;device_token_value&gt;" },
-                        "requestId": "&lt;some_unique_value&gt;"');
-                        
+                        "requestId": "&lt;some_unique_value&gt;" }');
 	</pre>
 
 	<h2><a>Get</a></h2>
@@ -1031,8 +1030,7 @@
 	subscription handle values are unique between different WebSocket
 	instances.</p>
 
-	<pre class="example highlight">
-	</pre>
+  	<p>An example of a subscription can be found <a href="#introduction">here</a>.</p>
 
 	<h2><a>Unsubscribe</a></h2>
 	<p>The client should always unsubscribe from receiving notifications when it is no longer using the data. Over a long
