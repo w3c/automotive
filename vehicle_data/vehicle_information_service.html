@@ -1254,6 +1254,33 @@
       </section>
 
       <section>
+	<h3>Web Socket <a>Closure</a></h3>
+	<p>The WebSocket may be closed by either the client or the
+	server by invoking the ‘close()’ method on the WebSocket
+	instance.</p>
+
+	<p>The following example shows the lifetime of a WebSocket on
+	the client:</p>
+	<pre class="example highlight">
+// Open the WebSocket
+var vehicle  = new WebSocket("wss://localhost:4343", "wvss1.0");
+
+// WebSocket is used to GET, SET, SUBSCRIBE and UNSUBSCRIBE
+…
+
+// Close the WebSocket
+vehicle.close();
+	</pre>
+	<p>The WebSocket server may terminate the WebSocket connection
+	if it has not received a request for a period determined by
+	the server. It is the client’s responsibility to handle this
+	gracefully and to recover and for example request new
+	subscriptions, where these are required.</p> 
+      </section>
+
+
+
+      <section>
 	<h3><a>Errors</a></h3>	
 	<p>If there is an error with any of the client’s requests, the
 	server will respond with an error number, code and
@@ -1392,36 +1419,10 @@
 	  </tr>
 	</table>
 
-    <p>The server may optionally return additional error codes. It is expected that if this is the case, they will be defined in the Server Documentation.
-         Wherever possible the Server will return a standard HTTP error code where one has been defined for the error condition. 
-       See for example <a href="https://tools.ietf.org/html/rfc7231">RFC7231</a>, <a href="https://tools.ietf.org/html/rfc7235">RFC7235</a>,  
+        <p>The server may optionally return additional error codes. It is expected that if this is the case, they will be defined in the Server Documentation.
+        Wherever possible the Server will return a standard HTTP error code where one has been defined for the error condition. 
+        See for example <a href="https://tools.ietf.org/html/rfc7231">RFC7231</a>, <a href="https://tools.ietf.org/html/rfc7235">RFC7235</a>,  
         and <a href="https://tools.ietf.org/html/rfc6585">RFC6585</a>.</p>
-
-      </section>
-
-      <section>
-	<h3>Web Socket <a>Closure</a></h3>
-	<p>The WebSocket may be closed by either the client or the
-	server by invoking the ‘close()’ method on the WebSocket
-	instance.</p>
-
-	<p>The following example shows the lifetime of a WebSocket on
-	the client:</p>
-	<pre class="example highlight">
-// Open the WebSocket
-var vehicle  = new WebSocket("wss://localhost:4343", "wvss1.0");
-
-// WebSocket is used to GET, SET, SUBSCRIBE and UNSUBSCRIBE
-…
-
-// Close the WebSocket
-vehicle.close();
-	</pre>
-	<p>The WebSocket server may terminate the WebSocket connection
-	if it has not received a request for a period determined by
-	the server. It is the client’s responsibility to handle this
-	gracefully and to recover and for example request new
-	subscriptions, where these are required.</p> 
       </section>
     </body>
 </html>
