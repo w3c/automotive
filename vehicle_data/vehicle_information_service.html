@@ -106,7 +106,7 @@
     <!-- Abstract -->
     <section id="abstract">
 	<p>The W3C Vehicle Signal Server Specification defines a WebSocket based API that enables
-	client applications to get, set, subscribe and unsubscribe to vehicle signals and data attributes.</p>
+	client applications to GET, SET, SUBSCRIBE and UNSUBSCRIBE to vehicle signals and data attributes.</p>
 
 	<p>The purpose of the specification is to promote a Server API that enables application 
 	development in a consistent manner across participating automotive manufacturers.</p>
@@ -178,7 +178,7 @@
       or for simplicity as ‘the server’.</p>
       
       <p>This specification assumes that a single WebSocket is used to
-      enable communication between the client Application and the server
+      enable communication between the client application and the server
       in order to reduce processing overhead.</p>
       
       <p>It is not explicitly prohibited for the client to request
@@ -203,9 +203,10 @@
       that the server will implement a simple concurrency model where lost
       updates and dirty reads could potentially occur if the server has
       more than one WebSocket connection open.</p>
-      <p>
-	An example of the usage of this API is provided below for illustration purposes. 
-	This is not intended to be commercial code.</p>
+      
+      <p>The following example illustrates how a client could invoke the API. 
+      This simplified example is for illustrative purposes only, it does not show error handling and is not 
+	intended to be commercial code.</p>
 
 	<pre class="example highlight">
 		// open WebSocket
