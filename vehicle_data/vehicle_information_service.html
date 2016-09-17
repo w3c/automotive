@@ -298,15 +298,14 @@
       </figure>
 
       <p>The <dfn>WebSocket Server</dfn> is the vehicle system that is responsible for exposing vehicle signals and data to 
-      its clients by implementing the interface and behaviour defined in this <dfn>Vehicle Signal Server Specification(VSSS)</dfn>.</p>
+      its clients by implementing the interface and behaviours defined in this <dfn>Vehicle Signal Server Specification(VSSS)</dfn>.</p>
 
-      <p>The WebSocket Server is responsible for ensuring that signals and data are exposed in a way that is consistent
-      with the Vehicle Signal Specification (VSS). This defines a 'tree-like' logical taxonomy of the vehicle, (formally a Directed
-      Acyclic Graph), where major vehicle structures (e.g. body, engine) are at or near the top of the tree and the logical assemblies
-      and components that comprise them, are defined as their child nodes. Each of the child nodes in the tree is further decomposed 
-      into its logical constituents, and the process is repeated until <dfn>leaf nodes</dfn> are reached. A 'leaf node' is a node at
-      the end of a branch that cannot be decomposed because it represents a single signal or data attribute value. An example VSS tree
-      is shown below:</p>
+      <p>The WebSocket Server exposes signals and data in a manner that is consistent with the Vehicle Signal Specification (VSS). 
+      This defines a 'tree-like' logical taxonomy of the vehicle, (formally a Directed Acyclic Graph), where major vehicle structures
+      (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as 
+      their child nodes. Each of the child nodes in the tree is further decomposed into its logical constituents, and the process is 
+      repeated until <dfn>leaf nodes</dfn> are reached. A 'leaf node' is a node at the end of a branch that cannot be decomposed 
+      because it represents a single signal or data attribute value. An example VSS tree is shown below, its contents are illustrative:</p>
 
       <figure>
         <img src="VSS_Tree_Simple_Example_v1.png" alt="Diagram showing an example Vehicle Signal tree">
@@ -315,62 +314,58 @@
 
       <p>Signals are named according to their path using the dot notation e.g. engine.rpm.</p>
 
-      <p>Please note that the VSS tree shown in the diagram is for illustrative purposes only. The particular set of vehicle
-      signals that are exposed by the WebSocket Server can be obtained by invoking the server's 'getVSS method. Invoking this method
-      will return metadata that describes which signals and data attributes could potentially be returned provided that the user and/or
-      device is suitably authorised. This and other valid WebSocket Signal Server actions are defined in more detail 
-      <a href="#action">here</a>.</p>
+      <p>The client MAY invoke the WebSocket Server <dfn>'getVSS'</dfn> method to request that the server returns metadata that 
+      describes which signals and data attributes could potentially be accessed provided that the user and/or device is suitably 
+      authorised. This and other valid WebSocket Server actions are defined in more detail <a href="#action">here</a>.</p>
 
       <p>The methods defined on the WebSocket Server interface may be invoked by different types of on-board and off-board clients. 
-      The clients running on the vehicle fall into one of two major categories:</p>
+      On-board clients, running on the vehicle fall into one of two major categories:</p>
 
       <p><dfn>Applications</dfn> can access vehicle signals and data and have a User Interface that the driver or passengers in the
       vehicle can interact with.</p>
 
-      <p><dfn>Agents</dfn> typically have no user interface and may be implemented as a 'service'. This can also invoke methods 
-      exposed on the WebSocket Server but unlike Applications they can connect to one or more off-board (V2X) internet Servers
-      in order to send data off-board.</p>
+      <p><dfn>Agents</dfn> typically have no user interface and may be implemented as an 'service'. They can also invoke methods 
+      exposed on the WebSocket Server but their purpose is to connect to one or more off-board e.g. <dfn>Vehicle to Everything (V2X)</dfn>
+      internet Servers in order to send data off-board.</p>
 
-      <p>Both Applications and Agents can be subdivided into those that are 'Web Based' and implemented using Web Standards 
-      (HTML, CSS, JavaScript) and run in a 'Web Runtime' and those that run in their own process, implemented using Native languages
-      and libraries (e.g. C,C++ or Qt) and those that run in a Managed Runtime Environment and are written using languages like 
-      C# or Java.</p>
+      <p>Both applications and agents can be subdivided into those that are 'Web Based' and which run in a 'Web Runtime' and are
+      implemented using Web Standards like HTML, CSS and JavaScript; and those that run in their own <dfn>Native process</dfn> 
+      written using e.g. C,C++ or Objective-C; and those that run in a Managed Runtime process written using languages like C# 
+      or Java.</p>
 
-      <p>Web Applications and Web Agents may directly invoke the Vehicle Signal Server interface exposed by the WebSocker server
+      <p>Web applications and web agents MAY directly invoke the Vehicle Signal Server interface exposed by the WebSocker server,
       but it is expected that they will typically access vehicle signals and data via a JavaScript Library that implements the 
-      W3C Vehicle Signal Client API. (TODO Add Link). The Client API is designed to 'wrap' the W3C Vehicle Server Specification
-      API to make it easier for Web based clients to access vehicle signals and data in a controlled way.</p>
+      W3C Vehicle Signal Client API (TODO Add Link). The Client API defines a standard approach to encapsulate or 'wrap' the
+      W3C Vehicle Server Specification API to make it easier for Web based clients to access vehicle signals and data in a controlled
+      way.</p>
 
-      <p>For clarity, 'in-vehicle' clients include both those clients that are running on an ECU in the vehicle itself,
-      e.g. on an ECU that implements an <dfn>In Vehicle Infotainment (IVI)</dfn> system, but also to Applications running on a user's 
-      device, for example a phone or tablet, that is connected to the vehicle via the vehicle's WiFi client (if one exists).</p>
+      <p>For clarity, <dfn>'in-vehicle'</dfn> clients include both those clients that are running on an ECU in the vehicle itself,
+      e.g. an ECU that implements an <dfn>In Vehicle Infotainment (IVI)</dfn> system, but also includes clients running on a user's 
+      device, e.g. a laptop, phone or tablet, that is connected via the vehicle's WiFi client (if one exists).</p>
 
-      <p>In addition to local, in-vehicle Applications and Agents, a variety of internet-based clients and servers may request
-      access to vehicle signals and data.</p>
-      
-      <p>However, when a vehicle is not being used, most electrical systems will be shut down in order to maximise battery life. This
-      may include the systems that enable connectivity. Then, when the vehicle is powered up, various systems will start-up, including
-      those that provide off-board connectivity and the vehicle will typically connect either to a local WiFi network or to a Mobile 
-      Network Operator and dynamically be assigned an IP address.</p>
+      <p>In addition to local, in-vehicle applications and agents, a variety of internet-based clients and servers may be interested
+      in accessing vehicle signals and data. However, when a vehicle is not being used, most electrical systems will be shut down in 
+      order to maximise battery life. This may include the systems that enable Wireless or Mobile connectivity. Then, when the vehicle 
+      is powered up, various systems will start-up, including those that provide off-board connectivity and the vehicle will typically 
+      connect either to a local WiFi network or to a Mobile Network Operator (MNO) and dynamically be assigned an IP address.</p>
       
       <p>At this point, internet based clients and servers do not know the dynamic IP address that was assigned to a specific vehicle.
-      So normally, a vehicle will have to connect to a well known endpoint (e.g. a <dfn>Vehicle to Everything (V2X) Server</dfn>, mutually
-      authenticate and 'register' with the server passing it a unique identifier e.g. its Vehicle Identification Number (VIN). 
-      From that point on, the server has the IP address that is currently assigned to a vehicle with a particular VIN, and can share this
-      information with other internet based clients and servers, which are then able to send messages to the vehicle.</p>
+      So normally, a vehicle will have to connect to a well known endpoint, generally using a URL to connect to a V2X Server. 
+      The vehicle and the internet server will typically mutually authenticate and the vehicle will 'register' with the server over 
+      an encrypted channel passing it a unique identifier e.g. its Vehicle Identification Number (VIN). From that point on, the server 
+      has the IP address that is currently assigned to a vehicle with a particular VIN, and can share this information with other 
+      internet based clients and servers, which are then able to send messages to the vehicle.</p>
+      
+      <p>However, if the vehicle loses connectivity and is dynamically assigned a new IP address, it will need to re-register its new 
+      IP address and the new address will need to be communicated to any interested parties. For simplicity, this is not shown in the 
+      component diagram, primarily because this connectivity only becomes possible after the vehicle has registered with at least one 
+      off-board server (which is shown) but also because these scenarios do not affect the interface and behaviours defined in this 
+      WebSocket Server Specification</p>
       
       <p>The component diagram shows four different types of internet based clients. A user may use a <dfn>Web Page</dfn> or a <dfn>
       Web Application</dfn> running on a phone or tablet to request access to vehicle signals on a particular vehicle. Alternatively 
       these signals could be accessed using a <dfn>Native or Managed Runtime Application</dfn> or via another automated 
       <dfn>Client System</dfn> or service e.g. the Traffic Management System in a 'Smart City'.</p>
-      	
-      <p>Once a vehicle has registered its current IP address with a server, it would be possible for the server to pass the
-      vehicle's IP address to other systems. From that point, any system that has the vehicle's IP address could potentially send 
-      messages directly to an endpoint exposed on the vehicle. However, if the vehicle loses connectivity and is dynamically
-      assigned a new IP address, it will need to re-register its new IP address, and the new address will need to be communicated to
-      any interested parties. For simplicity, this is not shown, in part because this connectivity only becomes possible after the 
-      vehicle has registered with at least one off-board server (as shown) but also because these scenarios do not affect the interface
-      and behaviours defined in this WebSocket Server Specification</p>
       </section>
 
       <!-- Security and privacy -->
