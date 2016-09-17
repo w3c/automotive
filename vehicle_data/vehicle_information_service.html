@@ -1130,8 +1130,17 @@
 	</pre>
 
 	<h2><a>VSS Request</a></h2>
-	<p>The client may request the current vehicle signal structure from the server using the getVSS action. The server will return the VSS structure currently available to the user, available to them under the current access control. The client is able to request the structure from any point in the VSS tree, such as only those signals within the chassis branch of the tree, by specifying the desired path. If the path is not set, the response will contain the entire tree.
-	</p>
+	<p>The client MAY use the getVSS action to request metadata describing the potentially available VSS tree. It does
+	this by sending a 'vssRequest' message to the server. If the server is able to return the VSS metadata, then this 
+	will be returned using a 'vssSuccessResponse' message. If an error occurs, the server will return a 'vssErrorResponse' 
+	message to the client.</p>
+	
+	<p>The client is able to request VSS metadata from any point in the VSS tree, such as only those signals within 
+	the chassis branch of the tree, by specifying the desired path. If the path is not set, the response will contain the 
+	metadata for the entire VSS tree.</p>
+
+        <p>If more than one 'getVSS' call is made with the same 'vssRequest' message content but at different times, the metadata 
+        in the 'vssSuccessResponse' SHALL be the same provided the access-control state of the WebSocket channel has not changed.</p>
 
       <pre class="idl">
       interface vssRequest {
@@ -1152,9 +1161,9 @@
       };
       </pre>
 
-    The following data flow example shows a request for the signal structure within the signal.public.global branch.
+    <p>The following data flow example shows a request for the signal structure within the signal.public.global branch.</p>
 
-	<pre class="highlight hljs javascript">
+    <pre class="highlight hljs javascript">
 	client -> { 
 		"action": "getVSS", 
 		"path": "signal.public.global", 
@@ -1166,8 +1175,7 @@
 	}
 	</pre>
 
-
-    </section>
+        </section>
 
     <section>
       <h3>Server Side <a>Filtering</a></h3>
