@@ -298,15 +298,15 @@
       </figure>
 
       <p>The <dfn>WebSocket Server</dfn> is the vehicle system that is responsible for exposing vehicle signals and data to 
-      its clients using a WebSocket Channel and by implementing the interface and behaviour defined in this 
-      <dfn>Vehicle Signal Server Specification(VSSS)</dfn>.</p>
+      its clients by implementing the interface and behaviour defined in this <dfn>Vehicle Signal Server Specification(VSSS)</dfn>.</p>
 
-      <p>One of the responsibilities of the WebSocket Server is ensuring that signals and data are exposed in a way that is consistent
-      with the Vehicle Signal Specification (VSS). This defines a 'tree-like' logical taxonomy of the vehicle, where major
-      vehicle structures (e.g. body, engine) are at or near the top of the tree and the logical assemblies and components that 
-      comprise them, are defined as their child nodes. Each of these child nodes is further decomposed into its logical constituents
-      and the process repeated. The final 'leaf nodes' (in what is formally, a Directed Acyclic Graph) represent the signals and data
-      exposed by ECUs. An example VSS tree is shown below:</p>
+      <p>The WebSocket Server is responsible for ensuring that signals and data are exposed in a way that is consistent
+      with the Vehicle Signal Specification (VSS). This defines a 'tree-like' logical taxonomy of the vehicle, (formally a Directed
+      Acyclic Graph), where major vehicle structures (e.g. body, engine) are at or near the top of the tree and the logical assemblies
+      and components that comprise them, are defined as their child nodes. Each of the child nodes in the tree is further decomposed 
+      into its logical constituents, and the process is repeated until <dfn>leaf nodes</dfn> are reached. A 'leaf node' is a node at
+      the end of a branch that cannot be decomposed because it represents a single signal or data attribute value. An example VSS tree
+      is shown below:</p>
 
       <figure>
         <img src="VSS_Tree_Simple_Example_v1.png" alt="Diagram showing an example Vehicle Signal tree">
