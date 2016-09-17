@@ -1028,11 +1028,7 @@
   	<p>An example of a subscription can be found <a href="#introduction">here</a>.</p>
 
 	<h2><a>Unsubscribe</a></h2>
-	<p>The client should always unsubscribe from receiving notifications when it is no longer using the data. Over a long
-	vehicle journey, this will significantly reduce the processing load on the server and allow the server to free memory. 
-	It will therefore make it more likely that the server will remain responsive to future requests from the client.</p>
-
-        <p>To unsubscribe, the client SHALL send an 'unsubscribeRequest' message to the server. This is comprised of a JSON 
+        <p>To unsubscribe from a subscription, the client SHALL send an 'unsubscribeRequest' message to the server. This is comprised of a JSON 
         structure which contains an action property set to 'unsubscribe' and a string containing the 'subscriptionId'.</p>
         
 	<p>The client MAY unsubscribe from all of its subscriptions by sending an 'unsubscribeRequest' with the subscriptionId set 
@@ -1041,6 +1037,10 @@
 	
 	<p>If the client has created more than one WebSocket instance, it MUST always unsubscribe using the same WebSocket instance
 	that was originally used to create the subscription.</p>
+
+	<p>The client should always unsubscribe from receiving notifications when it is no longer using the data. Over a long
+	vehicle journey, this will significantly reduce the processing load on the server and allow the server to free memory. 
+	It will therefore make it more likely that the server will remain responsive to future requests from the client.</p>
 	
 	<p>The 'unsubscribe' message structures are defined below:</p>
 
@@ -1130,7 +1130,7 @@
 	</pre>
 
 	<h2><a>VSS Request</a></h2>
-	<p>The client MAY use the getVSS action to request metadata describing the potentially available VSS tree. It does
+	<p>The client MAY use the 'getVSS' action to request metadata describing the potentially available VSS tree. It does
 	this by sending a 'vssRequest' message to the server. If the server is able to return the VSS metadata, then this 
 	will be returned using a 'vssSuccessResponse' message. If an error occurs, the server will return a 'vssErrorResponse' 
 	message to the client.</p>
