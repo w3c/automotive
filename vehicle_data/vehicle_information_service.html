@@ -282,12 +282,15 @@
       via these networks are abstracted and for simplicity, represented by the <dfn>System</dfn> component.</p>
 
       <p>For safety, security and commercial reasons not all clients should be able to GET, SET or SUBSCRIBE to particular vehicle
-      signals. As a consequence, access-control must be managed so clients cannot simply connect directly to ECUs or to CAN,
-      MOST or LIN network buses.</p>
+      signals and data attributes. As a consequence, access-control must be managed so clients cannot simply connect directly to ECUs
+      or to CAN, MOST or LIN network buses.</p>
 
+      <p>In this specification, the term 'signal' refers to a value that can change over time, for example, vehicle speed,
+      whilst data attribute is used for a value that does not change e.g. vehicle length.</p>
+      
       <p>The vehicle signals and data that are available within the wider vehicle System will be exposed in a controlled manner to
-      the Web Socket Server. The interface and communication mechanisms that are used between the vehicle System and the
-      Web Socket Server are outside of the scope of this specification.</p>
+      the Web Socket Server. The interface and communication mechanisms that are used between the vehicle System and the Web Socket
+      Server are outside of the scope of this specification.</p>
 
       <figure>
         <img src="W3C_Vehicle_APIs_Component_Diagram_v1_3.png" alt="Component diagram showing W3C Vehicle APIs">
