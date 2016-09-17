@@ -1034,9 +1034,21 @@
 	</pre>
 
 	<h2><a>Unsubscribe</a></h2>
-	<p>The client should always unsubscribe from receiving notifications when it is no longer interested in receiving them. Over a long vehicle journey, this will significantly reduce the processing required by the server and enable the server to free memory, making it easier for the server to remain responsive to requests from the client.</p>
+	<p>The client should always unsubscribe from receiving notifications when it is no longer using the data. Over a long
+	vehicle journey, this will significantly reduce the processing load on the server and allow the server to free memory. 
+	It will therefore make it more likely that the server will remain responsive to future requests from the client.</p>
 
-	<p>The client sends the unsubscribe action with the ID of the subscription which needs to be unsubscribed. If the client wished to unsubscribe from all of its clients, it can send a subscription ID of 0. If an invalid ID is sent the server will return an error, as shown in the following examples.</p>
+        <p>To unsubscribe, the client SHALL send an 'unsubscribeRequest' message to the server. This is comprised of a JSON 
+        structure which contains an action property set to 'unsubscribe' and a string containing the 'subscriptionId'.</p>
+        
+	<p>The client MAY unsubscribe from all of its subscriptions by sending an 'unsubscribeRequest' with the subscriptionId set 
+	to zero. If the server is able to satisfy the request it will return an 'unsubscribeSuccessResponse'. If an error occurs 
+	e.g. because an	invalid subscriptionId is passed to the server, an 'unsubscribeErrorResponse' will be returned.</p>
+	
+	<p>If the client has created more than one WebSocket instance, it MUST always unsubscribe using the same WebSocket instance
+	that was originally used to create the subscription.</p>
+	
+	<p>The 'unsubscribe' message structures are defined below:</p>
 
       <pre class="idl">
       interface unsubscribeRequest {
