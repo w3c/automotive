@@ -1115,13 +1115,13 @@
 
 	<pre class="example highlight">
 		// send unsubscribe message
-		vehicle.send({ "action": "unsubscribe", "subscriptionId": 102 });
+		vehicle.send({ "action": "unsubscribe", "subscriptionId": 102, "requestId": 5429 });
 
 		// set handler
 		vehicle.onmesssage(function(event){
 			var msg = JSON.parse(event.data);
 			// success case
-			if(msg.hasOwnProperty("status")){
+			if(msg.hasOwnProperty("requestId") && msg.requestId == 5429){
 				console.log("Successfully unsubscribed for id " + msg.subscriptionId);
 			// error case
 			} else if (msg.hasOwnProperty("error")) {
@@ -1136,9 +1136,9 @@
 	will be returned using a 'vssSuccessResponse' message. If an error occurs, the server will return a 'vssErrorResponse' 
 	message to the client.</p>
 	
-	<p>The client is able to request VSS metadata from any point in the VSS tree, such as only those signals within 
-	the chassis branch of the tree, by specifying the desired path. If the path is not set, the response will contain the 
-	metadata for the entire VSS tree.</p>
+	<p>The client is able to request VSS metadata from any point in the VSS tree, such that only the metadata for the signals
+	within the given branch of the tree is returned. For example, only metadata for the chassis branch of the tree is returned
+	when the chassis path is specified. If the path is not set, the response will contain the metadata for the entire VSS tree.</p>
 
         <p>If more than one 'getVSS' call is made with the same 'vssRequest' message content but at different times, the metadata 
         in the 'vssSuccessResponse' SHALL be the same provided the access-control state of the WebSocket channel has not changed.</p>
@@ -1191,23 +1191,22 @@
 
       <p>The subscription currently defaults to sending values to the
       client only onchange, however this may cause unnecessary
-      processing demands on the vehicle server.</p>
+      processing demands on the vehicle server. A filter object can be included in the subscription request:</p>
 
       <pre class="highlight hljs javascript">
         { "action": "subscribe", "path": "&lt;any_path&gt;", 
-        	"filters": { &lt;insert_custom_tags&gt;  } }
+        	"filters": { &lt;insert_custom_tags&gt;  }
+        	"requestId": "&lt;some_unique_value&gt;" }
       </pre>
       <p>Potential tags could include:</p>
       <ul>
-	<li>Interval - request that the server provides a notification every 'n' milliseconds. 
-	If the client does not need the data more frequently, this allows the client to reduce the
-	load on the server.</li>
+	<li>Interval - requests that the server provides a notification every 'n' milliseconds. This allows the client to reduce the
+	load on the server if the client does not need the data more frequently.</li>
 	<li>Range - provide a value only when within a given range</li>
-	<li>Minimum change - provide data when a value has changed by
-	a specified amount</li>
+	<li>Minimum change - provide data when a value has changed by a specified amount</li>
       </ul>
 
-      <p>If the filter is not set or unsupported the notification frequency will be
+      <p>If the filter is not set, or is unsupported by the server, the notification frequency will be
       determined by the server.</p>
 
       <pre class="highlight hljs javascript">
@@ -1244,11 +1243,11 @@
       </pre>      
 
       <p>When the range filter is used a final message will be sent when the value returned is outside 
-      of the specified range. For example, if the the range states { "below": 100 }, a final value may 
+      of the specified range. For example, if the range states { "below": 100 }, a final value may 
       be received at 101 to indicate that the value is now out of range.</p>
 
       <p>The client should not specify a minimum change amount that is smaller than it needs - in order to prevent
-	adding unecessary load on the server. The server shall return a '429 - Too Many Request' error response if
+	adding unnecessary load on the server. The server shall return a '429 - Too Many Request' error response if
 	it is unable to fulfil the request made by the client.</p>
 
       <p>The section that follows defines the error responses that shall be supported by the server.</p>
@@ -1275,8 +1274,8 @@ vehicle.close();
 	<p>The WebSocket server may terminate the WebSocket connection
 	if it has not received a request for a period determined by
 	the server. It is the client’s responsibility to handle this
-	gracefully and to recover and for example request new
-	subscriptions, where these are required.</p> 
+	gracefully and to recover and request new
+	subscriptions, where required.</p> 
       </section>
 
 
