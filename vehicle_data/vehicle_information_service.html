@@ -719,14 +719,14 @@
       <tr>
         <td> <dfn>Device</dfn></td>
         <td> <a>www-vehicle-device</a></td>
-        <td> The originating device that is making the request to the server. This MAY an ECU in the vehice that is hosting the 
-        WebSocket Server or MAY a device that it connected to the vehicle via a WiFi hotspot or MAY be any other device.</td>
+        <td> The originating device that is making the request to the server. This MAY be an ECU in the vehicle that is hosting the 
+        WebSocket Server or MAY be a device that is connected to the vehicle via a WiFi hotspot or MAY be any other device.</td>
       </tr>
     </table>
 
     <p>The 'tokens' JSON fragment MAY contain an 'authorization' structure that contains just a single name/value pair, for example,
     to pass only the user token. Or it may contain only the 'www-vehicle-device' name/value pair to pass the just the vehicle token; 
-    Alternatively it MAY include name/value pairs for both the 'authorization' and 'www-vehicle-device' tokens. 
+    alternatively it MAY include name/value pairs for both the 'authorization' and 'www-vehicle-device' tokens. 
     These alternatives are illustrated in the following example:</p>
 
 	<pre class="example highlight">
@@ -800,7 +800,7 @@
 	a set of name/value pairs in a JSON object structure. The format MUST be as defined by the Vehicle Signal Specification.<p>
 
 	<p>The following shows an example of a 'getRequest' that results in the server returning a 'getSuccessResponse' with a value
-	that is a complex type</p>
+	that is a complex type:</p>
 	<pre class="highlight hljs javascript">
 	client -> { 
 		"action": "get", 
