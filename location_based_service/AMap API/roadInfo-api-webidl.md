@@ -17,6 +17,7 @@ interface RoadInfoSearch {
 	void setCity(DOMString city);
 };
 callback SearchCallback = void(DOMString status, (RoadInfoSearchResult or CrossInfoSearchResult or DOMString) result);
+```
 
 `RoadInfoSearch` is the main interface to deal with road info search. A `RoadInfoSearch` instance can be returned by using the RoadInfoSearch constructor that accepts a `DOMString` as input.
 * `city`: City name or city code. The city within which to search the road info. If more than one, separate by ‘|’.
