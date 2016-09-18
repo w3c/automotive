@@ -1195,7 +1195,7 @@
 
       <pre class="highlight hljs javascript">
         { "action": "subscribe", "path": "&lt;any_path&gt;", 
-        	"filters": { &lt;insert_custom_tags&gt;  }
+        	"filters": "{ &lt;insert_custom_tags&gt;  }"
         	"requestId": "&lt;some_unique_value&gt;" }
       </pre>
       <p>Potential tags could include:</p>
@@ -1283,7 +1283,7 @@ vehicle.close();
       <section>
 	<h3><a>Errors</a></h3>	
 	<p>If there is an error with any of the client’s requests, the
-	server will respond with an error number, code and
+	server will respond with an error number, reason and
 	message.</p>
 
       <pre class="idl">
@@ -1301,16 +1301,18 @@ vehicle.close();
         The error message will be used to provide message text describing the cause in more detail.</p>
 
 	<pre class="highlight hljs javascript">
-	client -> { "action": "subscribe", "filters": { &lt;filter_expression&gt; }, 
-	            "path": "&lt;any_vss_path&gt;", "requestId": "&lt;some_unique_value&gt;" }
-	receive on error <- { "error": { "number": &lt;error_num&gt;, "reason": "&lt;error_reason&gt;", 
-                                 "message": "&lt;error_message&gt;" }, 
-                        "path": "&lt;any_vss_path&gt;",
-											  "requestId": "&lt;some_unique_value&gt;" }
+	client -> { "action": "subscribe", 
+		"filters": { "&lt;filter_expression&gt;" }, 
+		"path": "&lt;any_vss_path&gt;", 
+		"requestId": "&lt;some_unique_value&gt;" }
+	receive on error <- { 
+		"error":{ "number": "&lt;error_num&gt;", 
+			"reason": "&lt;error_reason&gt;", 
+			"message": "&lt;error_message&gt;" }, 
+		"path": "&lt;any_vss_path&gt;",
+		"requestId": "&lt;some_unique_value&gt;" }
 	</pre>
-
 	<p>The server implementation will support at least the error numbers and reasons listed in the table below.</p>
-      
 	<table class="parameters">
 	  <tr>
 	    <th>Error&nbsp;Number&nbsp;(Code)</th>
