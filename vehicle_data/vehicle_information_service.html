@@ -272,7 +272,7 @@
       <!-- Architecture -->
       <section id="architecture" class="informative">
         <h2>Architecture</h2>
-        
+        <h3>Introduction</h3>
       <p>In a typical vehicle design, signals and data are transmitted between Electronic Control Units (ECUs) connected
       via internal vehicle networks. These include Controller Area Networks (CAN), Media Oriented Systems Transport (MOST)
       and Local Interconnect Networks (LIN). ECUs on these networks broadcast messages on network buses, and other ECUs on the
@@ -297,6 +297,7 @@
         <figcaption>Diagram showing Components that implement the W3C Vehicle Signal APIs and their clients</figcaption>
       </figure>
 
+      <h3>WebSocket Server</h3>
       <p>The <dfn>WebSocket Server</dfn> is the vehicle system that is responsible for exposing vehicle signals and data to 
       its clients by implementing the interface and behaviours defined in this <dfn>Vehicle Signal Server Specification (VSSS)</dfn>.</p>
 
@@ -318,6 +319,7 @@
       describes which signals and data attributes could potentially be accessed provided that the user and/or device is suitably 
       authorised. This and other valid WebSocket Server actions are defined in more detail <a href="#action">here</a>.</p>
 
+      <h3>In-Vehicle Clients</h3>
       <p>The methods defined on the WebSocket Server interface may be invoked by different types of on-board and off-board clients. 
       On-board clients, running on the vehicle fall into one of two major categories:</p>
 
@@ -343,6 +345,7 @@
       e.g. an ECU that implements an In Vehicle Infotainment (IVI) system, but also includes clients running on a user's 
       device, e.g. a laptop, phone or tablet, that is connected via the vehicle's WiFi client (if one exists).</p>
 
+      <h3>Sending Signals and Data off-board</h3>
       <p>In addition to local, in-vehicle applications and agents, a variety of internet-based clients and servers may be interested
       in accessing vehicle signals and data. However, when a vehicle is not being used, most electrical systems will be shut down in 
       order to maximise battery life. This may include the systems that enable Wireless or Mobile connectivity. Then, when the vehicle 
