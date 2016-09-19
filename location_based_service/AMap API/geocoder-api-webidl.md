@@ -14,6 +14,7 @@ interface Geocoder {
 	void setCity(DOMString city);
 };
 callback SearchCallback = void(DOMString status, (GeocodeResult or ReGeocodeResult or DOMString) result);
+```
 
 `Geocoder` is the main interface to deal with Forward Geocoding and Reverse Geocoding service. A `Geocoder` instance can be returned by using the Geocoder constructor that accepts a `GeocoderOptions` as input.
 * `getLocation()`: Forward geocoding. Obtain the geographic coordinates according to address description. Result will be notified through the callback. If status is ‘error’, then  error info is returned; if status is ‘complete’, then location info result is returned. See GeocodeResult Interface for more details about the possible values.

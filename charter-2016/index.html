@@ -101,13 +101,6 @@
             </td>
           </tr>
 
-          <tr class="todo">
-            <th>Charter extension</th>
-            <td>See <a href="#history">Change History</a>.
-              <span class="issue">(<b>Note:</b> Only include this row if this is a charter extension.)</span>
-            </td>
-          </tr>
-
           <tr>
             <th>
               Chairs
@@ -139,7 +132,6 @@
           </tr>
         </table>
 
-        <p class="issue"><b>Note:</b> The <a href="https://www.w3.org/2015/Process-20150901/#WGCharter">W3C Process Document (2015)</a> requires “The level of confidentiality of the group's proceedings and deliverables”; however, it does not mandate where this appears. Since all W3C Working Groups should be chartered as public, this notice has been moved from the essentials table to the <a href="#public">communication section</a>.</p>
       </section>
 
 
@@ -150,21 +142,21 @@
           from an automotive network bus(es) (e.g. <a href="http://en.wikipedia.org/wiki/MOST_Bus">MOST
             (Media Oriented Systems Transport)</a> or <a href="http://en.wikipedia.org/wiki/CAN_bus">CAN
             (Controller Area Network))</a> to a Web application. The APIs will
-          expose information like the vehicle brand, model, year, fuel type,
+          expose information such as the vehicle brand, model, year, fuel type,
           transmission type, steering wheel position, tire pressure, oil level,
           wiper position, lights, doors, windows and seat settings as well as
-          navigation, trip computer data, climate control data, speed, rpms,
-          acceleration, gears and other vehicle sensors.</p>
+          navigation, trip computer data, climate control data, speed, RPMs,
+          acceleration, gears and other vehicle sensor data.</p>
           <p>In order to enable multiple clients and flexible usage, the prime specification 
           for data access will be a service specification, specifying the mechanisms and protocols
           for accessing vehicle information.  The mechanisms will include WebSockets and
-          REST.  In addition, an API which is intended to use the service will be specified
-          for facility.  Initially these specifications will be limited to passenger
+          REST.  In addition, a higher level API which is intended to use the service will be specified
+          for facility to web developers.  Initially these specifications will be limited to passenger
           vehicles. How an implementation obtains this data is not in the scope
           of the group.</p>
         <p>The specification(s) produced by this Working Group will include
           security and privacy considerations. The APIs developed by this group
-          may use a different security model than the traditional browser
+          may use a different security model from the traditional browser
           security model.</p>
         <p>Members of the Working Group should review other working groups'
           deliverables that are identified as being relevant to the Working
@@ -187,7 +179,7 @@
           <h3>Success Criteria</h3>
           <p>In order to advance to <a href="https://www.w3.org/2015/Process-20150901/#RecsCR" title="Proposed Recommendation">Proposed Recommendation</a>, each specification is expected to have at least two independent implementations of each of feature defined in the specification.</p>
           <p>Each specification should contain a section detailing any known security or privacy implications for implementers, Web authors, and end users.</p>
-          <p><i class="todo">For specifications of technologies that directly impact user experience, such as content technologies, as well as protocols and APIs which impact content: </i>Each specification should contain a section describing known impacts on accessibility to users with disabilities, ways the specification features address them, and recommendations for minimizing accessibility problems in implementation.</p>
+
         </div>
       </section>
 
@@ -197,12 +189,9 @@
         <h2>
           Deliverables
         </h2>
-        <p class="issue"><b>Issue:</b> I've (not Kaz :) removed the milestones table, which is always wildly inaccurate, and included the milestones as projected completion dates in the description template for each deliverable. Up-to-date milestones tables should be maintained on the group page and linked to from this charter.</p>
-        <p class="issue"><b>Issue:</b>The Editors of the specs are Powell Kinney, Vinli, Wonsuk Lee, ETRI, Kevin Gavigan, JLR, Adam Crofts, JLR.</p>
 
         <p>More detailed milestones and updated publication schedules are available on the <a href="https://www.w3.org/wiki/[groupname]/PubStatus">group publication status page</a>.</p>
 
-        <p><i>Draft state</i> indicates the state of the deliverable at the time of the charter approval. <i>Expected completion</i> indicates when the deliverable is projected to become a Recommendation, or otherwise reach a stable state.</p>
 
         <div id="normative">
           <h3>
@@ -215,7 +204,7 @@
           <dl>
           <dt id="service-spec" class="spec">Vehicle Signal Server Specification</dt>
           <dd>
-            <p>The Vehicle Signal Server Specification defines the semantics of exposing vehicle information through the WebSockets protocol. This specification is dependant upon the Vehicle Signal Specification, as defined by GENIVI.</p>
+            <p>The Vehicle Signal Server Specification defines the semantics of exposing vehicle information through the WebSocket protocol. This specification is dependent upon the Vehicle Signal Specification, as defined by GENIVI.</p>
 
             <p class="draft-status"><a href="https://w3c.github.io/automotive/vehicle_data/vehicle_information_service.html">Editor's Draft</a></p>
 
@@ -254,13 +243,13 @@
           <dd>To facilitate interoperability among different vehicle OEMs and
             encourage adoption of the API, the group may provide informative
             guidelines for implementors, either directly as informative notes
-            within the Vehicle Information API or in a separate non-normative
+            within these specifications or in a separate non-normative
             group Note.</dd>
           <dt>Test suite </dt>
           <dd> A comprehensive test suite for all features of a specification is
             necessary to ensure the specification's robustness, consistency, and
-            implementability, and to promote interoperability between User
-            Agents. Therefore, each specification must have a companion test
+            implementability, and to promote interoperability between clients.
+	    Therefore, each specification must have a companion test
             suite, which should be completed before transition to Candidate
             Recommendation, and which must be completed with an implementation
             report before transition to Proposed Recommendation. Additional
@@ -279,35 +268,24 @@
         
         <div id="timeline">
           <h3>Timeline</h3>
-            <p class="todo">Put here a timeline view of all deliverables.</p>
-            <ul class="todo">
-              <li>July 2016: First face-to-face meeting</li>
-              <li>August 2016: First teleconference</li>
-              <li>September 2016: First face-to-face meeting - TPAC</li>
-              <li>October 2016: First face-to-face meeting - GENIVIA AMM</li>
-              <li>September 2016: FPWD of Vehicle Information Service Specification</li>
-              <li>October 2016: FPWD of Vehicle Information Access API Specifiecation</li>
-              <li>March 2017: CR of Vehicle Information Service Specification</li>
-              <li>March 2017: CR of Vehicle Information Access API Specifiecation</li>
-              <li>June 2017: PR of Vehicle Information Service Specification</li>
-              <li>June 2017: PR of Vehicle Information Access API Specifiecation</li>
-              <li>September 2017: REC of Vehicle Information Service Specification</li>
-              <li>September 2017: REC of Vehicle Information Access API Specifiecation</li>
+            <ul>
+              <li>November 2016: FPWD of Vehicle Signal Server Specification</li>
+              <li>December 2016: FPWD of Vehicle Signal Client Specifiecation</li>
+              <li>April 2017: CR of Vehicle Signal Server Specification</li>
+              <li>April 2017: CR of Vehicle Signal Client Specifiecation</li>
+              <li>July 2017: PR of Vehicle Signal Server Specification</li>
+              <li>July 2017: PR of Vehicle Signal Client Specifiecation</li>
+              <li>November 2017: REC of Vehicle Signal Server Specification</li>
+              <li>December 2017: REC of Vehicle Signal Client Specifiecation</li>
             </ul>
         </div>
       </section>
 
-
-
       <section id="coordination">
         <h2>Coordination</h2>
         <p>For all specifications, this (Working|Interest) Group will seek <a href="https://www.w3.org/Guide/Charter.html#horizontal-review">horizontal review</a> for accessibility, internationalization, performance, privacy, and security with the relevant Working and Interest Groups, and with the <a href="https://www.w3.org/2001/tag/" title="Technical Architecture Group">TAG</a>. Invitation for review must be issued during each major standards-track document transition, including <a href="https://www.w3.org/2015/Process-20150901/#RecsWD" title="First Public Working Draft">FPWD</a> and <a href="https://www.w3.org/2015/Process-20150901/#RecsCR" title="Candidate Recommendation">CR</a>, and should be issued when major changes occur in a specification.</p>
-        <p class="issue"><b>Issue:</b> The paragraph above replaces line-item liaisons and dependencies with individual horizontal groups. There's been a suggestion to name and individually link the specific horizontal groups inline, instead of pointing to a page that lists them.</p>
-        <p class="issue"><b>Issue:</b> The requirement for an invitation to review after FPWD and before CR may seem a bit overly restrictive, but it only requires an invitation, not a review, a commitment to review, or even a response from the horizontal group. This compromise offers early notification without introducing a bottleneck.</p>
 
-        <p>Additional technical coordination with the following Groups will be made, per the <a href="https://www.w3.org/2015/Process-20150901/#WGCharter">W3C Process Document</a>:</p>
-      	
-      	<p class="todo">In addition to the above catch-all reference to horizontal review which includes accessibility review, please check with chairs and staff contacts of the <a href="https://www.w3.org/WAI/APA/">Accessible Platform Architectures Working Group</a> to determine if an additional liaison statement with more specific information about concrete review issues is needed in the list below.</p>
+        <p>Additional technical coordination with the following Groups will be made, per the <a href="https://www.w3.org/2015/Process-20150901/#WGCharter">W3C Process Document</a>:</p>      	
 
         <div>
           <h3 id="w3c-coordination">W3C Groups</h3>
@@ -316,11 +294,10 @@
               and Web Platform Business Group</a></dt>
           <dd>This group developed the initial version of the Vehicle
             Information &amp; Vehicle Data APIs and will likely continue to
-            explore new use cases and other automotive and web related topics
-            like Speech. </dd>
+            explore new use cases and other automotive and web related topics. </dd>
           <dt><a href="http://www.w3.org/2009/dap/">Device APIs Working Group</a>
           </dt>
-          <dd>The Device APIs Working Group defines the Network Service
+          <dd>The Device and Sensors Working Group defines the Network Service
             Discovery API that addresses some of the use cases that are in scope
             of the Automotive Working Group.</dd>
           <dt><a href="http://www.w3.org/2008/geolocation/">Geolocation Working
@@ -335,21 +312,6 @@
           <dd>The Automotive API Working Group intends to secure reviews on its
             deliverables from the Privacy Interest Group to ensure they offer
             the right level of protection to users.</dd>
-          <dt><a href="http://www.w3.org/community/speech-api/">Speech API
-              Community Group</a></dt>
-          <dd>This Speech API Community Group will enable web developers to
-            incorporate scripts into their web pages that can generate
-            text-to-speech output and can use speech recognition as an input for
-            forms, continuous dictation and control. </dd>
-          <dt><a href="http://www.w3.org/2012/sysapps/">System Applications
-              Working Group</a></dt>
-          <dd>The System Applications Working Group is to define a runtime
-            environment, security model, and associated APIs for building Web
-            applications with comparable capabilities to native applications.</dd>
-          <dt><a href="http://www.w3.org/2001/tag/">Technical Architecture Group
-              (TAG)</a></dt>
-          <dd>The Automotive WG will ask the Technical Architecture Group to
-            review some set of its specifications.</dd>
           <dt><a href="http://www.w3.org/WAI/">Web Accessibility Initiative
               Protocols and Formats Working Group</a> </dt>
           <dd>To ensure the Vehicle Information and Data APIs support
@@ -359,27 +321,19 @@
             ways that support accessibility requirements. The PFWG will also
             coordinate review from the <a href="http://www.w3.org/WAI/GL/mobile-a11y-tf/">Mobile
               Accessibility Task Force</a>.</dd>
-          <dt><a href="http://www.w3.org/Mobile/IG/"> Web &amp; Mobile Interest
+          <dt><a href="https://www.w3.org/WebPlatform/WG/">Web Platform Working
               Group</a></dt>
-          <dd>The Automotive API Working Group intends to develop APIs suitable
-            for use on mobile devices connected to passenger vehicles, and will
-            thus seek reviews from the Web &amp; Mobile Interest Group.</dd>
-          <dt><a href="http://www.w3.org/2008/webapps/">Web Applications Working
-              Group</a></dt>
-          <dd>This group defines relevant or potentially relevant specifications
-            including <a href="http://www.w3.org/TR/WebIDL/">Web IDL</a>, <a href="http://www.w3.org/TR/webmessaging/">HTML5
-              Web Messaging</a> and <a href="http://www.w3.org/TR/websockets/">The
+          <dd>This group defines <a href="https://w3c.github.io/charter-html/group-charter.html#deliverables">relevant or potentially relevant specifications</a>
+            including <a href="http://w3c.github.io/manifest//">Manifest for Web applications</a>, <a href="http://www.w3.org/TR/webmessaging/">HTML5
+              Web Messaging</a>, <a
+	      href="http://w3c.github.io/ServiceWorker/spec/service_worker/">Service
+	      Worker</a> and <a href="http://www.w3.org/TR/websockets/">The
               Web Socket API</a>.</dd>
           <dt><a href="http://www.w3.org/2011/webappsec/">Web Application
               Security Working Group</a></dt>
           <dd>The Web Application Security Working Group is developing security
             and policy mechanisms to improve the security of Web Applications
             and enable secure cross-site communication.</dd>
-          <dt><a href="http://www.w3.org/2010/web-notifications/">Web
-              Notifications Working Group</a></dt>
-          <dd>The Web Notification Working Group works on OS-independent APIs
-            for exposing platform-level notification mechanisms to Web
-            applications.</dd>
           <dt><a href="http://www.w3.org/Security/wiki/IG">Web Security Interest
               Group</a></dt>
           <dd>The Automotive API Working Group intends to secure reviews on its
@@ -387,7 +341,6 @@
             offer the right level of security. </dd>
           </dl>
 
-          <p class="issue"><b>Note:</b> Do not list horizontal groups here, only specific WGs relevant to your work.</p>
 
           <h3 id="external-coordination">External Organizations</h3>
         <dl>
@@ -519,75 +472,6 @@
           This charter has been created according to <a href="https://www.w3.org/Consortium/Process/groups#GAGeneral">section 5.2</a> of the <a href="https://www.w3.org/Consortium/Process">Process Document</a>. In the event of a conflict between this document or the provisions of any charter and the W3C Process, the W3C Process shall take precedence.
         </p>
 
-        <section id="history">
-          <h3>
-            Charter History
-          </h3>
-          <p class="issue"><b>Note:</b> Only include this section if this is a charter extension. Requirements for charter extension history are documented in the <a href="https://www.w3.org/Guide/Charter#extension">Charter Guidebook (section 4)</a>.</p>
-
-          <p>The following table lists details of all changes from the initial charter, per the <a href="https://www.w3.org/2015/Process-20150901/#CharterReview">W3C Process Document (section 5.2.3)</a>:</p>
-
-          <table class="history">
-            <tbody>
-              <tr>
-                <th>
-                  Charter Period
-                </th>
-                <th>
-                  Start Date
-                </th>
-                <th>
-                  End Date
-                </th>
-                <th>
-                  Changes
-                </th>
-              </tr>
-              <tr>
-                <th>
-                  <a href="https://www.w3.org/2014/automotive/charter">Initial Charter</a>
-                </th>
-                <td>
-                  <i>03 February 2015</i>
-                </td>
-                <td>
-                  <i>30 June 2016</i>
-                </td>
-                <td>
-                  <i>none</i>
-                </td>
-              </tr>
-              <tr>
-                <th>
-                  <a href="https://lists.w3.org/Archives/Member/w3c-ac-members/2016JulSep/0007.html">Charter Extension</a>
-                </th>
-                <td>
-                  <i>11 July 2016</i>
-                </td>
-                <td>
-                  <i>30 September 2016</i>
-                </td>
-                <td>
-                  <i>none</i>
-                </td>
-              </tr>
-              <tr>
-                <th>
-                  <a href="">Rechartered</a>
-                </th>
-                <td>
-                  <i class="todo">[dd monthname yyyy]</i>
-                </td>
-                <td>
-                  <i class="todo">[dd monthname yyyy]</i>
-                </td>
-                <td>
-                  <p class="todo">[description of change to charter, with link to new deliverable item in charter] <b>Note:</b> use the class <code>new</code> for all new deliverables, for ease of recognition.</p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
       </section>
     </main>
 
@@ -601,7 +485,7 @@
 
       <p class="copyright">
         <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> ©
-        <i class="todo">[yyyy]</i>
+        2016
         <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup>
         (
         <a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,

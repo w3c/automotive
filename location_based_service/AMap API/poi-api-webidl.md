@@ -1,6 +1,8 @@
-# POI API and Data format WebIDL
+# POI API
 
-# POI API example
+POI API packages a set of function, to provide POI search service.
+
+# Interface
 
 ## Interface 'POI'
 
@@ -13,7 +15,7 @@ interface PlaceSearch {
 	void searchNearBy(DOMString keyword, LngLat center, long radius, SearchCallback whenSearched);
 	void searchInBounds(DOMString keyword, Bounds bounds, SearchCallback whenSearched);
 };
-callback SearchCallback = void(DOMString status, (sequence<Poi> or DOMString) result);
+callback SearchCallback = void(DOMString status, (SearchResult or DOMString) result);
 ```
 
 `PlaceSearch` is the main interface to deal with POI search. A `PlaceSearch` instance can be returned by using the PlaceSearch constructor that accepts a `PlaceSearchOptions` as input.
@@ -24,8 +26,70 @@ callback SearchCallback = void(DOMString status, (sequence<Poi> or DOMString) re
 * `searchInBounds()`: Search the POI according to rectangular region and keyword. Result will be notified through the callback. See SearchResult Interface for more details about the possible values.
 
 
+## Interface 'PlaceSearchOptions'
 
-# POI Data format example
+```webidl
+dictionary PlaceSearchOptions {
+	DOMString city;
+	DOMString type;
+	DOMString extensions;
+};
+```
+
+A 'PlaceSearchOptions' is a dictionary that is passed as input to the 'PlaceSearch' constructor. It may be extended in the future with additional option properties. The current supported option properties are:
+* `city`: City of POI. Format can be as city name or city code or administrative code.
+* `type`: Type of POI. If more than one, separate by ‘|’, like ‘Cinema | Hotel’.
+* `extensions`: Choose either 'base' or 'all'. ‘base’: return basic POI info; ‘all’: return basic and detailed POI info.
+
+
+## Interface 'SearchResult'
+
+```webidl
+interface SearchResult {
+	readonly attribute DOMString info;
+	readonly attribute PoiList poiList;
+	readonly attribute sequence<DOMString> keywordList;
+	readonly attribute sequence<CityInfo> cityList;
+};
+```
+
+The `SearchResult` is POI search result returned.
+* `info`: Description of success.
+* `poiList`: POI list returned. See PoiList Interface for more details about the possible values.
+* `keywordList`: Keyword list. If no match is found according to the given keyword, then return the suggested keyword list.
+* `cityList`: City list. If no match is found according to the given keyword, then return the suggested city list. Each city item contains at least one POI item. See CityInfo Interface for more details about the possible values.
+
+
+## Interface 'CityInfo'
+
+```webidl
+interface CityInfo {
+	readonly attribute DOMString name;
+	readonly attribute DOMString citycode;
+	readonly attribute DOMString adcode;
+	readonly attribute long count;
+};
+```
+
+The `CityInfo` is the description of city info.
+* `name`: City name.
+* `citycode`: City code.
+* `adcode`: Administrative region code.
+* `count`: Total number of POI results of this city.
+
+
+## Interface 'PoiList'
+
+```webidl
+interface PoiList {
+	readonly attribute sequence<Poi> pois;
+	readonly attribute long count;
+};
+```
+
+* `pois`: List of POI details. See Poi Interface for more details about the possible values.
+* `count`: Total number of POI results.
+
 
 ## Interface 'Poi'
 
@@ -49,69 +113,5 @@ interface Poi {
 	readonly attribute DOMString email;
 	readonly attribute LngLat entr_location;
 	readonly attribute LngLat exit_location;
-	readonly attribute DOMString deep_type;
-	readonly attribute Dining dining;
-	readonly attribute Hotel hotel;
-	readonly attribute Cinema cinema;
-	readonly attribute Scenic scenic;
-};
-```
-
-
-## Interface 'Dining'
-
-```webidl
-interface Dining {
-	readonly attribute DOMString cuisines;
-	readonly attribute DOMString tag;
-	readonly attribute DOMString intro;
-	readonly attribute DOMString rating;
-	readonly attribute DOMString src;
-	readonly attribute DOMString cost;
-	readonly attribute DOMString recommend;
-	readonly attribute DOMString atmosphere;
-	readonly attribute DOMString ordering_url;
-	readonly attribute DOMString opentime;
-};
-```
-
-
-## Interface 'Hotel'
-
-```webidl
-interface Hotel {
-	readonly attribute DOMString intro;
-	readonly attribute DOMString rating;
-	readonly attribute DOMString src;
-	readonly attribute DOMString star;
-	readonly attribute DOMString lowest_price;
-	readonly attribute DOMString traffic;
-};
-```
-
-
-## Interface 'Cinema'
-
-```webidl
-interface Cinema {
-	readonly attribute DOMString intro;
-	readonly attribute DOMString rating;
-	readonly attribute DOMString src;
-	readonly attribute DOMString opentime;
-};
-```
-
-
-## Interface 'Scenic'
-
-```webidl
-interface Scenic {
-	readonly attribute DOMString intro;
-	readonly attribute DOMString rating;
-	readonly attribute DOMString src;
-	readonly attribute DOMString price;
-	readonly attribute DOMString season;
-	readonly attribute DOMString ordering_url;
-	readonly attribute DOMString opentime;
 };
 ```
