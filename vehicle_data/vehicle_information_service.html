@@ -320,6 +320,10 @@
       authorised. This and other valid WebSocket Server actions are defined in more detail <a href="#action">here</a>.</p>
 
       <h3>In-Vehicle Clients</h3>
+      <p>In-vehicle clients include both those clients that are running on an ECU in the vehicle itself,
+      e.g. an ECU that implements an In Vehicle Infotainment (IVI) system, but also includes clients running on a user's 
+      device, e.g. a laptop, phone or tablet, that is connected via the vehicle's WiFi client (if one exists).</p>
+
       <p>The methods defined on the WebSocket Server interface may be invoked by different types of on-board and off-board clients. 
       On-board clients, running on the vehicle fall into one of two major categories:</p>
 
@@ -340,10 +344,6 @@
       W3C Vehicle Signal Client API (TODO Add Link). The Client API defines a standard approach to encapsulate or 'wrap' the
       W3C Vehicle Server Specification API to make it easier for Web based clients to access vehicle signals and data in a controlled
       way.</p>
-
-      <p>For clarity, in-vehicle clients include both those clients that are running on an ECU in the vehicle itself,
-      e.g. an ECU that implements an In Vehicle Infotainment (IVI) system, but also includes clients running on a user's 
-      device, e.g. a laptop, phone or tablet, that is connected via the vehicle's WiFi client (if one exists).</p>
 
       <h3>Sending Signals and Data off-board</h3>
       <p>In addition to local, in-vehicle applications and agents, a variety of internet-based clients and servers may be interested
@@ -435,6 +435,7 @@
           <figcaption>Diagram showing WebSocket Security Token flow</figcaption>
         </figure>
 
+	<p>TODO Update diagram to reflect auth token structure and review including other diagrams from Wiki</p>
         <p>After receiving a message with an 'authorize' action the server will attempt to verify the tokens e.g. by checking 
         with the issuing Security Authority. If all of the tokens that are passed to the server are valid, it will return
         a success response and all subsequent requests received by the WebSocket instance will have elevated access control
