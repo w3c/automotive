@@ -149,15 +149,12 @@
           acceleration, gears and other vehicle sensor data.</p>
           <p>In order to enable multiple clients and flexible usage, the prime specification 
           for data access will be a service specification, specifying the mechanisms and protocols
-          for accessing vehicle information.  The mechanisms will include WebSockets and
-          REST.  In addition, a higher level API which is intended to use the service will be specified
+          for accessing vehicle information.  The mechanisms will be firstly based on WebSockets and it could be extended to apply advanced protocols in the future.  In addition, a higher level API which is intended to use the service will be specified
           for facility to web developers.  Initially these specifications will be limited to passenger
           vehicles. How an implementation obtains this data is not in the scope
           of the group.</p>
         <p>The specification(s) produced by this Working Group will include
-          security and privacy considerations. The APIs developed by this group
-          may use a different security model from the traditional browser
-          security model.</p>
+          security and privacy considerations.</p>
         <p>Members of the Working Group should review other working groups'
           deliverables that are identified as being relevant to the Working
           Group's mission. </p>
@@ -217,8 +214,7 @@
             <p>The Vehicle Signal Client Specification specifies a JavaScript API for 
             accessing vehicle data.  It is intended to get its data from the Vehicle Signal Server Specification.  
             However, it is also intended to provide a level of
-            abstraction from the service.  Hence, it is conceivable that it is used/implemented
-            without using the Vehicle Signal Server Specification.</p>
+            abstraction from the service.</p>
 
 
             <p class="draft-status"><b>Draft state:</b> <a href="#">Use Cases and Requirements</a></p>
@@ -270,13 +266,13 @@
           <h3>Timeline</h3>
             <ul>
               <li>November 2016: FPWD of Vehicle Signal Server Specification</li>
-              <li>December 2016: FPWD of Vehicle Signal Client Specifiecation</li>
+              <li>December 2016: FPWD of Vehicle Signal Client Specification</li>
               <li>April 2017: CR of Vehicle Signal Server Specification</li>
-              <li>April 2017: CR of Vehicle Signal Client Specifiecation</li>
+              <li>April 2017: CR of Vehicle Signal Client Specification</li>
               <li>July 2017: PR of Vehicle Signal Server Specification</li>
-              <li>July 2017: PR of Vehicle Signal Client Specifiecation</li>
+              <li>July 2017: PR of Vehicle Signal Client Specification</li>
               <li>November 2017: REC of Vehicle Signal Server Specification</li>
-              <li>December 2017: REC of Vehicle Signal Client Specifiecation</li>
+              <li>December 2017: REC of Vehicle Signal Client Specification</li>
             </ul>
         </div>
       </section>
@@ -295,7 +291,7 @@
           <dd>This group developed the initial version of the Vehicle
             Information &amp; Vehicle Data APIs and will likely continue to
             explore new use cases and other automotive and web related topics. </dd>
-          <dt><a href="http://www.w3.org/2009/dap/">Device APIs Working Group</a>
+          <dt><a href="http://www.w3.org/2009/dap/">Device and Sensors Working Group</a>
           </dt>
           <dd>The Device and Sensors Working Group defines the Network Service
             Discovery API that addresses some of the use cases that are in scope
