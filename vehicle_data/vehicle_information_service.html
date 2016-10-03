@@ -214,14 +214,14 @@
 
 		// establish authorization
 		vehicle.onopen = function () {
-			vehicle.send({"action": "authorize", 
+			vehicle.send('{"action": "authorize", 
 				"tokens": {"authorization": "&lt;user_token_value&gt;"}, 
-				"requestId": 103});
+				"requestId": 103}');
 		};
 		
 		// request a signal
 		if (vehicle.readyState === OPEN) {
-			vehicle.send({"action": "get", "path": "signal.public.global.speed"});
+			vehicle.send('{"action": "get", "path": "signal.public.global.speed"}');
 
 			// process messages from the server
 			vehicle.onmessage = function(event){
@@ -239,8 +239,8 @@
 	<pre class="example highlight">
 		// set a subscription, assuming the same authorization and set up from Example 1
 		if (vehicle.readyState === OPEN) {
-			vehicle.send({"action": "subscribe", "path": "signal.public.drivetrain.rpm", 
-					"requestId": 104});
+			vehicle.send('{"action": "subscribe", "path": "signal.public.drivetrain.rpm", 
+					"requestId": 104}');
 			vehicle.onmessage = function(event){
 				var msg = JSON.parse(event.data);
 				if(msg.hasOwnProperty("requestId") && msg.requestId == 104){
@@ -535,7 +535,7 @@
         to pass request messages to the server. The message signature SHALL be:</p>
 
 	<pre class="highlight hljs javascript">
-		void WebSocket.send(DOMString request)
+		WebSocket.send(request)
 	</pre>
 	<p>The request message MUST be comprised of one the request objects defined in this section. The client SHALL
 	receive responses from the server using the WebSocket <dfn>onmessage</dfn> method, as follows:</p>
@@ -642,7 +642,7 @@
 	  <tr>
 	    <td> <dfn>TTL</dfn> </td>
 	    <td> int </td>
-	    <td> Returns the time to live of the authentication token.</td>
+	    <td> Returns the time to live of the authentication token in milliseconds.</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn>filters</dfn> </td>
@@ -1119,7 +1119,7 @@
 
 	<pre class="example highlight">
 		// send unsubscribe message
-		vehicle.send({ "action": "unsubscribe", "subscriptionId": 102, "requestId": 5429 });
+		vehicle.send('{ "action": "unsubscribe", "subscriptionId": 102, "requestId": 5429 }');
 
 		// set handler
 		vehicle.onmesssage(function(event){
