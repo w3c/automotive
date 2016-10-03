@@ -1046,6 +1046,15 @@
         attribute DOMTimeStamp timestamp;
         attribute any value;
       };
+      
+      interface subscriptionNotificationError {
+        attribute string requestId;
+        attribute string subscriptionId;
+        attribute DOMString path;
+        attribute DOMTimeStamp timestamp;
+        attribute object filters;
+        attribute Error error;
+      };
       </pre>
 
 	
@@ -1082,6 +1091,13 @@
 	WebSocket connection. However the server does not guarantee that
 	subscription handle values are unique between different WebSocket
 	instances.</p>
+	
+	<p>Once the subscription is successfully registered with the server, 
+	the client will receive subscription notifications containing the requested 
+	data, at a rate defined either by the server or by the server side filter. If there is an 
+	error with an existing subscription a subscriptionNotificationError will 
+	be received by the client. This allows the client to handle the error, such as to reduce the subscription 
+	frequency if the server is unable to satisfy the initial demands of the client.</p>
 
   	<p>An example of a subscription can be found <a href="#introduction">here</a>.</p>
 
