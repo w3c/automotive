@@ -737,21 +737,25 @@
     These alternatives are illustrated in the following example:</p>
 
 	<pre class="example highlight">
-        // Pass user token only
-        vehicle.send('{ "action": "authorize", 
-                        "tokens": { "authorization": "&lt;user_token_value&gt;" },
-                        "requestId": "&lt;some_unique_value&gt;" }');
+		if(userTokenOnly){
+			// Pass user token only
+			vehicle.send('{ "action": "authorize", 
+				"tokens": { "authorization": "&lt;user_token_value&gt;" },
+				"requestId": "&lt;some_unique_value&gt;" }');
 
-        // Pass vehicle/device token only
-        vehicle.send('{ "action": "authorize", 
-                        "tokens": { "www-vehicle-device": "&lt;device_token_value&gt;" },
-                        "requestId": "&lt;some_unique_value&gt;" }');
-
-        // Pass tokens for user and device            
-        vehicle.send('{ "action": "authorize", 
-                        "tokens": { "authorization": "&lt;user_token_value&gt;", 
-                                    "www-vehicle-device": "&lt;device_token_value&gt;" },
-                        "requestId": "&lt;some_unique_value&gt;" }');
+		} else if (deviceTokenOnly) {
+			// Pass vehicle/device token only
+			vehicle.send('{ "action": "authorize", 
+				"tokens": { "www-vehicle-device": "&lt;device_token_value&gt;" },
+				"requestId": "&lt;some_unique_value&gt;" }');
+	    
+		} else if (userAndDeviceToken) {
+			// Pass tokens for user and device            
+			vehicle.send('{ "action": "authorize", 
+				"tokens": { "authorization": "&lt;user_token_value&gt;", 
+					"www-vehicle-device": "&lt;device_token_value&gt;" },
+				"requestId": "&lt;some_unique_value&gt;" }');
+		}
 	</pre>
 
 	<h2><a>Get</a></h2>
