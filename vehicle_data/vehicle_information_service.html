@@ -669,6 +669,8 @@
 	<dl title="enum Action" class="idl">
 		<dt>authorize</dt>
 		<dd>Enables client to pass security tokens for Security Principals to the server to support access-control.</dd>
+		<dt>getVSS</dt>
+		<dd>Allows the client to request metadata describing signals and data attributes that are potentially accessible.</dd>
 		<dt>get</dt>
 		<dd>Enables the client to get a value once.</dd>
 		<dt>set</dt>
@@ -678,8 +680,6 @@
 		vehicle signals and/or data attributes. The client requests that it is notified when the signal changes on the server.</dd>
 		<dt>unsubscribe</dt>
 		<dd>Allows the client to notify the server that it should no longer receive notifications based on that subscription.</dd>
-		<dt>getVSS</dt>
-		<dd>Allows the client to request metadata describing signals and data attributes that are potentially accessible.</dd>
 	</dl>
 
 	<h2><a>Authorize</a></h2>
@@ -758,6 +758,53 @@
 		}
 	</pre>
 
+	<h2><a>VSS Request</a></h2>
+	<p>The client MAY use the 'getVSS' action to request metadata describing the potentially available VSS tree. It does
+	this by sending a 'vssRequest' message to the server. If the server is able to return the VSS metadata, then this 
+	will be returned using a 'vssSuccessResponse' message. If an error occurs, the server will return a 'vssErrorResponse' 
+	message to the client.</p>
+	
+	<p>The client is able to request VSS metadata from any point in the VSS tree, such that only the metadata for the signals
+	within the given branch of the tree is returned. For example, only metadata for the chassis branch of the tree is returned
+	when the chassis path is specified. If the path is not set, the response will contain the metadata for the entire VSS tree.</p>
+
+        <p>If more than one 'getVSS' call is made with the same 'vssRequest' message content but at different times, the metadata 
+        in the 'vssSuccessResponse' SHALL be the same provided the access-control state of the WebSocket channel has not changed.</p>
+
+      <pre class="idl">
+      interface vssRequest {
+        attribute Action action;
+        attribute string? path;
+      };
+
+      interface vssSuccessResponse {
+        attribute Action action;
+        attribute string path;
+        attribute object vss;
+      };
+
+      interface vssErrorResponse {
+        attribute Action action;
+        attribute string path;
+        attribute Error error;
+      };
+      </pre>
+
+    <p>The following data flow example shows a request for the signal structure within the signal.public.global branch.</p>
+
+    <pre class="highlight hljs javascript">
+	client -> { 
+		"action": "getVSS", 
+		"path": "signal.public.global", 
+	}
+	receive <- { 
+		"action": "getVSS", 
+		"path": "signal.public.global", 
+		"vss": { },  
+	}
+	</pre>
+	      
+	      
 	<h2><a>Get</a></h2>
 	<p>The client MAY send a 'getRequest' message to the server to get the value of one or more vehicle signals and data 
 	attributes. If the server is able to satisfy the request it SHALL return a 'getSuccessResponse' message. If the server 
@@ -1140,53 +1187,6 @@
 			}
 		});
 	</pre>
-
-	<h2><a>VSS Request</a></h2>
-	<p>The client MAY use the 'getVSS' action to request metadata describing the potentially available VSS tree. It does
-	this by sending a 'vssRequest' message to the server. If the server is able to return the VSS metadata, then this 
-	will be returned using a 'vssSuccessResponse' message. If an error occurs, the server will return a 'vssErrorResponse' 
-	message to the client.</p>
-	
-	<p>The client is able to request VSS metadata from any point in the VSS tree, such that only the metadata for the signals
-	within the given branch of the tree is returned. For example, only metadata for the chassis branch of the tree is returned
-	when the chassis path is specified. If the path is not set, the response will contain the metadata for the entire VSS tree.</p>
-
-        <p>If more than one 'getVSS' call is made with the same 'vssRequest' message content but at different times, the metadata 
-        in the 'vssSuccessResponse' SHALL be the same provided the access-control state of the WebSocket channel has not changed.</p>
-
-      <pre class="idl">
-      interface vssRequest {
-        attribute Action action;
-        attribute string? path;
-      };
-
-      interface vssSuccessResponse {
-        attribute Action action;
-        attribute string path;
-        attribute object vss;
-      };
-
-      interface vssErrorResponse {
-        attribute Action action;
-        attribute string path;
-        attribute Error error;
-      };
-      </pre>
-
-    <p>The following data flow example shows a request for the signal structure within the signal.public.global branch.</p>
-
-    <pre class="highlight hljs javascript">
-	client -> { 
-		"action": "getVSS", 
-		"path": "signal.public.global", 
-	}
-	receive <- { 
-		"action": "getVSS", 
-		"path": "signal.public.global", 
-		"vss": { },  
-	}
-	</pre>
-
         </section>
 
     <section>
