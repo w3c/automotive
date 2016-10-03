@@ -1200,6 +1200,9 @@
       minimum changes. This can be implemented using the "filters"
       option.</p>
 
+	<p>Filters can only be applied for nodes in the VSS tree, not entire branches. 
+	For example, a filter cannot be set on engine.*, however it can be set on engine.rpm.</p>
+
       <p>The subscription currently defaults to sending values to the
       client only onchange, however this may cause unnecessary
       processing demands on the vehicle server. A filter object can be included in the subscription request:</p>
