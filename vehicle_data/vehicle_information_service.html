@@ -224,12 +224,12 @@
 		
 		// request a signal
 		if (vehicle.readyState === OPEN) {
-			vehicle.send('{"action": "get", "path": "signal.public.global.speed"}');
+			vehicle.send('{"action": "get", "path": "Signal.Drivetrain.Transmission.Speed"}');
 
 			// process messages from the server
 			vehicle.onmessage = function(event){
 				var msg = JSON.parse(event.data);
-				if(msg.path == "signal.public.global.speed" && msg.value){
+				if(msg.path == "Signal.Drivetrain.Transmission.Speed" && msg.value){
 					console.log("The current speed is " + msg.value);
 				}
 			};
@@ -242,7 +242,7 @@
 	<pre class="example highlight">
 		// set a subscription, assuming the same authorization and set up from Example 1
 		if (vehicle.readyState === OPEN) {
-			vehicle.send('{"action": "subscribe", "path": "signal.public.drivetrain.rpm", 
+			vehicle.send('{"action": "subscribe", "path": "Signal.Drivetrain.InternalCombustionEngine.RPM", 
 					"requestId": 104}');
 			vehicle.onmessage = function(event){
 				var msg = JSON.parse(event.data);
@@ -304,7 +304,7 @@
       <p>The <dfn>WebSocket Server</dfn> is the vehicle system that is responsible for exposing vehicle signals and data to 
       its clients by implementing the interface and behaviours defined in this <dfn>Vehicle Signal Server Specification (VSSS)</dfn>.</p>
 
-      <p>The WebSocket Server exposes signals and data in a manner that is consistent with the Vehicle Signal Specification (VSS). 
+      <p>The WebSocket Server exposes signals and data in a manner that is consistent with the <dfn>Vehicle Signal Specification (VSS)</dfn>. 
       This defines a 'tree-like' logical taxonomy of the vehicle, (formally a Directed Acyclic Graph), where major vehicle structures
       (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as 
       their child nodes. Each of the child nodes in the tree is further decomposed into its logical constituents, and the process is 
@@ -791,16 +791,16 @@
       };
       </pre>
 
-    <p>The following data flow example shows a request for the signal structure within the signal.public.global branch.</p>
+    <p>The following data flow example shows a request for the signal structure within the Signal.Body branch containing signals related to the vehicle body.</p>
 
     <pre class="highlight hljs javascript">
 	client -> { 
 		"action": "getVSS", 
-		"path": "signal.public.global", 
+		"path": "Signal.Body", 
 	}
 	receive <- { 
 		"action": "getVSS", 
-		"path": "signal.public.global", 
+		"path": "Signal.Body", 
 		"vss": { },  
 	}
 	</pre>
@@ -843,12 +843,12 @@
 	<pre class="highlight hljs javascript">
 	client -> { 
 		"action": "get", 
-		"path": "engine.rpm" 
+		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM" 
 	}
 	
 	receive <- { 
 		"action": "get", 
-		"path": "engine.rpm", 
+		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM", 
 		"value": 2372, 
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
@@ -863,14 +863,14 @@
 	<pre class="highlight hljs javascript">
 	client -> { 
 		"action": "get", 
-		"path": "body.trunk"
+		"path": "Signal.Body.Trunk"
 	}
 	
 	receive <- { 
 		"action": "get", 
 		"path": "body.trunk", 
-		"value": { "locked": false,
-			"open": true }, 
+		"value": { "Signal.Body.Trunk.IsLocked": false,
+			"Signal.Body.Trunk.IsOpen": true }, 
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
@@ -878,37 +878,41 @@
 	<p>One or more wildcards (denoted by asterisk '*') MAY be included at 
 	any level in the path to specify that all nodes at that level are to be included.</p>		
 		
-	<p>In the example below, the path in the 'getRequest' includes a wildcard at the level above
-	the leaf (signal) node, in order to request just the 'locked' state for all doors.</p>
+	<p>In the example below, the path in the 'getRequest' includes a wildcard at the levels above
+	the leaf (signal) node, in order to request just the 'IsLocked' state for all doors.</p>
 	<pre class="highlight hljs javascript">
 	client -> { 
 		"action": "get", 
-		"path": " body.doors.*.locked"
+		"path": "Signal.Cabin.Door.*.IsLocked"
 	}
 	
 	receive <- { 
 		"action": "get", 
-		"path": "body.doors.*.lock ", 
-		"value": [ {"locked" : true }, {"locked" : true }, 
-			{"locked" : false }, {"locked" : true } ],
+		"path": "Signal.Cabin.Door.*.IsLocked ", 
+		"value": [ {"Signal.Cabin.Door.Row1.Right.IsLocked" : true },
+		           {"Signal.Cabin.Door.Row1.Left.IsLocked" : true }, 
+			       {"Signal.Cabin.Door.Row2.Right.IsLocked" : false },
+			       {"Signal.Cabin.Door.Row2.Left.IsLocked" : true } ],
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
 
-	<p>In this example, a complex type with a nested array is returned in response to the Path: "body.doors.*"
+	<p>In this example, a complex type with a nested array is returned in response to the Path: "Signal.Cabin.Door.*"
 	which denotes: 'Return all signals and data attributes for all doors'. For simplicity, the example
-	assumes that the VSS definition for each door only has two attributes 'lock' and 'window_pos'.</p>
+	assumes that the VSS definition for each door only has two attributes 'IsLocked' and 'Window.Position'.</p>
 	<pre class="highlight hljs javascript">
 	client -> { 
 		"action": "get", 
-		"path": " body.doors.* "
+		"path": "Signal.Cabin.Door.*"
 	}
 	
 	receive <- { 
 		"action": "get", 
-		"path": "body.doors.*.lock ", 
-		"value": [ {"locked" : true, "windows_pos": 143 }, {"locked" : true, "windows_pos": 23 },
-			{"locked" : false, "windows_pos": 162 }, {"locked": true, "windows_pos": 0 } ], 
+		"path": "Signal.Cabin.Door.*.IsLocked", 
+		"value": [ {"Signal.Cabin.Door.Row1.Right.IsLocked" : true, "Signal.Cabin.Door.Row1.Right.Window.Position": 50},
+		           {"Signal.Cabin.Door.Row1.Left.IsLocked" : true, "Signal.Cabin.Door.Row1.Left.Window.Position": 23},
+		           {"Signal.Cabin.Door.Row2.Right.IsLocked" : false, "Signal.Cabin.Door.Row2.Right.Window.Position": 100 },
+		           {"Signal.Cabin.Door.Row2.Left.IsLocked": true, "Signal.Cabin.Door.Row2.Left.Window.Position": 0 } ], 
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
@@ -916,12 +920,12 @@
 	<pre class="highlight hljs javascript">
 	client -> { 
 		"action": "get", 
-		"path": "body.flux.capacitor"
+		"path": "Body.Flux.Capacitor"
 	}
 	
 	receive <- { 
 		"action": "get", 
-		"path": "body.flux.capacitor", 
+		"path": "Body.Flux.Capacitor", 
 		"error": { "number":404, 
 			"reason": "invalid_path", 
 			"message": "The specified data path does not exist." }
@@ -959,16 +963,20 @@
 	<pre class="highlight hljs javascript">
 	client -> { 
 		"action": "set", 
-		"path": " body.doors.*.lock", 
-		"value":{ [ {"locked" : true }, {"locked" : true }, 
-				{"locked" : false }, {"locked" : true } ] } 
+		"path": "Signal.Cabin.Door.*", 
+		"value":{ [ {"Row1.Right.IsLocked" : true },
+		            {"Row1.Left.IsLocked" : true }, 
+				    {"Row2.Right.IsLocked" : true },
+				    {"Row2.Left.IsLocked" : true } ] } 
 		}
 		
 	receive <- { 
 		"action": "set", 
-		"path": " body.doors.*.lock", 
-		"value":{ [ {"locked" : true }, {"locked" : true }, 
-				{"locked" : false }, {"locked" : true } ] }, 
+		"path": " Signal.Cabin.Door.*.IsLocked", 
+		"value":{ [ {"Signal.Cabin.Door.Row1.Right.IsLocked" : true },
+		            {"Signal.Cabin.Door.Row1.Left.IsLocked" : true }, 
+				    {"Signal.Cabin.Door.Row2.Right.IsLocked" : true },
+				    {"Signal.Cabin.Door.Row2.Left.IsLocked" : true } ] } 
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
@@ -976,13 +984,13 @@
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "set", 
-		"path": "engine.rpm", 
+		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM", 
 		"value": 2000
 	}
 	
 	receive <- { 
 		"action": "set", 
-		"path": "engine.rpm", 
+		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM", 
 		"error": { "number": 403, 
 			"reason": "device_forbidden", 
 			"message": "User is not authorised to set this value" 
@@ -993,13 +1001,13 @@
 	<pre class="highlight hljs javascript">
 	client -> { 
 		"action": "set", 
-		"path": "engine.rpm", 
+		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM", 
 		"value": { "locked" : true } 
 	}
 	
 	receive <- { 
 		"action": "set", 
-		"path": "engine.rpm", 
+		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM", 
 		"error": { "number": 400, 
 			"reason": "bad_request" , 
 			"message": "The server is unable to fulfil the client 
