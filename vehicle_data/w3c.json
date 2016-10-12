@@ -1,0 +1,6 @@
+{
+    "group":     "Automotive Working Group",
+    "contacts":  ["Kevin Gavigan (Jaguar Land Rover)", "Adam Crofts (Jaguar Land Rover)", "Wonsuk Lee (ETRI)", "Powell Kinney (VINLI)"],
+    "shortName": "auto",
+    "policy":    "open"
+}
