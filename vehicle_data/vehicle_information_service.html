@@ -435,7 +435,7 @@
           <figcaption>Diagram showing WebSocket Security Token flow</figcaption>
         </figure>
 
-	<p>TODO Update diagram to reflect auth token structure and review including other diagrams from Wiki</p>
+	      <p class="note">TODO: Update diagram to reflect auth token structure and review including other diagrams from Wiki</p>
         <p>After receiving a message with an 'authorize' action the server attempts to verify the tokens e.g. by checking
         with the issuing Security Authority. If all of the tokens that are passed to the server are valid, it returns
         a success response and all subsequent requests received by the WebSocket instance have elevated access control
@@ -859,6 +859,7 @@
         attribute Action action;
         attribute DOMString path;
         attribute Error error;
+        attribute DOMTimeStamp timestamp;
       };
       </pre>
 
@@ -955,7 +956,8 @@
 		"path": "Body.Flux.Capacitor",
 		"error": { "number":404,
 			"reason": "invalid_path",
-			"message": "The specified data path does not exist." }
+			"message": "The specified data path does not exist." },
+    "timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
 	<h2>Set</h2>
@@ -973,7 +975,7 @@
       };
 
       interface setSuccessResponse {
-	attribute Action action;
+	      attribute Action action;
         attribute DOMString path;
         attribute any value;
         attribute DOMTimeStamp timestamp;
@@ -983,6 +985,7 @@
         attribute Action action;
         attribute DOMString path;
         attribute Error error;
+        attribute DOMTimeStamp timestamp;
       };
       </pre>
 
@@ -1003,7 +1006,7 @@
 		"value":{ [ {"Signal.Cabin.Door.Row1.Right.IsLocked" : true },
 		            {"Signal.Cabin.Door.Row1.Left.IsLocked" : true },
 				    {"Signal.Cabin.Door.Row2.Right.IsLocked" : true },
-				    {"Signal.Cabin.Door.Row2.Left.IsLocked" : true } ] }
+				    {"Signal.Cabin.Door.Row2.Left.IsLocked" : true } ] },
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
@@ -1020,8 +1023,8 @@
 		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
 		"error": { "number": 403,
 			"reason": "device_forbidden",
-			"message": "User is not authorised to set this value"
-			}
+			"message": "User is not authorised to set this value"},
+    "timestamp": &lt;DOMTimeStamp&gt;
 		}
 	</pre>
 	<p>Unsuccessful set. The value does not exist in the specified path.</p>
@@ -1038,8 +1041,8 @@
 		"error": { "number": 400,
 			"reason": "bad_request" ,
 			"message": "The server is unable to fulfil the client
-					request because the request is malformed."
-			}
+					request because the request is malformed."},
+      "timestamp": &lt;DOMTimeStamp&gt;    
 		}
 	</pre>
 	<h2>Subscribe</h2>
