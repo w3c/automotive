@@ -1045,7 +1045,7 @@
 			"reason": "bad_request" ,
 			"message": "The server is unable to fulfil the client
 					request because the request is malformed."},
-      "timestamp": &lt;DOMTimeStamp&gt;    
+      "timestamp": &lt;DOMTimeStamp&gt;
 		}
 	</pre>
 	<h2><a>Subscribe</a></h2>
@@ -1082,7 +1082,6 @@
       };
 
       interface subscriptionNotification {
-        attribute string requestId;
         attribute string subscriptionId;
         attribute DOMString path;
         attribute DOMTimeStamp timestamp;
@@ -1090,7 +1089,6 @@
       };
 
       interface subscriptionNotificationError {
-        attribute string requestId;
         attribute string subscriptionId;
         attribute DOMString path;
         attribute DOMTimeStamp timestamp;
