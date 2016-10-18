@@ -681,7 +681,7 @@
 	  <dt><dfn>unsubscribeAll</dfn></dt>
 	  <dd>Allows the client to notify the server that it should no longer receive notifications for any active subscription.</dd>
 	  </dl>
-	 
+
 	<h2>Authorize</h2>
  	<p>To enable access to signals and data attributes that are under access control, the client MAY optionally pass a message
  	with an 'authorize' action to the server. The structure of the message and the associated success and error responses
@@ -1044,7 +1044,7 @@
 			"reason": "bad_request" ,
 			"message": "The server is unable to fulfil the client
 					request because the request is malformed."},
-      "timestamp": &lt;DOMTimeStamp&gt;    
+      "timestamp": &lt;DOMTimeStamp&gt;
 		}
 	</pre>
 	<h2>Subscribe</h2>
@@ -1072,16 +1072,17 @@
         attribute Action action;
         attribute string requestId;
         attribute string subscriptionId;
+        attribute DOMTimeStamp timestamp;
       };
 
       interface subscribeErrorResponse {
         attribute DOMString path;
         attribute string requestId;
         attribute Error error;
+        attribute DOMTimeStamp timestamp;
       };
 
       interface subscriptionNotification {
-        attribute string requestId;
         attribute string subscriptionId;
         attribute DOMString path;
         attribute DOMTimeStamp timestamp;
@@ -1089,7 +1090,6 @@
       };
 
       interface subscriptionNotificationError {
-        attribute string requestId;
         attribute string subscriptionId;
         attribute DOMString path;
         attribute DOMTimeStamp timestamp;
@@ -1098,18 +1098,33 @@
       };
       </pre>
 
-
+  For example when client need to continuously receive "Signal.Drivetrain.Transmission.TripMeter" information from the server, it can use "subscribe" action with the target property like below.
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "subscribe",
-		"path": "&lt;any_vss_path&gt;",
-		"requestId":"&lt;some_unique_value&gt;"
+		"path": "Signal.Drivetrain.Transmission.TripMeter",
+		"requestId": 1004
 	}
 
 	receive <- {
-		"subscriptionId": 35472,
-		"requestId":"&lt;some_unique_value&gt;"
+    "action": "subscribe",
+		"requestId": 1004,
+    "subscriptionId": 35472,
+    "timestamp": &lt;DOMTimeStamp&gt;
 	}
+  </pre>
+  When this "subscribe" request has been successed, client will receive a notificaton with changing value continuously as below JSON structure.
+
+  <pre class="highlight hljs javascript">
+  receive <- {
+		"requestId": 1004,
+    "subscriptionId": 35472,
+    "path": "Signal.Drivetrain.Transmission.TripMeter",
+    "timestamp": &lt;DOMTimeStamp&gt;,
+    "value": 36912
+	}
+  </pre>
+
 	</pre>
 	<p>The client can use the 'requestId' value to associate the successful
 	subscription response with the original request.</p>
@@ -1145,7 +1160,7 @@
 	<h2>Unsubscribe</h2>
         <p>To unsubscribe from a subscription, the client SHALL send an 'unsubscribeRequest' message to the server. This is
         comprised of a JSON structure which contains an action property set to 'unsubscribe' and a string containing the
-        'subscriptionId'. If the server is able to satisfy the request it returns an 'unsubscribeSuccessResponse'. If an error 
+        'subscriptionId'. If the server is able to satisfy the request it returns an 'unsubscribeSuccessResponse'. If an error
 	occurs, for example because an invalid subscriptionId is passed to the server, an 'unsubscribeErrorResponse' is returned.</p>
 
 	<p>The client MAY unsubscribe from all of its subscriptions by sending an 'unsubscribeRequest' with the action property set to
