@@ -1085,16 +1085,16 @@
       interface subscriptionNotification {
         attribute string subscriptionId;
         attribute DOMString path;
-        attribute DOMTimeStamp timestamp;
         attribute any value;
+        attribute DOMTimeStamp timestamp;
       };
 
       interface subscriptionNotificationError {
         attribute string subscriptionId;
         attribute DOMString path;
-        attribute DOMTimeStamp timestamp;
         attribute object filters;
         attribute Error error;
+        attribute DOMTimeStamp timestamp;
       };
       </pre>
 
@@ -1119,8 +1119,8 @@
   receive <- {
     "subscriptionId": 35472,
     "path": "Signal.Drivetrain.Transmission.TripMeter",
-    "timestamp": &lt;DOMTimeStamp&gt;,
-    "value": 36912
+    "value": 36912,
+    "timestamp": &lt;DOMTimeStamp&gt;
 	}
   </pre>
 
@@ -1183,16 +1183,17 @@
 
       interface unsubscribeSuccessResponse {
         attribute Action action;
-        attribute string requestId;
         attribute string? subscriptionId;
+        attribute string requestId;
         attribute DOMTimeStamp timestamp;
       };
 
       interface unsubscribeErrorResponse {
         attribute Action action;
+        attribute string? subscriptionId;
         attribute Error error;
         attribute string requestId;
-        attribute string? subscriptionId;
+        attribute DOMTimeStamp timestamp;
       };
       </pre>
 	Unsubscribe from a single subscription.
@@ -1200,13 +1201,13 @@
 	client -> {
 		"action": "unsubscribe",
 		"subscriptionId": 102,
-		"requestID": 5264
+		"requestId": 5264
 	}
 
 	receive <- {
 		"action": "unsubscribe",
 		"subscriptionId": 102,
-		"requestID": 5264,
+		"requestId": 5264,
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
@@ -1214,13 +1215,13 @@
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "unsubscribeAll",
-		"requestID": 3468
+		"requestId": 3468
 	}
 
 	receive <- {
 		"action": "unsubscribeAll",
 		"subscriptionId": null,
-		"requestID": 3468,
+		"requestId": 3468,
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
@@ -1229,15 +1230,16 @@
 	client -> {
 		"action": "unsubscribe",
 		"subscriptionId": 3542,
-		"requestID": 7846
+		"requestId": 7846
 	}
 	receive <- {
 		"action": "unsubscribe",
+    "subscriptionId": 3542,
 		"error": { "number":404,
 			"reason": "invalid_subscriptionId",
 			"message": "The specified subscription was not found." },
-		"subscriptionId": 3542,
-		"requestID": 7846
+    "requestId": 7846,  
+    "timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
 
