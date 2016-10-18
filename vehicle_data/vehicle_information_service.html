@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>Vehicle Signal Server Specification</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
@@ -7,7 +7,7 @@
             class='remove'></script>
     <script class="remove">
       var respecConfig = {
-          specStatus:           "ED",
+          specStatus:           "FPWD",
           shortName:            "vehicle-signal-server-api",
           editors:  [{
             name: "Kevin Gavigan", company: "Jaguar Land Rover",
@@ -114,7 +114,7 @@
 	<p>It is recommended that this Vehicle Signal Server Specification (VSSS) is read in conjunction with the
 	W3C Vehicle Signal Client Specification (VSCS) and the GENIVI Vehicle Signal Specification (VSS).</p>
 
-	</p>The Vehicle Signal Client Specification defines an API that wraps the data access and security primitives
+	<p>The Vehicle Signal Client Specification defines an API that wraps the data access and security primitives
 	defined in this Server Specification. It has been defined to support the development
 	of 'standards-compliant' JavaScript libraries that can be used by web based clients.</p>
 
@@ -157,12 +157,9 @@
     <section id="sotd">
     </section>
 
-    <!-- Table of Figures -->
-    <section id="tof"></section>
-
     <!-- Introduction -->
     <section>
-      <h2><a>Introduction</a></h2>
+      <h2>Introduction</h2>
 
       <p>The vehicle SHALL expose vehicle signals via a WebSocket. This
       enables a client to GET or SET vehicle signals and data; to SUBSCRIBE to receive
@@ -257,7 +254,7 @@
       <!-- Conformance -->
       <section id="conformance">
 	<p>This specification defines conformance criteria that apply to a single product: specifically the 'in-vehicle'
-	WebSocket <dfn></dfn>Vehicle Signal Server</dfn> that implements the interfaces, semantics and behaviour
+	WebSocket <dfn>Vehicle Signal Server</dfn> that implements the interfaces, semantics and behaviour
 	defined in this document. For simplicity, this usually is referred to as the 'WebSocket Server' or just 'the server'</p>
       </section>
 
@@ -296,7 +293,7 @@
       the Web Socket Server are outside of the scope of this specification.</p>
 
       <figure>
-        <img src="W3C_Vehicle_APIs_Component_Diagram_v1_3.png" alt="Component diagram showing W3C Vehicle APIs">
+        <img src="images/W3C_Vehicle_APIs_Component_Diagram_v1_3.png" alt="Component diagram showing W3C Vehicle APIs">
         <figcaption>Diagram showing Components that implement the W3C Vehicle Signal APIs and their clients</figcaption>
       </figure>
 
@@ -312,13 +309,13 @@
       because it represents a single signal or data attribute value. An example VSS tree is shown below, its contents are illustrative:</p>
 
       <figure>
-        <img src="VSS_Tree_Simple_Example_v1.png" alt="Diagram showing an example Vehicle Signal tree">
+        <img src="images/VSS_Tree_Simple_Example_v1.png" alt="Diagram showing an example Vehicle Signal tree">
         <figcaption>Diagram showing an example Vehicle Signal Tree</figcaption>
       </figure>
 
       <p>Signals are named according to their path using the dot notation e.g. engine.rpm.</p>
 
-      <p>The client MAY invoke the WebSocket Server <dfn>'getVSS'</dfn> method to request that the server returns metadata that
+      <p>The client MAY invoke the WebSocket Server <a>getVSS</a> method to request that the server returns metadata that
       describes which signals and data attributes could potentially be accessed provided that the user and/or device is suitably
       authorised. This and other valid WebSocket Server actions are defined in more detail <a href="#action">here</a>.</p>
 
@@ -434,7 +431,7 @@
         credentials before satisfying the request. The steps are shown in more detail in the diagram below:</p>
 
         <figure>
-          <img src="WebSocket_Security_Flow_1_600px.png" alt="WebSocket Security token flow">
+          <img src="images/WebSocket_Security_Flow_1_600px.png" alt="WebSocket Security token flow">
           <figcaption>Diagram showing WebSocket Security Token flow</figcaption>
         </figure>
 
@@ -461,7 +458,7 @@
         additional token type has expired and needs to be renewed) is defined in the Server's documentation.</p>
 
         <h3>Use of Encryption</h3>
-        <p></p>To support a layered security model and to help establish a 'defence in depth', all vehicle signal communications
+        <p>To support a layered security model and to help establish a 'defence in depth', all vehicle signal communications
         between the client and server MUST be strongly encrypted. This is to make it more difficult for an attacker to eavesdrop or
         tamper with the security tokens; the request data or the response payload.</p>
 
@@ -486,7 +483,7 @@
 
       <!-- Initialisation of the Web Socket -->
       <section>
-	<h3><a>Initialisation</a> of the Web Socket</h3>
+	<h3>Initialisation of the Web Socket</h3>
 
 	<p>If the client application is an HTML Application running in a web
 	runtime or is a web page running in a browser, the WebSocket
@@ -531,7 +528,7 @@
 
       <!-- Message Structure -->
       <section>
-      <h3><a>Message</a> Structure</h3>
+      <h3>Message Structure</h3>
 
        <p>The client MUST use the WebSocket <dfn>send</dfn> method, defined
        <a href="https://www.w3.org/TR/2011/WD-websockets-20110929/#the-websocket-interface">here</a>,
@@ -607,7 +604,7 @@
 	    <td> The action that the server is requested to perform.</td>
 	  </tr>
 	  <tr>
-	    <td> <dfn>path</dfn></td>
+	    <td> <dfn >path</dfn></td>
 	    <td>DOMString</td>
 	    <td>The path to the desired vehicle signal(s), as defined by the
 	    <a href="https://www.w3.org/auto/wg/wiki/Vehicle_Information_Service_Specification#Data_Model">
@@ -668,22 +665,24 @@
 	value of the 'action' property MUST be one of the values specified in the enumeration:</p>
 
 	<dl title="enum Action" class="idl">
-		<dt>authorize</dt>
-		<dd>Enables client to pass security tokens for Security Principals to the server to support access-control.</dd>
-		<dt>getVSS</dt>
-		<dd>Allows the client to request metadata describing signals and data attributes that are potentially accessible.</dd>
-		<dt>get</dt>
-		<dd>Enables the client to get a value once.</dd>
-		<dt>set</dt>
-		<dd>Enables the client to set a value once.</dd>
-		<dt>subscribe</dt>
-		<dd>Enables the client to receive a notification containing a JSON data structure with values for one or more
-		vehicle signals and/or data attributes. The client requests that it is notified when the signal changes on the server.</dd>
-		<dt>unsubscribe</dt>
-		<dd>Allows the client to notify the server that it should no longer receive notifications based on that subscription.</dd>
-	</dl>
-
-	<h2><a>Authorize</a></h2>
+	  <dt>authorize</dt>
+	  <dd>Enables client to pass security tokens for Security Principals to the server to support access-control.</dd>
+	  <dt><dfn>getVSS</dfn></dt>
+	  <dd>Allows the client to request metadata describing signals and data attributes that are potentially accessible.</dd>
+	  <dt><dfn>get</dfn></dt>
+	  <dd>Enables the client to get a value once.</dd>
+	  <dt><dfn>set</dfn></dt>
+	  <dd>Enables the client to set a value once.</dd>
+	  <dt><dfn>subscribe</dfn></dt>
+	  <dd>Enables the client to receive a notification containing a JSON data structure with values for one or more
+	    vehicle signals and/or data attributes. The client requests that it is notified when the signal changes on the server.</dd>
+	  <dt><dfn>unsubscribe</dfn></dt>
+	  <dd>Allows the client to notify the server that it should no longer receive notifications based on that subscription.</dd>
+	  <dt><dfn>unsubscribeAll</dfn></dt>
+	  <dd>Allows the client to notify the server that it should no longer receive notifications for any active subscription.</dd>
+	  </dl>
+	 
+	<h2>Authorize</h2>
  	<p>To enable access to signals and data attributes that are under access control, the client MAY optionally pass a message
  	with an 'authorize' action to the server. The structure of the message and the associated success and error responses
          are defined below.</p>
@@ -720,13 +719,13 @@
       </tr>
       <tr>
         <td> <dfn>User</dfn></td>
-        <td> <a>authorization</a></td>
+        <td> <dfn>authorization</dfn></td>
         <td> The user that the client is making requests on behalf of. This MAY be a person e.g. driver or passenger, it MAY be
         an organisation e.g. Emergency Services or MAY be any other legal entity.</td>
       </tr>
       <tr>
         <td> <dfn>Device</dfn></td>
-        <td> <a>www-vehicle-device</a></td>
+        <td> <dfn>www-vehicle-device</dfn></td>
         <td> The originating device that is making the request to the server. This MAY be an ECU in the vehicle that is hosting the
         WebSocket Server or MAY be a device that is connected to the vehicle via a WiFi hotspot or MAY be any other device.</td>
       </tr>
@@ -769,8 +768,8 @@
         <th>Description</th>
       </tr>
       <tr>
-        <td> <dfn>Path</dfn></td>
-        <td>The signal path the token authorizes. The path may be a branch name or contain wildcards to authorize entire branches.</td>
+        <td>Path</td>
+        <td>The signal path (defined <a href="#dfn-path">here</a>) the token authorizes. The path may be a branch name or contain wildcards to authorize entire branches.</td>
       </tr>
       <tr>
         <td> <dfn>Actions</dfn></td>
@@ -789,7 +788,7 @@
     <p>It is expected that client and server use the same token format. If a client presents a token using a format that is not understood by the server, ther server rejects the token.</p>
 
 
-	<h2><a>VSS Request</a></h2>
+	<h2>VSS Request</h2>
 	<p>The client MAY use the 'getVSS' action to request metadata describing the potentially available VSS tree. It does
 	this by sending a 'vssRequest' message to the server. If the server is able to return the VSS metadata, then this
 	is returned using a 'vssSuccessResponse' message. If an error occurs, the server returns a 'vssErrorResponse'
@@ -836,7 +835,7 @@
 	</pre>
 
 
-	<h2><a>Get</a></h2>
+	<h2>Get</h2>
 	<p>The client MAY send a 'getRequest' message to the server to get the value of one or more vehicle signals and data
 	attributes. If the server is able to satisfy the request it SHALL return a 'getSuccessResponse' message. If the server
 	is unable to fulfil the request, e.g. because the client is not authorised to retrieve one or more of the signals,
@@ -963,7 +962,7 @@
     "timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
-	<h2><a>Set</a></h2>
+	<h2>Set</h2>
 
 	<p>The client may request that the server sets the value of a signal e.g. to lock a door or open a window by sending
 	a 'setRequest' message to the server. If the server is able to satisfy the request it SHALL return a 'setSuccessResponse'
@@ -1048,7 +1047,7 @@
       "timestamp": &lt;DOMTimeStamp&gt;
 		}
 	</pre>
-	<h2><a>Subscribe</a></h2>
+	<h2>Subscribe</h2>
 	<p>Vehicle data subscriptions provide data to the client whenever the signal changes on the server,
 	unless otherwise specified using Server Side Filtering. The server MAY reduce the number of notifications
 	sent to the client in order to reduce processing demands, particularly when the client has subscribed to
@@ -1141,14 +1140,14 @@
 
   	<p>An example of a subscription can be found <a href="#introduction">here</a>.</p>
 
-	<h2><a>Unsubscribe</a></h2>
+	<h2>Unsubscribe</h2>
         <p>To unsubscribe from a subscription, the client SHALL send an 'unsubscribeRequest' message to the server. This is
         comprised of a JSON structure which contains an action property set to 'unsubscribe' and a string containing the
-        'subscriptionId'. If an error occurs e.g. because an invalid subscriptionId is passed to the server, an
-        'unsubscribeErrorResponse' is returned.</p>
+        'subscriptionId'. If the server is able to satisfy the request it returns an 'unsubscribeSuccessResponse'. If an error 
+	occurs, for example because an invalid subscriptionId is passed to the server, an 'unsubscribeErrorResponse' is returned.</p>
 
-	<p>The client MAY unsubscribe from all of its subscriptions by sending an 'unsubscribeRequest' with the subscriptionId set
-	to 0 (zero). If the server is able to satisfy the request it returns an 'unsubscribeSuccessResponse'.</p>
+	<p>The client MAY unsubscribe from all of its subscriptions by sending an 'unsubscribeRequest' with the action property set to
+	'unsubscribeAll'. This does not require a subscriptionId value.</p>
 
 	<p>If the client has created more than one WebSocket instance, it MUST always unsubscribe using the same WebSocket instance
 	that was originally used to create the subscription.</p>
@@ -1162,14 +1161,14 @@
       <pre class="idl">
       interface unsubscribeRequest {
         attribute Action action;
-        attribute string subscriptionId;
+        attribute string? subscriptionId;
         attribute string requestId;
       };
 
       interface unsubscribeSuccessResponse {
         attribute Action action;
         attribute string requestId;
-        attribute string subscriptionId;
+        attribute string? subscriptionId;
         attribute DOMTimeStamp timestamp;
       };
 
@@ -1177,7 +1176,7 @@
         attribute Action action;
         attribute Error error;
         attribute string requestId;
-        attribute string subscriptionId;
+        attribute string? subscriptionId;
       };
       </pre>
 	Unsubscribe from a single subscription.
@@ -1198,14 +1197,13 @@
 	Unsubscribe from all subscriptions.
 	<pre class="highlight hljs javascript">
 	client -> {
-		"action": "unsubscribe",
-		"subscriptionId": 0,
+		"action": "unsubscribeAll",
 		"requestID": 3468
 	}
 
 	receive <- {
-		"action": "unsubscribe",
-		"subscriptionId": 0,
+		"action": "unsubscribeAll",
+		"subscriptionId": null,
 		"requestID": 3468,
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
@@ -1246,8 +1244,8 @@
         </section>
 
     <section>
-      <h3>Server Side <a>Filtering</a></h3>
-      <p>A 'Filter' may be specified to enable Server side filtering
+      <h3>Server Side Filtering</h3>
+      <p>'<a>Filters</a>' may be specified to enable Server side filtering
       to be used in order to throttle the demands of subscriptions on
       the server. This may enable the reduction of traffic if the
       developer has received a 429 - Too Many Requests error
@@ -1324,7 +1322,7 @@
       </section>
 
       <section>
-	<h3>Web Socket <a>Closure</a></h3>
+	<h3>Web Socket Closure</h3>
 	<p>The WebSocket may be closed by either the client or the
 	server by invoking the ‘close()’ method on the WebSocket
 	instance.</p>
@@ -1351,7 +1349,7 @@ vehicle.close();
 
 
       <section>
-	<h3><a>Errors</a></h3>
+	<h3>Errors</h3>
 	<p>If there is an error with any of the client’s requests, the
 	server responds with an error number, reason and
 	message.</p>
