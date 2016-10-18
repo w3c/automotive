@@ -678,6 +678,8 @@
 	    vehicle signals and/or data attributes. The client requests that it is notified when the signal changes on the server.</dd>
 	  <dt><dfn>unsubscribe</dfn></dt>
 	  <dd>Allows the client to notify the server that it should no longer receive notifications based on that subscription.</dd>
+	  <dt><dfn>unsubscribeAll</dfn></dt>
+	  <dd>Allows the client to notify the server that it should no longer receive notifications for any active subscription.</dd>
 	  </dl>
 	 
 	<h2>Authorize</h2>
@@ -1143,11 +1145,11 @@
 	<h2>Unsubscribe</h2>
         <p>To unsubscribe from a subscription, the client SHALL send an 'unsubscribeRequest' message to the server. This is
         comprised of a JSON structure which contains an action property set to 'unsubscribe' and a string containing the
-        'subscriptionId'. If an error occurs e.g. because an invalid subscriptionId is passed to the server, an
-        'unsubscribeErrorResponse' is returned.</p>
+        'subscriptionId'. If the server is able to satisfy the request it returns an 'unsubscribeSuccessResponse'. If an error 
+	occurs, for example because an invalid subscriptionId is passed to the server, an 'unsubscribeErrorResponse' is returned.</p>
 
-	<p>The client MAY unsubscribe from all of its subscriptions by sending an 'unsubscribeRequest' with the subscriptionId set
-	to 0 (zero). If the server is able to satisfy the request it returns an 'unsubscribeSuccessResponse'.</p>
+	<p>The client MAY unsubscribe from all of its subscriptions by sending an 'unsubscribeRequest' with the action property set to
+	'unsubscribeAll'. This does not require a subscriptionId value.</p>
 
 	<p>If the client has created more than one WebSocket instance, it MUST always unsubscribe using the same WebSocket instance
 	that was originally used to create the subscription.</p>
@@ -1161,14 +1163,14 @@
       <pre class="idl">
       interface unsubscribeRequest {
         attribute Action action;
-        attribute string subscriptionId;
+        attribute string? subscriptionId;
         attribute string requestId;
       };
 
       interface unsubscribeSuccessResponse {
         attribute Action action;
         attribute string requestId;
-        attribute string subscriptionId;
+        attribute string? subscriptionId;
         attribute DOMTimeStamp timestamp;
       };
 
@@ -1176,7 +1178,7 @@
         attribute Action action;
         attribute Error error;
         attribute string requestId;
-        attribute string subscriptionId;
+        attribute string? subscriptionId;
       };
       </pre>
 	Unsubscribe from a single subscription.
@@ -1197,14 +1199,13 @@
 	Unsubscribe from all subscriptions.
 	<pre class="highlight hljs javascript">
 	client -> {
-		"action": "unsubscribe",
-		"subscriptionId": 0,
+		"action": "unsubscribeAll",
 		"requestID": 3468
 	}
 
 	receive <- {
-		"action": "unsubscribe",
-		"subscriptionId": 0,
+		"action": "unsubscribeAll",
+		"subscriptionId": null,
 		"requestID": 3468,
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
