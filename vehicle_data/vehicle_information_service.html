@@ -118,18 +118,12 @@
 	defined in this Server Specification. It has been defined to support the development
 	of 'standards-compliant' JavaScript libraries that can be used by web based clients.</p>
 
-	<p>It is assumed that native clients (written for example in C/C++) and managed runtime clients
-	(written in languages like Java or C#) invoke the WebSocket Server API using standard WebSocket
-	libraries that have been created specifically for those languages.</p>
-
 	<p>The GENIVI Vehicle Signal Specification (VSS) defines the set of vehicle signals and data that
-	are exposed via this Server Specification. The term 'signal' is used here to represent an item of
-	data that can vary over time, for example vehicle speed, whilst the term 'static data' is used to
-	denote a temporally unchanging property like vehicle width.</p>
+	are exposed via this Server Specification. </p>
 
 	<p>This Server Specification describes a discovery mechanism that defines the set of signals and data
-	that a particular client can access at a particular point in time. It is recognized that some automobile
-	manufacturers may expose more signals and data than others. The Vehicle Signal Specification supports both
+	that a client can access at a particular point in time. It is recognized that some automobile
+	manufacturers may expose more signals and data than others. The Vehicle Signal Specification (VSS) supports both
 	extensibility and the ability to define private branches.</p>
 
 	<p>In addition, the 'tree' of signals that is accessible at any point in time may also vary depending
@@ -139,18 +133,6 @@
 	<p>To support this, the Server Specification describes a token based mechanism that can optionally
 	be used to pass tokens to the WebSocket Server to represent the user of an application and the device that
 	the application is running on.</p>
-
-	<p>The target platform supported by the specification is exclusively passenger vehicles. Use of this
-	specification for non-passenger applications (for example heavy machinery, marine and airline infotainment) is
-	not prohibited, but is not covered in the design or content of the API and therefore may be insufficient.</p>
-
-	<p>An example use case could be the implementation of a 'Home Mechanic' application that provides warnings if any
-	the following need attention: tire pressure, engine oil level, washer fluid level and battery charge level.
-	Future use case innovations in transportation, safety, navigation, smart energy grids, smart transportation,
-	consumer infotainment and personalisation are all possible through this specification.</p>
-
-	<p>Web developers building interoperable applications based upon this API, will help empower a common web platform
-	across consumer devices and passenger vehicles within the Web of Things.</p>
     </section>
 
     <!-- Status of this document -->
@@ -161,10 +143,13 @@
     <section>
       <h2>Introduction</h2>
 
-      <p>The vehicle SHALL expose vehicle signals via a WebSocket. This
+      <p>The vehicle SHALL expose vehicle signals and static data via a WebSocket. This
       enables a client to GET or SET vehicle signals and data; to SUBSCRIBE to receive
       notifications and to UNSUBSCRIBE from receiving notifications.</p>
 
+      <p>The term 'signal' is used here to represent an item of	data that can vary over time, for example vehicle speed, 
+	 whilst 'static data' is to denote temporally invariant properties like vehicle width or number of doors.</p>
+	    
       <p>A future revision of this specification may consider additionally exposing vehicle signals
       via a RESTful web service but this is out of scope for this version of the specification.</p>
 
@@ -172,26 +157,18 @@
       the WebSocket Protocol is defined in
       <a href="https://tools.ietf.org/html/rfc6455">RFC6455</a>.</p>
 
-      <p>A component or module running on the vehicle is required to create
-      a WebSocket and listen for inbound connections from application clients to enable secure access to vehicle signals.
-      In this specification this module are referred to as the ‘WebSocket Vehicle Signal Server’ (WVSS)
-      or for simplicity as ‘the server’.</p>
+      <p>A component or module running on the vehicle SHALL create a WebSocket instance which will listen for an inbound 
+      connection request from a client to enable secure access to vehicle signals. In this specification this module is referred 
+      to as the 'WebSocket Vehicle Signal Server' (WVSS) or for simplicity as 'the server'.</p>
 
-      <p>This specification assumes that a single WebSocket is used to
-      enable communication between the client application and the server
-      in order to reduce processing overhead.</p>
-
-      <p>It is not explicitly prohibited for the client to request
-      that the server opens more than one WebSocket. However, the server
-      MAY refuse to open a subsequent WebSocket connection and the client is
-      responsible for handling this gracefully.</p>
-
-      <p>If more than one WebSocket connection is established between a
-      Client Application and the server then each connection is
-      managed independently. For example, subscriptions created using a
-      particular WebSocket connection only trigger notifications via
-      that connection and the client must use that WebSocket instance to
-      unsubscribe.</p>
+      <p>This specification assumes that a single WebSocket is used to enable communication between a client application 
+      and the server. It is not explicitly prohibited for the client to request that the server opens more than one WebSocket,
+      however, the server may refuse to open a subsequent WebSocket connection and the client is responsible for handling this 
+      gracefully.</p>  
+	    
+      <p>If more than one WebSocket connection is established between a Client Application and the server then each connection 
+      MUST be managed independently. For example, subscriptions created using a particular WebSocket connection only trigger 
+      notifications via that connection and the client must use that WebSocket connection to unsubscribe. </p>
 
       <p>If more than one WebSocket connection has been established
       between one or more clients and a particular server instance, there
@@ -249,6 +226,16 @@
 			};
 		}
 	</pre>
+        <p>The target platform supported by the specification is exclusively passenger vehicles. Use of this
+	specification for non-passenger applications (for example heavy machinery, marine and airline infotainment) is
+	not prohibited, but is not covered in the design or content of the API.</p>
+
+	<p>An example use case could be the implementation of a 'Home Mechanic' application that provides warnings if any
+	the following need attention: tire pressure, engine oil level, washer fluid level and battery charge level.</p>
+	    
+	<p>Exposing vehicle signals in a standardized manner facilitates the integration of vehicles within the Web of Things (WoT) 
+	and supports future use case innovations in a variety of fields including transportation, safety, navigation, energy management,
+	smart transportation and consumer infotainment.</p>
       </section>
 
       <!-- Conformance -->
