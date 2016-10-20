@@ -116,10 +116,8 @@
 
 	<p>The Vehicle Signal Client Specification defines an API that wraps the data access and security primitives
 	defined in this Server Specification. It has been defined to support the development
-	of 'standards-compliant' JavaScript libraries that can be used by web based clients.</p>
-
-	<p>The GENIVI Vehicle Signal Specification (VSS) defines the set of vehicle signals and data that
-	are exposed via this Server Specification. </p>
+	of 'standards-compliant' JavaScript libraries that can be used by web based clients. The GENIVI Vehicle Signal 
+	Specification (VSS) defines the set of vehicle signals and data that are exposed via this Server Specification. </p>
 
 	<p>This Server Specification describes a discovery mechanism that defines the set of signals and data
 	that a client can access at a particular point in time. It is recognized that some automobile
@@ -166,7 +164,7 @@
       however, the server may refuse to open a subsequent WebSocket connection and the client is responsible for handling this 
       gracefully.</p>  
 	    
-      <p>If more than one WebSocket connection is established between a Client Application and the server then each connection 
+      <p>If more than one WebSocket connection is established between a client application and the server then each connection 
       MUST be managed independently. For example, subscriptions created using a particular WebSocket connection SHALL only trigger 
       notifications via that connection and the client MUST use that WebSocket connection to unsubscribe. </p>
 
