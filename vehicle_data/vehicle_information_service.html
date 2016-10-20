@@ -148,7 +148,7 @@
       notifications and to UNSUBSCRIBE from receiving notifications.</p>
 
       <p>The term 'signal' is used here to represent an item of	data that can vary over time, for example vehicle speed, 
-	 whilst 'static data' is to denote temporally invariant properties like vehicle width or number of doors.</p>
+	 whilst the expression 'static data' is used to denote a temporally invariant property like vehicle width.</p>
 	    
       <p>A future revision of this specification may consider additionally exposing vehicle signals
       via a RESTful web service but this is out of scope for this version of the specification.</p>
@@ -167,13 +167,13 @@
       gracefully.</p>  
 	    
       <p>If more than one WebSocket connection is established between a Client Application and the server then each connection 
-      MUST be managed independently. For example, subscriptions created using a particular WebSocket connection only trigger 
-      notifications via that connection and the client must use that WebSocket connection to unsubscribe. </p>
+      MUST be managed independently. For example, subscriptions created using a particular WebSocket connection SHALL only trigger 
+      notifications via that connection and the client MUST use that WebSocket connection to unsubscribe. </p>
 
       <p>If more than one WebSocket connection has been established
       between one or more clients and a particular server instance, there
       is a risk that race conditions and concurrency issues could occur.
-      An example of this would be, where two or more WebSocket connections
+      An example of this would be where two or more WebSocket connections
       are used to update a particular setting at the same time.</p>
 
       <p>Unless explicitly stated otherwise, the client can only assume
