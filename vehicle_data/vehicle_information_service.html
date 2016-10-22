@@ -794,15 +794,11 @@
       };
 
       interface vssSuccessResponse {
-        attribute Action action;
-        attribute string path;
         attribute string requestId;
         attribute object vss;
       };
 
       interface vssErrorResponse {
-        attribute Action action;
-        attribute string path;
         attribute string requestId;
         attribute Error error;
       };
@@ -817,8 +813,6 @@
     "requestId": 3874
 	}
 	receive <- {
-		"action": "getVSS",
-		"path": "Signal.Body",
     "requestId": 3874,
 		"vss": { }
 	}
@@ -841,8 +835,6 @@
 
       interface getSuccessResponse
       {
-        attribute Action action;
-        attribute DOMString path;
         attribute string requestId;
         attribute any value;
         attribute DOMTimeStamp timestamp;
@@ -850,8 +842,6 @@
 
       interface getErrorResponse
       {
-        attribute Action action;
-        attribute DOMString path;
         attribute string requestId;
         attribute Error error;
         attribute DOMTimeStamp timestamp;
@@ -871,8 +861,6 @@
 	}
 
 	receive <- {
-		"action": "get",
-		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
     "requestId": 8756,
 		"value": 2372,
 		"timestamp": &lt;DOMTimeStamp&gt;
@@ -893,8 +881,6 @@
 	}
 
 	receive <- {
-		"action": "get",
-		"path": "Signal.Body.Trunk",
     "requestId": 9078,
 		"value": { "Signal.Body.Trunk.IsLocked": false,
 			"Signal.Body.Trunk.IsOpen": true },
@@ -915,8 +901,6 @@
 	}
 
 	receive <- {
-		"action": "get",
-		"path": "Signal.Cabin.Door.*.IsLocked ",
     "requestId": 4523,
 		"value": [ {"Signal.Cabin.Door.Row1.Right.IsLocked" : true },
 		           {"Signal.Cabin.Door.Row1.Left.IsLocked" : true },
@@ -937,8 +921,6 @@
 	}
 
 	receive <- {
-		"action": "get",
-		"path": "Signal.Cabin.Door.*",
     "requestId": 6745,
 		"value": [ {"Signal.Cabin.Door.Row1.Right.IsLocked" : true, "Signal.Cabin.Door.Row1.Right.Window.Position": 50},
 		           {"Signal.Cabin.Door.Row1.Left.IsLocked" : true, "Signal.Cabin.Door.Row1.Left.Window.Position": 23},
@@ -956,8 +938,6 @@
 	}
 
 	receive <- {
-		"action": "get",
-		"path": "Body.Flux.Capacitor",
     "requestId": 1245,
 		"error": { "number":404,
 			"reason": "invalid_path",
