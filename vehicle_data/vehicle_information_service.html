@@ -7,8 +7,8 @@
             class='remove'></script>
     <script class="remove">
       var respecConfig = {
-          specStatus:           "FPWD",
-          shortName:            "vehicle-signal-server-api",
+          specStatus:           "ED",
+          shortName:            "vehicle-information-service",
           editors:  [{
             name: "Kevin Gavigan", company: "Jaguar Land Rover",
             url: "mailto:kgavigan@jaguarlandrover.com",
@@ -52,9 +52,9 @@
              ]
           }],
 
-          wgURI:        "http://www.w3.org/auto/wg/",
+          wgURI:        "https://www.w3.org/auto/wg/",
           wgPublicList: "public-automotive",
-          wgPatentURI: "http://www.w3.org/2004/01/pp-impl/76043/status",
+          wgPatentURI: "https://www.w3.org/2004/01/pp-impl/76043/status",
 	  };
     </script>
     <style>
@@ -116,41 +116,21 @@
 
 	<p>The Vehicle Signal Client Specification defines an API that wraps the data access and security primitives
 	defined in this Server Specification. It has been defined to support the development
-	of 'standards-compliant' JavaScript libraries that can be used by web based clients.</p>
-
-	<p>It is assumed that native clients (written for example in C/C++) and managed runtime clients
-	(written in languages like Java or C#) invoke the WebSocket Server API using standard WebSocket
-	libraries that have been created specifically for those languages.</p>
-
-	<p>The GENIVI Vehicle Signal Specification (VSS) defines the set of vehicle signals and data that
-	are exposed via this Server Specification. The term 'signal' is used here to represent an item of
-	data that can vary over time, for example vehicle speed, whilst the term 'static data' is used to
-	denote a temporally unchanging property like vehicle width.</p>
+	of 'standards-compliant' JavaScript libraries that can be used by web based clients. The GENIVI Vehicle Signal 
+	Specification (VSS) defines the set of vehicle signals and data that are exposed via this Server Specification. </p>
 
 	<p>This Server Specification describes a discovery mechanism that defines the set of signals and data
-	that a particular client can access at a particular point in time. It is recognized that some automobile
-	manufacturers may expose more signals and data than others. The Vehicle Signal Specification supports both
+	that a client can access at a particular point in time. It is recognized that some automobile
+	manufacturers may expose more signals and data than others. The Vehicle Signal Specification (VSS) supports both
 	extensibility and the ability to define private branches.</p>
 
 	<p>In addition, the 'tree' of signals that is accessible at any point in time may also vary depending
 	on standard access control principles. That is, it can vary based on the identity of the user (person or
 	organisation) requesting the data and/or the device (e.g. vehicle) where the request originates.</p>
 
-	<p>To support this, the Server Specification describes a token based mechanism that can optionally
-	be used to pass tokens to the WebSocket Server to represent the user of an application and the device that
-	the application is running on.</p>
-
-	<p>The target platform supported by the specification is exclusively passenger vehicles. Use of this
-	specification for non-passenger applications (for example heavy machinery, marine and airline infotainment) is
-	not prohibited, but is not covered in the design or content of the API and therefore may be insufficient.</p>
-
-	<p>An example use case could be the implementation of a 'Home Mechanic' application that provides warnings if any
-	the following need attention: tire pressure, engine oil level, washer fluid level and battery charge level.
-	Future use case innovations in transportation, safety, navigation, smart energy grids, smart transportation,
-	consumer infotainment and personalisation are all possible through this specification.</p>
-
-	<p>Web developers building interoperable applications based upon this API, will help empower a common web platform
-	across consumer devices and passenger vehicles within the Web of Things.</p>
+	<p>To support this, the Server Specification describes an extensible token based security mechanism that can 
+	optionally be used to pass tokens to the WebSocket Server, for example to represent the user of an application 
+	and/or the device that the client application is running on.</p>
     </section>
 
     <!-- Status of this document -->
@@ -161,10 +141,13 @@
     <section>
       <h2>Introduction</h2>
 
-      <p>The vehicle SHALL expose vehicle signals via a WebSocket. This
+      <p>The vehicle SHALL expose vehicle signals and static data via a WebSocket. This
       enables a client to GET or SET vehicle signals and data; to SUBSCRIBE to receive
       notifications and to UNSUBSCRIBE from receiving notifications.</p>
 
+      <p>The term 'signal' is used here to represent an item of	data that can vary over time, for example vehicle speed, 
+	 whilst the expression 'static data' is used to denote a temporally invariant property like vehicle width.</p>
+	    
       <p>A future revision of this specification may consider additionally exposing vehicle signals
       via a RESTful web service but this is out of scope for this version of the specification.</p>
 
@@ -172,31 +155,23 @@
       the WebSocket Protocol is defined in
       <a href="https://tools.ietf.org/html/rfc6455">RFC6455</a>.</p>
 
-      <p>A component or module running on the vehicle is required to create
-      a WebSocket and listen for inbound connections from application clients to enable secure access to vehicle signals.
-      In this specification this module are referred to as the ‘WebSocket Vehicle Signal Server’ (WVSS)
-      or for simplicity as ‘the server’.</p>
+      <p>A component or module running on the vehicle SHALL create a WebSocket instance which will listen for an inbound 
+      connection request from a client to enable secure access to vehicle signals. In this specification this module is referred 
+      to as the 'WebSocket Vehicle Signal Server' (WVSS) or for simplicity as 'the server'.</p>
 
-      <p>This specification assumes that a single WebSocket is used to
-      enable communication between the client application and the server
-      in order to reduce processing overhead.</p>
-
-      <p>It is not explicitly prohibited for the client to request
-      that the server opens more than one WebSocket. However, the server
-      MAY refuse to open a subsequent WebSocket connection and the client is
-      responsible for handling this gracefully.</p>
-
-      <p>If more than one WebSocket connection is established between a
-      Client Application and the server then each connection is
-      managed independently. For example, subscriptions created using a
-      particular WebSocket connection only trigger notifications via
-      that connection and the client must use that WebSocket instance to
-      unsubscribe.</p>
+      <p>This specification assumes that a single WebSocket is used to enable communication between a client application 
+      and the server. It is not explicitly prohibited for the client to request that the server opens more than one WebSocket,
+      however, the server may refuse to open a subsequent WebSocket connection and the client is responsible for handling this 
+      gracefully.</p>  
+	    
+      <p>If more than one WebSocket connection is established between a client application and the server then each connection 
+      MUST be managed independently. For example, subscriptions created using a particular WebSocket connection SHALL only trigger 
+      notifications via that connection and the client MUST use that WebSocket connection to unsubscribe. </p>
 
       <p>If more than one WebSocket connection has been established
       between one or more clients and a particular server instance, there
       is a risk that race conditions and concurrency issues could occur.
-      An example of this would be, where two or more WebSocket connections
+      An example of this would be where two or more WebSocket connections
       are used to update a particular setting at the same time.</p>
 
       <p>Unless explicitly stated otherwise, the client can only assume
@@ -249,6 +224,16 @@
 			};
 		}
 	</pre>
+        <p>The target platform supported by the specification is exclusively passenger vehicles. Use of this
+	specification for non-passenger applications (for example heavy machinery, marine and airline infotainment) is
+	not prohibited, but is not covered in the design or content of the API.</p>
+
+	<p>An example use case could be the implementation of a 'Home Mechanic' application that provides warnings if any
+	the following need attention: tire pressure, engine oil level, washer fluid level and battery charge level.</p>
+	    
+	<p>Exposing vehicle signals in a standardized manner facilitates the integration of vehicles within the Web of Things (WoT) 
+	and supports future use case innovations in a variety of fields including transportation, safety, navigation, energy management,
+	smart transportation and consumer infotainment.</p>
       </section>
 
       <!-- Conformance -->
@@ -500,7 +485,7 @@
 	default port 443. The hostname 'wwwivi' may locally be mapped to the localhost
 	IP address 127.0.0.1 e.g. by adding an entry to the /etc/hosts file.</p>
 
-	<p>The sub-protocol name always is 'wvss' with a version number suffix, e.g. wvss1.0</p>
+	<p>The sub-protocol name SHALL be 'wvss' with a version number suffix, e.g. wvss1.0</p>
 	<pre class="highlight hljs javascript">
 	  <span class="hljs-keyword">var</span> vehicle  = new WebSocket("wss://wwwivi", "wvss1.0");
 	</pre>
@@ -1309,11 +1294,6 @@
 	//client receives data when the value is below 100 (inclusive)
 	{ "action": "subscribe", "path": "&lt;any_path&gt;",
         	"filters": { "range": { "below": 100 } },
-        	"requestId": "&lt;some_unique_value&gt;" }
-
-	//client receives data when the value changes by 100 units
-	{ "action": "subscribe", "path": "&lt;any_path&gt;",
-        	"filters": { "minChange": 100 },
         	"requestId": "&lt;some_unique_value&gt;" }
 
 	//client receives data when the value changes by 100 units
