@@ -116,7 +116,7 @@
 
 	<p>The Vehicle Signal Client Specification defines an API that wraps the data access and security primitives
 	defined in this Server Specification. It has been defined to support the development
-	of 'standards-compliant' JavaScript libraries that can be used by web based clients. The GENIVI Vehicle Signal 
+	of 'standards-compliant' JavaScript libraries that can be used by web based clients. The GENIVI Vehicle Signal
 	Specification (VSS) defines the set of vehicle signals and data that are exposed via this Server Specification. </p>
 
 	<p>This Server Specification describes a discovery mechanism that defines the set of signals and data
@@ -128,8 +128,8 @@
 	on standard access control principles. That is, it can vary based on the identity of the user (person or
 	organisation) requesting the data and/or the device (e.g. vehicle) where the request originates.</p>
 
-	<p>To support this, the Server Specification describes an extensible token based security mechanism that can 
-	optionally be used to pass tokens to the WebSocket Server, for example to represent the user of an application 
+	<p>To support this, the Server Specification describes an extensible token based security mechanism that can
+	optionally be used to pass tokens to the WebSocket Server, for example to represent the user of an application
 	and/or the device that the client application is running on.</p>
     </section>
 
@@ -145,9 +145,9 @@
       enables a client to GET or SET vehicle signals and data; to SUBSCRIBE to receive
       notifications and to UNSUBSCRIBE from receiving notifications.</p>
 
-      <p>The term 'signal' is used here to represent an item of	data that can vary over time, for example vehicle speed, 
+      <p>The term 'signal' is used here to represent an item of	data that can vary over time, for example vehicle speed,
 	 whilst the expression 'static data' is used to denote a temporally invariant property like vehicle width.</p>
-	    
+
       <p>A future revision of this specification may consider additionally exposing vehicle signals
       via a RESTful web service but this is out of scope for this version of the specification.</p>
 
@@ -155,17 +155,17 @@
       the WebSocket Protocol is defined in
       <a href="https://tools.ietf.org/html/rfc6455">RFC6455</a>.</p>
 
-      <p>A component or module running on the vehicle SHALL create a WebSocket instance which will listen for an inbound 
-      connection request from a client to enable secure access to vehicle signals. In this specification this module is referred 
+      <p>A component or module running on the vehicle SHALL create a WebSocket instance which will listen for an inbound
+      connection request from a client to enable secure access to vehicle signals. In this specification this module is referred
       to as the 'WebSocket Vehicle Signal Server' (WVSS) or for simplicity as 'the server'.</p>
 
-      <p>This specification assumes that a single WebSocket is used to enable communication between a client application 
+      <p>This specification assumes that a single WebSocket is used to enable communication between a client application
       and the server. It is not explicitly prohibited for the client to request that the server opens more than one WebSocket,
-      however, the server may refuse to open a subsequent WebSocket connection and the client is responsible for handling this 
-      gracefully.</p>  
-	    
-      <p>If more than one WebSocket connection is established between a client application and the server then each connection 
-      MUST be managed independently. For example, subscriptions created using a particular WebSocket connection SHALL only trigger 
+      however, the server may refuse to open a subsequent WebSocket connection and the client is responsible for handling this
+      gracefully.</p>
+
+      <p>If more than one WebSocket connection is established between a client application and the server then each connection
+      MUST be managed independently. For example, subscriptions created using a particular WebSocket connection SHALL only trigger
       notifications via that connection and the client MUST use that WebSocket connection to unsubscribe. </p>
 
       <p>If more than one WebSocket connection has been established
@@ -230,8 +230,8 @@
 
 	<p>An example use case could be the implementation of a 'Home Mechanic' application that provides warnings if any
 	the following need attention: tire pressure, engine oil level, washer fluid level and battery charge level.</p>
-	    
-	<p>Exposing vehicle signals in a standardized manner facilitates the integration of vehicles within the Web of Things (WoT) 
+
+	<p>Exposing vehicle signals in a standardized manner facilitates the integration of vehicles within the Web of Things (WoT)
 	and supports future use case innovations in a variety of fields including transportation, safety, navigation, energy management,
 	smart transportation and consumer infotainment.</p>
       </section>
@@ -790,17 +790,20 @@
       interface vssRequest {
         attribute Action action;
         attribute string? path;
+        attribute string requestId;
       };
 
       interface vssSuccessResponse {
         attribute Action action;
         attribute string path;
+        attribute string requestId;
         attribute object vss;
       };
 
       interface vssErrorResponse {
         attribute Action action;
         attribute string path;
+        attribute string requestId;
         attribute Error error;
       };
       </pre>
@@ -811,11 +814,13 @@
 	client -> {
 		"action": "getVSS",
 		"path": "Signal.Body",
+    "requestId": 3874
 	}
 	receive <- {
 		"action": "getVSS",
 		"path": "Signal.Body",
-		"vss": { },
+    "requestId": 3874,
+		"vss": { }
 	}
 	</pre>
 
@@ -831,12 +836,14 @@
       {
         attribute Action action;
         attribute DOMString path;
+        attribute string requestId;
       };
 
       interface getSuccessResponse
       {
         attribute Action action;
         attribute DOMString path;
+        attribute string requestId;
         attribute any value;
         attribute DOMTimeStamp timestamp;
       };
@@ -845,6 +852,7 @@
       {
         attribute Action action;
         attribute DOMString path;
+        attribute string requestId;
         attribute Error error;
         attribute DOMTimeStamp timestamp;
       };
@@ -858,12 +866,14 @@
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "get",
-		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM"
+		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
+    "requestId": 8756
 	}
 
 	receive <- {
 		"action": "get",
 		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
+    "requestId": 8756,
 		"value": 2372,
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
@@ -878,12 +888,14 @@
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "get",
-		"path": "Signal.Body.Trunk"
+		"path": "Signal.Body.Trunk",
+    "requestId": 9078
 	}
 
 	receive <- {
 		"action": "get",
 		"path": "Signal.Body.Trunk",
+    "requestId": 9078,
 		"value": { "Signal.Body.Trunk.IsLocked": false,
 			"Signal.Body.Trunk.IsOpen": true },
 		"timestamp": &lt;DOMTimeStamp&gt;
@@ -898,12 +910,14 @@
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "get",
-		"path": "Signal.Cabin.Door.*.IsLocked"
+		"path": "Signal.Cabin.Door.*.IsLocked",
+    "requestId": 4523
 	}
 
 	receive <- {
 		"action": "get",
 		"path": "Signal.Cabin.Door.*.IsLocked ",
+    "requestId": 4523,
 		"value": [ {"Signal.Cabin.Door.Row1.Right.IsLocked" : true },
 		           {"Signal.Cabin.Door.Row1.Left.IsLocked" : true },
 			       {"Signal.Cabin.Door.Row2.Right.IsLocked" : false },
@@ -918,12 +932,14 @@
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "get",
-		"path": "Signal.Cabin.Door.*"
+		"path": "Signal.Cabin.Door.*",
+    "requestId": 6745
 	}
 
 	receive <- {
 		"action": "get",
 		"path": "Signal.Cabin.Door.*",
+    "requestId": 6745,
 		"value": [ {"Signal.Cabin.Door.Row1.Right.IsLocked" : true, "Signal.Cabin.Door.Row1.Right.Window.Position": 50},
 		           {"Signal.Cabin.Door.Row1.Left.IsLocked" : true, "Signal.Cabin.Door.Row1.Left.Window.Position": 23},
 		           {"Signal.Cabin.Door.Row2.Right.IsLocked" : false, "Signal.Cabin.Door.Row2.Right.Window.Position": 100 },
@@ -935,12 +951,14 @@
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "get",
-		"path": "Body.Flux.Capacitor"
+		"path": "Body.Flux.Capacitor",
+    "requestId": 1245
 	}
 
 	receive <- {
 		"action": "get",
 		"path": "Body.Flux.Capacitor",
+    "requestId": 1245,
 		"error": { "number":404,
 			"reason": "invalid_path",
 			"message": "The specified data path does not exist." },
@@ -959,18 +977,21 @@
         attribute Action action;
         attribute DOMString path;
         attribute any value;
+        attribute string requestId;
       };
 
       interface setSuccessResponse {
 	      attribute Action action;
         attribute DOMString path;
         attribute any value;
+        attribute string requestId;
         attribute DOMTimeStamp timestamp;
       };
 
       interface setErrorResponse {
         attribute Action action;
         attribute DOMString path;
+        attribute string requestId;
         attribute Error error;
         attribute DOMTimeStamp timestamp;
       };
@@ -984,7 +1005,8 @@
 		"value":{ [ {"Row1.Right.IsLocked" : true },
 		            {"Row1.Left.IsLocked" : true },
 				    {"Row2.Right.IsLocked" : true },
-				    {"Row2.Left.IsLocked" : true } ] }
+				    {"Row2.Left.IsLocked" : true } ] },
+    "requestId": 5689
 		}
 
 	receive <- {
@@ -994,6 +1016,7 @@
 		            {"Signal.Cabin.Door.Row1.Left.IsLocked" : true },
 				    {"Signal.Cabin.Door.Row2.Right.IsLocked" : true },
 				    {"Signal.Cabin.Door.Row2.Left.IsLocked" : true } ] },
+    "requestId": 5689,
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
@@ -1002,7 +1025,8 @@
 	client -> {
 		"action": "set",
 		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
-		"value": 2000
+		"value": 2000,
+    "requestId": 8912
 	}
 
 	receive <- {
@@ -1011,6 +1035,7 @@
 		"error": { "number": 403,
 			"reason": "device_forbidden",
 			"message": "User is not authorised to set this value"},
+    "requestId": 8912,
     "timestamp": &lt;DOMTimeStamp&gt;
 		}
 	</pre>
@@ -1020,11 +1045,13 @@
 		"action": "set",
 		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
 		"value": { "locked" : true }
+    "requestId": 2311
 	}
 
 	receive <- {
 		"action": "set",
 		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
+    "requestId": 2311,
 		"error": { "number": 400,
 			"reason": "bad_request" ,
 			"message": "The server is unable to fulfil the client
@@ -1223,7 +1250,7 @@
 		"error": { "number":404,
 			"reason": "invalid_subscriptionId",
 			"message": "The specified subscription was not found." },
-    "requestId": 7846,  
+    "requestId": 7846,
     "timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
