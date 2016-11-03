@@ -794,11 +794,13 @@
       };
 
       interface vssSuccessResponse {
+	attribute Action action;
         attribute string requestId;
         attribute object vss;
       };
 
       interface vssErrorResponse {
+        attribute Action action;      
         attribute string requestId;
         attribute Error error;
       };
@@ -810,10 +812,11 @@
 	client -> {
 		"action": "getVSS",
 		"path": "Signal.Body",
-    "requestId": 3874
+		"requestId": 3874
 	}
 	receive <- {
-    "requestId": 3874,
+		"action": "getVSS",
+		"requestId": 3874,
 		"vss": { }
 	}
 	</pre>
@@ -835,6 +838,7 @@
 
       interface getSuccessResponse
       {
+        attribute Action action;      
         attribute string requestId;
         attribute any value;
         attribute DOMTimeStamp timestamp;
@@ -842,6 +846,7 @@
 
       interface getErrorResponse
       {
+        attribute Action action;      
         attribute string requestId;
         attribute Error error;
         attribute DOMTimeStamp timestamp;
@@ -857,11 +862,12 @@
 	client -> {
 		"action": "get",
 		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
-    "requestId": 8756
+		"requestId": 8756
 	}
 
 	receive <- {
-    "requestId": 8756,
+		"action": "get",
+		"requestId": 8756,
 		"value": 2372,
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
@@ -877,11 +883,12 @@
 	client -> {
 		"action": "get",
 		"path": "Signal.Body.Trunk",
-    "requestId": 9078
+		"requestId": 9078
 	}
 
 	receive <- {
-    "requestId": 9078,
+		"action": "get",		
+		"requestId": 9078,
 		"value": { "Signal.Body.Trunk.IsLocked": false,
 			"Signal.Body.Trunk.IsOpen": true },
 		"timestamp": &lt;DOMTimeStamp&gt;
@@ -897,11 +904,12 @@
 	client -> {
 		"action": "get",
 		"path": "Signal.Cabin.Door.*.IsLocked",
-    "requestId": 4523
+		"requestId": 4523
 	}
 
 	receive <- {
-    "requestId": 4523,
+		"action": "get",
+		"requestId": 4523,
 		"value": [ {"Signal.Cabin.Door.Row1.Right.IsLocked" : true },
 		           {"Signal.Cabin.Door.Row1.Left.IsLocked" : true },
 			       {"Signal.Cabin.Door.Row2.Right.IsLocked" : false },
@@ -917,11 +925,12 @@
 	client -> {
 		"action": "get",
 		"path": "Signal.Cabin.Door.*",
-    "requestId": 6745
+		"requestId": 6745
 	}
 
 	receive <- {
-    "requestId": 6745,
+		"action": "get",
+		"requestId": 6745,
 		"value": [ {"Signal.Cabin.Door.Row1.Right.IsLocked" : true, "Signal.Cabin.Door.Row1.Right.Window.Position": 50},
 		           {"Signal.Cabin.Door.Row1.Left.IsLocked" : true, "Signal.Cabin.Door.Row1.Left.Window.Position": 23},
 		           {"Signal.Cabin.Door.Row2.Right.IsLocked" : false, "Signal.Cabin.Door.Row2.Right.Window.Position": 100 },
@@ -934,15 +943,16 @@
 	client -> {
 		"action": "get",
 		"path": "Body.Flux.Capacitor",
-    "requestId": 1245
+		"requestId": 1245
 	}
 
 	receive <- {
-    "requestId": 1245,
+		"action": "get",
+		"requestId": 1245,
 		"error": { "number":404,
 			"reason": "invalid_path",
 			"message": "The specified data path does not exist." },
-    "timestamp": &lt;DOMTimeStamp&gt;
+		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
 	<h2>Set</h2>
