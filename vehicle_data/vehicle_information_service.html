@@ -794,13 +794,13 @@
       };
 
       interface vssSuccessResponse {
-	attribute Action action;
+        attribute Action action;
         attribute string requestId;
         attribute object vss;
       };
 
       interface vssErrorResponse {
-        attribute Action action;      
+        attribute Action action;
         attribute string requestId;
         attribute Error error;
       };
@@ -838,7 +838,7 @@
 
       interface getSuccessResponse
       {
-        attribute Action action;      
+        attribute Action action;
         attribute string requestId;
         attribute any value;
         attribute DOMTimeStamp timestamp;
@@ -846,7 +846,7 @@
 
       interface getErrorResponse
       {
-        attribute Action action;      
+        attribute Action action;
         attribute string requestId;
         attribute Error error;
         attribute DOMTimeStamp timestamp;
@@ -887,7 +887,7 @@
 	}
 
 	receive <- {
-		"action": "get",		
+		"action": "get",
 		"requestId": 9078,
 		"value": { "Signal.Body.Trunk.IsLocked": false,
 			"Signal.Body.Trunk.IsOpen": true },
@@ -972,15 +972,12 @@
 
       interface setSuccessResponse {
 	      attribute Action action;
-        attribute DOMString path;
-        attribute any value;
         attribute string requestId;
         attribute DOMTimeStamp timestamp;
       };
 
       interface setErrorResponse {
         attribute Action action;
-        attribute DOMString path;
         attribute string requestId;
         attribute Error error;
         attribute DOMTimeStamp timestamp;
@@ -1001,11 +998,6 @@
 
 	receive <- {
 		"action": "set",
-		"path": " Signal.Cabin.Door.*.IsLocked",
-		"value":{ [ {"Signal.Cabin.Door.Row1.Right.IsLocked" : true },
-		            {"Signal.Cabin.Door.Row1.Left.IsLocked" : true },
-				    {"Signal.Cabin.Door.Row2.Right.IsLocked" : true },
-				    {"Signal.Cabin.Door.Row2.Left.IsLocked" : true } ] },
     "requestId": 5689,
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
@@ -1021,11 +1013,10 @@
 
 	receive <- {
 		"action": "set",
-		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
+    "requestId": 8912,
 		"error": { "number": 403,
 			"reason": "device_forbidden",
 			"message": "User is not authorised to set this value"},
-    "requestId": 8912,
     "timestamp": &lt;DOMTimeStamp&gt;
 		}
 	</pre>
@@ -1040,7 +1031,6 @@
 
 	receive <- {
 		"action": "set",
-		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
     "requestId": 2311,
 		"error": { "number": 400,
 			"reason": "bad_request" ,
@@ -1078,7 +1068,7 @@
       };
 
       interface subscribeErrorResponse {
-        attribute DOMString path;
+        attribute Action action;
         attribute string requestId;
         attribute Error error;
         attribute DOMTimeStamp timestamp;
@@ -1086,15 +1076,12 @@
 
       interface subscriptionNotification {
         attribute string subscriptionId;
-        attribute DOMString path;
         attribute any value;
         attribute DOMTimeStamp timestamp;
       };
 
       interface subscriptionNotificationError {
         attribute string subscriptionId;
-        attribute DOMString path;
-        attribute object filters;
         attribute Error error;
         attribute DOMTimeStamp timestamp;
       };
@@ -1120,7 +1107,6 @@
   <pre class="highlight hljs javascript">
   receive <- {
     "subscriptionId": 35472,
-    "path": "Signal.Drivetrain.Transmission.TripMeter",
     "value": 36912,
     "timestamp": &lt;DOMTimeStamp&gt;
 	}
