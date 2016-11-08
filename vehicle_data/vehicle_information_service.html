@@ -124,6 +124,16 @@
       <p>The term 'signal' is used here to represent an item of	data that can vary over time, for example vehicle speed,
 	 whilst the expression 'static data' is used to denote a temporally invariant property like vehicle width.</p>
 
+      <p>The GENIVI Vehicle Signal Specification (VSS) defines the set of vehicle signals and data that are exposed via this Server Specification.
+        This Server Specification describes a discovery mechanism that defines the set of signals and data that a client can access at a particular
+        point in time. The Vehicle Signal Specification (VSS) supports both extensibility and the ability to define private branches.</p>
+
+      <p>In addition, the 'tree' of signals that is accessible at any point in time may also vary depending on standard access control principles.
+         That is, it can vary based on the identity of the user (person or organisation) requesting the data and/or the device (e.g. vehicle) where the request originates.</p>
+
+      <p>To support this, the Server Specification describes an extensible token based security mechanism that can optionally be used to pass tokens to the WebSocket Server,
+        for example to represent the user of an application and/or the device that the client application is running on.</p>
+
       <p>A future revision of this specification may consider additionally exposing vehicle signals
       via a RESTful web service but this is out of scope for this version of the specification.</p>
 
@@ -155,6 +165,9 @@
       updates and dirty reads could potentially occur if the server has
       more than one WebSocket connection open.</p>
 
+      <p>It is recommended that this Vehicle Signal Server Specification (VSSS) is read in conjunction with the W3C Vehicle Signal Client Specification (VSCS).
+      The Vehicle Signal Client Specification defines an API that wraps the data access and security primitives defined in this Server Specification.
+      It has been defined to support the development of 'standards-compliant' JavaScript libraries that can be used by web based clients.</p>
       <p>The following example illustrates how a client could invoke the API.
       This simplified example is for illustrative purposes only, it does not show error handling and is not
 	intended to be commercial code.</p>
