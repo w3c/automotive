@@ -470,7 +470,10 @@
 	default port 443. The hostname 'wwwivi' may locally be mapped to the localhost
 	IP address 127.0.0.1 e.g. by adding an entry to the /etc/hosts file.</p>
 
-	<p>The sub-protocol name SHALL be 'wvss' with a version number suffix, e.g. wvss1.0</p>
+	<p>The sub-protocol name SHALL be 'wvss' with a version number suffix, e.g. wvss1.0. 
+	The major version number SHALL refer to the version of the vehicle signal server specification 
+	(VSSS) and the minor version number SHALL refer to the version of the vehicle signal specification 
+	(VSS) used within the implementation.</p>
 	<pre class="highlight hljs javascript">
 	  <span class="hljs-keyword">var</span> vehicle  = new WebSocket("wss://wwwivi", "wvss1.0");
 	</pre>
