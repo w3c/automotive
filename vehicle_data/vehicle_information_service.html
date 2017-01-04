@@ -230,7 +230,7 @@
       <!-- Conformance -->
       <section id="conformance">
 	<p>This specification defines conformance criteria that apply to a single product: specifically the 'in-vehicle'
-	WebSocket <dfn>Vehicle Signal Server</dfn> that implements the interfaces, semantics and behaviour
+	WebSocket <dfn>Vehicle Information Service</dfn> that implements the interfaces, semantics and behaviour
 	defined in this document. For simplicity, this usually is referred to as the 'WebSocket Server' or just 'the server'</p>
       </section>
 
@@ -326,7 +326,7 @@
       in accessing vehicle signals and data. However, when a vehicle is not being used, most electrical systems are shut down in
       order to maximise battery life. This may include the systems that enable Wireless or Mobile connectivity. Then, when the vehicle
       is powered up, various systems start up, including those that provide off-board connectivity and the vehicle typically
-      connects either to a local WiFi network or to a Mobile Network Operator (MNO) and dynamically be assigned an IP address.</p>
+      connects either to a local WiFi network or to a Mobile Network Operator (MNO) and is dynamically assigned an IP address.</p>
 
       <p>At this point, internet based clients and servers do not know the dynamic IP address that was assigned to a specific vehicle.
       So normally, a vehicle has to connect to a well known endpoint, generally using a URL to connect to a V2X Server.
@@ -434,7 +434,7 @@
         additional token type has expired and needs to be renewed) is defined in the Server's documentation.</p>
 
         <h3>Use of Encryption</h3>
-        <p>To support a layered security model and to help establish a 'defence in depth', all vehicle signal communications
+        <p>To support a layered security model and to help establish a 'defence in depth', all vehicle signal and data communications
         between the client and server MUST be strongly encrypted. This is to make it more difficult for an attacker to eavesdrop or
         tamper with the security tokens; the request data or the response payload.</p>
 
