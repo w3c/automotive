@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Vehicle Signal Server Specification</title>
+    <title>Vehicle Information Service Specification</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
             class='remove'></script>
@@ -105,7 +105,7 @@
   <body>
     <!-- Abstract -->
     <section id="abstract">
-	<p>This specification defines a WebSocket based API for a vehicle signal server that provides the functionality for client applications to get, set, subscribe and unsubscribe to vehicle signals and data attributes.</p>
+	<p>This specification defines a WebSocket based API for a vehicle information service that provides the functionality for client applications to get, set, subscribe and unsubscribe to vehicle signals and data attributes.</p>
 	<p>The purpose of the specification is to promote a Server API that enables application development in a consistent manner across participating automotive manufacturers.</p>
 	  </section>
 
@@ -121,17 +121,22 @@
       enables a client to GET or SET vehicle signals and data; to SUBSCRIBE to receive
       notifications and to UNSUBSCRIBE from receiving notifications.</p>
 
+      <p>The API that is used to manage access to vehicle signals and static data is defined in this Vehicle Information Service 
+	 Specification (VISS). The VISS also describes a discovery mechanism that defines the set of signals and data that a client can access at a 
+         particular point in time.</p>
+	    
       <p>The term 'signal' is used here to represent an item of	data that can vary over time, for example vehicle speed,
 	 whilst the expression 'static data' is used to denote a temporally invariant property like vehicle width.</p>
 
-      <p>The GENIVI Vehicle Signal Specification (VSS) defines the set of vehicle signals and data that are exposed via this Server Specification.
-        This Server Specification describes a discovery mechanism that defines the set of signals and data that a client can access at a particular
-        point in time. The Vehicle Signal Specification (VSS) supports both extensibility and the ability to define private branches.</p>
+      <p>The GENIVI Vehicle Signal Specification (VSS) defines the set of vehicle signals and data that are exposed via this Vehicle 
+        Information Service Specification (VISS). The Vehicle Signal Specification (VSS) supports both extensibility and the ability 
+	to define private branches.</p>
 
       <p>In addition, the 'tree' of signals that is accessible at any point in time may also vary depending on standard access control principles.
-         That is, it can vary based on the identity of the user (person or organisation) requesting the data and/or the device (e.g. vehicle) where the request originates.</p>
+         That is, it can vary based on the identity of the user (person or organisation) requesting the data and/or the application or 
+	 device (e.g. vehicle) where the request originates.</p>
 
-      <p>To support this, the Server Specification describes an extensible token based security mechanism that can optionally be used to pass tokens to the WebSocket Server,
+      <p>To support this, the Service Specification describes an extensible token based security mechanism that can optionally be used to pass tokens to the WebSocket Server,
         for example to represent the user of an application and/or the device that the client application is running on.</p>
 
       <p>A future revision of this specification may consider additionally exposing vehicle signals
@@ -139,7 +144,7 @@
 
       <p>A component or module running on the vehicle SHALL create a WebSocket instance which will listen for an inbound
       connection request from a client to enable secure access to vehicle signals. In this specification this module is referred
-      to as the 'WebSocket Vehicle Signal Server' (WVSS) or for simplicity as 'the server'.</p>
+      to as the 'WebSocket Vehicle Information Service' (WVIS) or for simplicity as 'the server'.</p>
 
       <p>This specification assumes that a single WebSocket is used to enable communication between a client application
       and the server. It is not explicitly prohibited for the client to request that the server opens more than one WebSocket,
@@ -161,10 +166,11 @@
       updates and dirty reads could potentially occur if the server has
       more than one WebSocket connection open.</p>
 
-      <p>It is recommended that this Vehicle Signal Server Specification (VSSS) is read in conjunction with the W3C Vehicle Signal Client Specification (VSCS).
-      The Vehicle Signal Client Specification defines an API that wraps the data access and security primitives defined in this Server Specification.
-      It has been defined to support the development of 'standards-compliant' JavaScript libraries that can be used by web based clients.</p>
-      <p>The following example illustrates how a client could invoke the API.
+      <p>It is recommended that this Vehicle Information Service Specification (VISS) is read in conjunction with the W3C Vehicle 
+      Information API Specification (VIAS). The Vehicle Information API Specification defines a client API that wraps the data access 
+      and security primitives defined in this Service Specification. It has been defined to support the development of  
+      'standards-compliant' JavaScript libraries that can be used by web based clients.</p>
+      <p>The Vehice Information Service API MAY be invoked directly, the following example illustrates how a client could invoke the VISS API.
       This simplified example is for illustrative purposes only, it does not show error handling and is not
 	intended to be commercial code.</p>
 
@@ -269,7 +275,7 @@
 
       <h3>WebSocket Server</h3>
       <p>The <dfn>WebSocket Server</dfn> is the vehicle system that is responsible for exposing vehicle signals and data to
-      its clients by implementing the interface and behaviours defined in this <dfn>Vehicle Signal Server Specification (VSSS)</dfn>.</p>
+      its clients by implementing the interface and behaviours defined in this <dfn>Vehicle Information Service Specification (VISS)</dfn>.</p>
 
       <p>The WebSocket Server exposes signals and data in a manner that is consistent with the <dfn>Vehicle Signal Specification (VSS)</dfn>.
       This defines a 'tree-like' logical taxonomy of the vehicle, (formally a Directed Acyclic Graph), where major vehicle structures
@@ -309,11 +315,11 @@
       e.g. C, C++ or Objective-C; and those that run in a Managed Runtime process written using languages like C#
       or Java.</p>
 
-      <p>Web applications and web agents MAY directly invoke the Vehicle Signal Server interface exposed by the WebSocker server,
+      <p>Web applications and web agents MAY directly invoke the Vehicle Information Service interface exposed by the WebSocker server,
       but it is expected that they typically access vehicle signals and data via a JavaScript Library that implements the
-      W3C Vehicle Signal Client API (TODO Add Link). The Client API defines a standard approach to encapsulate or 'wrap' the
-      W3C Vehicle Server Specification API to make it easier for Web based clients to access vehicle signals and data in a controlled
-      way.</p>
+      W3C Vehicle Information API Specification (VIAS) (TODO Add Link when document exists). The VIAS is a client API that defines a 
+      standard approach to encapsulate or 'wrap' the API defined in this specification to make it easier for Web based clients to 
+      access vehicle signals and data in a controlled way.</p>
 
       <h3>Sending Signals and Data off-board</h3>
       <p>In addition to local, in-vehicle applications and agents, a variety of internet-based clients and servers may be interested
@@ -333,7 +339,7 @@
       IP address and the new address needs to be communicated to any interested parties. For simplicity, this is not shown in the
       component diagram, primarily because this connectivity only becomes possible after the vehicle has registered with at least one
       off-board server (which is shown) but also because these scenarios do not affect the interface and behaviours defined in this
-      WebSocket Server Specification</p>
+      WebSocket Service Specification</p>
 
       <p>The component diagram shows four different types of internet based clients. A user may use a <dfn>Web Page</dfn> or a <dfn>
       Web Application</dfn> running on a phone or tablet to request access to vehicle signals on a particular vehicle. Alternatively
@@ -420,7 +426,7 @@
         <p>If the client or the server close the WebSocket connection and a new WebSocket instance is opened, then it is
         opened without elevated access control privileges.
 
-        <p>This server specification defines a standardized, token based approach for access control that includes specific error
+        <p>This service specification defines a standardized, token based approach for access control that includes specific error
         responses for common user and device access control scenarios. It is important however, that the security model is extensible.
         Hence, the server MAY implement any type of token that is  consistent with this standardized approach and MAY optionally
         define additional token(s) for other Security Principal type(s). If this is the case, it is expected that the precise type of security tokens that are supported by a particular server
