@@ -1142,7 +1142,8 @@
 	occurs, for example because an invalid subscriptionId is passed to the server, an 'unsubscribeErrorResponse' is returned.</p>
 
 	<p>The client MAY unsubscribe from all of its subscriptions by sending an 'unsubscribeRequest' with the action property set to
-	'unsubscribeAll'. This does not require a subscriptionId value.</p>
+	'unsubscribeAll'. This does not require a subscriptionId value. If the request is successful, or there are no active subscriptions 
+	to unsubscribe from, this will return an 'unsubscribeSuccessResponse'.</p>
 
 	<p>If the client has created more than one WebSocket instance, it MUST always unsubscribe using the same WebSocket instance
 	that was originally used to create the subscription.</p>
