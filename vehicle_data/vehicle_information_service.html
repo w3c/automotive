@@ -761,9 +761,14 @@
       </tr>
     </table>
 
-    <p>It is expected that client and server use the same token format. If a client presents a token using a format that is not understood by the server, ther server rejects the token.</p>
-
-
+    	<p>It is expected that client and server use the same token format. If a client presents a token using a 
+	    format that is not understood by the server, the server rejects the token.</p>
+	      
+	<p>In order to prevent dictionary attacks, authentication will be denied after a number of failed authentication 
+		requests. A 401 (Unauthorised) too_many_requests error will be sent by the server in response 
+		to any subsequent authentication requests. The number of failed requests and the period 
+		of time during which attempts will be denied is to be determined by the implementation.</p>    
+	
 	<h2>VSS Request</h2>
 	<p>The client MAY use the 'getVSS' action to request metadata describing the potentially available VSS tree. It does
 	this by sending a 'vssRequest' message to the server. If the server is able to return the VSS metadata, then this
@@ -1005,9 +1010,9 @@
 	receive <- {
 		"action": "set",
     "requestId": 8912,
-		"error": { "number": 403,
-			"reason": "device_forbidden",
-			"message": "User is not authorised to set this value"},
+		"error": { "number": 401,
+			"reason": "read_only",
+			"message": "The desired signal cannot be set since it is a read only signal"},
     "timestamp": &lt;DOMTimeStamp&gt;
 		}
 	</pre>
@@ -1419,6 +1424,16 @@ vehicle.close();
 	    <td>device_token_missing</td>
 	    <td>Device token is missing.</td>
 	  </tr>
+	  <tr>
+	    <td>401 (Unauthorised)</td>
+	    <td>too_many_attempts</td>
+	    <td>The client has failed to authenticate too many times.</td>
+	  </tr>	  
+	  <tr>
+	    <td>401 (Unauthorised)</td>
+	    <td>read_only</td>
+	    <td>The desired signal cannot be set since it is a read only signal.</td>
+	  </tr>	
 	  <tr>
 	    <td>403 (Forbidden)</td>
 	    <td>user_forbidden</td>
