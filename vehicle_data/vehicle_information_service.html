@@ -1132,6 +1132,10 @@
 	error with an existing subscription a subscriptionNotificationError is
 	received by the client. This allows the client to handle the error, such as to reduce the subscription
 	frequency if the server is unable to satisfy the initial demands of the client.</p>
+	
+	<p>If the authentication token expires whilst a subscription is active, the server will send a 
+	subscriptionNotificationError. If authentication is re-established with the server the subscription 
+	MUST continue the subscription without requiring another subscription request.</p>
 
   	<p>An example of a subscription can be found <a href="#introduction">here</a>.</p>
 
