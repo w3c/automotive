@@ -666,22 +666,22 @@
       interface authorizeRequest
       {
         attribute Action action;
-        attribute string tokens;
-        attribute string requestId;
+        attribute DOMString tokens;
+        attribute DOMString requestId;
       };
 
       interface authorizeSuccessResponse
       {
         attribute Action action;
         attribute int TTL;
-        attribute string requestId;
+        attribute DOMString requestId;
       };
 
       interface authorizeErrorResponse
       {
         attribute Action action;
       	attribute Error error;
-        attribute string requestId;
+        attribute DOMString requestId;
       };
       </pre>
 
@@ -780,19 +780,19 @@
       <pre class="idl">
       interface vssRequest {
         attribute Action action;
-        attribute string? path;
-        attribute string requestId;
+        attribute DOMString? path;
+        attribute DOMString requestId;
       };
 
       interface vssSuccessResponse {
         attribute Action action;
-        attribute string requestId;
+        attribute DOMString requestId;
         attribute object vss;
       };
 
       interface vssErrorResponse {
         attribute Action action;
-        attribute string requestId;
+        attribute DOMString requestId;
         attribute Error error;
       };
       </pre>
@@ -824,13 +824,13 @@
       {
         attribute Action action;
         attribute DOMString path;
-        attribute string requestId;
+        attribute DOMString requestId;
       };
 
       interface getSuccessResponse
       {
         attribute Action action;
-        attribute string requestId;
+        attribute DOMString requestId;
         attribute any value;
         attribute DOMTimeStamp timestamp;
       };
@@ -838,7 +838,7 @@
       interface getErrorResponse
       {
         attribute Action action;
-        attribute string requestId;
+        attribute DOMString requestId;
         attribute Error error;
         attribute DOMTimeStamp timestamp;
       };
@@ -958,18 +958,18 @@
         attribute Action action;
         attribute DOMString path;
         attribute any value;
-        attribute string requestId;
+        attribute DOMString requestId;
       };
 
       interface setSuccessResponse {
 	      attribute Action action;
-        attribute string requestId;
+        attribute DOMString requestId;
         attribute DOMTimeStamp timestamp;
       };
 
       interface setErrorResponse {
         attribute Action action;
-        attribute string requestId;
+        attribute DOMString requestId;
         attribute Error error;
         attribute DOMTimeStamp timestamp;
       };
@@ -1048,31 +1048,31 @@
         attribute Action action;
         attribute DOMString path;
         attribute object? filters;
-        attribute string requestId;
+        attribute DOMString requestId;
       };
 
       interface subscribeSuccessResponse {
         attribute Action action;
-        attribute string requestId;
-        attribute string subscriptionId;
+        attribute DOMString requestId;
+        attribute DOMString subscriptionId;
         attribute DOMTimeStamp timestamp;
       };
 
       interface subscribeErrorResponse {
         attribute Action action;
-        attribute string requestId;
+        attribute DOMString requestId;
         attribute Error error;
         attribute DOMTimeStamp timestamp;
       };
 
       interface subscriptionNotification {
-        attribute string subscriptionId;
+        attribute DOMString subscriptionId;
         attribute any value;
         attribute DOMTimeStamp timestamp;
       };
 
       interface subscriptionNotificationError {
-        attribute string subscriptionId;
+        attribute DOMString subscriptionId;
         attribute Error error;
         attribute DOMTimeStamp timestamp;
       };
@@ -1156,22 +1156,22 @@
       <pre class="idl">
       interface unsubscribeRequest {
         attribute Action action;
-        attribute string? subscriptionId;
-        attribute string requestId;
+        attribute DOMString? subscriptionId;
+        attribute DOMString requestId;
       };
 
       interface unsubscribeSuccessResponse {
         attribute Action action;
-        attribute string? subscriptionId;
-        attribute string requestId;
+        attribute DOMString? subscriptionId;
+        attribute DOMString requestId;
         attribute DOMTimeStamp timestamp;
       };
 
       interface unsubscribeErrorResponse {
         attribute Action action;
-        attribute string? subscriptionId;
+        attribute DOMString? subscriptionId;
         attribute Error error;
-        attribute string requestId;
+        attribute DOMString requestId;
         attribute DOMTimeStamp timestamp;
       };
       </pre>
@@ -1349,8 +1349,8 @@ vehicle.close();
       <pre class="idl">
       interface Error {
         attribute int number;
-        attribute string reason;
-        attribute string message;
+        attribute DOMString reason;
+        attribute DOMString message;
       };
       </pre>
 
