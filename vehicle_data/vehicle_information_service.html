@@ -1170,8 +1170,8 @@
       interface unsubscribeErrorResponse {
         attribute Action action;
         attribute string? subscriptionId;
-        attribute Error error;
         attribute string requestId;
+        attribute Error error;
         attribute DOMTimeStamp timestamp;
       };
       </pre>
@@ -1214,10 +1214,10 @@
 	receive <- {
 		"action": "unsubscribe",
     "subscriptionId": 3542,
+    "requestId": 7846,
 		"error": { "number":404,
 			"reason": "invalid_subscriptionId",
 			"message": "The specified subscription was not found." },
-    "requestId": 7846,
     "timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
