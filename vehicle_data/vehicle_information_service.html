@@ -764,7 +764,7 @@
     	<p>It is expected that client and server use the same token format. If a client presents a token using a 
 	    format that is not understood by the server, the server rejects the token.</p>
 	      
-	<p>In order to prevent dictionary attacks, authentication will be denied after a number of failed authentication 
+	<p>In order to make dictionary attacks more difficult, authentication will be denied after a number of failed authentication 
 		requests. A 401 (Unauthorised) too_many_requests error will be sent by the server in response 
 		to any subsequent authentication requests. The number of failed requests and the period 
 		of time during which attempts will be denied is to be determined by the implementation.</p>    
