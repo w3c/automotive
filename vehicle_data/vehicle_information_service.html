@@ -1144,6 +1144,24 @@
 	error with an existing subscription a subscriptionNotificationError is
 	received by the client. This allows the client to handle the error, such as to reduce the subscription
 	frequency if the server is unable to satisfy the initial demands of the client.</p>
+	
+	<p>If the authentication token expires whilst a subscription is active, the server will send a 
+	subscriptionNotificationError. The client is then responsible for requesting a renewed authentication token.</p>
+	
+	<p>After the client authentication token has expired, the server MAY continue to send notifications for data that
+	is not subject to access control restrictions. The client will NOT receive notifications for subscriptions that require
+	a valid authentication token until the client sends a renewed authentication token to the server.</p>
+	
+	<p> If a new authentication token is presented by the client to the server in a timely manner,	all existing subscriptions
+	will continue to cause notifications to be sent from the server, provided the security principal
+	has not changed. The time window during which the client MAY re-authenticate and subscriptions continue WILL be 
+	implementation dependent.</p>
+	
+	<p>At any time the server MUST only send subscription notifications for data that the client is authorised to access.</p>
+
+        <p>The server MAY close the WebSocket connection at any time and in so doing, terminate all subscriptions for the client. 
+	The client is then responsible for renewing subscriptions. The client MUST close the WebSocket connection if the server 
+	data is no longer required.</p>
 
   	<p>An example of a subscription can be found <a href="#introduction">here</a>.</p>
 
