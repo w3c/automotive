@@ -535,6 +535,13 @@
 		</td>
 	  </tr>
 	  <tr>
+	    <td><a>vssRequest</a></td>
+	    <td>
+		<a>vssSuccessResponse</a><br>
+	        <a>vssErrorResponse</a>
+	    </td>
+	  </tr>		
+	  <tr>
 	    <td><a>getRequest</a></td>
 	    <td>
 	    	<a>getSuccessResponse</a><br>
@@ -761,9 +768,14 @@
       </tr>
     </table>
 
-    <p>It is expected that client and server use the same token format. If a client presents a token using a format that is not understood by the server, ther server rejects the token.</p>
-
-
+    	<p>It is expected that client and server use the same token format. If a client presents a token using a 
+	    format that is not understood by the server, the server rejects the token.</p>
+	      
+	<p>In order to make dictionary attacks more difficult, authentication will be denied after a number of failed authentication 
+		requests. A 401 (Unauthorised) too_many_requests error will be sent by the server in response 
+		to any subsequent authentication requests. The number of failed requests and the period 
+		of time during which attempts will be denied is to be determined by the implementation.</p>    
+	
 	<h2>VSS Request</h2>
 	<p>The client MAY use the 'getVSS' action to request metadata describing the potentially available VSS tree. It does
 	this by sending a 'vssRequest' message to the server. If the server is able to return the VSS metadata, then this
@@ -1005,9 +1017,9 @@
 	receive <- {
 		"action": "set",
     "requestId": 8912,
-		"error": { "number": 403,
-			"reason": "device_forbidden",
-			"message": "User is not authorised to set this value"},
+		"error": { "number": 401,
+			"reason": "read_only",
+			"message": "The desired signal cannot be set since it is a read only signal"},
     "timestamp": &lt;DOMTimeStamp&gt;
 		}
 	</pre>
@@ -1132,6 +1144,24 @@
 	error with an existing subscription a subscriptionNotificationError is
 	received by the client. This allows the client to handle the error, such as to reduce the subscription
 	frequency if the server is unable to satisfy the initial demands of the client.</p>
+	
+	<p>If the authentication token expires whilst a subscription is active, the server will send a 
+	subscriptionNotificationError. The client is then responsible for requesting a renewed authentication token.</p>
+	
+	<p>After the client authentication token has expired, the server MAY continue to send notifications for data that
+	is not subject to access control restrictions. The client will NOT receive notifications for subscriptions that require
+	a valid authentication token until the client sends a renewed authentication token to the server.</p>
+	
+	<p> If a new authentication token is presented by the client to the server in a timely manner,	all existing subscriptions
+	will continue to cause notifications to be sent from the server, provided the security principal
+	has not changed. The time window during which the client MAY re-authenticate and subscriptions continue WILL be 
+	implementation dependent.</p>
+	
+	<p>At any time the server MUST only send subscription notifications for data that the client is authorised to access.</p>
+
+        <p>The server MAY close the WebSocket connection at any time and in so doing, terminate all subscriptions for the client. 
+	The client is then responsible for renewing subscriptions. The client MUST close the WebSocket connection if the server 
+	data is no longer required.</p>
 
   	<p>An example of a subscription can be found <a href="#introduction">here</a>.</p>
 
@@ -1170,8 +1200,8 @@
       interface unsubscribeErrorResponse {
         attribute Action action;
         attribute DOMString? subscriptionId;
-        attribute Error error;
         attribute DOMString requestId;
+        attribute Error error;
         attribute DOMTimeStamp timestamp;
       };
       </pre>
@@ -1214,10 +1244,10 @@
 	receive <- {
 		"action": "unsubscribe",
     "subscriptionId": 3542,
+    "requestId": 7846,
 		"error": { "number":404,
 			"reason": "invalid_subscriptionId",
 			"message": "The specified subscription was not found." },
-    "requestId": 7846,
     "timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
@@ -1419,6 +1449,16 @@ vehicle.close();
 	    <td>device_token_missing</td>
 	    <td>Device token is missing.</td>
 	  </tr>
+	  <tr>
+	    <td>401 (Unauthorised)</td>
+	    <td>too_many_attempts</td>
+	    <td>The client has failed to authenticate too many times.</td>
+	  </tr>	  
+	  <tr>
+	    <td>401 (Unauthorised)</td>
+	    <td>read_only</td>
+	    <td>The desired signal cannot be set since it is a read only signal.</td>
+	  </tr>	
 	  <tr>
 	    <td>403 (Forbidden)</td>
 	    <td>user_forbidden</td>
