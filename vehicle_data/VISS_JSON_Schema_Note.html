@@ -106,9 +106,7 @@
     <!-- Abstract -->
     <section id="abstract">
      <p>The purpose of this document is to complement the WebIDL data structures described in the <a href="https://w3c.github.io/automotive/vehicle_data/vehicle_information_service.html">Vehicle Information Service Specification (VISS)</a> using the machine readable <a href="http://json-schema.org/draft-04/schema">JSON Schema</a> format.</p>
-
-     <p>The VISS defines a WebSocket based API for a vehicle information service that provides the functionality for client applications to get, set, subscribe and unsubscribe to vehicle signals and data attributes.</p>
-	  </section>
+    </section>
 
     <!-- Status of this document -->
     <section id="sotd">
@@ -117,9 +115,16 @@
     <!-- Introduction -->
     <section>
       <h2>Introduction</h2>
-        <p>The <a href="https://w3c.github.io/automotive/vehicle_data/vehicle_information_service.html">Vehicle Information Service Specification (VISS)</a> defines a WebSocket based API for a vehicle information service that provides the functionality for client applications to get, set, subscribe and unsubscribe to vehicle signals and data attributes.></p>
-        <p>The specification allows clients to access vehicle signals on the vehicle's WebSocket Vehicle Information Service (WVIS) by passing JSON data structures between the client and the WVIS server. These data structures are described using WebIDL within the VISS.</p>
-        <p>This note has been developed to provide an alternative way of viewing the same specification using a JSON Schema.</p>
+        <p>The <a href="https://w3c.github.io/automotive/vehicle_data/vehicle_information_service.html">Vehicle Information Service 
+		Specification (VISS)</a> defines a WebSocket based API for a vehicle information service that provides the 
+		functionality for client applications to get, set, subscribe and unsubscribe to vehicle signals and data attributes.</p>
+	    
+        <p>The specification allows clients to access vehicle signals on the vehicle's WebSocket Vehicle Information Service (WVIS) by
+		passing JSON data structures between the client and the WVIS server. These data structures are described using WebIDL 
+		within the VISS.</p>
+	    
+        <p>This note has been developed to provide an alternative machine readbale way of viewing the same specification using a JSON 
+		Schema.</p>
     </section>
 
     <!-- Conformance -->
@@ -138,7 +143,7 @@
 
     <section>
       <h2>Schema Definitions</h2>
-      <p>The definitions within this section are used throughout the VISS interfaces.</p>
+      <p>The definitions within this section describe the datatypes used within the VISS interfaces.</p>
       <pre>
         {
             "definitions": {
@@ -264,6 +269,7 @@
         </table>
 
       <h3>Authorise</h3>
+      <p>The schema for the authoriseRequest is defined as:</p>
       <pre>
         {
             "$schema": "http://json-schema.org/draft-04/schema#",
@@ -295,7 +301,9 @@
                 }
             }
         }
-
+        </pre>
+       <p>The schema for the authoriseSuccessResponse is defined as:</p>
+	<pre>    
         {
             "$schema": "http://json-schema.org/draft-04/schema#",
             "title": "Authorize Success Response",
@@ -316,7 +324,9 @@
                 }
             }
         }
-
+        </pre>
+       <p>The schema for the authoriseErrorResponse is defined as:</p>
+	<pre>  
         {
             "$schema": "http://json-schema.org/draft-04/schema#",
             "title": "Authorize Error Response",
