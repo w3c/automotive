@@ -1148,7 +1148,8 @@
 	frequency if the server is unable to satisfy the initial demands of the client.</p>
 	
 	<p>If the authentication token expires whilst a subscription is active, the server will send a 
-	subscriptionNotificationError. The client is then responsible for requesting a renewed authentication token.</p>
+	subscriptionNotificationError for each subscription that can no longer be fulfilled. The client is then 
+	responsible for requesting a renewed authentication token.</p>
 	
 	<p>After the client authentication token has expired, the server MAY continue to send notifications for data that
 	is not subject to access control restrictions. The client will NOT receive notifications for subscriptions that require
