@@ -182,7 +182,7 @@
 		vehicle.onopen = function () {
 			vehicle.send('{"action": "authorize",
 				"tokens": {"authorization": "&lt;user_token_value&gt;"},
-				"requestId": 103}');
+				"requestId": "103"}');
 		};
 
 		// request a signal
@@ -206,10 +206,10 @@
 		// set a subscription, assuming the same authorization and set up from Example 1
 		if (vehicle.readyState === OPEN) {
 			vehicle.send('{"action": "subscribe", "path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
-					"requestId": 104}');
+					"requestId": "104"}');
 			vehicle.onmessage = function(event){
 				var msg = JSON.parse(event.data);
-				if(msg.hasOwnProperty("requestId") && msg.requestId == 104){
+				if(msg.hasOwnProperty("requestId") && msg.requestId == "104"){
 					console.log("Latest RPM is " + msg.value);
 				}
 			};
@@ -817,11 +817,11 @@
 	client -> {
 		"action": "getVSS",
 		"path": "Signal.Body",
-		"requestId": 3874
+		"requestId": "3874"
 	}
 	receive <- {
 		"action": "getVSS",
-		"requestId": 3874,
+		"requestId": "3874",
 		"vss": { }
 	}
 	</pre>
@@ -867,12 +867,12 @@
 	client -> {
 		"action": "get",
 		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
-		"requestId": 8756
+		"requestId": "8756"
 	}
 
 	receive <- {
 		"action": "get",
-		"requestId": 8756,
+		"requestId": "8756",
 		"value": 2372,
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
@@ -888,12 +888,12 @@
 	client -> {
 		"action": "get",
 		"path": "Signal.Body.Trunk",
-		"requestId": 9078
+		"requestId": "9078"
 	}
 
 	receive <- {
 		"action": "get",
-		"requestId": 9078,
+		"requestId": "9078",
 		"value": { "Signal.Body.Trunk.IsLocked": false,
 			"Signal.Body.Trunk.IsOpen": true },
 		"timestamp": &lt;DOMTimeStamp&gt;
@@ -909,12 +909,12 @@
 	client -> {
 		"action": "get",
 		"path": "Signal.Cabin.Door.*.IsLocked",
-		"requestId": 4523
+		"requestId": "4523"
 	}
 
 	receive <- {
 		"action": "get",
-		"requestId": 4523,
+		"requestId": "4523",
 		"value": [ {"Signal.Cabin.Door.Row1.Right.IsLocked" : true },
 		           {"Signal.Cabin.Door.Row1.Left.IsLocked" : true },
 			       {"Signal.Cabin.Door.Row2.Right.IsLocked" : false },
@@ -930,12 +930,12 @@
 	client -> {
 		"action": "get",
 		"path": "Signal.Cabin.Door.*",
-		"requestId": 6745
+		"requestId": "6745"
 	}
 
 	receive <- {
 		"action": "get",
-		"requestId": 6745,
+		"requestId": "6745",
 		"value": [ {"Signal.Cabin.Door.Row1.Right.IsLocked" : true, "Signal.Cabin.Door.Row1.Right.Window.Position": 50},
 		           {"Signal.Cabin.Door.Row1.Left.IsLocked" : true, "Signal.Cabin.Door.Row1.Left.Window.Position": 23},
 		           {"Signal.Cabin.Door.Row2.Right.IsLocked" : false, "Signal.Cabin.Door.Row2.Right.Window.Position": 100 },
@@ -948,12 +948,12 @@
 	client -> {
 		"action": "get",
 		"path": "Body.Flux.Capacitor",
-		"requestId": 1245
+		"requestId": "1245"
 	}
 
 	receive <- {
 		"action": "get",
-		"requestId": 1245,
+		"requestId": "1245",
 		"error": { "number":404,
 			"reason": "invalid_path",
 			"message": "The specified data path does not exist." },
@@ -998,12 +998,12 @@
 		            {"Row1.Left.IsLocked" : true },
 				    {"Row2.Right.IsLocked" : true },
 				    {"Row2.Left.IsLocked" : true } ] },
-    "requestId": 5689
+    "requestId": "5689"
 		}
 
 	receive <- {
 		"action": "set",
-    "requestId": 5689,
+    "requestId": "5689",
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
@@ -1013,12 +1013,12 @@
 		"action": "set",
 		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
 		"value": 2000,
-    "requestId": 8912
+    "requestId": "8912"
 	}
 
 	receive <- {
 		"action": "set",
-    "requestId": 8912,
+    "requestId": "8912",
 		"error": { "number": 401,
 			"reason": "read_only",
 			"message": "The desired signal cannot be set since it is a read only signal"},
@@ -1031,12 +1031,12 @@
 		"action": "set",
 		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
 		"value": { "locked" : true }
-    "requestId": 2311
+    "requestId": "2311"
 	}
 
 	receive <- {
 		"action": "set",
-    "requestId": 2311,
+    "requestId": "2311",
 		"error": { "number": 400,
 			"reason": "bad_request" ,
 			"message": "The server is unable to fulfil the client
@@ -1097,13 +1097,13 @@
 	client -> {
 		"action": "subscribe",
 		"path": "Signal.Drivetrain.Transmission.TripMeter",
-		"requestId": 1004
+		"requestId": "1004"
 	}
 
 	receive <- {
     "action": "subscribe",
-		"requestId": 1004,
-    "subscriptionId": 35472,
+		"requestId": "1004",
+    "subscriptionId": "35472",
     "timestamp": &lt;DOMTimeStamp&gt;
 	}
   </pre>
@@ -1111,7 +1111,7 @@
 
   <pre class="highlight hljs javascript">
   receive <- {
-    "subscriptionId": 35472,
+    "subscriptionId": "35472",
     "value": 36912,
     "timestamp": &lt;DOMTimeStamp&gt;
 	}
@@ -1213,14 +1213,14 @@
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "unsubscribe",
-		"subscriptionId": 102,
-		"requestId": 5264
+		"subscriptionId": "102",
+		"requestId": "5264"
 	}
 
 	receive <- {
 		"action": "unsubscribe",
-		"subscriptionId": 102,
-		"requestId": 5264,
+		"subscriptionId": "102",
+		"requestId": "5264",
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
@@ -1228,13 +1228,13 @@
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "unsubscribeAll",
-		"requestId": 3468
+		"requestId": "3468"
 	}
 
 	receive <- {
 		"action": "unsubscribeAll",
 		"subscriptionId": null,
-		"requestId": 3468,
+		"requestId": "3468",
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
@@ -1242,13 +1242,13 @@
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "unsubscribe",
-		"subscriptionId": 3542,
-		"requestId": 7846
+		"subscriptionId": "3542",
+		"requestId": "7846"
 	}
 	receive <- {
 		"action": "unsubscribe",
-    "subscriptionId": 3542,
-    "requestId": 7846,
+    "subscriptionId": "3542",
+    "requestId": "7846",
 		"error": { "number":404,
 			"reason": "invalid_subscriptionId",
 			"message": "The specified subscription was not found." },
@@ -1258,13 +1258,13 @@
 
 	<pre class="example highlight">
 		// send unsubscribe message
-		vehicle.send('{ "action": "unsubscribe", "subscriptionId": 102, "requestId": 5429 }');
+		vehicle.send('{ "action": "unsubscribe", "subscriptionId": "102", "requestId": "5429" }');
 
 		// set handler
 		vehicle.onmesssage(function(event){
 			var msg = JSON.parse(event.data);
 			// success case
-			if(msg.hasOwnProperty("requestId") && msg.requestId == 5429){
+			if(msg.hasOwnProperty("requestId") && msg.requestId == "5429"){
 				console.log("Successfully unsubscribed for id " + msg.subscriptionId);
 			// error case
 			} else if (msg.hasOwnProperty("error")) {
