@@ -163,30 +163,30 @@
                     "description": "The Coordinated Universal Time (UTC) time that the server returned the response (expressed as number of milliseconds).",
                     "type": "integer"
                 },
-                "filters": {
-                    "description": "TODO",
+                 "filters": {
+                    "description": "May be specified in order to throttle the demands of subscriptions on the server.",
                     "type": ["object", "null"],
                     "properties": {
                         "interval": {
-                            "description": "TODO",
+                            "description": "The subscription will provide notifications with a period equal to this field's value.",
                             "type": "integer"                   
                         },
                         "range": {
-                            "description": "TODO",
+                            "description": "The subscription will provide notifications only when within a given range.",
                             "type": "object",
                             "properties":{
                               "below": {
-                                "description": "TODO",
+                                "description": "The subscription will provide notifications when the value is less or equal to this field's value.",
                                 "type": "integer"  
                               },
                               "above": {
-                                "description": "TODO",
+                                "description": "The subscription will provide notifications when the value is greater than or equal to this field's value.",
                                 "type": "integer"  
                               },
                             }                   
                         },
                         "minChange": {
-                            "description": "TODO",
+                            "description": "The subscription will provide notifications when a value has changed by the amount specified in this field.",
                             "type": "integer"                   
                         }
                     }
