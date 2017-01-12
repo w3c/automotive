@@ -145,7 +145,7 @@
       <h2>Schema Definitions</h2>
       <p>The definitions within this section describe the datatypes used within the VISS interfaces.</p>
       <pre>
-        {
+{
             "definitions": {
                 "requestId": {
                     "description": "Returned by the server in the response and used by the client to link the request and response messages.",
@@ -153,21 +153,42 @@
                 },
                 "path": {
                     "description": "The path to the desired vehicle signal(s), as defined by the Vehicle Signal Specification (VSS).",
-                    "type": "string",
+                    "type": "string"
                 },
                 "value": {
                     "description": "The path to the desired vehicle signal(s), as defined by the Vehicle Signal Specification (VSS).",
-                    "type": "string",
+                    "type": "string"
                 },
                 "timestamp": {
                     "description": "The Coordinated Universal Time (UTC) time that the server returned the response (expressed as number of milliseconds).",
-                    "type": "integer",
+                    "type": "integer"
                 },
                 "filters": {
                     "description": "TODO",
                     "type": ["object", "null"],
-                    "properties": { 
-                      TODO 
+                    "properties": {
+                        "interval": {
+                            "description": "TODO",
+                            "type": "integer"                   
+                        },
+                        "range": {
+                            "description": "TODO",
+                            "type": "object",
+                            "properties":{
+                              "below": {
+                                "description": "TODO",
+                                "type": "integer"  
+                              },
+                              "above": {
+                                "description": "TODO",
+                                "type": "integer"  
+                              },
+                            }                   
+                        },
+                        "minChange": {
+                            "description": "TODO",
+                            "type": "integer"                   
+                        }
                     }
                 },
                 "subscriptionId":{
