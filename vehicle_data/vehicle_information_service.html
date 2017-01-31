@@ -1879,34 +1879,41 @@
       to be used in order to throttle the demands of subscriptions on
       the server. This may enable the reduction of traffic if the
       developer has received a 429 - Too Many Requests error
-      message. This can be implementation dependent allowing a number
-      of potential filtering mechanisms, such as ranges, intervals and
+      message. Server side filters are extensible, allowing for further filtering mechanisms. Support 
+      is currently provisioned for a specific range of values, time intervals and
       minimum changes. This can be implemented using the "filters"
-      option.</p>
+      option in the subscribeRequest interface.</p>
 
 	<p>Filters can only be applied for nodes in the VSS tree, not entire branches.
-	For example, a filter cannot be set on engine.*, however it can be set on engine.rpm.</p>
+	For example, a filter cannot be set on Signal.Drivetrain.InternalCombustionEngine.*, 
+	however it can be set on Signal.Drivetrain.InternalCombustionEngine.RPM.</p>
 
-      <p>The subscription currently defaults to sending values to the
-      client only onchange, however this may cause unnecessary
-      processing demands on the vehicle server. A filter object can be included in the subscription request:</p>
-
-      <pre class="highlight hljs javascript">
-        { "action": "subscribe", "path": "&lt;any_path&gt;",
-        	"filters": "{ &lt;insert_custom_tags&gt;  }"
-        	"requestId": "&lt;some_unique_value&gt;" }
-      </pre>
-      <p>Potential tags could include:</p>
+      <p>The default behaviour for a subscription is to send values to the client only onchange, 
+      however this may cause unnecessary processing demands on the vehicle server.</p>
+      
+      <p>The following filter options should SHALL be supported.</p>
       <ul>
 	<li>Interval - requests that the server provides a notification every 'n' milliseconds. This allows the client to reduce the
 	load on the server if the client does not need the data more frequently.</li>
 	<li>Range - provide a value only when within a given range</li>
 	<li>Minimum change - provide data when a value has changed by a specified amount</li>
-      </ul>
-
-      <p>If the filter is not set, or is unsupported by the server, the notification frequency is
+      </ul>      
+	<p>If the filter is not set, or the server is unable to satisfy the request, the notification frequency is
       determined by the server.</p>
-
+      
+      <h4></h4>
+      <h4></h4>
+      <h4>JSON Schema</h4>
+<pre>
+{
+  "filters": {
+      "$ref": "#/definitions/filters"
+  }
+}
+</pre>      
+           
+      <h4>Examples</h4>
+	<p>The following structures are examples of subscribeRequest objects which are requesting server side filters</p>
       <pre class="highlight hljs javascript">
 	//client receives data every 100ms
 	{ "action": "subscribe", "path": "&lt;any_path&gt;",
