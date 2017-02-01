@@ -1876,7 +1876,7 @@
     <section>
       <h3>Server Side Filtering</h3>
       <p>'<a>Filters</a>' may be specified to enable Server side filtering
-      to be used in order to throttle the demands of subscriptions on
+      to be used to throttle the demands of subscriptions on
       the server. This may enable the reduction of traffic if the
       developer has received a 429 - Too Many Requests error
       message. Server side filters are extensible, allowing for further filtering mechanisms. Support 
@@ -1888,10 +1888,9 @@
 	For example, a filter cannot be set on Signal.Drivetrain.InternalCombustionEngine.*, 
 	however it can be set on Signal.Drivetrain.InternalCombustionEngine.RPM.</p>
 
-      <p>The default behaviour for a subscription is to send values to the client only onchange, 
-      however this may cause unnecessary processing demands on the vehicle server.</p>
-      
-      <p>The following filter options should SHALL be supported.</p>
+      <p>The default behaviour for a subscription is to send values to the client only onchange. 
+      To modify this behaviour the client can use filtering options. The following filter options 
+      SHALL be supported.</p>
       <ul>
 	<li>Interval - requests that the server provides a notification every 'n' milliseconds. This allows the client to reduce the
 	load on the server if the client does not need the data more frequently.</li>
