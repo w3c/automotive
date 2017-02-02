@@ -4,7 +4,7 @@ Vehicle Signal Client Specification
 Client Goals
 ------------
 
-The following documents the specification required for a JavaScript client library designed to interface with a VISS server. This library is responsible for the following:
+The following documents the specification required for a JavaScript client library designed to interface with a VIS server. This library is responsible for the following:
 
 * Connection lifecycle (open, reconnect, failover, closure)
 * Authentication token transmission (not retrieval)
@@ -19,15 +19,15 @@ In general, the cleint clients strives for the following goals:
 3. Exhibit good behavior with regard to socket allocation.
 4. Provide clear feedback on errors, especially those related to security credentials.
 
-`W3CClient` Object
+`VISClient` Object
 ------------------
 
 ### Initializing a Client
 
-The `W3CClient` class is provided by the client library and a new client object can be created using the exported constructor:
+The `VISClient` class is provided by the client library and a new client object can be created using the exported constructor:
 
 ```javascript
-const client = new W3CClient({ /* options */ });
+const client = new VISClient({ /* options */ });
 ```
 
 ### Client Options
@@ -36,17 +36,17 @@ const client = new W3CClient({ /* options */ });
   * **`host`** (required) - hostname of the server
   * **`protocol`** (default: 'wss') - protocol for the WebSocket connection.  Options are generally `'ws'` for connections not going through an SSL-connection and `'wss'` for those that do.  It is strongly recommended to always use `wss`.
   * **`port`** (default: 443) - TCP port for the WebSocket connection.
-  * **`authenticationTokens`** - an inital set of authentication tokens to pass on connect.  These will be sent and must be validated and accepted by the server before `onConnect` is called.  Any authentication errors will result in an error being passed to the `W3CClient#connect` callback function.
+  * **`authenticationTokens`** - an inital set of authentication tokens to pass on connect.  These will be sent and must be validated and accepted by the server before `onConnect` is called.  Any authentication errors will result in an error being passed to the `VISClient#connect` callback function.
 * Handler Properties - These define the functions called throughout the lifecycle of the client.  These can be set after initializtion and connection. 
   * **`onConnect`** - function called when the client is connected.  This function will be passed:
-    * `client` - a copy of the W3CClient object
+    * `client` - a copy of the VISClient object
   * **`onError`** - function called when a connection error occurs.
-    * `client` - a copy of the W3CClient object
+    * `client` - a copy of the VISClient object
     * `error` - the error that occurred
   * **`onMessage`** - function that is called when any message is received. This provide a low-level access to the underlying data and is most likely not used in most cases.
-    * `client` - a copy of the W3CClient object
+    * `client` - a copy of the VISClient object
   * **`onDisconnect`** - function called when the client is disconnected.  This function will be passed:
-    * `client` - a copy of the W3CClient object
+    * `client` - a copy of the VISClient object
 
 ### Functions
 
@@ -57,7 +57,7 @@ Many of the functions listed below require a `path` string to be passed that ide
 * **`connect(callback)`** - Initializes the connection with the server.
   * `callback` - A function called when the operation is completed
     * `error` - if an error occurred, it is passed here, otherwise `null`
-    * `client` - a copy of the W3CClient object
+    * `client` - a copy of the VISClient object
 * **`authenticate(token, callback)`** - Add the provided token to the authorization set for this connection
   * `token` - token provided by authorization authority
   * `callback` - A function called when the operation is completed
@@ -85,7 +85,7 @@ Many of the functions listed below require a `path` string to be passed that ide
     * `onValue` - function called each time a value for that subscription is received by the client.  This function will be passed:
       * `value` - the value for the subscribed path
       * `subscription` - a copy of the Subscription object
-      * `client` - a copy of the W3CClient object
+      * `client` - a copy of the VISClient object
   * `callback` - A function called when the subscription has been created
     * `error` - if an error occurred, it is passed here, otherwise `null`
     * `subscription` - the Subscription object representing the result of the call (see Subscription below)
@@ -100,7 +100,7 @@ Many of the functions listed below require a `path` string to be passed that ide
 #### Example
 
 ```javascript
-const client = new W3CClient({
+const client = new VISClient({
   host: 'vehicle-server.local',
   protocol: 'ws',
   port: 3241,
@@ -111,7 +111,7 @@ const client = new W3CClient({
 });
 
 client.onConnect = (_client) => {
-  console.log(`Connected to ${_client.protocl}://${_client.host}:${_client.port}`);
+  console.log(`Connected to ${_client.protocol}://${_client.host}:${_client.port}`);
   _client.authenticate(/* TOKEN */, (err) => {
     if(err) {
       console.err('Could not authenticate with provided token.  Disconnecting...');
@@ -133,10 +133,10 @@ client.connect((err)=> {
 `Subscription` Object
 ---------------------
 
-The Subscription object is not created directly, but is returned as part of the `W3CClient#subscribe()` function discussed above.  Once created the object can be used to access the original options and to pass to the `W3CClient#unsubscribe()` function.  The Subscription object does not expose any functions directly, but contains the following properties:
+The Subscription object is not created directly, but is returned as part of the `VISClient#subscribe()` function discussed above.  Once created the object can be used to access the original options and to pass to the `VISClient#unsubscribe()` function.  The Subscription object does not expose any functions directly, but contains the following properties:
 
 * `path` - the path String used when creating the Subscription
-* `options` - object containing the options passed to the `W3CClient#subscribe()` function
+* `options` - object containing the options passed to the `VISClient#subscribe()` function
   * `interval`
   * `onChange`
   * `filter`
@@ -147,7 +147,7 @@ Subscriptions are immutable once created.
 ### Example
 
 ```javascript
-const client = new W3CClient({ host: 'vehicle-server.local' });
+const client = new VISClient({ host: 'vehicle-server.local' });
 
 client.onConnect = () => {
   const subOptions = {
@@ -181,7 +181,7 @@ client.connect();
 `VSS` Object
 ------------
 
-The VSS object returned by the `W3CClient#getVSS()` function above should provide APIs sufficient to fully traverse the VSS tree and determine what signals are available at the current permission level. Traversing the VSS tree can be accomplished using any of a number of query languages (i.e. CSS path selectors, XPath, etc.); CSS-based querying is shown in the functions below, but additional query languages may be added in the future.
+The VSS object returned by the `VISClient#getVSS()` function above should provide APIs sufficient to fully traverse the VSS tree and determine what signals are available at the current permission level. Traversing the VSS tree can be accomplished using any of a number of query languages (i.e. CSS path selectors, XPath, etc.); CSS-based querying is shown in the functions below, but additional query languages may be added in the future.
 
 * **`pathsByCSS(cssSelector)`** - Returns array of paths that match the given selector.
 * **`pathExistsByCSS(cssSelector)`** - Returns a boolean as to whether or not there exist any path that matches the given selector.
@@ -212,10 +212,10 @@ const openWindow = (_client) => {
   });
 }
 
-const client = new W3CClient({ 
+const client = new VISClient({ 
   host: 'vehicle-server.local',
   authenticationTokens: [/* TOKEN */],
-  onConnect: openAllWindows
+  onConnect: openWindow
 });
 
 client.connect();
