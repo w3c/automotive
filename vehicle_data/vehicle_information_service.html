@@ -815,20 +815,48 @@
       };
       </pre>
 
-    <p>The following data flow example shows a request for the signal structure within the Signal.Body branch containing signals related to the vehicle body.</p>
+    <p>The following data flow example shows a request for the signal structure within the Signal.Drivetrain.InternalCombustionEngine.RPM
+	    branch containing the vehicle RPM signal. A leaf node has been chosen in this example for brevity, however entire VSS
+	    branches can also be requested using the getVSS interface.</p>
 
     <pre class="highlight hljs javascript">
-	client -> {
-		"action": "getVSS",
-		"path": "Signal.Body",
-		"requestId": "3874"
-	}
-	receive <- {
-		"action": "getVSS",
-		"requestId": "3874",
-		"vss": { }
-	}
-	</pre>
+  client -> {
+    "action": "getVSS",
+    "path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
+    "requestId": "3874"
+  }
+  receive <- {
+    "action": "getVSS",
+    "requestId": "3874",
+    "vss": { "Signal": {
+        "description": "All signals that can dynamically be updated by the vehicle",
+        "type": "branch",
+        "children": {
+          "Drivetrain": {
+            "description": "Drivetrain data for internal combustion engines, transmissions, electric motors, etc.",
+            "type": "branch",
+            "children": {
+              "InternalCombustionEngine": {
+                "description": "Engine-specific data, stopping at the bell housing.",
+                "type": "branch",
+                "children": {
+                  "RPM": {
+                    "description": "Engine speed measured as rotations per minute.",
+                    "min": 0,
+                    "max": 20000,
+                    "type": "UInt16",
+                    "id": 54,
+                    "unit": "rpm"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  </pre>
 
 
 	<h2>Get</h2>
