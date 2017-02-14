@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Vehicle Signal Client Specification</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c-common' class='remove'></script>
+    <script class="remove">
+      var respecConfig = {
+          specStatus: "ED",
+          shortName: "vehicle-signal-client",
+          editors: [{
+            name: "Powell Kinney", company: "Vinli",
+            url: "mailto:powell@vin.li",
+	          companyURL: "https://www.vin.li/",
+	          w3cid: 83094
+          }],
+          edDraftURI: "https://w3c.github.io/automotive/vehicle_signal_client/vehicle_signal_client.html",
+          wg: "Automotive Working Group",
+          otherLinks: [{
+            key: 'Repository and Participation',
+            data: [
+                {
+                  value: 'We are on github.',
+                  href: 'https://github.com/w3c/automotive/'
+                }, {
+                  value: 'File a bug/issue.',
+                  href: 'https://github.com/w3c/automotive/issues'
+                }, {
+                  value: 'Commit history.',
+                  href: 'https://github.com/w3c/automotive/commits'
+                }, {
+                  value: 'Mailing list archive.',
+                  href: 'https://lists.w3.org/Archives/Public/public-automotive/'
+                }
+             ]
+          }],
+
+          wgURI: "https://www.w3.org/auto/wg/",
+          wgPublicList: "public-automotive",
+          wgPatentURI: "https://www.w3.org/2004/01/pp-impl/76043/status",
+	      };
+    </script>
+    <style>
+        table.parameters, table.exceptions {
+            border-spacing: 0;
+            border-collapse:    collapse;
+            margin: 0.5em 0;
+            width: 100%;
+        }
+        table.parameters { border-bottom:  1px solid #90b8de; }
+        table.exceptions { border-bottom:  1px solid #deb890; }
+
+        .parameters th, .exceptions th {
+            color: inherit;
+            padding: 3px 5px;
+            text-align: left;
+            font-weight: normal;
+        }
+        .parameters th { color: #fff; background: #005a9c; }
+        .exceptions th { background: #deb890; }
+
+        .parameters td, .exceptions td {
+            padding:    3px 10px;
+            border-top: 1px solid #ddd;
+            vertical-align: top;
+        }
+
+        .parameters tr:first-child td, .exceptions tr:first-child td {
+            border-top: none;
+        }
+
+        .parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {
+            width:  100px;
+        }
+
+        .parameters td.prmType {
+            width:  120px;
+        }
+
+        table.exceptions table {
+            border-spacing: 0;
+            border-collapse:    collapse;
+            width:  100%;
+        }
+    </style>
+  </head>
+
+  <body>
+    <!-- Abstract -->
+    <section id="abstract">
+	<p>This specification defines the application interface provided by a JavaScript client library designd to interface with a VISS server.</p>
+	<p>The purpose of the specification is to promote a client implementation with a standard API that enables application development in a consistent manner across participating automotive manufacturers.</p>
+	  </section>
+
+    <!-- Status of this document -->
+    <section id="sotd">
+    </section>
+
+    <!-- Introduction -->
+    <section>
+      <h2>Introduction</h2>
+
+      <p>The following documents the specification required for a JavaScript client library designed to interface with a VISS server. This library is responsible for the following:</p>
+
+      <ul>
+        <li>Connection lifecycle (open, reconnect, failover, closure)</li>
+        <li>Authentication token transmission (not retrieval)</li>
+        <li>Request lifecycle</li>
+        <li>Subscription lifecycle</li>
+        <li>VSS tree discovery and traversal</li>
+      </ul>
+
+      <p>In general, the client should strive for the following goals:</p>
+
+      <ol>
+        <li>Provide a level abstraction exposing all functionality of the underlying server.</li>
+        <li>Provide an API that would be familiar to JavaScript developers including following best-practices when dealing with asynchronous operations.</li>
+        <li>Exhibit good behavior with regard to socket allocation.</li>
+        <li>Provide clear feedback on errors, especially those related to security credentials.</li>
+      </ol>
+    </section>
+
+      <!-- Conformance -->
+    <section id="conformance">
+      <h1>TODO</h1>
+	    <p>This specification defines conformance criteria that apply to a single product: specifically the 'in-vehicle' WebSocket <dfn>Vehicle Information Service</dfn> that implements the interfaces, semantics and behaviour defined in this document. For simplicity, this usually is referred to as the 'WebSocket Server' or just 'the server'</p>
+    </section>
+
+      <!-- Terminology -->
+    <section id="terminology">
+      <h2>Terminology</h2>
+      <p>The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API (see <a href="https://www.w3.org/TR/2011/WD-websockets-20110929">here</a>) and the WebSocket Protocol (see <a href="https://tools.ietf.org/html/rfc6455">RFC6455</a>).</p>
+    </section>
+
+    <!-- Table of Figures -->
+    <section id="tof"></section>
+
+    <!-- Architecture -->
+    <section id="architecture" class="informative">
+    </section>
+
+    <!-- JavaScript Interface -->
+    <section id="w3cclient-object">
+      <h2><code>W3CClient</code> Object</h2>
+      <h3>Initializing a Client</h3>
+
+      <p>The <code>W3CClient</code> class is provided by the client library and a new client object can be created using the exported constructor:</p>
+
+      <pre class="example">
+      const client = new W3CClient({ /* options */ });
+      </pre>
+
+      <h3>Client Options</h3>
+
+      <ul>
+        <li>Connection Properties - These are set at initialization only and cannot be changed after a client is connected.
+          <table class="parameters">
+            <tr>
+              <th>Parameter</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td><dfn>host</dfn></td>
+              <td><em>(required)</em></td>
+              <td>hostname of the server</td>
+            </tr>
+            <tr>
+              <td><dfn>protocol</dfn></td>
+              <td><code>'wss'</code></td>
+              <td>protocol for the WebSocket connection.  Options are generally <code>'ws'</code> for connections not going through an SSL-connection and <code>'wss'</code> for those that do.  It is strongly recommended to always use <code>'wss'</code></td>
+            </tr>
+            <tr>
+              <td><dfn>port</dfn></td>
+              <td><code>443</code></td>
+              <td>TCP port for the WebSocket connection.</td>
+            </tr>
+            <tr>
+              <td><dfn>authenticationTokens</dfn></td>
+              <td><code>[]</code></td>
+              <td>an inital set of authentication tokens to pass on connect.  These will be sent and must be validated and accepted by the server before <code>onConnect</code> is called.  Any authentication errors will result in an error being passed to the <code>W3CClient#connect</code> callback function.</td>
+            </tr>
+          </table>
+        </li>
+        <li>Handler Properties - These define the functions called throughout the lifecycle of the client.  These can be set or changed after initializtion and connection.
+          <table class="parameters">
+            <tr>
+              <th>Parameter</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td><dfn>onConnect</dfn></td>
+              <td>
+                function called when the client is connected.  This function will be passed:
+                <ul>
+                  <li><code>client</code> - a copy of the W3CClient object</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td><dfn>onMessage</dfn></td>
+              <td>
+                function that is called when any message is received. This provide a low-level access to the underlying data and is most likely not used in most cases.
+                <ul>
+                  <li><code>client</code> - a copy of the W3CClient object</li>
+                  <li><code>message</code> - the message body that was received</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td><dfn>onError</dfn></td>
+              <td>
+                function called when a connection error occurs.
+                <ul>
+                  <li><code>client</code> - a copy of the W3CClient object</li>
+                  <li><code>error</code> - the error that occurred</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td><dfn>onDisconnect</dfn></td>
+              <td>
+                function called when the client is disconnected.  This function will be passed
+                <ul>
+                  <li><code>client</code> - a copy of the W3CClient object</li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+        </li>
+      </ul>
+
+      <h3>Functions</h3>
+
+      <p>Once created, a client provides several functions for interacting with the server.</p>
+
+      <p>Many of the functions listed below require a `path` string to be passed that identifies the portion of the VSS that is being referenced. See VSS below for how to generate this string based on traversing the VSS tree.</p>
+
+      <table class="parameters">
+        <tr>
+          <th>Function</th>
+          <th>Description</th>
+          <th>Paramters</th>
+        </tr>
+        <tr>
+          <td><dfn>connect(callback)</dfn></td>
+          <td>Initializes the connection with the server.</td>
+          <td>
+            <ul>
+              <li>
+                <code>callback</code> - A function called when the operation is completed
+                <ul>
+                  <li><code>error</code> - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>client</code> - a copy of the W3CClient object</li>
+                </ul>
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><dfn>authenticate(token, callback)</dfn></td>
+          <td>Add the provided token to the authorization set for this connection</td>
+          <td>
+            <ul>
+              <li><code>token</code> - token provided by authorization authority</li>
+              <li>
+                <code>callback</code> - A function called when the operation is completed
+                <ul>
+                  <li><code>error</code> - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>value</code> - the value received by the server</li>
+                </ul>
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><dfn>getVSS(callback)</dfn></td>
+          <td>Requests the VSS from the server and calls the callback function with a VSS object as described below. The client caches this value and only retrieves a new version from the server if the `authenticate()` function has been called since the last cache was set.</td>
+          <td>
+            <ul>
+              <li>
+                <code>callback</code> - A function called when the operation is completed
+                <ul>
+                  <li><code>error</code> - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>vss</code> - A VSS object built from the server response</li>
+                </ul>
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><dfn>get(path, callback)</dfn></td>
+          <td>Receives a single value from the server.</td>
+          <td>
+            <ul>
+              <li><code>path</code> - a String representing a location within the VSS</li>
+              <li>
+                <code>callback</code> - A function called when the operation is completed
+                <ul>
+                  <li><code>error</code> - if an error occurred, it is passed here, otherwise `null`</li>
+                <ul>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><dfn>set(path, value, callback)</dfn></td>
+          <td>Sends a single value to the server.</td>
+          <td>
+            <ul>
+              <li><code>path</code> - a String representing a location within the VSS</li>
+              <li><code>value</code> - the value to pass to the server.  This must match the type as specified in the VSS.</li>
+              <li>
+                <code>callback</code> - A function called when the operation is completed
+                <ul>
+                  <li><code>error</code> - if an error occurred, it is passed here, otherwise `null`</li>
+                </ul>
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><dfn>subscribe(path, options, callback)</dfn></td>
+          <td>subscribes to the given path with the options provided and returns a Subscription object as defined below.</td>
+          <td>
+            <ul>
+              <li><code>path</code> - a String representing a location within the VSS</li>
+              <li><code>options</code> - object containing additional options for this subscription
+                <ul>
+                  <li><code>interval</code> - If specified, the server will send value updates for the provided path at the given interval, regardless of whether that value has changed since the last value. Server-side implementation may limit this interval and should return an error if the requested interval in not acceptable.  If not specified and the `onChange` parameter is not set, then a default interval as defined by the server will be used.</li>
+                  <li><code>onChange</code> - If set to `true`, any change in the value of the signal will result in a message and a call to `onValue`. If not specified, either the `interval` value or a default interval as defined by the server will be used.</li>
+                  <li><code>filter</code> - applies a server-side filter to data sent. The structure of this option is further defined in the VISS spec.</li>
+                  <li>
+                    <code>onValue</code> - function called each time a value for that subscription is received by the client.  This function will be passed:
+                    <ul>
+                      <li><code>value</code> - the value for the subscribed path</li>
+                      <li><code>subscription</code> - a copy of the Subscription object</li>
+                      <li><code>client</code> - a copy of the W3CClient object</li>
+                    </ul>
+                  </li>
+                </ul>
+              <li>
+                <code>callback</code> - A function called when the subscription has been created
+                <ul>
+                  <li><code>error</code> - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>subscription</code> - the Subscription object representing the result of the call (see Subscription below)</li>
+                </ul>
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><dfn>unsubscribe(subscription, callback)</dfn></td>
+          <td>Unsubscribe from the subscription passed.</td>
+          <td>
+            <ul>
+              <li><code>subscription</code> - the subscription object originally returned from the `subscribe()` function
+              <li>
+                <code>callback</code> - A function called when the operation is completed
+                <ul>
+                  <li><code>error</code> - if an error occurred, it is passed here, otherwise `null`</li>
+                </ul>
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><dfn>disconnect(callback)</dfn></td>
+          <td>Closes the connection.  The same client can be used again by calling the `connect()` function, but subscriptions, authorization, and other state will not persist after a disconnection.</td>
+          <td>
+            <ul>
+              <li>
+                <code>callback</code> - A function called when the operation is completed
+                <ul>
+                  <li><code>error</code> - if an error occurred, it is passed here, otherwise `null`</li>
+                </ul>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+
+
+      <h3>Example</h3>
+
+      <pre class="example">
+        const client = new W3CClient({
+          host: 'vehicle-server.local',
+          protocol: 'ws',
+          port: 3241,
+
+          onError: (client, error) => {
+            console.err(`Error with client in ${client.state}: ${error}`);
+          }
+        });
+
+        client.onConnect = (_client) => {
+          console.log(`Connected to ${_client.protocl}://${_client.host}:${_client.port}`);
+          _client.authenticate(/* TOKEN */, (err) => {
+            if(err) {
+              console.err('Could not authenticate with provided token.  Disconnecting...');
+              _client.disconnect();
+              return;
+            }
+            /* do other things here */
+          })
+        };
+
+        client.connect((err) => {
+          if (err) {
+            console.err(`Error while connecting: ${err}`);
+            return;
+          }
+        });
+      </pre>
+    </section>
+
+    <section id="subscription-object">
+      <h2><code>Subscription</code> Object</h2>
+
+      <p>The Subscription object is not created directly, but is returned as part of the <code>W3CClient#subscribe()</code> function discussed above.  Once created the object can be used to access the original options and to pass to the `W3CClient#unsubscribe()` function.  The Subscription object does not expose any functions directly, but contains the following properties:</p>
+
+      <table class="parameters">
+        <tr>
+          <th>Parameter</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td><dfn>path</dfn></td>
+          <td>the path String used when creating the Subscription</td>
+        </tr>
+        <tr>
+          <td><dfn>options</dfn></td>
+          <td>
+            object containing the options passed to the `W3CClient#subscribe()` function
+            <ul>
+              <li><code>interval</code></li>
+              <li><code>onChange</code></li>
+              <li><code>filter</code></li>
+              <li><code>onValue</code></li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+
+      <p>Subscriptions are immutable once created.</p>
+
+      <h3>Example</h3>
+
+      <pre class="example">
+        const client = new W3CClient({ host: 'vehicle-server.local' });
+
+        client.onConnect = () => {
+          const subOptions = {
+            onChange: true,
+            onValue: (value, sub) => {
+              console.log(`Got new value for ${sub.path}: ${value}`);
+            },
+            onExpire: (sub) => {
+              console.log(`Authorization expired for ${sub.path}`);
+            }
+          };
+
+          client.subscribe('body.mirrors.left', subOptions, (err1, speedSub) => {
+            if (err1) {
+              console.err(`Error while creating subscription: ${err1}`);
+              return
+            }
+
+            /* ... after some time or some event, unsubscribe from the subscription: */
+            client.unsubscribe(speedSub, (err2) => {
+              if (err2) {
+                console.err(`Error while unsubscribing: ${err2}`);
+              }
+            });
+          });
+        };
+
+        client.connect();
+      </pre>
+    </section>
+
+    <section id='vss-object'>
+      <h2><code>VSS</code> Object</h2>
+
+      <p>The VSS object returned by the <code>W3CClient#getVSS()</code> function above should provide APIs sufficient to fully traverse the VSS tree and determine what signals are available at the current permission level. Traversing the VSS tree can be accomplished using any of a number of query languages (i.e. CSS path selectors, XPath, etc.); CSS-based querying is shown in the functions below, but additional query languages may be added in the future.</p>
+
+      <table class="parameters">
+        <tr>
+          <th>Function</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td><dfn>pathsByCSS(cssSelector)</dfn></td>
+          <td>Returns array of paths that match the given selector.</td>
+        </tr>
+        <tr>
+          <td><dfn>pathExistsByCSS(cssSelector)</dfn></td>
+          <td>Returns a boolean as to whether or not there exist any path that matches the given selector.</td>
+        </tr>
+        <tr>
+          <td><dfn>canGet(path)</dfn></td>
+          <td>Returns a boolean as to whether or not the current socket (given the tokens provided up to this point) has permission to read the given path.</td>
+        </tr>
+        <tr>
+          <td><dfn>canSet(path)</dfn></td>
+          <td>Returns a boolean as to whether or not the current socket (given the tokens provided up to this point) has permission to set the given path.</td>
+        </tr>
+        <tr>
+          <td><dfn>at([path])</dfn></td>
+          <td>Returns the raw VSS tree object rooted at path (if provided), otherwise returns the entire tree.</td>
+        </tr>
+      </table>
+
+      <h3>Example</h3>
+
+      <pre class="example">
+        const openWindow = (_client) => {
+          _client.getVSS((err, vss) => {
+            const paths = vss.pathsByCSS('Row1 Left Window > Position');
+            if (!paths.length) {
+              console.err('Could not find front-left window in VSS');
+              return;
+            }
+
+            if (vss.canSet(paths[0])) {
+              _client.set(paths[0], 0, (err) => {
+                if (!err) {
+                  console.log(`Set window ${paths[0]} to open`);
+                }
+              });
+            } else {
+              console.err('No authorized to open front-left window');
+            }
+          });
+        }
+
+        const client = new W3CClient({
+          host: 'vehicle-server.local',
+          authenticationTokens: [/* TOKEN */],
+          onConnect: openAllWindows
+        });
+
+        client.connect();
+      </pre>
+    </section>
+  </body>
+</html>
