@@ -1023,58 +1023,58 @@
 
 	<p>Successfully set a signal.</p>
 	<pre class="highlight hljs javascript">
-	client -> {
-		"action": "set",
-		"path": "Signal.Cabin.Door.*.IsLocked",
-		"value":{ [ {"Row1.Right.IsLocked" : true },
-		            {"Row1.Left.IsLocked" : true },
-				    {"Row2.Right.IsLocked" : true },
-				    {"Row2.Left.IsLocked" : true } ] },
-    "requestId": "5689"
-		}
+    client -> {
+      "action": "set",
+      "path": "Signal.Cabin.Door.*.IsLocked",
+      "value": [ {"Row1.Right.IsLocked": true },
+                 {"Row1.Left.IsLocked": true },
+                 {"Row2.Right.IsLocked": true },
+                 {"Row2.Left.IsLocked": true } ],
+      "requestId": "5689"
+    }
 
-	receive <- {
-		"action": "set",
-    "requestId": "5689",
-		"timestamp": &lt;DOMTimeStamp&gt;
-	}
+    receive <- {
+        "action": "set",
+        "requestId": "5689",
+        "timestamp": &lt;DOMTimeStamp&gt;
+    }
 	</pre>
 	<p>Unsuccessful set. The value cannot be set.</p>
 	<pre class="highlight hljs javascript">
-	client -> {
-		"action": "set",
-		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
-		"value": 2000,
-    "requestId": "8912"
-	}
+    client -> {
+        "action": "set",
+        "path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
+        "value": 2000,
+        "requestId": "8912"
+    }
 
-	receive <- {
-		"action": "set",
-    "requestId": "8912",
-		"error": { "number": 401,
-			"reason": "read_only",
-			"message": "The desired signal cannot be set since it is a read only signal"},
-    "timestamp": &lt;DOMTimeStamp&gt;
-		}
+    receive <- {
+        "action": "set",
+        "requestId": "8912",
+        "error": { "number": 401,
+        "reason": "read_only",
+        "message": "The desired signal cannot be set since it is a read only signal"},
+        "timestamp": &lt;DOMTimeStamp&gt;
+    }
 	</pre>
 	<p>Unsuccessful set. The value does not exist in the specified path.</p>
 	<pre class="highlight hljs javascript">
-	client -> {
-		"action": "set",
-		"path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
-		"value": { "locked" : true }
+    client -> {
+    "action": "set",
+    "path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
+    "value": { "locked" : true }
     "requestId": "2311"
-	}
+    }
 
-	receive <- {
-		"action": "set",
-    "requestId": "2311",
-		"error": { "number": 400,
-			"reason": "bad_request" ,
-			"message": "The server is unable to fulfil the client
-					request because the request is malformed."},
-      "timestamp": &lt;DOMTimeStamp&gt;
-		}
+    receive <- {
+        "action": "set",
+        "requestId": "2311",
+        "error": { "number": 400,
+        "reason": "bad_request" ,
+        "message": "The server is unable to fulfil the client
+                    request because the request is malformed."},
+        "timestamp": &lt;DOMTimeStamp&gt;
+     }
 	</pre>
 	<h2>Subscribe</h2>
 	<p>Vehicle data subscriptions provide data to the client whenever the signal changes on the server,
