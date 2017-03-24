@@ -580,7 +580,8 @@
 	</table>
 
 	<p>The request and response parameters contain a limited number of attributes, defined in the table below.</p>
-
+  	<h4></h4><h4></h4>
+  	<h4>Web IDL Definitions</h4>
 	<table class="parameters">
 	  <tr>
 	    <th>Attribute</th>
@@ -645,7 +646,100 @@
 	    <td> Returns an error code, reason and message.</td>
 	  </tr>
 	</table>
-
+<h4>JSON Schema Definitions</h4>
+<p>The definitions within this section describe the datatypes referenced within the JSON Schema VISS interfaces.</p>
+<pre>
+{
+    "definitions": {
+        "action": {
+            "enum": [ "authorize", "getVSS", "get", "set", "subscribe", "unsubscribe", "unsubscribeAll"],
+            "description": "The type of action requested by the client",
+        },
+        "requestId": {
+            "description": "Returned by the server in the response and used by the client to 
+              link the request and response messages.",
+            "type": "string"
+        },
+        "path": {
+            "description": "The path to the desired vehicle signal(s), as defined by the Vehicle 
+              Signal Specification (VSS).",
+            "type": "string"
+        },
+        "value": {
+            "description": "The path to the desired vehicle signal(s), as defined by the Vehicle 
+              Signal Specification (VSS).",
+            "type": "string"
+        },
+        "timestamp": {
+            "description": "The Coordinated Universal Time (UTC) time that the server returned 
+              the response (expressed as number of milliseconds).",
+            "type": "integer"
+        },
+        "filters": {
+            "description": "May be specified in order to throttle the demands of subscriptions 
+              on the server.",
+            "type": ["object", "null"],
+            "properties": {
+                "interval": {
+                    "description": "The subscription will provide notifications with a period 
+                      equal to this field's value.",
+                    "type": "integer"                   
+                },
+                "range": {
+                    "description": "The subscription will provide notifications only when within 
+                      a given range.",
+                    "type": "object",
+                    "properties":{
+                      "below": {
+                        "description": "The subscription will provide notifications when the value 
+                          is less or equal to this field's value.",
+                        "type": "integer"  
+                      },
+                      "above": {
+                        "description": "The subscription will provide notifications when the value 
+                          is greater than or equal to this field's value.",
+                        "type": "integer"  
+                      },
+                    }                   
+                },
+                "minChange": {
+                    "description": "The subscription will provide notifications when a value has 
+                      changed by the amount specified in this field.",
+                    "type": "integer"                   
+                }
+            }
+        },
+        "subscriptionId":{
+            "description": "Integer handle value which is used to uniquely identify the 
+              subscription.",
+            "type": "string"
+        },
+        "vss":{
+            "description": "Metadata describing the potentially available VSS tree.",
+            "type": "object"
+        },
+        "error": {
+            "description": "Server response for error cases",
+            "type": "object",
+            "properties": {
+                "number": {
+                    "description": "HTTP Status Code Number",
+                    "type": "integer"                   
+                },
+                "reason": {
+                    "description": "Pre-defined string value that can be used to distinguish 
+                      between errors that have the same code",
+                    "type": "string"                    
+                },
+                "message": {
+                    "description": "Message text describing the cause in more detail",
+                    "type": "string"                    
+                },
+            }   
+        }
+    }
+}
+</pre>
 
 	<h4>Action</h4>
 
@@ -675,6 +769,7 @@
  	<p>To enable access to signals and data attributes that are under access control, the client MAY optionally pass a message
  	with an 'authorize' action to the server. The structure of the message and the associated success and error responses
          are defined below.</p>
+      <h4>WebIDL</h4>
       <pre class="idl">
       interface authorizeRequest
       {
@@ -697,7 +792,87 @@
         attribute DOMString requestId;
       };
       </pre>
-
+<h4>JSON Schema</h4>
+<p>The schema for authoriseRequest is:</p>
+<pre>
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Authorize Request",
+    "description": "Enables the user to set access controls for the vehicle signals",
+    "type": "object",
+    "required": ["action", "tokens", "requestId"],
+    "properties": {
+        "action": {
+            "enum": [ "authorize" ],
+            "description": "The identifier for the authorize request",
+        },
+        "tokens": {
+            "description": "Extensible key-value pair token mechanism used for access control",
+            "type": "object",
+            "properties": {
+                "authorization": {
+                    "description": "The user token, for the user that the client is making 
+                      requests on behalf of",
+                    "type": "string"
+                },
+                "www-vehicle-device": {
+                    "description": "The device token for the originating device that is making 
+                      the request to the server",
+                    "type": "string"
+                }
+            }
+        },
+        "requestId": {
+            "$ref": "#/definitions/requestId"
+        }
+    }
+}
+</pre>
+<p>The schema for authoriseSuccessResponse is:</p>
+<pre>    
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Authorize Success Response",
+    "description": "The response sent from the server upon a successful authorization request",
+    "type": "object",
+    "required": ["action", "TTL", "requestId"],
+    "properties": {
+        "action": {
+            "enum": [ "authorize" ],
+            "description": "The identifier for the authorize request",
+        },
+        "TTL": {
+            "description": "The time to live of the authorization token",
+            "type": "integer"
+        },
+        "requestId": {
+            "$ref": "#/definitions/requestId"
+        }
+    }
+}
+</pre>
+<p>The schema for authoriseErrorResponse is:</p>
+<pre>  
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Authorize Error Response",
+    "description": "The response sent from the server upon an unsuccessful authorization request",
+    "type": "object",
+    "required": ["action", "error", "requestId"],
+    "properties": {
+        "action": {
+            "enum": [ "authorize" ],
+            "description": "The identifier for the authorize request",
+        },
+        "error": {
+            "$ref": "#/definitions/error"
+        },
+        "requestId": {
+            "$ref": "#/definitions/requestId"
+        }
+    }
+}
+</pre>
     <p>The server SHALL provide support the following security token types and names:</p>
 
     <table class="parameters">
@@ -794,7 +969,7 @@
 
         <p>If more than one 'getVSS' call is made with the same 'vssRequest' message content but at different times, the metadata
         in the 'vssSuccessResponse' SHALL be the same provided the access-control state of the WebSocket channel has not changed.</p>
-
+      <h4>Web IDL</h4>
       <pre class="idl">
       interface vssRequest {
         attribute Action action;
@@ -814,6 +989,75 @@
         attribute Error error;
       };
       </pre>
+<h4>JSON Schema</h4>
+<p>The schema for vssRequest is:</p>
+<pre>
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "VSS Request",
+    "description": "Request metadata describing the potentially available VSS tree",
+    "type": "object",
+    "required": ["action", "path", "requestId"],
+    "properties": {
+        "action": {
+            "enum": [ "getVSS" ],
+            "description": "The identifier for the getVSS request",
+        },
+        "path": {
+            "$ref": "#/definitions/path",
+            "type": ["string", "null"]
+        },
+        "requestId": {
+            "$ref": "#/definitions/requestId"
+        }
+    }
+}
+</pre>
+<p>The schema for vssSuccessResponse is:</p>
+<pre>
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "VSS Success Response",
+    "description": "The response sent from the server upon a successful getVSS request",
+    "type": "object",
+    "required": ["action", "requestId", "vss"],
+    "properties": {
+        "action": {
+            "enum": [ "getVSS" ],
+            "description": "The identifier for the getVSS request",
+        },
+        "requestId": {
+            "$ref": "#/definitions/requestId"
+        },
+        "vss": {
+            "$ref": "#/definitions/vss"
+        }
+    }
+}
+</pre>
+<p>The schema for vssErrorResponse is:</p>
+<pre>
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "VSS Error Response",
+    "description": "The response sent from the server upon an unsuccessful getVSS request",
+    "type": "object",
+    "required": ["action", "requestId", "error", "timestamp"],
+    "properties": {
+        "action": {
+            "enum": [ "getVSS" ],
+            "description": "The identifier for the getVSS request",
+        },
+        "requestId": {
+            "$ref": "#/definitions/requestId"
+        },
+        "error": {
+            "$ref": "#/definitions/error"
+        }
+    }
+}
+</pre>
+      <h4>Examples</h4>
 
     <p>The following data flow example shows a request for the signal structure within the Signal.Drivetrain.InternalCombustionEngine.RPM
 	    branch containing the vehicle RPM signal. A leaf node has been chosen in this example for brevity, however entire VSS
@@ -864,7 +1108,7 @@
 	attributes. If the server is able to satisfy the request it SHALL return a 'getSuccessResponse' message. If the server
 	is unable to fulfil the request, e.g. because the client is not authorised to retrieve one or more of the signals,
 	then the server SHALL return a 'getErrorResponse'. The structure of these message objects is defined below:</p>
-
+      <h4>Web IDL</h4>
       <pre class="idl">
       interface getRequest
       {
@@ -889,7 +1133,82 @@
         attribute DOMTimeStamp timestamp;
       };
       </pre>
+<h4>JSON Schema</h4>
+<p>The schema for getRequest is:</p>
+<pre>
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Get Request",
+    "description": "Get the value of one or more vehicle signals and data attributes",
+    "type": "object",
+    "required": ["action", "path", "requestId"],
+    "properties": {
+        "action": {
+            "enum": [ "get" ],
+            "description": "The identifier for the get request",
+        },
+        "path": {
+            "$ref": "#/definitions/path"
+        },
+        "requestId": {
+            "$ref": "#/definitions/requestId"
+        }
+    }
+}
+</pre>
+<p>The schema for getSuccessResponse is:</p>
+<pre>
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Get Success Response",
+    "description": "The response sent from the server upon a successful get request",
+    "type": "object",
+    "required": ["action", "requestId", "value", "timestamp"],
+    "properties": {
+        "action": {
+            "enum": [ "get" ],
+            "description": "The identifier for the get request",
+        },
+        "requestId": {
+            "$ref": "#/definitions/requestId"
+        },
+        "value": {
+            "$ref": "#/definitions/value"
+        },
+        "timestamp": {
+            "$ref": "#/definitions/timestamp"
+        }
+    }
+}
+</pre>
+<p>The schema for getErrorResponse is:</p>
+<pre>
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Get Error Response",
+    "description": "The response sent from the server upon an unsuccessful get request",
+    "type": "object",
+    "required": ["action", "requestId", "error", "timestamp"],
+    "properties": {
+        "action": {
+            "enum": [ "get" ],
+            "description": "The identifier for the get request",
+        },
+        "requestId": {
+            "$ref": "#/definitions/requestId"
+        },
+        "error": {
+            "$ref": "#/definitions/error"
+        },
+        "timestamp": {
+            "$ref": "#/definitions/timestamp"
+        }
+    }
+}
 
+</pre>
+
+      <h4>Examples</h4>
       <p>It is important to note that all examples involving paths are illustrative. Valid path values and the signals and data
       attributes that correspond to a particular path are defined in the Vehicle Signal Specification.</p>
 
@@ -998,7 +1317,7 @@
 	a 'setRequest' message to the server. If the server is able to satisfy the request it SHALL return a 'setSuccessResponse'
 	message. If an error occurs e.g. because the client is not authorised to set the requested value, or the value is read-only,
 	the server SHALL return a 'setErrorResponse' message.<p>
-
+      <h4>Web IDL</h4>
       <pre class="idl">
       interface setRequest {
         attribute Action action;
@@ -1020,7 +1339,80 @@
         attribute DOMTimeStamp timestamp;
       };
       </pre>
-
+<h4>JSON Schema</h4>
+<p>The schema for setRequest is:</p>
+<pre>
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Set Request",
+    "description": "Enables the client to set a value once.",
+    "type": "object",
+    "required": ["action", "path", "value", "requestId"],
+    "properties": {
+        "action": {
+            "enum": [ "set" ],
+            "description": "The identifier for the set request",
+        },
+        "path": {
+            "$ref": "#/definitions/path"
+        },
+        "value": {
+            "$ref": "#/definitions/value"
+        },
+        "requestId": {
+            "$ref": "#/definitions/requestId"
+        }
+    }
+}
+</pre>
+<p>The schema for setSuccessResponse is:</p>
+<pre>
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Set Success Response",
+    "description": "The response sent from the server upon a successful set request",
+    "type": "object",
+    "required": ["action", "requestId", "timestamp"],
+    "properties": {
+        "action": {
+            "enum": [ "set" ],
+            "description": "The identifier for the set request",
+        },
+        "requestId": {
+            "$ref": "#/definitions/requestId"
+        },
+        "timestamp": {
+            "$ref": "#/definitions/timestamp"
+        }
+    }
+}
+</pre>
+<p>The schema for setErrorResponse is:</p>
+<pre>
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Set Error Response",
+    "description": "The response sent from the server upon an unsuccessful set request",
+    "type": "object",
+    "required": ["action", "requestId", "error", "timestamp"],
+    "properties": {
+        "action": {
+            "enum": [ "set" ],
+            "description": "The identifier for the set request",
+        },
+        "requestId": {
+            "$ref": "#/definitions/requestId"
+        },
+        "error": {
+            "$ref": "#/definitions/error"
+        },
+        "timestamp": {
+            "$ref": "#/definitions/timestamp"
+        }
+    }
+}
+</pre>
+<h4>Examples</h4>
 	<p>Successfully set a signal.</p>
 	<pre class="highlight hljs javascript">
     client -> {
@@ -1087,7 +1479,7 @@
 	the attributes that were passed to the server to make the
 	subscription and a 'subscriptionId' integer handle value which is used to
 	uniquely identify the subscription.</p>
-
+      <h4>Web IDL</h4>
       <pre class="idl">
 
       interface subscribeRequest {
@@ -1123,8 +1515,130 @@
         attribute DOMTimeStamp timestamp;
       };
       </pre>
+      <h4>JSON Schema</h4>
+ <p>The schema for subscribeRequest is:</p>
+<pre>
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Subscribe Request",
+    "description": "Allows the client to subscribe to time-varying signal notifications on the 
+      server.",
+    "type": "object",
+    "required": ["action", "path", "filters", "requestId"],
+    "properties": {
+        "action": {
+            "enum": [ "subscribe" ],
+            "description": "The identifier for the subscription request",
+        },
+        "path": {
+            "$ref": "#/definitions/path"
+        },
+        "filters": {
+            "$ref": "#/definitions/filters"
+        },
+        "requestId": {
+            "$ref": "#/definitions/requestId"
+        }
+    }
+}
+</pre>
+<p>The schema for subscribeSuccessResponse is:</p>
+<pre>
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Subscribe Success Response",
+    "description": "The response sent from the server upon a successful subscription request",
+    "type": "object",
+    "required": ["action", "requestId", "subscriptionId", "timestamp"],
+    "properties": {
+        "action": {
+            "enum": [ "subscribe" ],
+            "description": "The identifier for the subscription request",
+        },
+        "requestId": {
+            "$ref": "#/definitions/requestId"
+        },
+        "subscriptionId": {
+            "$ref": "#/definitions/subscriptionId"
+        },                
+        "timestamp": {
+            "$ref": "#/definitions/timestamp"
+        }
+    }
+}
+</pre>
+<p>The schema for subscribeErrorResponse is:</p>
+<pre>
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Subscribe Error Response",
+    "description": "The response sent from the server upon an unsuccessful subscribe request",
+    "type": "object",
+    "required": ["action", "requestId", "error", "timestamp"],
+    "properties": {
+        "action": {
+            "enum": [ "subscribe" ],
+            "description": "The identifier for the subscription request",
+        },
+        "requestId": {
+            "$ref": "#/definitions/requestId"
+        },
+        "error": {
+            "$ref": "#/definitions/error"
+        },
+        "timestamp": {
+            "$ref": "#/definitions/timestamp"
+        }
+    }
+}
+</pre>
+<p>The schema for subscriptionNotification is:</p>
+<pre>
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Subscription Notification",
+    "description": "The response sent from the server upon an unsuccessful subscribe request",
+    "type": "object",
+    "required": ["subscriptionId", "value", "timestamp"],
+    "properties": {
+        "subscriptionId": {
+            "$ref": "#/definitions/subscriptionId"
+        },
+        "value": {
+            "$ref": "#/definitions/value"
+        },
+        "timestamp": {
+            "$ref": "#/definitions/timestamp"
+        }
+    }
+}
+</pre>
+<p>The schema for subscriptionNotificationError is:</p>
+<pre>
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Subscription Notification Error",
+    "description": "Error message sent by the server when there is an error with an existing 
+      subscription",
+    "type": "object",
+    "required": ["subscriptionId", "error", "timestamp"],
+    "properties": {
+        "subscriptionId": {
+            "$ref": "#/definitions/subscriptionId"
+        },
+        "error": {
+            "$ref": "#/definitions/error"
+        },
+        "timestamp": {
+            "$ref": "#/definitions/timestamp"
+        }
+    }
+}
+</pre>
 
-  For example when client need to continuously receive "Signal.Drivetrain.Transmission.TripMeter" information from the server, it can use "subscribe" action with the target property like below.
+
+  <h4>Examples</h4>
+  <p>For example when client need to continuously receive "Signal.Drivetrain.Transmission.TripMeter" information from the server, it can use "subscribe" action with the target property like below.</p>
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "subscribe",
@@ -1218,7 +1732,7 @@
 	It therefore makes it more likely that the server remains responsive to future requests from the client.</p>
 
 	<p>The 'unsubscribe' message structures are defined below:</p>
-
+  <h4>Web IDL</h4>
       <pre class="idl">
       interface unsubscribeRequest {
         attribute Action action;
@@ -1241,6 +1755,88 @@
         attribute DOMTimeStamp timestamp;
       };
       </pre>
+      <h4>JSON Schema</h4>
+  <p>The schema for unsubscribeRequest is:</p>
+<pre>
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Unsubscribe Request",
+    "description": "Allows the client to unsubscribe to time-varying signal notifications on 
+      the server.",
+    "type": "object",
+    "required": ["action", "subscriptionId", "requestId"],
+    "properties": {
+        "action": {
+            "enum": [ "unsubscribe", "unsubscribeAll"],
+            "description": "The identifier for the unsubscribe request",
+        },
+        "subscriptionId": {
+            "$ref": "#/definitions/subscriptionId",
+            "type": ["string", "null"]
+        }, 
+        "requestId": {
+            "$ref": "#/definitions/requestId"
+        }
+    }
+}
+</pre>
+<p>The schema for unsubscribeSuccessResponse is:</p>
+<pre>
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Unsubscribe Success Response",
+    "description": "The response sent from the server upon a successful subscription request",
+    "type": "object",
+    "required": ["action", "subscriptionId", "requestId", "timestamp"],
+    "properties": {
+        "action": {
+            "enum": [ "unsubscribe", "unsubscribeAll"],
+            "description": "The identifier for the unsubscribe request",
+        },
+        "subscriptionId": {
+            "$ref": "#/definitions/subscriptionId",
+            "type": ["string", "null"]
+        }, 
+        "requestId": {
+            "$ref": "#/definitions/requestId"
+        },
+        "timestamp": {
+            "$ref": "#/definitions/timestamp"
+        }
+    }
+}
+</pre>
+<p>The schema for unsubscribeErrorResponse is:</p>
+<pre>
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Unsubscribe Error Response",
+    "description": "The response sent from the server upon an unsuccessful subscribe request",
+    "type": "object",
+    "required": ["action", "subscriptionId", "requestId", "error", "timestamp"],
+    "properties": {
+        "action": {
+            "enum": [ "unsubscribe", "unsubscribeAll"],
+            "description": "The identifier for the subscription request",
+        },
+        "subscriptionId": {
+            "$ref": "#/definitions/subscriptionId",
+            "type": ["string", "null"]
+        }, 
+        "requestId": {
+            "$ref": "#/definitions/requestId"
+        },
+        "error": {
+            "$ref": "#/definitions/error"
+        },
+        "timestamp": {
+            "$ref": "#/definitions/timestamp"
+        }
+    }
+}
+</pre>
+
+      <h4>Examples</h4>
 	Unsubscribe from a single subscription.
 	<pre class="highlight hljs javascript">
 	client -> {
@@ -1309,37 +1905,43 @@
     <section>
       <h3>Server Side Filtering</h3>
       <p>'<a>Filters</a>' may be specified to enable Server side filtering
-      to be used in order to throttle the demands of subscriptions on
+      to be used to throttle the demands of subscriptions on
       the server. This may enable the reduction of traffic if the
       developer has received a 429 - Too Many Requests error
-      message. This can be implementation dependent allowing a number
-      of potential filtering mechanisms, such as ranges, intervals and
+      message. Server side filters are extensible, allowing for further filtering mechanisms. Support 
+      is currently provisioned for a specific range of values, time intervals and
       minimum changes. This can be implemented using the "filters"
-      option.</p>
+      option in the subscribeRequest interface.</p>
 
 	<p>Filters can only be applied for nodes in the VSS tree, not entire branches.
-	For example, a filter cannot be set on engine.*, however it can be set on engine.rpm.</p>
+	For example, a filter cannot be set on Signal.Drivetrain.InternalCombustionEngine.*, 
+	however it can be set on Signal.Drivetrain.InternalCombustionEngine.RPM.</p>
 
-      <p>The subscription currently defaults to sending values to the
-      client only onchange, however this may cause unnecessary
-      processing demands on the vehicle server. A filter object can be included in the subscription request:</p>
-
-      <pre class="highlight hljs javascript">
-        { "action": "subscribe", "path": "&lt;any_path&gt;",
-        	"filters": "{ &lt;insert_custom_tags&gt;  }"
-        	"requestId": "&lt;some_unique_value&gt;" }
-      </pre>
-      <p>Potential tags could include:</p>
+      <p>The default behaviour for a subscription is to send values to the client only onchange. 
+      To modify this behaviour the client can use filtering options. The following filter options 
+      SHALL be supported.</p>
       <ul>
 	<li>Interval - requests that the server provides a notification every 'n' milliseconds. This allows the client to reduce the
 	load on the server if the client does not need the data more frequently.</li>
 	<li>Range - provide a value only when within a given range</li>
 	<li>Minimum change - provide data when a value has changed by a specified amount</li>
-      </ul>
-
-      <p>If the filter is not set, or is unsupported by the server, the notification frequency is
+      </ul>      
+	<p>If the filter is not set, or the server is unable to satisfy the request, the notification frequency is
       determined by the server.</p>
-
+      
+      <h4></h4>
+      <h4></h4>
+      <h4>JSON Schema</h4>
+<pre>
+{
+  "filters": {
+      "$ref": "#/definitions/filters"
+  }
+}
+</pre>      
+           
+      <h4>Examples</h4>
+	<p>The following structures are examples of subscribeRequest objects which are requesting server side filters</p>
       <pre class="highlight hljs javascript">
 	//client receives data every 100ms
 	{ "action": "subscribe", "path": "&lt;any_path&gt;",
@@ -1411,7 +2013,8 @@ vehicle.close();
 	<p>If there is an error with any of the client’s requests, the
 	server responds with an error number, reason and
 	message.</p>
-
+	<h4></h4><h4></h4>
+	<h4>Web IDL</h4>
       <pre class="idl">
       interface Error {
         attribute int number;
@@ -1419,7 +2022,15 @@ vehicle.close();
         attribute DOMString message;
       };
       </pre>
-
+<h4>JSON Schema</h4>
+<pre>
+{
+  "error": {
+      "$ref": "#/definitions/error"
+  }
+}
+</pre>
+<h4>Examples</h4>
         <p>For some error codes, for example '401 (Unauthorised)' there can be more than one cause.
         The error number that is returned is the HTTP Status Code Number e.g. 401.
         An error reason is also returned, this contains a pre-defined string value that
