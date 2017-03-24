@@ -273,7 +273,7 @@ function subscriptionSetupHandler(msg){
     }
 }
 
-// Handle the subscription response
+// Handle the subscription notification
 function subscriptionHandler(msg){
     if(msg.hasOwnProperty("subscriptionId") && msg.subscriptionId == rpmSubscriptionId){
       console.log("The current engine rpm is " + msg.value);
