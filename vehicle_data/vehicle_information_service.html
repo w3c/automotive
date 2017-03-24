@@ -591,7 +591,7 @@
 	  <tr>
 	    <td> <dfn>action</dfn></td>
 	    <td> <a>Action</a></td>
-	    <td> The action that the server is requested to perform.</td>
+	    <td>The type of action requested by the client or delivered by the server.</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn >path</dfn></td>
@@ -652,8 +652,8 @@
 {
     "definitions": {
         "action": {
-            "enum": [ "authorize", "getVSS", "get", "set", "subscribe", "unsubscribe", "unsubscribeAll"],
-            "description": "The type of action requested by the client",
+            "enum": [ "authorize", "getVSS", "get", "set", "subscribe", "subscription", "unsubscribe", "unsubscribeAll"],
+            "description": "The type of action requested by the client or delivered by the server",
         },
         "requestId": {
             "description": "Returned by the server in the response and used by the client to 
@@ -748,7 +748,7 @@
 	value of the 'action' property MUST be one of the values specified in the enumeration:</p>
 
 	<dl title="enum Action" class="idl">
-	  <dt>authorize</dt>
+	  <dt><dfn>authorize</dfn></dt>
 	  <dd>Enables client to pass security tokens for Security Principals to the server to support access-control.</dd>
 	  <dt><dfn>getVSS</dfn></dt>
 	  <dd>Allows the client to request metadata describing signals and data attributes that are potentially accessible.</dd>
@@ -756,9 +756,12 @@
 	  <dd>Enables the client to get a value once.</dd>
 	  <dt><dfn>set</dfn></dt>
 	  <dd>Enables the client to set a value once.</dd>
-	  <dt><dfn>subscribe</dfn></dt>
-	  <dd>Enables the client to receive a notification containing a JSON data structure with values for one or more
-	    vehicle signals and/or data attributes. The client requests that it is notified when the signal changes on the server.</dd>
+    <dt><dfn>subscribe</dfn></dt>
+    <dd>Enables the client to request notifications containing a JSON data structure with values for one or more
+      vehicle signals and/or data attributes. The client requests that it is notified when the signal changes on the server.</dd>
+    <dt><dfn>subscription</dfn></dt>
+    <dd>Enables the server to send notifications to the client containing a JSON data structure with values for one or more
+      vehicle signals and/or data attributes.</dd>
 	  <dt><dfn>unsubscribe</dfn></dt>
 	  <dd>Allows the client to notify the server that it should no longer receive notifications based on that subscription.</dd>
 	  <dt><dfn>unsubscribeAll</dfn></dt>
@@ -937,7 +940,7 @@
       </tr>
       <tr>
         <td> <dfn>Actions</dfn></td>
-        <td>List of actions that the token authorizes for the path. The list contains at least one of the actions <a>getVSS</a>, <a>get</a>, <a>set</a>, <a>subscribe</a> and <a>unsubscribe</a>.</td>
+        <td>List of actions that the token authorizes for the path. The list contains at least one of the actions <a>getVSS</a>, <a>get</a>, <a>set</a>, <a>subscribe</a>, <a>subscription</a> and <a>unsubscribe</a>.</td>
       </tr>
       <tr>
         <td> <dfn>Valid From</dfn></td>
@@ -1504,12 +1507,14 @@
       };
 
       interface subscriptionNotification {
+        attribute Action action;
         attribute DOMString subscriptionId;
         attribute any value;
         attribute DOMTimeStamp timestamp;
       };
 
       interface subscriptionNotificationError {
+        attribute Action action;     
         attribute DOMString subscriptionId;
         attribute Error error;
         attribute DOMTimeStamp timestamp;
@@ -1599,8 +1604,12 @@
     "title": "Subscription Notification",
     "description": "The response sent from the server upon an unsuccessful subscribe request",
     "type": "object",
-    "required": ["subscriptionId", "value", "timestamp"],
+    "required": ["action", "subscriptionId", "value", "timestamp"],
     "properties": {
+        "action": {
+            "enum": [ "subscription" ],
+            "description": "The identifier for the subscription notification",
+        },
         "subscriptionId": {
             "$ref": "#/definitions/subscriptionId"
         },
@@ -1621,8 +1630,12 @@
     "description": "Error message sent by the server when there is an error with an existing 
       subscription",
     "type": "object",
-    "required": ["subscriptionId", "error", "timestamp"],
+    "required": ["action", "subscriptionId", "error", "timestamp"],
     "properties": {
+        "action": {
+            "enum": [ "subscription" ],
+            "description": "The identifier for the subscription notification",
+        },
         "subscriptionId": {
             "$ref": "#/definitions/subscriptionId"
         },
@@ -1657,6 +1670,7 @@
 
   <pre class="highlight hljs javascript">
   receive <- {
+    "action": "subscription",
     "subscriptionId": "35472",
     "value": 36912,
     "timestamp": &lt;DOMTimeStamp&gt;
