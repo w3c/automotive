@@ -200,6 +200,9 @@ vehicle.onmessage = function(event){
       setReqHandler(msg);
       break;
     case "subscribe":
+      subscriptionSetupHandler(msg);
+      break;
+    case "subscription":
       subscriptionHandler(msg);
       break;
     case "unsubscribe":
@@ -263,15 +266,20 @@ function subscribeToRPMNotifications(){
 }
 
 // Handle the subscription response
-function subscriptionHandler(msg){
+function subscriptionSetupHandler(msg){
     if(msg.hasOwnProperty("requestId") && msg.requestId == rpmRequestId){
       console.log("Subscription set with a subscription ID of " + msg.subscriptionId);
       rpmSubscriptionId = msg.subscriptionId;
     }
+}
+
+// Handle the subscription response
+function subscriptionHandler(msg){
     if(msg.hasOwnProperty("subscriptionId") && msg.subscriptionId == rpmSubscriptionId){
       console.log("The current engine rpm is " + msg.value);
     }
 }
+
   </pre>
         <p>The target platform supported by the specification is exclusively passenger vehicles. Use of this
 	specification for non-passenger applications (for example heavy machinery, marine and airline infotainment) is
