@@ -486,26 +486,10 @@
 	<p class="note">Discuss merits of using 'wwwivi' as a standardised hostname. Do we want a more generic 
 		hostname, not just for IVI but also encompassing WoT standards?</p>
 	      
-	<p>RESTful web services are out of scope for the first revision of
-	this specification, but could be considered for addition in a later
-	version.</p>
-
-	<p>To support ‘defence in depth’ and a layered security approach,
-	connections between clients and servers are strongly
-	encrypted. This is to make it more difficult for an attacker that
-	has succeeded in installing malicious code on a vehicle to
-	eavesdrop, hijack security tokens or impersonate valid security
-	principals in order to get and set sensitive vehicle signals.</p>
-
 	<p>The client SHALL connect to the server over HTTPS and request that
 	the server opens a WebSocket. All WebSocket communications between
 	the client and server MUST be over ‘wss’. Non encrypted communication
 	is not supported, hence the server MUST refuse ‘ws’ connection requests.</p>
-
-	<p>For security reasons, clients are not able to connect
-	directly to ECUs or to CAN, MOST or LIN networks. All access is
-	via WebSocket. This allows the server to securely control access to
-	vehicle signals.</p>
       </section>
 
       <!-- Message Structure -->
