@@ -174,47 +174,113 @@
       This simplified example is for illustrative purposes only, it does not show error handling and is not
 	intended to be commercial code.</p>
 
-	<pre class="example highlight">
-		// open WebSocket
-		var vehicle  = new WebSocket("wss://wwwivi", "wvss1.0");
+ <pre class="example highlight">
+// Open the WebSocket
+var vehicle  = new WebSocket("wss://wwwivi", "wvss1.0");
 
-		// establish authorization
-		vehicle.onopen = function () {
-			vehicle.send('{"action": "authorize",
-				"tokens": {"authorization": "&lt;user_token_value&gt;"},
-				"requestId": "103"}');
-		};
+// Establish authorization
+vehicle.onopen = function () {
+  vehicle.send('{"action": "authorize", "tokens": {"authorization": "user_token_value"}, "requestId": "103"}');
+};
 
-		// request a signal
-		if (vehicle.readyState === OPEN) {
-			vehicle.send('{"action": "get", "path": "Signal.Drivetrain.Transmission.Speed"}');
+// Message response handler for all possible actions
+vehicle.onmessage = function(event){
+  var msg = JSON.parse(event.data);
+  switch(msg.action){
+    case "authorize":
+      authHandler(msg);
+      break;
+    case "getVSS":
+      getVSSHandler(msg);
+      break;
+    case "get":
+      getReqHandler(msg);
+      break;
+    case "set":
+      setReqHandler(msg);
+      break;
+    case "subscribe":
+      subscriptionSetupHandler(msg);
+      break;
+    case "subscription":
+      subscriptionHandler(msg);
+      break;
+    case "unsubscribe":
+      unsubscribeHandler(msg, false);
+      break;
+    case "unsubscribeAll":
+      unsubscribeHandler(msg, true);
+      break;
+  }
+};
 
-			// process messages from the server
-			vehicle.onmessage = function(event){
-				var msg = JSON.parse(event.data);
-				if(msg.path == "Signal.Drivetrain.Transmission.Speed" && msg.value){
-					console.log("The current speed is " + msg.value);
-				}
-			};
-		}
+// Auth request handler
+function authHandler(msg) {
+  if(msg.hasOwnProperty("TTL")){
+    console.log("Authorisation successful");
+    requestVSS();
+  } else {
+    console.log("Authorisation unsuccessful");
+  }
+}
 
-		// close the WebSocket
-		vehicle.close();
-	</pre>
-	<p>The following example shows a JavaScript client subscription request and response.</p>
-	<pre class="example highlight">
-		// set a subscription, assuming the same authorization and set up from Example 1
-		if (vehicle.readyState === OPEN) {
-			vehicle.send('{"action": "subscribe", "path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
-					"requestId": "104"}');
-			vehicle.onmessage = function(event){
-				var msg = JSON.parse(event.data);
-				if(msg.hasOwnProperty("requestId") && msg.requestId == "104"){
-					console.log("Latest RPM is " + msg.value);
-				}
-			};
-		}
-	</pre>
+// Close the WebSocket to end the WebSocket session
+function closeSocket(){
+  vehicle.close();
+}
+  </pre>
+  <p>Once the WebSocket connection has been established, the client is able to retrieve the VSS from the server and request signals for the clients current level of authentication.</p>
+  <pre class="example highlight">
+// Request the entire VSS tree
+function requestVSS(){
+  vehicle.send('{"action": "getVSS", "requestId": "103"}');
+}
+
+// Request the entire VSS tree and if successful, request a signal
+function getVSSHandler(msg){
+  if(msg.hasOwnProperty('vss')){
+    console.log("VSS Received");
+    console.log("VSS: " + JSON.stringify(msg.vss));
+    getSignal(vss, "Signal.Drivetrain.Transmission.Speed");
+  } else {
+    console.log("getVSS Error");
+  }
+}
+
+// Request a signal
+function getSignal(vss, path){
+  // A check could be made here to ensure the signal is available in the VSS
+  vehicle.send('{"action": "get", "path": ' + path + ', "requestId": "105"}');
+}
+  </pre>
+
+  <p>The client is also able to subscribe to signals if the client's authentication permits access.</p>
+
+  <pre class="example highlight">
+// Set a subscription, assuming the same authorization and set up from Example 1
+var rpmSubscriptionId, rpmRequestId = "106";
+
+// Set up the subscription
+function subscribeToRPMNotifications(){
+  vehicle.send('{"action": "subscribe", "path": "Signal.Drivetrain.InternalCombustionEngine.RPM",  "requestId": ' + rpmRequestId + '}');
+}
+
+// Handle the subscription response
+function subscriptionSetupHandler(msg){
+    if(msg.hasOwnProperty("requestId") && msg.requestId == rpmRequestId){
+      console.log("Subscription set with a subscription ID of " + msg.subscriptionId);
+      rpmSubscriptionId = msg.subscriptionId;
+    }
+}
+
+// Handle the subscription notification
+function subscriptionHandler(msg){
+    if(msg.hasOwnProperty("subscriptionId") && msg.subscriptionId == rpmSubscriptionId){
+      console.log("The current engine rpm is " + msg.value);
+    }
+}
+
+  </pre>
         <p>The target platform supported by the specification is exclusively passenger vehicles. Use of this
 	specification for non-passenger applications (for example heavy machinery, marine and airline infotainment) is
 	not prohibited, but is not covered in the design or content of the API.</p>
@@ -591,7 +657,7 @@
 	  <tr>
 	    <td> <dfn>action</dfn></td>
 	    <td> <a>Action</a></td>
-	    <td> The action that the server is requested to perform.</td>
+	    <td>The type of action requested by the client or delivered by the server.</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn >path</dfn></td>
@@ -652,8 +718,8 @@
 {
     "definitions": {
         "action": {
-            "enum": [ "authorize", "getVSS", "get", "set", "subscribe", "unsubscribe", "unsubscribeAll"],
-            "description": "The type of action requested by the client",
+            "enum": [ "authorize", "getVSS", "get", "set", "subscribe", "subscription", "unsubscribe", "unsubscribeAll"],
+            "description": "The type of action requested by the client or delivered by the server",
         },
         "requestId": {
             "description": "Returned by the server in the response and used by the client to 
@@ -748,7 +814,7 @@
 	value of the 'action' property MUST be one of the values specified in the enumeration:</p>
 
 	<dl title="enum Action" class="idl">
-	  <dt>authorize</dt>
+	  <dt><dfn>authorize</dfn></dt>
 	  <dd>Enables client to pass security tokens for Security Principals to the server to support access-control.</dd>
 	  <dt><dfn>getVSS</dfn></dt>
 	  <dd>Allows the client to request metadata describing signals and data attributes that are potentially accessible.</dd>
@@ -756,9 +822,12 @@
 	  <dd>Enables the client to get a value once.</dd>
 	  <dt><dfn>set</dfn></dt>
 	  <dd>Enables the client to set a value once.</dd>
-	  <dt><dfn>subscribe</dfn></dt>
-	  <dd>Enables the client to receive a notification containing a JSON data structure with values for one or more
-	    vehicle signals and/or data attributes. The client requests that it is notified when the signal changes on the server.</dd>
+    <dt><dfn>subscribe</dfn></dt>
+    <dd>Enables the client to request notifications containing a JSON data structure with values for one or more
+      vehicle signals and/or data attributes. The client requests that it is notified when the signal changes on the server.</dd>
+    <dt><dfn>subscription</dfn></dt>
+    <dd>Enables the server to send notifications to the client containing a JSON data structure with values for one or more
+      vehicle signals and/or data attributes.</dd>
 	  <dt><dfn>unsubscribe</dfn></dt>
 	  <dd>Allows the client to notify the server that it should no longer receive notifications based on that subscription.</dd>
 	  <dt><dfn>unsubscribeAll</dfn></dt>
@@ -937,7 +1006,7 @@
       </tr>
       <tr>
         <td> <dfn>Actions</dfn></td>
-        <td>List of actions that the token authorizes for the path. The list contains at least one of the actions <a>getVSS</a>, <a>get</a>, <a>set</a>, <a>subscribe</a> and <a>unsubscribe</a>.</td>
+        <td>List of actions that the token authorizes for the path. The list contains at least one of the actions <a>getVSS</a>, <a>get</a>, <a>set</a>, <a>subscribe</a>, <a>subscription</a> and <a>unsubscribe</a>.</td>
       </tr>
       <tr>
         <td> <dfn>Valid From</dfn></td>
@@ -1504,12 +1573,14 @@
       };
 
       interface subscriptionNotification {
+        attribute Action action;
         attribute DOMString subscriptionId;
         attribute any value;
         attribute DOMTimeStamp timestamp;
       };
 
       interface subscriptionNotificationError {
+        attribute Action action;     
         attribute DOMString subscriptionId;
         attribute Error error;
         attribute DOMTimeStamp timestamp;
@@ -1599,8 +1670,12 @@
     "title": "Subscription Notification",
     "description": "The response sent from the server upon an unsuccessful subscribe request",
     "type": "object",
-    "required": ["subscriptionId", "value", "timestamp"],
+    "required": ["action", "subscriptionId", "value", "timestamp"],
     "properties": {
+        "action": {
+            "enum": [ "subscription" ],
+            "description": "The identifier for the subscription notification",
+        },
         "subscriptionId": {
             "$ref": "#/definitions/subscriptionId"
         },
@@ -1621,8 +1696,12 @@
     "description": "Error message sent by the server when there is an error with an existing 
       subscription",
     "type": "object",
-    "required": ["subscriptionId", "error", "timestamp"],
+    "required": ["action", "subscriptionId", "error", "timestamp"],
     "properties": {
+        "action": {
+            "enum": [ "subscription" ],
+            "description": "The identifier for the subscription notification",
+        },
         "subscriptionId": {
             "$ref": "#/definitions/subscriptionId"
         },
@@ -1657,6 +1736,7 @@
 
   <pre class="highlight hljs javascript">
   receive <- {
+    "action": "subscription",
     "subscriptionId": "35472",
     "value": 36912,
     "timestamp": &lt;DOMTimeStamp&gt;
