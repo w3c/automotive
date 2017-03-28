@@ -1,1 +1,155 @@
 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<title>Automotive Working Group Implementation report</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
+            class='remove'>
+    </script>
+    <script class='remove'>
+var respecConfig = {
+          specStatus:           "ED",
+          shortName:            "vehicle-information-service",
+          editors:  [{
+            name: "Peter Winzell", company: "Mitsubishi Electric",
+            url: "mailto:peterwinzell.gbg@gmail.com",
+	    companyURL: "http://www.mitsubishielectric.com",
+	    
+          }],
+          edDraftURI:   "https://github.com/PeterWinzell/GDP-melco/tree/LP-116/report",
+          wg:           "Automotive Working Group",
+
+          otherLinks: [{
+            key: 'Repository and Participation',
+            data: [
+                {
+                    value: 'We are on github.',
+                    href: 'https://github.com/PeterWinzell/GDP-melco/tree/LP-116/report'
+                },
+             ]
+          }],
+
+    };
+    </script>
+<style>
+        table.parameters, table.exceptions {
+            border-spacing: 0;
+            border-collapse:    collapse;
+            margin: 0.5em 0;
+            width:  100%;
+        }
+        table.parameters { border-bottom:  1px solid #90b8de; }
+        table.exceptions { border-bottom:  1px solid #deb890; }
+
+        .parameters th, .exceptions th {
+            color:  inherit;
+            padding:    3px 5px;
+            text-align: left;
+            font-weight:    normal;
+        }
+        .parameters th { color: #fff; background: #005a9c; }
+        .exceptions th { background: #deb890; }
+
+        .parameters td, .exceptions td {
+            padding:    3px 10px;
+            border-top: 1px solid #ddd;
+            vertical-align: top;
+        }
+
+        .parameters tr:first-child td, .exceptions tr:first-child td {
+            border-top: none;
+        }
+
+        .parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {
+            width:  100px;
+        }
+
+        .parameters td.prmType {
+            width:  120px;
+        }
+
+        #table.exceptions table {
+        #    border-spacing: 0;
+        #    border-collapse:    collapse;
+        #    width:  100%;
+        #}
+	table, th, td {
+    		border: 1px solid black;
+    		border-collapse: collapse;
+	}
+    </style>
+  </head>
+  <body>
+    <section id="abstract">
+      <p>
+       This is an implementation report of the Vehicle Information Service<a href="https://www.w3.org/TR/vehicle-information-service/">[1]</a> specificiation and the Vehicle Information Api[2] specification. It is the aim of this report to show that the specifications are implementable and that they  are interoperable. VISS features are defined as the service request actions (GET,SET,SUBSCRIBE,UNSUBSCRIBE,UNSUBSCRIBEALL, AUTHORIZE, GETVSS) and their realisation in the service implementation.
+      </p>
+    </section>
+    <section id="sotd">
+    </section>
+   <section id="implementations">
+	<h2>List of reference implementations</h2>
+      <p>
+        1) Melco implementation<a href="https://github.com/PeterWinzell/GDP-melco/blob/LP-116/report/report.md">[3]</a>. This a Qt web socket implementation and it is developed for the GDP-11 (Genivi Development platform).
+      </p>
+      <p>
+        2) Access implementation t.b.e This a javascript/HMTL based implementation...
+      </p>	   
+      <p>
+        3) Wonsuk implementation t.b.e
+      </p>
+   </section>
+   <section id="testing">
+     <h3> Test results example table </h3>
+       <p>
+      Table from W3Ctestclient…
+      </p>
+  <table class="report">
+          <tbody><tr>
+            <th>
+              Test
+            </th>
+            <th>
+              <a href="">  Melco VISS</a>
+            </th>
+            <th>
+              <a href="">  Access VISS</a>
+            </th>
+	   <th>
+              <a href="">  Wonsuk VISS</a>
+            </th>
+          </tr>
+          <tr "">
+            <td>
+              <a href="#test"3>0070-init-wrong-subproto-error</a>
+            </td>
+            <td>
+              FAIL 
+            </td>
+            <td> 
+	     PASS	
+            </td>
+            <td> 
+	     FAIL	
+            </td>
+          </tr>
+          
+          <tr "">
+            <td>
+              <a href="#test">00120-getVSS-incorrect-error</a>
+            </td>
+            <td>
+              FAIL 
+            </td>
+            <td> 
+	     FAIL	
+            </td>
+            <td> 
+	     FAIL	
+            </td>
+          </tr>
+        </tbody></table>
+    </section>
+  </body>
+</html>
