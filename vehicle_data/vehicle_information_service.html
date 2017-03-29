@@ -1807,6 +1807,11 @@ function subscriptionHandler(msg){
 	<p>If the client has created more than one WebSocket instance, it MUST always unsubscribe using the same WebSocket instance
 	that was originally used to create the subscription.</p>
 
+	<p>It is not possible to unsubscribe from a subset of signals within a subscription. The client must unsubscribe 
+	and set up a new subscription with the desired signals. For example, if there is an active subscription 
+	for all lights, using the path Signal.Body.Lights.*, and the client requires information for only Signal.Body.Lights.IsLowBeamOn,
+	the client will have to unsubscribe from the Signal.Body.Lights.* subscription and re-subscribe to Signal.Body.Lights.IsLowBeamOn.</p>
+
 	<p>The client should always unsubscribe from receiving notifications when it is no longer using the data. Over a long
 	vehicle journey, this significantly reduces the processing load on the server and allow the server to free memory.
 	It therefore makes it more likely that the server remains responsive to future requests from the client.</p>
