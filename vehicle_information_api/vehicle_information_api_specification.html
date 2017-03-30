@@ -462,9 +462,6 @@
             onChange: true,
             onValue: (value, sub) => {
               console.log(`Got new value for ${sub.path}: ${value}`);
-            },
-            onExpire: (sub) => {
-              console.log(`Authorization expired for ${sub.path}`);
             }
           };
 
