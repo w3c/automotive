@@ -121,19 +121,19 @@
       enables a client to GET or SET vehicle signals and data; to SUBSCRIBE to receive
       notifications and to UNSUBSCRIBE from receiving notifications.</p>
 
-      <p>The API that is used to manage access to vehicle signals and static data is defined in this Vehicle Information Service 
-	 Specification (VISS). The VISS also describes a discovery mechanism that defines the set of signals and data that a client can access at a 
+      <p>The API that is used to manage access to vehicle signals and static data is defined in this Vehicle Information Service
+	 Specification (VISS). The VISS also describes a discovery mechanism that defines the set of signals and data that a client can access at a
          particular point in time.</p>
-	    
+
       <p>The term 'signal' is used here to represent an item of	data that can vary over time, for example vehicle speed,
 	 whilst the expression 'static data' is used to denote a temporally invariant property like vehicle width.</p>
 
-      <p>The GENIVI Vehicle Signal Specification (VSS) defines the set of vehicle signals and data that are exposed via this Vehicle 
-        Information Service Specification (VISS). The Vehicle Signal Specification (VSS) supports both extensibility and the ability 
+      <p>The GENIVI Vehicle Signal Specification (VSS) defines the set of vehicle signals and data that are exposed via this Vehicle
+        Information Service Specification (VISS). The Vehicle Signal Specification (VSS) supports both extensibility and the ability
 	to define private branches.</p>
 
       <p>In addition, the 'tree' of signals that is accessible at any point in time may also vary depending on standard access control principles.
-         That is, it can vary based on the identity of the user (person or organisation) requesting the data and/or the application or 
+         That is, it can vary based on the identity of the user (person or organisation) requesting the data and/or the application or
 	 device (e.g. vehicle) where the request originates.</p>
 
       <p>To support this, the Service Specification describes an extensible token based security mechanism that can optionally be used to pass tokens to the WebSocket Server,
@@ -166,9 +166,9 @@
       updates and dirty reads could potentially occur if the server has
       more than one WebSocket connection open.</p>
 
-      <p>It is recommended that this Vehicle Information Service Specification (VISS) is read in conjunction with the W3C Vehicle 
-      Information API Specification (VIAS). The Vehicle Information API Specification defines a client API that wraps the data access 
-      and security primitives defined in this Service Specification. It has been defined to support the development of  
+      <p>It is recommended that this Vehicle Information Service Specification (VISS) is read in conjunction with the W3C Vehicle
+      Information API Specification (VIAS). The Vehicle Information API Specification defines a client API that wraps the data access
+      and security primitives defined in this Service Specification. It has been defined to support the development of
       'standards-compliant' JavaScript libraries that can be used by web based clients.</p>
       <p>The Vehice Information Service API MAY be invoked directly, the following example illustrates how a client could invoke the VISS API.
       This simplified example is for illustrative purposes only, it does not show error handling and is not
@@ -291,7 +291,7 @@ function subscriptionHandler(msg){
 	<p>Exposing vehicle signals in a standardized manner facilitates the integration of vehicles within the Web of Things (WoT)
 	and supports future use case innovations in a variety of fields including transportation, safety, navigation, energy management,
 	smart transportation and consumer infotainment.</p>
-	    
+
 	<p>The data format used for client/server communication within this specification is JSON encoded strings, however other data formats may be supported in future versions of the specification.</p>
       </section>
 
@@ -385,8 +385,8 @@ function subscriptionHandler(msg){
 
       <p>Web applications and web agents MAY directly invoke the Vehicle Information Service interface exposed by the WebSocker server,
       but it is expected that they typically access vehicle signals and data via a JavaScript Library that implements the
-      W3C Vehicle Information API Specification (VIAS) (TODO Add Link when document exists). The VIAS is a client API that defines a 
-      standard approach to encapsulate or 'wrap' the API defined in this specification to make it easier for Web based clients to 
+      W3C Vehicle Information API Specification (VIAS) (TODO Add Link when document exists). The VIAS is a client API that defines a
+      standard approach to encapsulate or 'wrap' the API defined in this specification to make it easier for Web based clients to
       access vehicle signals and data in a controlled way.</p>
 
       <h3>Sending Signals and Data off-board</h3>
@@ -548,10 +548,10 @@ function subscriptionHandler(msg){
 	<pre class="highlight hljs javascript">
 	  <span class="hljs-keyword">var</span> vehicle  = new WebSocket("wss://wwwivi", "wvss1.0");
 	</pre>
-	
-	<p class="note">Discuss merits of using 'wwwivi' as a standardised hostname. Do we want a more generic 
+
+	<p class="note">Discuss merits of using 'wwwivi' as a standardised hostname. Do we want a more generic
 		hostname, not just for IVI but also encompassing WoT standards?</p>
-	      
+
 	<p>The client SHALL connect to the server over HTTPS and request that
 	the server opens a WebSocket. All WebSocket communications between
 	the client and server MUST be over ‘wss’. Non encrypted communication
@@ -596,7 +596,7 @@ function subscriptionHandler(msg){
 		<a>vssSuccessResponse</a><br>
 	        <a>vssErrorResponse</a>
 	    </td>
-	  </tr>		
+	  </tr>
 	  <tr>
 	    <td><a>getRequest</a></td>
 	    <td>
@@ -706,61 +706,61 @@ function subscriptionHandler(msg){
             "description": "The type of action requested by the client or delivered by the server",
         },
         "requestId": {
-            "description": "Returned by the server in the response and used by the client to 
+            "description": "Returned by the server in the response and used by the client to
               link the request and response messages.",
             "type": "string"
         },
         "path": {
-            "description": "The path to the desired vehicle signal(s), as defined by the Vehicle 
+            "description": "The path to the desired vehicle signal(s), as defined by the Vehicle
               Signal Specification (VSS).",
             "type": "string"
         },
         "value": {
-            "description": "The path to the desired vehicle signal(s), as defined by the Vehicle 
+            "description": "The path to the desired vehicle signal(s), as defined by the Vehicle
               Signal Specification (VSS).",
             "type": "string"
         },
         "timestamp": {
-            "description": "The Coordinated Universal Time (UTC) time that the server returned 
+            "description": "The Coordinated Universal Time (UTC) time that the server returned
               the response (expressed as number of milliseconds).",
             "type": "integer"
         },
         "filters": {
-            "description": "May be specified in order to throttle the demands of subscriptions 
+            "description": "May be specified in order to throttle the demands of subscriptions
               on the server.",
             "type": ["object", "null"],
             "properties": {
                 "interval": {
-                    "description": "The subscription will provide notifications with a period 
+                    "description": "The subscription will provide notifications with a period
                       equal to this field's value.",
-                    "type": "integer"                   
+                    "type": "integer"
                 },
                 "range": {
-                    "description": "The subscription will provide notifications only when within 
+                    "description": "The subscription will provide notifications only when within
                       a given range.",
                     "type": "object",
                     "properties":{
                       "below": {
-                        "description": "The subscription will provide notifications when the value 
+                        "description": "The subscription will provide notifications when the value
                           is less or equal to this field's value.",
-                        "type": "integer"  
+                        "type": "integer"
                       },
                       "above": {
-                        "description": "The subscription will provide notifications when the value 
+                        "description": "The subscription will provide notifications when the value
                           is greater than or equal to this field's value.",
-                        "type": "integer"  
+                        "type": "integer"
                       },
-                    }                   
+                    }
                 },
                 "minChange": {
-                    "description": "The subscription will provide notifications when a value has 
+                    "description": "The subscription will provide notifications when a value has
                       changed by the amount specified in this field.",
-                    "type": "integer"                   
+                    "type": "integer"
                 }
             }
         },
         "subscriptionId":{
-            "description": "Integer handle value which is used to uniquely identify the 
+            "description": "Integer handle value which is used to uniquely identify the
               subscription.",
             "type": "string"
         },
@@ -774,18 +774,18 @@ function subscriptionHandler(msg){
             "properties": {
                 "number": {
                     "description": "HTTP Status Code Number",
-                    "type": "integer"                   
+                    "type": "integer"
                 },
                 "reason": {
-                    "description": "Pre-defined string value that can be used to distinguish 
+                    "description": "Pre-defined string value that can be used to distinguish
                       between errors that have the same code",
-                    "type": "string"                    
+                    "type": "string"
                 },
                 "message": {
                     "description": "Message text describing the cause in more detail",
-                    "type": "string"                    
+                    "type": "string"
                 },
-            }   
+            }
         }
     }
 }
@@ -864,12 +864,12 @@ function subscriptionHandler(msg){
             "type": "object",
             "properties": {
                 "authorization": {
-                    "description": "The user token, for the user that the client is making 
+                    "description": "The user token, for the user that the client is making
                       requests on behalf of",
                     "type": "string"
                 },
                 "www-vehicle-device": {
-                    "description": "The device token for the originating device that is making 
+                    "description": "The device token for the originating device that is making
                       the request to the server",
                     "type": "string"
                 }
@@ -882,7 +882,7 @@ function subscriptionHandler(msg){
 }
 </pre>
 <p>The schema for authoriseSuccessResponse is:</p>
-<pre>    
+<pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Authorize Success Response",
@@ -905,7 +905,7 @@ function subscriptionHandler(msg){
 }
 </pre>
 <p>The schema for authoriseErrorResponse is:</p>
-<pre>  
+<pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Authorize Error Response",
@@ -1002,14 +1002,14 @@ function subscriptionHandler(msg){
       </tr>
     </table>
 
-    	<p>It is expected that client and server use the same token format. If a client presents a token using a 
+    	<p>It is expected that client and server use the same token format. If a client presents a token using a
 	    format that is not understood by the server, the server rejects the token.</p>
-	      
-	<p>In order to make dictionary attacks more difficult, authentication will be denied after a number of failed authentication 
-		requests. A 401 (Unauthorised) too_many_requests error will be sent by the server in response 
-		to any subsequent authentication requests. The number of failed requests and the period 
-		of time during which attempts will be denied is to be determined by the implementation.</p>    
-	
+
+	<p>In order to make dictionary attacks more difficult, authentication will be denied after a number of failed authentication
+		requests. A 401 (Unauthorised) too_many_requests error will be sent by the server in response
+		to any subsequent authentication requests. The number of failed requests and the period
+		of time during which attempts will be denied is to be determined by the implementation.</p>
+
 	<h2>VSS Request</h2>
 	<p>The client MAY use the 'getVSS' action to request metadata describing the potentially available VSS tree. It does
 	this by sending a 'vssRequest' message to the server. If the server is able to return the VSS metadata, then this
@@ -1564,7 +1564,7 @@ function subscriptionHandler(msg){
       };
 
       interface subscriptionNotificationError {
-        attribute Action action;     
+        attribute Action action;
         attribute DOMString subscriptionId;
         attribute Error error;
         attribute DOMTimeStamp timestamp;
@@ -1576,7 +1576,7 @@ function subscriptionHandler(msg){
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Subscribe Request",
-    "description": "Allows the client to subscribe to time-varying signal notifications on the 
+    "description": "Allows the client to subscribe to time-varying signal notifications on the
       server.",
     "type": "object",
     "required": ["action", "path", "filters", "requestId"],
@@ -1615,7 +1615,7 @@ function subscriptionHandler(msg){
         },
         "subscriptionId": {
             "$ref": "#/definitions/subscriptionId"
-        },                
+        },
         "timestamp": {
             "$ref": "#/definitions/timestamp"
         }
@@ -1677,7 +1677,7 @@ function subscriptionHandler(msg){
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Subscription Notification Error",
-    "description": "Error message sent by the server when there is an error with an existing 
+    "description": "Error message sent by the server when there is an error with an existing
       subscription",
     "type": "object",
     "required": ["action", "subscriptionId", "error", "timestamp"],
@@ -1756,24 +1756,24 @@ function subscriptionHandler(msg){
 	error with an existing subscription a subscriptionNotificationError is
 	received by the client. This allows the client to handle the error, such as to reduce the subscription
 	frequency if the server is unable to satisfy the initial demands of the client.</p>
-	
-	<p>If the authentication token expires whilst a subscription is active, the server will send a 
-	subscriptionNotificationError for each subscription that can no longer be fulfilled. The client is then 
+
+	<p>If the authentication token expires whilst a subscription is active, the server will send a
+	subscriptionNotificationError for each subscription that can no longer be fulfilled. The client is then
 	responsible for requesting a renewed authentication token.</p>
-	
+
 	<p>After the client authentication token has expired, the server MAY continue to send notifications for data that
 	is not subject to access control restrictions. The client will NOT receive notifications for subscriptions that require
 	a valid authentication token until the client sends a renewed authentication token to the server.</p>
-	
+
 	<p> If a new authentication token is presented by the client to the server in a timely manner,	all existing subscriptions
 	will continue to cause notifications to be sent from the server, provided the security principal
-	has not changed. The time window during which the client MAY re-authenticate and subscriptions continue WILL be 
+	has not changed. The time window during which the client MAY re-authenticate and subscriptions continue WILL be
 	implementation dependent.</p>
-	
+
 	<p>At any time the server MUST only send subscription notifications for data that the client is authorised to access.</p>
 
-        <p>The server MAY close the WebSocket connection at any time and in so doing, terminate all subscriptions for the client. 
-	The client is then responsible for renewing subscriptions. The client MUST close the WebSocket connection if the server 
+        <p>The server MAY close the WebSocket connection at any time and in so doing, terminate all subscriptions for the client.
+	The client is then responsible for renewing subscriptions. The client MUST close the WebSocket connection if the server
 	data is no longer required.</p>
 
   	<p>An example of a subscription can be found <a href="#introduction">here</a>.</p>
@@ -1785,14 +1785,14 @@ function subscriptionHandler(msg){
 	occurs, for example because an invalid subscriptionId is passed to the server, an 'unsubscribeErrorResponse' is returned.</p>
 
 	<p>The client MAY unsubscribe from all of its subscriptions by sending an 'unsubscribeRequest' with the action property set to
-	'unsubscribeAll'. This does not require a subscriptionId value. If the request is successful, or there are no active subscriptions 
+	'unsubscribeAll'. This does not require a subscriptionId value. If the request is successful, or there are no active subscriptions
 	to unsubscribe from, this will return an 'unsubscribeSuccessResponse'.</p>
 
 	<p>If the client has created more than one WebSocket instance, it MUST always unsubscribe using the same WebSocket instance
 	that was originally used to create the subscription.</p>
 
-	<p>It is not possible to unsubscribe from a subset of signals within a subscription. The client must unsubscribe 
-	and set up a new subscription with the desired signals. For example, if there is an active subscription 
+	<p>It is not possible to unsubscribe from a subset of signals within a subscription. The client must unsubscribe
+	and set up a new subscription with the desired signals. For example, if there is an active subscription
 	for all lights, using the path Signal.Body.Lights.*, and the client requires information for only Signal.Body.Lights.IsLowBeamOn,
 	the client will have to unsubscribe from the Signal.Body.Lights.* subscription and re-subscribe to Signal.Body.Lights.IsLowBeamOn.</p>
 
@@ -1830,7 +1830,7 @@ function subscriptionHandler(msg){
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Unsubscribe Request",
-    "description": "Allows the client to unsubscribe to time-varying signal notifications on 
+    "description": "Allows the client to unsubscribe to time-varying signal notifications on
       the server.",
     "type": "object",
     "required": ["action", "subscriptionId", "requestId"],
@@ -1842,7 +1842,7 @@ function subscriptionHandler(msg){
         "subscriptionId": {
             "$ref": "#/definitions/subscriptionId",
             "type": ["string", "null"]
-        }, 
+        },
         "requestId": {
             "$ref": "#/definitions/requestId"
         }
@@ -1865,7 +1865,7 @@ function subscriptionHandler(msg){
         "subscriptionId": {
             "$ref": "#/definitions/subscriptionId",
             "type": ["string", "null"]
-        }, 
+        },
         "requestId": {
             "$ref": "#/definitions/requestId"
         },
@@ -1891,7 +1891,7 @@ function subscriptionHandler(msg){
         "subscriptionId": {
             "$ref": "#/definitions/subscriptionId",
             "type": ["string", "null"]
-        }, 
+        },
         "requestId": {
             "$ref": "#/definitions/requestId"
         },
@@ -1906,7 +1906,7 @@ function subscriptionHandler(msg){
 </pre>
 
       <h4>Examples</h4>
-	Unsubscribe from a single subscription.
+	The example below shows the JSON message structure for a 'unsubscribeRequest' and 'unsubscribeSuccessResponse' to unsubscribe from a single subscription.
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "unsubscribe",
@@ -1921,7 +1921,8 @@ function subscriptionHandler(msg){
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
-	Unsubscribe from all subscriptions.
+
+	The following shows an example of a 'unsubscribeRequest' and 'unsubscribeSuccessResponse' for unsubscribeAll action, in order to unsubscribe from all subscriptions.
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "unsubscribeAll",
@@ -1930,12 +1931,12 @@ function subscriptionHandler(msg){
 
 	receive <- {
 		"action": "unsubscribeAll",
-		"subscriptionId": null,
 		"requestId": "3468",
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
-	Error case - invalid ID
+
+  The following shows an example of error case with invalid susbscriptionId.
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "unsubscribe",
@@ -1977,27 +1978,27 @@ function subscriptionHandler(msg){
       to be used to throttle the demands of subscriptions on
       the server. This may enable the reduction of traffic if the
       developer has received a 429 - Too Many Requests error
-      message. Server side filters are extensible, allowing for further filtering mechanisms. Support 
+      message. Server side filters are extensible, allowing for further filtering mechanisms. Support
       is currently provisioned for a specific range of values, time intervals and
       minimum changes. This can be implemented using the "filters"
       option in the subscribeRequest interface.</p>
 
 	<p>Filters can only be applied for nodes in the VSS tree, not entire branches.
-	For example, a filter cannot be set on Signal.Drivetrain.InternalCombustionEngine.*, 
+	For example, a filter cannot be set on Signal.Drivetrain.InternalCombustionEngine.*,
 	however it can be set on Signal.Drivetrain.InternalCombustionEngine.RPM.</p>
 
-      <p>The default behaviour for a subscription is to send values to the client only onchange. 
-      To modify this behaviour the client can use filtering options. The following filter options 
+      <p>The default behaviour for a subscription is to send values to the client only onchange.
+      To modify this behaviour the client can use filtering options. The following filter options
       SHALL be supported.</p>
       <ul>
 	<li>Interval - requests that the server provides a notification every 'n' milliseconds. This allows the client to reduce the
 	load on the server if the client does not need the data more frequently.</li>
 	<li>Range - provide a value only when within a given range</li>
 	<li>Minimum change - provide data when a value has changed by a specified amount</li>
-      </ul>      
+      </ul>
 	<p>If the filter is not set, or the server is unable to satisfy the request, the notification frequency is
       determined by the server.</p>
-      
+
       <h4></h4>
       <h4></h4>
       <h4>JSON Schema</h4>
@@ -2007,8 +2008,8 @@ function subscriptionHandler(msg){
       "$ref": "#/definitions/filters"
   }
 }
-</pre>      
-           
+</pre>
+
       <h4>Examples</h4>
 	<p>The following structures are examples of subscribeRequest objects which are requesting server side filters</p>
       <pre class="highlight hljs javascript">
@@ -2169,12 +2170,12 @@ vehicle.close();
 	    <td>401 (Unauthorised)</td>
 	    <td>too_many_attempts</td>
 	    <td>The client has failed to authenticate too many times.</td>
-	  </tr>	  
+	  </tr>
 	  <tr>
 	    <td>401 (Unauthorised)</td>
 	    <td>read_only</td>
 	    <td>The desired signal cannot be set since it is a read only signal.</td>
-	  </tr>	
+	  </tr>
 	  <tr>
 	    <td>403 (Forbidden)</td>
 	    <td>user_forbidden</td>
