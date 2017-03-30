@@ -171,7 +171,7 @@
               <td><dfn>protocol</dfn></td>
               <td>String</td>
               <td><code>'wss'</code></td>
-              <td>protocol for the WebSocket connection.  Options are generally <code>'ws'</code> for connections not going through an SSL-connection and <code>'wss'</code> for those that do.  It is strongly recommended to always use <code>'wss'</code></td>
+              <td>protocol for the WebSocket connection. All WebSocket communications between the client and server MUST be over <code>'wss'</code>. Non encrypted communication is not supported.</td>
             </tr>
             <tr>
               <td><dfn>port</dfn></td>
