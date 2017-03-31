@@ -140,14 +140,14 @@
     </section>
 
     <!-- JavaScript Interface -->
-    <section id="w3cclient-object">
-      <h2><code>W3CClient</code> Object</h2>
+    <section id="visclient-class">
+      <h2><code>VISClient</code> Class</h2>
       <h3>Initializing a Client</h3>
 
-      <p>The <code>W3CClient</code> class is provided by the client library and a new client object can be created using the exported constructor:</p>
+      <p>The <code>VISClient</code> class is provided by the client library and a new client object can be created using the exported constructor:</p>
 
       <pre class="example">
-      const client = new W3CClient({ /* options */ });
+      const client = new VISClient({ /* options */ });
       </pre>
 
       <h3>Client Options</h3>
@@ -183,7 +183,7 @@
               <td><dfn>authenticationTokens</dfn></td>
               <td>Array</td>
               <td><code>[]</code></td>
-              <td>an inital set of authentication tokens to pass on connect.  These will be sent and must be validated and accepted by the server before <code>onConnect</code> is called.  Any authentication errors will result in an error being passed to the <code>W3CClient#connect</code> callback function.</td>
+              <td>an inital set of authentication tokens to pass on connect.  These will be sent and must be validated and accepted by the server before <code>onConnect</code> is called.  Any authentication errors will result in an error being passed to the <code>VISClient#connect</code> callback function.</td>
             </tr>
           </table>
         </li>
@@ -198,7 +198,7 @@
               <td>
                 function called when the client is connected.  This function will be passed:
                 <ul>
-                  <li><code>client</code> (Object) - a copy of the W3CClient object</li>
+                  <li><code>client</code> (Object) - a copy of the VISClient object</li>
                 </ul>
               </td>
             </tr>
@@ -207,7 +207,7 @@
               <td>
                 function that is called when any message is received. This provide a low-level access to the underlying data and is most likely not used in most cases.
                 <ul>
-                  <li><code>client</code> (Object) - a copy of the W3CClient object</li>
+                  <li><code>client</code> (Object) - a copy of the VISClient object</li>
                   <li><code>message</code> (Object) - the message body that was received</li>
                 </ul>
               </td>
@@ -217,7 +217,7 @@
               <td>
                 function called when a connection error occurs.
                 <ul>
-                  <li><code>client</code> (Object) - a copy of the W3CClient object</li>
+                  <li><code>client</code> (Object) - a copy of the VISClient object</li>
                   <li><code>error</code> (Object) - the error that occurred.  In the case of server-side (VISS) errors, this error object will be a direct representation of the VISS error as defined in the VISS spec. For client-side errors, the representation will be implementation-dependent.</li>
                 </ul>
               </td>
@@ -227,7 +227,7 @@
               <td>
                 function called when the client is disconnected.  This function will be passed
                 <ul>
-                  <li><code>client</code> (Object) - a copy of the W3CClient object</li>
+                  <li><code>client</code> (Object) - a copy of the VISClient object</li>
                 </ul>
               </td>
             </tr>
@@ -339,7 +339,7 @@
                     <ul>
                       <li><code>value</code> (Object) - the value for the subscribed path</li>
                       <li><code>subscription</code> (Object) - a copy of the Subscription object</li>
-                      <li><code>client</code> (Object) - a copy of the W3CClient object</li>
+                      <li><code>client</code> (Object) - a copy of the VISClient object</li>
                     </ul>
                   </li>
                 </ul>
@@ -388,7 +388,7 @@
       <h3>Example</h3>
 
       <pre class="example">
-        const client = new W3CClient({
+        const client = new VISClient({
           host: 'vehicle-server.local',
           protocol: 'ws',
           port: 3241,
@@ -422,7 +422,7 @@
     <section id="subscription-object">
       <h2><code>Subscription</code> Object</h2>
 
-      <p>The Subscription object is not created directly, but is returned as part of the <code>W3CClient#subscribe()</code> function discussed above.  Once created the object can be used to access the original options and to pass to the `W3CClient#unsubscribe()` function.  The Subscription object does not expose any functions directly, but contains the following properties:</p>
+      <p>The Subscription object is not created directly, but is returned as part of the <code>VISClient#subscribe()</code> function discussed above.  Once created the object can be used to access the original options and to pass to the `VISClient#unsubscribe()` function.  The Subscription object does not expose any functions directly, but contains the following properties:</p>
 
       <table class="parameters">
         <tr>
@@ -439,7 +439,7 @@
           <td><dfn>options</dfn></td>
           <td>Object</td>
           <td>
-            object containing the options passed to the `W3CClient#subscribe()` function
+            object containing the options passed to the `VISClient#subscribe()` function
             <ul>
               <li><code>interval</code></li>
               <li><code>onChange</code></li>
@@ -455,7 +455,7 @@
       <h3>Example</h3>
 
       <pre class="example">
-        const client = new W3CClient({ host: 'vehicle-server.local' });
+        const client = new VISClient({ host: 'vehicle-server.local' });
 
         client.onConnect = () => {
           const subOptions = {
@@ -487,7 +487,7 @@
     <section id='vss-object'>
       <h2><code>VSS</code> Object</h2>
 
-      <p>The VSS object returned by the <code>W3CClient#getVSS()</code> function above should provide APIs sufficient to fully traverse the VSS tree and determine what signals are available at the current permission level. Traversing the VSS tree can be accomplished using any of a number of query languages (i.e. CSS path selectors, XPath, etc.); CSS-based querying is shown in the functions below, but additional query languages may be added in the future.  It is out of scope here to define the exact traversal methods and feature set, but these function SHOULD follow standards protocols such as CSS or XPATH.</p>
+      <p>The VSS object returned by the <code>VISClient#getVSS()</code> function above should provide APIs sufficient to fully traverse the VSS tree and determine what signals are available at the current permission level. Traversing the VSS tree can be accomplished using any of a number of query languages (i.e. CSS path selectors, XPath, etc.); CSS-based querying is shown in the functions below, but additional query languages may be added in the future.  It is out of scope here to define the exact traversal methods and feature set, but these function SHOULD follow standards protocols such as CSS or XPATH.</p>
 
       <table class="parameters">
         <tr>
@@ -539,7 +539,7 @@
           });
         }
 
-        const client = new W3CClient({
+        const client = new VISClient({
           host: 'vehicle-server.local',
           authenticationTokens: [/* TOKEN */],
           onConnect: openWindow
