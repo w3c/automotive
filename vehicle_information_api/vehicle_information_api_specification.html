@@ -88,7 +88,7 @@
   <body>
     <!-- Abstract -->
     <section id="abstract">
-	<p>This specification defines the application interface provided by a JavaScript client library designd to interface with a VISS server.</p>
+	<p>This specification defines the application interface provided by a JavaScript client library designd to interface with a VIS server.</p>
 	<p>The purpose of the specification is to promote a client implementation with a standard API that enables application development in a consistent manner across participating automotive manufacturers.</p>
 	  </section>
 
@@ -100,7 +100,7 @@
     <section>
       <h2>Introduction</h2>
 
-      <p>The following documents the specification required for a JavaScript client library designed to interface with a VISS server. This library is responsible for the following:</p>
+      <p>The following documents the specification required for a JavaScript client library designed to interface with a VIS server. This library is responsible for the following:</p>
 
       <ul>
         <li>Connection lifecycle (open, reconnect, failover, closure)</li>
@@ -399,7 +399,7 @@
         });
 
         client.onConnect = (_client) => {
-          console.log(`Connected to ${_client.protocl}://${_client.host}:${_client.port}`);
+          console.log(`Connected to ${_client.protocol}://${_client.host}:${_client.port}`);
           _client.authenticate(/* TOKEN */, (err) => {
             if(err) {
               console.err('Could not authenticate with provided token.  Disconnecting...');
