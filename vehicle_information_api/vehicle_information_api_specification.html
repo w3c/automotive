@@ -324,28 +324,22 @@
           </td>
         </tr>
         <tr>
-          <td><dfn>subscribe(path, options, callback)</dfn></td>
-          <td>subscribes to the given path with the options provided and returns a Subscription object as defined below.  As with `get()` above, the value returned is the same as that specified in the VISS specification.</td>
+          <td><dfn>subscribe(path, filters, callback)</dfn></td>
+          <td>subscribes to the given path with the filters provided and returns a Subscription object as defined below.  As with `get()` above, the value returned is the same as that specified in the VISS specification.</td>
           <td>
             <ul>
               <li><code>path</code> (String) - a String representing a location within the VSS</li>
-              <li><code>options</code> (Object) - object containing additional options for this subscription
-                <ul>
-                  <li><code>interval</code> (Integer) - If specified, the server will send value updates for the provided path at the given interval (in milliseconds), regardless of whether that value has changed since the last value. Server-side implementation may limit this interval and should return an error if the requested interval in not acceptable.  If not specified and the `onChange` parameter is not set, then a default interval as defined by the server will be used.</li>
-                  <li><code>onChange</code> (Boolean) - If set to `true`, any change in the value of the signal will result in a message and a call to `onValue`. If not specified, either the `interval` value or a default interval as defined by the server will be used.</li>
-                  <li><code>filter</code> (Object) - applies a server-side filter to data sent. The structure of this option is further defined in the VISS spec.</li>
-                  <li>
-                    <code>onValue</code> (Function) - function called each time a value for that subscription is received by the client.  This function will be passed:
-                    <ul>
-                      <li><code>value</code> (Object) - the value for the subscribed path</li>
-                      <li><code>subscription</code> (Object) - a copy of the Subscription object</li>
-                      <li><code>client</code> (Object) - a copy of the VISClient object</li>
-                    </ul>
-                  </li>
-                </ul>
+              <li><code>filters</code> (Object) - applies a server-side filter to data sent. The structure of this option is further defined in the VISS spec.</li>
               <li>
-                <code>callback</code> (Function) - A function called when the subscription has been created
+                <code>callback</code> (Function) - A function called in the cases described as follows.
                 <ul>
+                  <li>When the subscription has been created.</li>
+                  <li>Each time a value for the subscription is received from VIS server.</li>
+                  <li>When any error has been happened and notified from VIS server.</li>
+                </ul>
+                This function will be passed:
+                <ul>
+                  <li><code>value</code> (Object) - the value for the subscribed path</li>
                   <li><code>error</code> (Object) - if an error occurred, it is passed here, otherwise `null`</li>
                   <li><code>subscription</code> (Object) - the Subscription object representing the result of the call (see Subscription below)</li>
                 </ul>
@@ -383,7 +377,6 @@
           </td>
         </tr>
       </table>
-
 
       <h3>Example</h3>
 
@@ -435,19 +428,20 @@
           <td>String</td>
           <td>the path String used when creating the Subscription</td>
         </tr>
+
         <tr>
-          <td><dfn>options</dfn></td>
+          <td><dfn>filters</dfn></td>
           <td>Object</td>
           <td>
-            object containing the options passed to the `VISClient#subscribe()` function
+            object containing the filter conditions passed to the `VISClient#subscribe()` function. Structure of this object is defined in the VISS spec.
             <ul>
               <li><code>interval</code></li>
-              <li><code>onChange</code></li>
-              <li><code>filter</code></li>
-              <li><code>onValue</code></li>
+              <li><code>range</code></li>
+              <li><code>minChange</code></li>
             </ul>
           </td>
         </tr>
+
       </table>
 
       <p>Subscriptions are immutable once created.</p>
@@ -458,17 +452,19 @@
         const client = new VISClient({ host: 'vehicle-server.local' });
 
         client.onConnect = () => {
-          const subOptions = {
-            onChange: true,
-            onValue: (value, sub) => {
-              console.log(`Got new value for ${sub.path}: ${value}`);
-            }
+          const filters = {
+            interval: 100,
+            range: { above: 100, below: 200 },
+            minChange: 50
           };
 
-          client.subscribe('body.mirrors.left', subOptions, (err1, speedSub) => {
+          client.subscribe('body.mirrors.left', filters, (val, err1, speedSub) => {
             if (err1) {
               console.err(`Error while creating subscription: ${err1}`);
               return
+            }
+            if (val) {
+              condole.log(`Value received: ${val}`);
             }
 
             /* ... after some time or some event, unsubscribe from the subscription: */
