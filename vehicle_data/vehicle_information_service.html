@@ -1579,11 +1579,11 @@ function subscriptionHandler(msg){
     "description": "Allows the client to subscribe to time-varying signal notifications on the 
       server.",
     "type": "object",
-    "required": ["action", "path", "filters", "requestId"],
+    "required": ["action", "path", "requestId"],
     "properties": {
         "action": {
             "enum": [ "subscribe" ],
-            "description": "The identifier for the subscription request",
+            "description": "The identifier for the subscription request"
         },
         "path": {
             "$ref": "#/definitions/path"
@@ -1833,15 +1833,14 @@ function subscriptionHandler(msg){
     "description": "Allows the client to unsubscribe to time-varying signal notifications on 
       the server.",
     "type": "object",
-    "required": ["action", "subscriptionId", "requestId"],
+    "required": ["action", "requestId"],
     "properties": {
         "action": {
             "enum": [ "unsubscribe", "unsubscribeAll"],
-            "description": "The identifier for the unsubscribe request",
+            "description": "The identifier for the unsubscribe request"
         },
         "subscriptionId": {
-            "$ref": "#/definitions/subscriptionId",
-            "type": ["string", "null"]
+            "$ref": "#/definitions/subscriptionId"
         }, 
         "requestId": {
             "$ref": "#/definitions/requestId"
@@ -1856,15 +1855,14 @@ function subscriptionHandler(msg){
     "title": "Unsubscribe Success Response",
     "description": "The response sent from the server upon a successful subscription request",
     "type": "object",
-    "required": ["action", "subscriptionId", "requestId", "timestamp"],
+    "required": ["action", "requestId", "timestamp"],
     "properties": {
         "action": {
             "enum": [ "unsubscribe", "unsubscribeAll"],
-            "description": "The identifier for the unsubscribe request",
+            "description": "The identifier for the unsubscribe request"
         },
         "subscriptionId": {
-            "$ref": "#/definitions/subscriptionId",
-            "type": ["string", "null"]
+            "$ref": "#/definitions/subscriptionId"
         }, 
         "requestId": {
             "$ref": "#/definitions/requestId"
@@ -1882,15 +1880,14 @@ function subscriptionHandler(msg){
     "title": "Unsubscribe Error Response",
     "description": "The response sent from the server upon an unsuccessful subscribe request",
     "type": "object",
-    "required": ["action", "subscriptionId", "requestId", "error", "timestamp"],
+    "required": ["action", "requestId", "error", "timestamp"],
     "properties": {
         "action": {
             "enum": [ "unsubscribe", "unsubscribeAll"],
-            "description": "The identifier for the subscription request",
+            "description": "The identifier for the subscription request"
         },
         "subscriptionId": {
-            "$ref": "#/definitions/subscriptionId",
-            "type": ["string", "null"]
+            "$ref": "#/definitions/subscriptionId"
         }, 
         "requestId": {
             "$ref": "#/definitions/requestId"
