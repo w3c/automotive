@@ -1050,15 +1050,14 @@ function subscriptionHandler(msg){
     "title": "VSS Request",
     "description": "Request metadata describing the potentially available VSS tree",
     "type": "object",
-    "required": ["action", "path", "requestId"],
+    "required": ["action", "requestId"],
     "properties": {
         "action": {
             "enum": [ "getVSS" ],
-            "description": "The identifier for the getVSS request",
+            "description": "The identifier for the getVSS request"
         },
         "path": {
-            "$ref": "#/definitions/path",
-            "type": ["string", "null"]
+            "$ref": "#/definitions/path"
         },
         "requestId": {
             "$ref": "#/definitions/requestId"
