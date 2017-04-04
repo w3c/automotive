@@ -1906,7 +1906,7 @@ function subscriptionHandler(msg){
 </pre>
 
       <h4>Examples</h4>
-	Unsubscribe from a single subscription.
+	The example below shows the JSON message structure for a 'unsubscribeRequest' and 'unsubscribeSuccessResponse' to unsubscribe from a single subscription.
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "unsubscribe",
@@ -1921,7 +1921,7 @@ function subscriptionHandler(msg){
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
-	Unsubscribe from all subscriptions.
+	The following shows an example of a 'unsubscribeRequest' and 'unsubscribeSuccessResponse' for unsubscribeAll action, in order to unsubscribe from all subscriptions.
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "unsubscribeAll",
@@ -1930,12 +1930,11 @@ function subscriptionHandler(msg){
 
 	receive <- {
 		"action": "unsubscribeAll",
-		"subscriptionId": null,
 		"requestId": "3468",
 		"timestamp": &lt;DOMTimeStamp&gt;
 	}
 	</pre>
-	Error case - invalid ID
+	The following shows an example of error case with invalid susbscriptionId.
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "unsubscribe",
