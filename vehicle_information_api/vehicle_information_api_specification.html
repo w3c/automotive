@@ -262,16 +262,16 @@
           </td>
         </tr>
         <tr>
-          <td><dfn>authenticate(token, callback)</dfn></td>
-          <td>Add the provided token to the authorization set for this connection</td>
+          <td><dfn>authorize(tokens, callback)</dfn></td>
+          <td>Request access to signals and data attributes that are under access control.</td>
           <td>
             <ul>
-              <li><code>token</code> (String) - token provided by authorization authority</li>
+              <li><code>tokens</code> (String) - Tokens provided by authorization authority. Structure of tokens is defined in the VISS spec.</li>
               <li>
                 <code>callback</code> (Function) - A function called when the operation is completed
                 <ul>
-                  <li><code>error</code> (Object) - if an error occurred, it is passed here, otherwise `null`</li>
-                  <li><code>value</code> (Object) - the value received by the server</li>
+                  <li><code>error</code> (Object) - If an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>TTL</code> (Integer) - The time-to-live value of the authorization, passed when authorization succeed.</li>
                 </ul>
               </li>
             </ul>
@@ -279,7 +279,7 @@
         </tr>
         <tr>
           <td><dfn>getVSS(callback)</dfn></td>
-          <td>Requests the VSS from the server and calls the callback function with a VSS object as described below. The client caches this value and only retrieves a new version from the server if the `authenticate()` function has been called since the last cache was set.</td>
+          <td>Requests the VSS from the server and calls the callback function with a VSS object as described below.</td>
           <td>
             <ul>
               <li>
@@ -393,10 +393,9 @@
 
         client.onConnect = (_client) => {
           console.log(`Connected to ${_client.protocol}://${_client.host}:${_client.port}`);
-          _client.authenticate(/* TOKEN */, (err) => {
+          _client.authorize(/* TOKEN */, (err, ttl) => {
             if(err) {
-              console.err('Could not authenticate with provided token.  Disconnecting...');
-              _client.disconnect();
+              console.err('Authorize failed with provided token.');
               return;
             }
             /* do other things here */
@@ -530,7 +529,7 @@
                 }
               });
             } else {
-              console.err('No authorized to open front-left window');
+              console.err('Not authorized to open front-left window');
             }
           });
         }
