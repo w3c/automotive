@@ -700,10 +700,13 @@ function subscriptionHandler(msg){
 <p>The definitions within this section describe the datatypes referenced within the JSON Schema VISS interfaces.</p>
 <pre>
 {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Base datatype definitions for the JSON schema VISS interfaces",
     "definitions": {
         "action": {
+	    "type": "string",
             "enum": [ "authorize", "getVSS", "get", "set", "subscribe", "subscription", "unsubscribe", "unsubscribeAll"],
-            "description": "The type of action requested by the client or delivered by the server",
+            "description": "The type of action requested by the client or delivered by the server"
         },
         "requestId": {
             "description": "Returned by the server in the response and used by the client to 
@@ -728,7 +731,7 @@ function subscriptionHandler(msg){
         "filters": {
             "description": "May be specified in order to throttle the demands of subscriptions 
               on the server.",
-            "type": ["object", "null"],
+            "type": "object",
             "properties": {
                 "interval": {
                     "description": "The subscription will provide notifications with a period 
@@ -749,7 +752,7 @@ function subscriptionHandler(msg){
                         "description": "The subscription will provide notifications when the value 
                           is greater than or equal to this field's value.",
                         "type": "integer"  
-                      },
+                      }
                     }                   
                 },
                 "minChange": {
@@ -784,7 +787,7 @@ function subscriptionHandler(msg){
                 "message": {
                     "description": "Message text describing the cause in more detail",
                     "type": "string"                    
-                },
+                }
             }   
         }
     }
