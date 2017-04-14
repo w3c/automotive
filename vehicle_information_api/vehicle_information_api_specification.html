@@ -9,10 +9,19 @@
           specStatus: "ED",
           shortName: "vehicle-signal-client",
           editors: [{
-            name: "Powell Kinney", company: "Vinli",
-            url: "mailto:powell@vin.li",
-	          companyURL: "https://www.vin.li/",
-	          w3cid: 83094
+            name: "Powell Kinney (until 2017, while at Vinli)", company: "Vinli",
+            companyURL: "https://www.vin.li/",
+            w3cid: 83094
+          },
+          {
+            name: "Shinjiro Urata", company: "ACCESS",
+            url: "mailto:shinjiro.urata@access-company.com",
+            companyURL: "https://www.access-company.com/",
+          },
+          {
+            name: "Mike Aro", company: "IBM Corporation",
+            url: "mailto:arom@us.ibm.com",
+            companyURL: "https://www.ibm.com/",
           }],
           edDraftURI: "https://w3c.github.io/automotive/vehicle_information_api_specification/vehicle_information_api_specification.html",
           wg: "Automotive Working Group",
@@ -38,7 +47,7 @@
           wgURI: "https://www.w3.org/auto/wg/",
           wgPublicList: "public-automotive",
           wgPatentURI: "https://www.w3.org/2004/01/pp-impl/76043/status",
-	      };
+      };
     </script>
     <style>
         table.parameters, table.exceptions {
@@ -141,106 +150,148 @@
 
     <!-- JavaScript Interface -->
     <section id="visclient-class">
-      <h2><code>VISClient</code> Class</h2>
-      <h3>Initializing a Client</h3>
+      <h2><code>VISClient</code> Interface</h2>
 
-      <p>The <code>VISClient</code> class is provided by the client library and a new client object can be created using the exported constructor:</p>
+      <pre class="idl">
+      [Constructor(VISClientOptions options)]
+      interface VISClient : EventTarget
+      {
+        attribute Function onConnect;
+        attribute Function onMessage;
+        attribute Function onError;
+        attribute Function onDisconnect;
 
-      <pre class="example">
-      const client = new VISClient({ /* options */ });
+        void connect(connectCallback callback);
+        void authorize(DOMString tokens, authorizeCallback callback);
+        void getVSS(getVSSCallback callback);
+        void get(DOMString path, getCallback callback);
+        void set(DOMString path, any value , setCallback callback);
+        void subscribe(DOMString path, subscribeCallback callback, optional SubscribeFilters filters);
+        void unsubscribe(Subscription subscription, unsubscribeCallback callback);
+        void disconnect(disconnectCallback callback);
+      };
+
+      interface VISClientOptions
+      {
+        attribute DOMString host;
+        attribute DOMString? protocol;
+        attribute unsigned short? port;
+      };
+
+      interface Value
+      {
+        attribute any value;
+        attribute DOMTimeStamp timestamp;
+      };
+
+      interface Error
+      {
+        attribute unsigned short number;
+        attribute DOMString? reason;
+        attribute DOMString? message;
+        attribute DOMTimeStamp timestamp;
+      };
       </pre>
 
-      <h3>Client Options</h3>
+      <h3>Constructor</h3>
+      <p>The <code>VISClient</code> constructor, when invoked, must return a new VISClient object.</p>
 
-      <ul>
-        <li>Connection Properties - These are set at initialization only and cannot be changed after a client is connected.
-          <table class="parameters">
-            <tr>
-              <th>Parameter</th>
-              <th>Type</th>
-              <th>Default</th>
-              <th>Description</th>
-            </tr>
-            <tr>
-              <td><dfn>host</dfn></td>
-              <td>String</td>
-              <td><em>(required)</em></td>
-              <td>hostname of the server</td>
-            </tr>
-            <tr>
-              <td><dfn>protocol</dfn></td>
-              <td>String</td>
-              <td><code>'wss'</code></td>
-              <td>protocol for the WebSocket connection. All WebSocket communications between the client and server MUST be over <code>'wss'</code>. Non encrypted communication is not supported.</td>
-            </tr>
-            <tr>
-              <td><dfn>port</dfn></td>
-              <td>Integer</td>
-              <td><code>443</code></td>
-              <td>TCP port for the WebSocket connection.</td>
-            </tr>
-            <tr>
-              <td><dfn>authenticationTokens</dfn></td>
-              <td>Array</td>
-              <td><code>[]</code></td>
-              <td>an inital set of authentication tokens to pass on connect.  These will be sent and must be validated and accepted by the server before <code>onConnect</code> is called.  Any authentication errors will result in an error being passed to the <code>VISClient#connect</code> callback function.</td>
-            </tr>
-          </table>
-        </li>
-        <li>Handler Properties - These define the functions called throughout the lifecycle of the client.  These can be set or changed after initializtion and connection.
-          <table class="parameters">
-            <tr>
-              <th>Parameter</th>
-              <th>Description</th>
-            </tr>
-            <tr>
-              <td><dfn>onConnect</dfn></td>
-              <td>
-                function called when the client is connected.  This function will be passed:
-                <ul>
-                  <li><code>client</code> (Object) - a copy of the VISClient object</li>
-                </ul>
-              </td>
-            </tr>
-            <tr>
-              <td><dfn>onMessage</dfn></td>
-              <td>
-                function that is called when any message is received. This provide a low-level access to the underlying data and is most likely not used in most cases.
-                <ul>
-                  <li><code>client</code> (Object) - a copy of the VISClient object</li>
-                  <li><code>message</code> (Object) - the message body that was received</li>
-                </ul>
-              </td>
-            </tr>
-            <tr>
-              <td><dfn>onError</dfn></td>
-              <td>
-                function called when a connection error occurs.
-                <ul>
-                  <li><code>client</code> (Object) - a copy of the VISClient object</li>
-                  <li><code>error</code> (Object) - the error that occurred.  In the case of server-side (VISS) errors, this error object will be a direct representation of the VISS error as defined in the VISS spec. For client-side errors, the representation will be implementation-dependent.</li>
-                </ul>
-              </td>
-            </tr>
-            <tr>
-              <td><dfn>onDisconnect</dfn></td>
-              <td>
-                function called when the client is disconnected.  This function will be passed
-                <ul>
-                  <li><code>client</code> (Object) - a copy of the VISClient object</li>
-                </ul>
-              </td>
-            </tr>
-          </table>
-        </li>
-      </ul>
+      <pre class="example">
+      const client = new VISClient({ /* VISClientOptions object */ });
+      </pre>
 
-      <h3>Functions</h3>
+      <h3>VISClientOptions Interface</h3>
+      <p>These are set at initialization only and cannot be changed after a connection has established.</p>
+      <table class="parameters">
+        <tr>
+          <th>Parameter</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td><dfn>host</dfn></td>
+          <td>String</td>
+          <td><em>(required)</em></td>
+          <td>hostname of the server</td>
+        </tr>
+        <tr>
+          <td><dfn>protocol</dfn></td>
+          <td>String</td>
+          <td><code>'wss'</code></td>
+          <td>protocol for the WebSocket connection. All WebSocket communications between the client and server MUST be over <code>'wss'</code>. Non encrypted communication is not supported.</td>
+        </tr>
+        <tr>
+          <td><dfn>port</dfn></td>
+          <td>Integer</td>
+          <td><code>443</code></td>
+          <td>TCP port for the WebSocket connection.</td>
+        </tr>
+      </table>
 
+      <h3>Handler Attributes</h3>
+      <p>These define the functions called throughout the lifecycle of the client.  These can be set or changed after initializtion and connection.</p>
+
+      <table class="parameters">
+        <tr>
+          <th>Parameter</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td><dfn>onConnect</dfn></td>
+          <td>
+            function called when the client is connected.  This function will be passed:
+            <ul>
+              <li><code>client</code> (VISClient) - a reference of the VISClient object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><dfn>onMessage</dfn></td>
+          <td>
+            function that is called when any message is received. This provide a low-level access to the underlying data and is most likely not used in most cases.
+            <ul>
+              <li><code>client</code> (VISClient) - a reference of the VISClient object</li>
+              <li><code>message</code> (Object) - the message body that was received. The message body format detail is defined in VISS spec.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><dfn>onError</dfn></td>
+          <td>
+            function called when a connection error occurs.
+            <ul>
+              <li><code>client</code> (VISClient) - a reference of the VISClient object</li>
+              <li><code>error</code> (Error) - the error that occurred.  In the case of server-side (VISS) errors, this error object will be a direct representation of the VISS error as defined in the VISS spec. For client-side errors, the representation will be implementation-dependent.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><dfn>onDisconnect</dfn></td>
+          <td>
+            function called when the client is disconnected.  This function will be passed
+            <ul>
+              <li><code>client</code> (VISClient) - a reference of the VISClient object</li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+
+      <h3>Methods</h3>
       <p>Once created, a client provides several functions for interacting with the server.</p>
 
       <p>Many of the functions listed below require a `path` string to be passed that identifies the portion of the VSS that is being referenced. See VSS below for how to generate this string based on traversing the VSS tree.</p>
 
+      <pre class="idl">
+      callback connectCallback = void (Error error);
+      callback authorizeCallback = void (Error error, unsigned long TTL);
+      callback getVSSCallback = void (Error error, VSS vss);
+      callback getCallback = void (Error error, Value value);
+      callback setCallback = void (Error error);
+      callback subscribeCallback = void (Error error, Subscription subscription, Value value);
+      callback unsubscribeCallback = void (Error error);
+      callback disconnectCallback = void (Error error);
+      </pre>
       <table class="parameters">
         <tr>
           <th>Function</th>
@@ -253,9 +304,9 @@
           <td>
             <ul>
               <li>
-                <code>callback</code> (Function) - A function called when the operation is completed
+                <code>callback</code> (connectCallback) - A function called when the operation is completed
                 <ul>
-                  <li><code>error</code> (Object) - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
                 </ul>
               </li>
             </ul>
@@ -266,12 +317,12 @@
           <td>Request access to signals and data attributes that are under access control.</td>
           <td>
             <ul>
-              <li><code>tokens</code> (String) - Tokens provided by authorization authority. Structure of tokens is defined in the VISS spec.</li>
+              <li><code>tokens</code> (DOMString) - Tokens provided by authorization authority. Structure of tokens is defined in the VISS spec.</li>
               <li>
-                <code>callback</code> (Function) - A function called when the operation is completed
+                <code>callback</code> (authorizeCallback) - A function called when the operation is completed
                 <ul>
-                  <li><code>error</code> (Object) - If an error occurred, it is passed here, otherwise `null`</li>
-                  <li><code>TTL</code> (Integer) - The time-to-live value of the authorization, passed when authorization succeed.</li>
+                  <li><code>error</code> (Error) - If an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>TTL</code> (unsigned long) - The time-to-live value of the authorization, passed when authorization succeed.</li>
                 </ul>
               </li>
             </ul>
@@ -283,10 +334,10 @@
           <td>
             <ul>
               <li>
-                <code>callback</code> (Function) - A function called when the operation is completed
+                <code>callback</code> (getVSSCallback) - A function called when the operation is completed
                 <ul>
-                  <li><code>error</code> (Object) - if an error occurred, it is passed here, otherwise `null`</li>
-                  <li><code>vss</code> (Object) - A VSS object built from the server response</li>
+                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>vss</code> (VSS) - A VSS object built from the server response</li>
                 </ul>
               </li>
             </ul>
@@ -297,12 +348,12 @@
           <td>Receives a single value from the server.  The value returned is the same as that specified in the VISS specification and includes additional metadata on top of the raw value.</td>
           <td>
             <ul>
-              <li><code>path</code> (String)- a String representing a location within the VSS</li>
+              <li><code>path</code> (DOMString)- a String representing a location within the VSS</li>
               <li>
-                <code>callback</code> (Function) - A function called when the operation is completed
+                <code>callback</code> (getCallback) - A function called when the operation is completed
                 <ul>
-                  <li><code>error</code> (Object) - if an error occurred, it is passed here, otherwise `null`</li>
-                  <li><code>value</code> (Object) - the value for the requested path.</li>
+                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>value</code> (Value) - the value for the requested path.</li>
                 <ul>
             </ul>
           </td>
@@ -312,26 +363,25 @@
           <td>Sends a single value to the server.</td>
           <td>
             <ul>
-              <li><code>path</code> (String) - a String representing a location within the VSS</li>
-              <li><code>value</code> (Integer| Float | String | Object) - the value to pass to the server.  This must match the type as specified in the VSS.</li>
+              <li><code>path</code> (DOMString) - a String representing a location within the VSS</li>
+              <li><code>value</code> (any) - the value to pass to the server.  This must match the type as specified in the VSS.</li>
               <li>
-                <code>callback</code> (Function) - A function called when the operation is completed
+                <code>callback</code> (setCallback) - A function called when the operation is completed
                 <ul>
-                  <li><code>error</code> (Object) - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
                 </ul>
               </li>
             </ul>
           </td>
         </tr>
         <tr>
-          <td><dfn>subscribe(path, filters, callback)</dfn></td>
+          <td><dfn>subscribe(path, callback, filters)</dfn></td>
           <td>subscribes to the given path with the filters provided and returns a Subscription object as defined below.  As with `get()` above, the value returned is the same as that specified in the VISS specification.</td>
           <td>
             <ul>
-              <li><code>path</code> (String) - a String representing a location within the VSS</li>
-              <li><code>filters</code> (Object) - applies a server-side filter to data sent. The structure of this option is further defined in the VISS spec.</li>
+              <li><code>path</code> (DOMString) - a String representing a location within the VSS</li>
               <li>
-                <code>callback</code> (Function) - A function called in the cases described as follows.
+                <code>callback</code> (subscribeCallback) - A function called in the cases described as follows.
                 <ul>
                   <li>When the subscription has been created.</li>
                   <li>Each time a value for the subscription is received from VIS server.</li>
@@ -339,11 +389,12 @@
                 </ul>
                 This function will be passed:
                 <ul>
-                  <li><code>value</code> (Object) - the value for the subscribed path</li>
-                  <li><code>error</code> (Object) - if an error occurred, it is passed here, otherwise `null`</li>
-                  <li><code>subscription</code> (Object) - the Subscription object representing the result of the call (see Subscription below)</li>
+                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>subscription</code> (Subscription) - the Subscription object representing the result of the call (see Subscription below)</li>
+                  <li><code>value</code> (Value) - the value for the subscribed path</li>
                 </ul>
               </li>
+              <li><code>filters</code> (SubscribeFilters) - applies a server-side filter to data sent. The structure of this option is further defined in the VISS spec.</li>
             </ul>
           </td>
         </tr>
@@ -352,11 +403,11 @@
           <td>Unsubscribe from the subscription passed.</td>
           <td>
             <ul>
-              <li><code>subscription</code> (Object) - the subscription object originally returned from the `subscribe()` function
+              <li><code>subscription</code> (Subscription) - the subscription object originally returned from the `subscribe()` function
               <li>
-                <code>callback</code> (Function) - A function called when the operation is completed
+                <code>callback</code> (unsubscribeCallback) - A function called when the operation is completed
                 <ul>
-                  <li><code>error</code> (Object) - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
                 </ul>
               </li>
             </ul>
@@ -368,9 +419,9 @@
           <td>
             <ul>
               <li>
-                <code>callback</code> (Function) - A function called when the operation is completed
+                <code>callback</code> (disconnectCallback) - A function called when the operation is completed
                 <ul>
-                  <li><code>error</code> (Object) - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
                 </ul>
               </li>
             </ul>
@@ -378,6 +429,11 @@
         </tr>
       </table>
 
+      <h3>Value Interface</h3>
+      <p>Value interface is defined in accordance with VISS spec. For detail, refer VISS spec.</p>
+
+      <h3>Error Interface</h3>
+      <p>Error interface is defined in accordance with VISS spec. For detail, refer VISS spec. Error Numbers (Codes) are also defined in VISS spec.</p>
       <h3>Example</h3>
 
       <pre class="example">
@@ -385,11 +441,11 @@
           host: 'vehicle-server.local',
           protocol: 'ws',
           port: 3241,
-
-          onError: (client, error) => {
-            console.err(`Error with client in ${client.state}: ${error}`);
-          }
         });
+
+        client.onError = (_client, error) => {
+          console.err(`Error with client in ${_client.state}: ${error}`);
+        };
 
         client.onConnect = (_client) => {
           console.log(`Connected to ${_client.protocol}://${_client.host}:${_client.port}`);
@@ -412,7 +468,25 @@
     </section>
 
     <section id="subscription-object">
-      <h2><code>Subscription</code> Object</h2>
+      <h2><code>Subscription</code> Interface</h2>
+      <pre class="idl">
+      [Constructor]
+      interface Subscription {
+        readonly attribute DOMString path;
+        readonly attribute SubscribeFilters? filters;
+      };
+
+      interface SubscribeFilters {
+        attribute unsigned long? interval;
+        attribute SubscribeRange? range;
+        attribute unsigned long? minChange;
+      };
+
+      interface SubscribeRange {
+        attribute long? below;
+        attribute long? above;
+      };
+      </pre>
 
       <p>The Subscription object is not created directly, but is returned as part of the <code>VISClient#subscribe()</code> function discussed above.  Once created the object can be used to access the original options and to pass to the `VISClient#unsubscribe()` function.  The Subscription object does not expose any functions directly, but contains the following properties:</p>
 
@@ -424,13 +498,13 @@
         </tr>
         <tr>
           <td><dfn>path</dfn></td>
-          <td>String</td>
+          <td>DOMString</td>
           <td>the path String used when creating the Subscription</td>
         </tr>
 
         <tr>
           <td><dfn>filters</dfn></td>
-          <td>Object</td>
+          <td>SubscribeFilters</td>
           <td>
             object containing the filter conditions passed to the `VISClient#subscribe()` function. Structure of this object is defined in the VISS spec.
             <ul>
@@ -463,7 +537,7 @@
               return
             }
             if (val) {
-              condole.log(`Value received: ${val}`);
+              console.log(`Value received: ${val}`);
             }
 
             /* ... after some time or some event, unsubscribe from the subscription: */
@@ -480,7 +554,17 @@
     </section>
 
     <section id='vss-object'>
-      <h2><code>VSS</code> Object</h2>
+      <h2><code>VSS</code> Interface</h2>
+      <pre class="idl">
+      [Constructor]
+      interface VSS {
+        sequence&lt;DOMString&gt; pathsByCSS(DOMString cssSelector);
+        boolean pathExistsByCSS(DOMString cssSelector);
+        boolean canGet(DOMString path);
+        boolean canSet(DOMString path);
+        object at(DOMString? path);
+      };
+      </pre>
 
       <p>The VSS object returned by the <code>VISClient#getVSS()</code> function above should provide APIs sufficient to fully traverse the VSS tree and determine what signals are available at the current permission level. Traversing the VSS tree can be accomplished using any of a number of query languages (i.e. CSS path selectors, XPath, etc.); CSS-based querying is shown in the functions below, but additional query languages may be added in the future.  It is out of scope here to define the exact traversal methods and feature set, but these function SHOULD follow standards protocols such as CSS or XPATH.</p>
 
@@ -507,7 +591,7 @@
         </tr>
         <tr>
           <td><dfn>at([path])</dfn></td>
-          <td>Returns the raw VSS tree object rooted at path (if provided), otherwise returns the entire tree.</td>
+          <td>Returns the raw VSS tree object rooted at path (if provided), otherwise returns the entire tree. Regarding raw VSS object definition, refer VISS spec document.</td>
         </tr>
       </table>
 
@@ -537,8 +621,8 @@
         const client = new VISClient({
           host: 'vehicle-server.local',
           authenticationTokens: [/* TOKEN */],
-          onConnect: openWindow
         });
+        client.onConnect = openWindow;
 
         client.connect();
       </pre>
