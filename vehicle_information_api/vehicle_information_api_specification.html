@@ -113,7 +113,7 @@
 
       <ul>
         <li>Connection lifecycle (open, reconnect, failover, closure)</li>
-        <li>Authentication token transmission (not retrieval)</li>
+        <li>Authorization token transmission (not retrieval)</li>
         <li>Request lifecycle</li>
         <li>Subscription lifecycle</li>
         <li>VSS tree discovery and traversal</li>
@@ -620,7 +620,6 @@
 
         const client = new VISClient({
           host: 'vehicle-server.local',
-          authenticationTokens: [/* TOKEN */],
         });
         client.onConnect = openWindow;
 
