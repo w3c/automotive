@@ -1034,12 +1034,14 @@ function subscriptionHandler(msg){
         attribute Action action;
         attribute DOMString requestId;
         attribute object vss;
+	attribute DOMTimeStamp timestamp;	
       };
 
       interface vssErrorResponse {
         attribute Action action;
         attribute DOMString requestId;
         attribute Error error;
+	attribute DOMTimeStamp timestamp;
       };
       </pre>
 <h4>JSON Schema</h4>
@@ -1072,18 +1074,21 @@ function subscriptionHandler(msg){
     "title": "VSS Success Response",
     "description": "The response sent from the server upon a successful getVSS request",
     "type": "object",
-    "required": ["action", "requestId", "vss"],
+    "required": ["action", "requestId", "vss", "timestamp"],
     "properties": {
         "action": {
             "enum": [ "getVSS" ],
-            "description": "The identifier for the getVSS request",
+            "description": "The identifier for the getVSS request"
         },
         "requestId": {
             "$ref": "#/definitions/requestId"
         },
         "vss": {
             "$ref": "#/definitions/vss"
-        }
+        },
+	"timestamp": {
+	    "$ref": "#/definitions/timestamp"
+    	}
     }
 }
 </pre>
@@ -1098,14 +1103,17 @@ function subscriptionHandler(msg){
     "properties": {
         "action": {
             "enum": [ "getVSS" ],
-            "description": "The identifier for the getVSS request",
+            "description": "The identifier for the getVSS request"
         },
         "requestId": {
             "$ref": "#/definitions/requestId"
         },
         "error": {
             "$ref": "#/definitions/error"
-        }
+        },
+	"timestamp": {
+	    "$ref": "#/definitions/timestamp"
+    	}
     }
 }
 </pre>
@@ -1150,7 +1158,8 @@ function subscriptionHandler(msg){
           }
         }
       }
-    }
+    },
+    "timestamp": &lt;DOMTimeStamp&gt;
   }
   </pre>
 
