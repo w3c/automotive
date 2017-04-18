@@ -148,6 +148,23 @@
     <section id="architecture" class="informative">
     </section>
 
+    <!-- Security and privacy -->
+    <section id="security">
+      <h2>Security and Privacy Considerations</h2>
+      <p>This specification defines a Javascript library interface and does not expose any platform capabilities.<br>
+      So the security basically depends on the underling server.<br>
+      While the implementation is relatively easy to be tampered because it is given as a javascript code.<br>
+      Hence a client program SHOULD refers the library from a trusted origin otherwise any data goes through the library could be eavesdropped or tampered.
+      This data includes tokens for authorize() method.<br>
+      Token leaking might even weaken the security of the underlying server. The underlying server itself is one of a recommendation as a trusted origin.
+      </p>
+      <p>
+      Some part of vehicle data is considered as privacy sensitive and client programs SHOULD treat these data with respect to the user's right.
+      As a privacy protection enforcer, the library MAY have a UI to check user's agreement for exposing vehicle data to a client program.
+      If the library have an exceptional behavior to treat private information in emergent cases, the behavior also SHOULD be included in the agreement.
+      </p>
+    </section>
+
     <!-- JavaScript Interface -->
     <section id="visclient-class">
       <h2><code>VISClient</code> Interface</h2>
