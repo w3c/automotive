@@ -217,10 +217,10 @@ vehicle.onmessage = function(event){
 // Auth request handler
 function authHandler(msg) {
   if(msg.hasOwnProperty("TTL")){
-    console.log("Authorisation successful");
+    console.log("authorization successful");
     requestVSS();
   } else {
-    console.log("Authorisation unsuccessful");
+    console.log("authorization unsuccessful");
   }
 }
 
@@ -361,7 +361,7 @@ function subscriptionHandler(msg){
 
       <p>The client MAY invoke the WebSocket Server <a>getVSS</a> method to request that the server returns metadata that
       describes which signals and data attributes could potentially be accessed provided that the user and/or device is suitably
-      authorised. This and other valid WebSocket Server actions are defined in more detail <a href="#action">here</a>.</p>
+      authorized. This and other valid WebSocket Server actions are defined in more detail <a href="#action">here</a>.</p>
 
       <h3>In-Vehicle Clients</h3>
       <p>In-vehicle clients include both those clients that are running on an ECU in the vehicle itself,
@@ -456,7 +456,7 @@ function subscriptionHandler(msg){
         <p>Access to signals is managed and controlled by the server. The server MAY elect not to enforce access
         controls on a particular signal or set of signals and to enforce different access controls on other signals.</p>
 
-        <p>For each security principal that must be authorised by the server, the client SHALL obtain and pass a security token
+        <p>For each security principal that must be authorized by the server, the client SHALL obtain and pass a security token
         e.g. an OAuth 2.0 token (see <a href="https://tools.ietf.org/html/rfc6749">RFC6749</a>) to the server using a message
         containing an 'authorize' action as defined <a href="#authorize">here</a>.</p>
 
@@ -515,7 +515,7 @@ function subscriptionHandler(msg){
 
         <h3>Token Renewal</h3>
         <p>Each security token SHALL have a specified lifetime during which it is valid. If on receiving a request for signals that are
-        subject to access-control, the server determines that the request is unauthorised because the token has expired, the server
+        subject to access-control, the server determines that the request is unauthorized because the token has expired, the server
         returns an error response indicating the fact and the client requests a new token from the Security Authority and
         repeat the request.</p>
 
@@ -683,7 +683,7 @@ function subscriptionHandler(msg){
 	  <tr>
 	    <td> <dfn>TTL</dfn> </td>
 	    <td> int </td>
-	    <td> Returns the time to live of the authentication token in milliseconds.</td>
+	    <td> Returns the time to live of the authorization token in milliseconds.</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn>filters</dfn> </td>
@@ -846,7 +846,7 @@ function subscriptionHandler(msg){
       };
       </pre>
 <h4>JSON Schema</h4>
-<p>The schema for authoriseRequest is:</p>
+<p>The schema for authorizeRequest is:</p>
 <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -881,7 +881,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The schema for authoriseSuccessResponse is:</p>
+<p>The schema for authorizeSuccessResponse is:</p>
 <pre>    
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -904,7 +904,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The schema for authoriseErrorResponse is:</p>
+<p>The schema for authorizeErrorResponse is:</p>
 <pre>  
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1006,7 +1006,7 @@ function subscriptionHandler(msg){
 	    format that is not understood by the server, the server rejects the token.</p>
 	      
 	<p>In order to make dictionary attacks more difficult, authentication will be denied after a number of failed authentication 
-		requests. A 401 (Unauthorised) too_many_requests error will be sent by the server in response 
+		requests. A 401 (Unauthorized) too_many_requests error will be sent by the server in response 
 		to any subsequent authentication requests. The number of failed requests and the period 
 		of time during which attempts will be denied is to be determined by the implementation.</p>    
 	
@@ -1167,7 +1167,7 @@ function subscriptionHandler(msg){
 	<h2>Get</h2>
 	<p>The client MAY send a 'getRequest' message to the server to get the value of one or more vehicle signals and data
 	attributes. If the server is able to satisfy the request it SHALL return a 'getSuccessResponse' message. If the server
-	is unable to fulfil the request, e.g. because the client is not authorised to retrieve one or more of the signals,
+	is unable to fulfil the request, e.g. because the client is not authorized to retrieve one or more of the signals,
 	then the server SHALL return a 'getErrorResponse'. The structure of these message objects is defined below:</p>
       <h4>Web IDL</h4>
       <pre class="idl">
@@ -1376,7 +1376,7 @@ function subscriptionHandler(msg){
 
 	<p>The client may request that the server sets the value of a signal e.g. to lock a door or open a window by sending
 	a 'setRequest' message to the server. If the server is able to satisfy the request it SHALL return a 'setSuccessResponse'
-	message. If an error occurs e.g. because the client is not authorised to set the requested value, or the value is read-only,
+	message. If an error occurs e.g. because the client is not authorized to set the requested value, or the value is read-only,
 	the server SHALL return a 'setErrorResponse' message.<p>
       <h4>Web IDL</h4>
       <pre class="idl">
@@ -1778,7 +1778,7 @@ function subscriptionHandler(msg){
 	has not changed. The time window during which the client MAY re-authenticate and subscriptions continue WILL be 
 	implementation dependent.</p>
 	
-	<p>At any time the server MUST only send subscription notifications for data that the client is authorised to access.</p>
+	<p>At any time the server MUST only send subscription notifications for data that the client is authorized to access.</p>
 
         <p>The server MAY close the WebSocket connection at any time and in so doing, terminate all subscriptions for the client. 
 	The client is then responsible for renewing subscriptions. The client MUST close the WebSocket connection if the server 
@@ -2104,7 +2104,7 @@ vehicle.close();
 }
 </pre>
 <h4>Examples</h4>
-        <p>For some error codes, for example '401 (Unauthorised)' there can be more than one cause.
+        <p>For some error codes, for example '401 (Unauthorized)' there can be more than one cause.
         The error number that is returned is the HTTP Status Code Number e.g. 401.
         An error reason is also returned, this contains a pre-defined string value that
         can be used to distinguish between errors that have the same code (e.g. '401 Unauthorized)' but a difference cause.
@@ -2140,42 +2140,42 @@ vehicle.close();
 	    <td>The server is unable to fulfil the client request because the request is malformed.</td>
 	  </tr>
 	  <tr>
-	    <td>401 (Unauthorised)</td>
+	    <td>401 (Unauthorized)</td>
 	    <td>user_token_expired</td>
 	    <td>User token has expired.</td>
 	  </tr>
 	  <tr>
-	    <td>401 (Unauthorised)</td>
+	    <td>401 (Unauthorized)</td>
 	    <td>user_token_invalid</td>
 	    <td>User token is invalid.</td>
 	  </tr>
 	  <tr>
-	    <td>401 (Unauthorised)</td>
+	    <td>401 (Unauthorized)</td>
 	    <td>user_token_missing</td>
 	    <td>User token is missing.</td>
 	  </tr>
 	  <tr>
-	    <td>401 (Unauthorised)</td>
+	    <td>401 (Unauthorized)</td>
 	    <td>device_token_expired</td>
 	    <td>Device token has expired.</td>
 	  </tr>
 	  <tr>
-	    <td>401 (Unauthorised)</td>
+	    <td>401 (Unauthorized)</td>
 	    <td>device_token_invalid</td>
 	    <td>Device token is invalid.</td>
 	  </tr>
 	  <tr>
-	    <td>401 (Unauthorised)</td>
+	    <td>401 (Unauthorized)</td>
 	    <td>device_token_missing</td>
 	    <td>Device token is missing.</td>
 	  </tr>
 	  <tr>
-	    <td>401 (Unauthorised)</td>
+	    <td>401 (Unauthorized)</td>
 	    <td>too_many_attempts</td>
 	    <td>The client has failed to authenticate too many times.</td>
 	  </tr>	  
 	  <tr>
-	    <td>401 (Unauthorised)</td>
+	    <td>401 (Unauthorized)</td>
 	    <td>read_only</td>
 	    <td>The desired signal cannot be set since it is a read only signal.</td>
 	  </tr>	
@@ -2207,7 +2207,7 @@ vehicle.close();
 	  <tr>
 	    <td>404 (Not Found)</td>
 	    <td>private_path</td>
-	    <td>The specified data path is private and the request is not authorised to access signals on this path.</td>
+	    <td>The specified data path is private and the request is not authorized to access signals on this path.</td>
 	  </tr>
 	  <tr>
 	    <td>404 (Not Found)</td>
