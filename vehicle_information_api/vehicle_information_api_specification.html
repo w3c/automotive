@@ -97,9 +97,9 @@
   <body>
     <!-- Abstract -->
     <section id="abstract">
-	<p>This specification defines the application interface provided by a JavaScript client library designd to interface with a VIS server.</p>
-	<p>The purpose of the specification is to promote a client implementation with a standard API that enables application development in a consistent manner across participating automotive manufacturers.</p>
-	  </section>
+  <p>This specification defines a higher level application interface for accessing to vehicle signals and data attributes.</p>
+  <p>The purpose of the specification is to promote a client implementation with a standard API that enables application development in a consistent manner across participating automotive manufacturers.</p>
+    </section>
 
     <!-- Status of this document -->
     <section id="sotd">
@@ -108,9 +108,7 @@
     <!-- Introduction -->
     <section>
       <h2>Introduction</h2>
-
-      <p>The following documents the specification required for a JavaScript client library designed to interface with a VIS server. This library is responsible for the following:</p>
-
+      <p>The following documents the specification required for a high level API designed to interface with vehicle signals. This specification is responsible for the following:</p>
       <ul>
         <li>Connection lifecycle (open, reconnect, failover, closure)</li>
         <li>Authorization token transmission (not retrieval)</li>
@@ -121,23 +119,29 @@
 
       <p>In general, the client should strive for the following goals:</p>
 
-      <ol>
+      <ul>
         <li>Provide a level abstraction exposing all functionality of the underlying server.</li>
         <li>Provide an API that would be familiar to JavaScript developers including following best-practices when dealing with asynchronous operations.</li>
         <li>Exhibit good behavior with regard to socket allocation.</li>
         <li>Provide clear feedback on errors, especially those related to security credentials.</li>
-      </ol>
+      </ul>
+      <p>This API specification was originally designed assuming to communicate with 'in-vehicle' WebSocket based VIS(Vehicle Information Service) Server which defined in VISS spec, as a vehicle signal provider.
+      However at later phase, redefined as more abstract specification and the vehicle signal provider is not limited to WebSocket based VIS Server but other form of servers are also included in scope.</p>
     </section>
 
       <!-- Conformance -->
     <section id="conformance">
-      <h1>TODO</h1>
-	    <p>This specification defines conformance criteria that apply to a single product: specifically the 'in-vehicle' WebSocket <dfn>Vehicle Information Service</dfn> that implements the interfaces, semantics and behaviour defined in this document. For simplicity, this usually is referred to as the 'WebSocket Server' or just 'the server'</p>
     </section>
 
       <!-- Terminology -->
     <section id="terminology">
       <h2>Terminology</h2>
+      <p> The term 'VISS' is defined as 'Vehicle Information Service Specification' (see <a href="https://w3c.github.io/automotive/vehicle_data/vehicle_information_service.html">here</a>) which is under W3C recommendation process. The term 'VIS Server' means a server conforms to VISS spec.
+      </p>
+      <p> The term 'VIAS' is defined as 'Vehicle Information API Specification' which is this document.</p>
+      <p> The term 'VSS' is defined as 'Vehicle Signal Specification' (see <a href="https://github.com/GENIVI/vehicle_signal_specification/">here</a>) which is defined in Genivi alliance activity.
+      </p>
+
       <p>The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API (see <a href="https://www.w3.org/TR/2011/WD-websockets-20110929">here</a>) and the WebSocket Protocol (see <a href="https://tools.ietf.org/html/rfc6455">RFC6455</a>).</p>
     </section>
 
@@ -146,6 +150,22 @@
 
     <!-- Architecture -->
     <section id="architecture" class="informative">
+    </section>
+
+      <!-- Connection -->
+    <section id="connection">
+      <h2>Connection</h2>
+      <p>
+      This specification assumes a connection to a server provides vehicle signals in underlying layer.<br>
+      The connections could be categorized to two kinds those are 'connection-oriented' and 'connectionless'.</p>
+      <p>In case of 'connection-oriented' communications (e.g. WebSocket), a connection should be managed and kept open while client and server communicate.
+      An application can manage the connection status with APIs defined in this specification such as 'connect', 'disconnect' methods and 'onConnect', 'onDisconnect' handlers.<br>
+      In case of 'connectionless' communication (e.g. HTTP(S)), there is no demand to maintain a connection to be kept open. In that case, connection management with 'connect', 'disconnect' methods are not necessary.</p>
+      <p>From this reason, 'connect', 'disconnect' methods and 'onConnect', 'onDisconnect' handlers are defined as optional and they have to be implemented only when required.<br>
+      Examples in this document are written assuming 'connection-oriented' type for underlying communication.<br>
+      (Strictly speaking, HTTP(S) is not a 'connectionless' communication in the real meaning since it works over TCP.
+      However in case of HTTP(S), application layer does not have to be aware of connection status and from this view point, describe it as 'connectionless' communication in this context.)
+      </p>
     </section>
 
     <!-- Security and privacy -->
@@ -170,27 +190,27 @@
       <h2><code>VISClient</code> Interface</h2>
 
       <pre class="idl">
-      [Constructor(VISClientOptions options)]
+      [Constructor(optional VISClientOptions options)]
       interface VISClient : EventTarget
       {
-        attribute Function onConnect;
-        attribute Function onMessage;
-        attribute Function onError;
-        attribute Function onDisconnect;
+        attribute Function? onConnect;
+        attribute Function? onMessage;
+        attribute Function? onError;
+        attribute Function? onDisconnect;
 
-        void connect(connectCallback callback);
+        void? connect(connectCallback callback);
         void authorize(DOMString tokens, authorizeCallback callback);
         void getVSS(getVSSCallback callback);
         void get(DOMString path, getCallback callback);
         void set(DOMString path, any value , setCallback callback);
         void subscribe(DOMString path, subscribeCallback callback, optional SubscribeFilters filters);
         void unsubscribe(Subscription subscription, unsubscribeCallback callback);
-        void disconnect(disconnectCallback callback);
+        void? disconnect(disconnectCallback callback);
       };
 
       interface VISClientOptions
       {
-        attribute DOMString host;
+        attribute DOMString? host;
         attribute DOMString? protocol;
         attribute unsigned short? port;
       };
@@ -211,14 +231,18 @@
       </pre>
 
       <h3>Constructor</h3>
-      <p>The <code>VISClient</code> constructor, when invoked, must return a new VISClient object.</p>
+      <p>The <code>VISClient</code> constructor, when invoked, must return a new VISClient object.<br>
+      This constructor takes VISClientOptions object as a parameter. The parameter is optional and the necessity depends on underlying communication type.
+      </p>
 
       <pre class="example">
       const client = new VISClient({ /* VISClientOptions object */ });
       </pre>
 
       <h3>VISClientOptions Interface</h3>
-      <p>These are set at initialization only and cannot be changed after a connection has established.</p>
+      <p>
+      VISClientOptions interface is designed assuming a connection to a vehicle signal server which is specifiable by protocol, host and port. In case the underlying connection requires other parameters, implementer can add parameters according to the requirement.<br>
+      These values are set at initialization only and cannot be changed after a connection has established.</p>
       <table class="parameters">
         <tr>
           <th>Parameter</th>
@@ -229,20 +253,21 @@
         <tr>
           <td><dfn>host</dfn></td>
           <td>String</td>
-          <td><em>(required)</em></td>
+          <td>(optional)</td>
           <td>hostname of the server</td>
         </tr>
         <tr>
           <td><dfn>protocol</dfn></td>
           <td>String</td>
-          <td><code>'wss'</code></td>
-          <td>protocol for the WebSocket connection. All WebSocket communications between the client and server MUST be over <code>'wss'</code>. Non encrypted communication is not supported.</td>
+          <td>(optional)</td>
+          <td>
+          protocol for the connection to a vehicle signal server. All the communications between the client and server MUST be appropriately encrypted. Therefore, in case of WebSocket, <code>'wss'</code> is required and in case of http, <code>'https'</code> is required. Non encrypted communication is not supported.</td>
         </tr>
         <tr>
           <td><dfn>port</dfn></td>
           <td>Integer</td>
-          <td><code>443</code></td>
-          <td>TCP port for the WebSocket connection.</td>
+          <td>(optional)</td>
+          <td>TCP port for the connection to a vehicle signal server.</td>
         </tr>
       </table>
 
@@ -257,7 +282,9 @@
         <tr>
           <td><dfn>onConnect</dfn></td>
           <td>
-            function called when the client is connected.  This function will be passed:
+            function called when the client is connected.<br>
+            This handler is optional since this is meaningful in case of 'connection-oriented' communication only.<br>
+            This function will be passed:
             <ul>
               <li><code>client</code> (VISClient) - a reference of the VISClient object</li>
             </ul>
@@ -266,27 +293,38 @@
         <tr>
           <td><dfn>onMessage</dfn></td>
           <td>
-            function that is called when any message is received. This provide a low-level access to the underlying data and is most likely not used in most cases.
+            function that is called when any message is received.
+            This provide a low-level access to the underlying data and is most likely not used in most cases only.<br>
+            This handler is optional since this is not an essential function.
+            This function will be passed:
             <ul>
               <li><code>client</code> (VISClient) - a reference of the VISClient object</li>
-              <li><code>message</code> (Object) - the message body that was received. The message body format detail is defined in VISS spec.</li>
+              <li><code>message</code> (Object) - the message body that was received. Message body format detail depend on underlying server's specification and not defined in this document.</li>
             </ul>
           </td>
         </tr>
         <tr>
           <td><dfn>onError</dfn></td>
           <td>
-            function called when a connection error occurs.
+            function called when a connection error occurs.<br>
+            This handler is optional since this is defined to handle connection errors and therefore meaningful in case of 'connection-oriented' communication only<br>
+            This function will be passed:
             <ul>
               <li><code>client</code> (VISClient) - a reference of the VISClient object</li>
-              <li><code>error</code> (Error) - the error that occurred.  In the case of server-side (VISS) errors, this error object will be a direct representation of the VISS error as defined in the VISS spec. For client-side errors, the representation will be implementation-dependent.</li>
+              <li><code>error</code>
+              (Error) - the error that occurred.
+              In the case of server-side errors, this error object will be a direct representation of the server-side errors.
+              For client-side errors, the representation will be implementation-dependent.
+              </li>
             </ul>
           </td>
         </tr>
         <tr>
           <td><dfn>onDisconnect</dfn></td>
           <td>
-            function called when the client is disconnected.  This function will be passed
+            function called when the client is disconnected.<br>
+            This handler is optional since this is meaningful in case of 'connection-oriented' communication only.<br>
+            This function will be passed:
             <ul>
               <li><code>client</code> (VISClient) - a reference of the VISClient object</li>
             </ul>
@@ -311,13 +349,16 @@
       </pre>
       <table class="parameters">
         <tr>
-          <th>Function</th>
+          <th>Method</th>
           <th>Description</th>
           <th>Paramters</th>
         </tr>
         <tr>
           <td><dfn>connect(callback)</dfn></td>
-          <td>Initializes the connection with the server.</td>
+          <td>
+          Initializes the connection with the server.<br>
+          This callback is optional since this is meaningful in case of 'connection-oriented' communication only.<br>
+          </td>
           <td>
             <ul>
               <li>
@@ -334,7 +375,9 @@
           <td>Request access to signals and data attributes that are under access control.</td>
           <td>
             <ul>
-              <li><code>tokens</code> (DOMString) - Tokens provided by authorization authority. Structure of tokens is defined in the VISS spec.</li>
+              <li><code>tokens</code> 
+              (DOMString) - Tokens provided by authorization authority. Structure of tokens depend on underlying server's specification.
+              </li>
               <li>
                 <code>callback</code> (authorizeCallback) - A function called when the operation is completed
                 <ul>
@@ -362,7 +405,8 @@
         </tr>
         <tr>
           <td><dfn>get(path, callback)</dfn></td>
-          <td>Receives a single value from the server.  The value returned is the same as that specified in the VISS specification and includes additional metadata on top of the raw value.</td>
+          <td>Receives a single value from the server.
+          </td>
           <td>
             <ul>
               <li><code>path</code> (DOMString)- a String representing a location within the VSS</li>
@@ -393,7 +437,9 @@
         </tr>
         <tr>
           <td><dfn>subscribe(path, callback, filters)</dfn></td>
-          <td>subscribes to the given path with the filters provided and returns a Subscription object as defined below.  As with `get()` above, the value returned is the same as that specified in the VISS specification.</td>
+          <td>subscribes to the given path with the filters provided and returns a Subscription object as defined below.
+          After that, continuously returns the value of signals specified by 'path' by timing specified condition by 'filters'.
+          </td>
           <td>
             <ul>
               <li><code>path</code> (DOMString) - a String representing a location within the VSS</li>
@@ -401,8 +447,8 @@
                 <code>callback</code> (subscribeCallback) - A function called in the cases described as follows.
                 <ul>
                   <li>When the subscription has been created.</li>
-                  <li>Each time a value for the subscription is received from VIS server.</li>
-                  <li>When any error has been happened and notified from VIS server.</li>
+                  <li>Each time a value for the subscription is received from the server.</li>
+                  <li>When any error has been happened and notified from the server.</li>
                 </ul>
                 This function will be passed:
                 <ul>
@@ -411,7 +457,9 @@
                   <li><code>value</code> (Value) - the value for the subscribed path</li>
                 </ul>
               </li>
-              <li><code>filters</code> (SubscribeFilters) - applies a server-side filter to data sent. The structure of this option is further defined in the VISS spec.</li>
+              <li><code>filters</code> 
+              (SubscribeFilters) - applies a server-side filter to data sent. The structure of this option depends on underlying server's specification.
+              </li>
             </ul>
           </td>
         </tr>
@@ -432,7 +480,10 @@
         </tr>
         <tr>
           <td><dfn>disconnect(callback)</dfn></td>
-          <td>Closes the connection.  The same client can be used again by calling the `connect()` function, but subscriptions, authorization, and other state will not persist after a disconnection.</td>
+          <td>
+          Closes the connection.  The same client can be used again by calling the `connect()` function, but subscriptions, authorization, and other state will not persist after a disconnection.<br>
+          This callback is optional since this is meaningful in case of 'connection-oriented' communication only.<br>
+          </td>
           <td>
             <ul>
               <li>
@@ -447,10 +498,70 @@
       </table>
 
       <h3>Value Interface</h3>
-      <p>Value interface is defined in accordance with VISS spec. For detail, refer VISS spec.</p>
+      <p>Value conveys a vehicle signal or attribute value.</p>
+      <table class="parameters">
+        <tr>
+          <th>Parameter</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>value</td>
+          <td>any</td>
+          <td>
+            The type of 'value' varies according to the target signal or attribute. For detail, refer VSS spec.
+          </td>
+        </tr>
+        <tr>
+          <td>timestamp</td>
+          <td>DOMTimeStamp</td>
+          <td>
+            The Coordinated Universal Time (UTC) time that the server returned the response (expressed as number of milliseconds.)
+          </td>
+        </tr>
+      </table>
 
       <h3>Error Interface</h3>
-      <p>Error interface is defined in accordance with VISS spec. For detail, refer VISS spec. Error Numbers (Codes) are also defined in VISS spec.</p>
+      <p>
+      Error number, reason, message represents both of client-side and server-side error. Server-side error difinition depends on underlying server.
+      Client-side error definition is implementation dependent and not defined in this document.
+      </p>
+      <table class="parameters">
+        <tr>
+          <th>Parameter</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>number</td>
+          <td>unsigned short</td>
+          <td>
+            Error number (error code).
+          </td>
+        </tr>
+        <tr>
+          <td>reason</td>
+          <td>DOMString</td>
+          <td>
+            Error reason. Optional.
+          </td>
+        </tr>
+        <tr>
+          <td>message</td>
+          <td>DOMString</td>
+          <td>
+            Error message. Optional.
+          </td>
+        </tr>
+        <tr>
+          <td>timestamp</td>
+          <td>DOMTimeStamp</td>
+          <td>
+            The Coordinated Universal Time (UTC) time that the server returned the response (expressed as number of milliseconds.)
+          </td>
+        </tr>
+      </table>
+
       <h3>Example</h3>
 
       <pre class="example">
@@ -506,6 +617,7 @@
       </pre>
 
       <p>The Subscription object is not created directly, but is returned as part of the <code>VISClient#subscribe()</code> function discussed above.  Once created the object can be used to access the original options and to pass to the `VISClient#unsubscribe()` function.  The Subscription object does not expose any functions directly, but contains the following properties:</p>
+      <p>Subscriptions are immutable once created.</p>
 
       <table class="parameters">
         <tr>
@@ -523,7 +635,8 @@
           <td><dfn>filters</dfn></td>
           <td>SubscribeFilters</td>
           <td>
-            object containing the filter conditions passed to the `VISClient#subscribe()` function. Structure of this object is defined in the VISS spec.
+            object containing the filter conditions passed to the `VISClient#subscribe()` function. Structure of this object depends on underlying server's specification.<br>
+            The following attributes are defined for the case of connecting to VIS Server and not mandatory.
             <ul>
               <li><code>interval</code></li>
               <li><code>range</code></li>
@@ -531,10 +644,7 @@
             </ul>
           </td>
         </tr>
-
       </table>
-
-      <p>Subscriptions are immutable once created.</p>
 
       <h3>Example</h3>
 
@@ -608,7 +718,7 @@
         </tr>
         <tr>
           <td><dfn>at([path])</dfn></td>
-          <td>Returns the raw VSS tree object rooted at path (if provided), otherwise returns the entire tree. Regarding raw VSS object definition, refer VISS spec document.</td>
+          <td>Returns the raw VSS tree object rooted at path (if provided), otherwise returns the entire tree. Regarding raw VSS object definition, refer VSS spec document.</td>
         </tr>
       </table>
 
@@ -643,5 +753,8 @@
         client.connect();
       </pre>
     </section>
+
+
+
   </body>
 </html>
