@@ -153,7 +153,7 @@
     </section>
 
       <!-- Connection -->
-    <section id="connection">
+    <section id="connection" class="informative">
       <h2>Connection</h2>
       <p>
       This specification assumes a connection to a server provides vehicle signals in underlying layer.<br>
@@ -169,7 +169,7 @@
     </section>
 
     <!-- Security and privacy -->
-    <section id="security">
+    <section id="security" class="informative">
       <h2>Security and Privacy Considerations</h2>
       <p>
       This specification defines an interface to the underling server and does not expose any platform capabilities by itself.
@@ -178,7 +178,7 @@
       </p>
       <p>
       One of possible implementation methods of VIAS would be as a form of JavaScript library.<br>
-      In that case, as a necessary security consideration, the JavaScript library *should* be provided from a trusted origin.
+      In that case, as a necessary security consideration, the JavaScript library SHOULD be provided from a trusted origin.
       Otherwise a malicious library could be loaded instead and any data goes through the library could be eavesdropped or tampered.
       Authorization tokens may goes through the library as well and if token leaking happens, security of the underlying server could be damaged.
       The underlying server itself should be considered as one of trusted origins from the VIAS JavaScript library implementation.
