@@ -97,7 +97,7 @@
   <body>
     <!-- Abstract -->
     <section id="abstract">
-  <p>This specification defines a higher level application interface for accessing to vehicle signals and data attributes.</p>
+  <p>This specification defines a high level API for accessing to vehicle signals and data attributes.</p>
   <p>The purpose of the specification is to promote a client implementation with a standard API that enables application development in a consistent manner across participating automotive manufacturers.</p>
     </section>
 
@@ -106,7 +106,7 @@
     </section>
 
     <!-- Introduction -->
-    <section>
+    <section id="introduction" class="informative">
       <h2>Introduction</h2>
       <p>The following documents the specification required for a high level API designed to interface with vehicle signals. This specification is responsible for the following:</p>
       <ul>
@@ -125,8 +125,10 @@
         <li>Exhibit good behavior with regard to socket allocation.</li>
         <li>Provide clear feedback on errors, especially those related to security credentials.</li>
       </ul>
-      <p>This API specification was originally designed assuming to communicate with 'in-vehicle' WebSocket based VIS(Vehicle Information Service) Server which defined in VISS spec, as a vehicle signal provider.
-      However at later phase, redefined as more abstract specification and the vehicle signal provider is not limited to WebSocket based VIS Server but other form of servers are also included in scope.</p>
+      <p>
+      This API specification is designed assuming to communicate with in-vehicle data servers which provides vehicle signals and data attributes.
+      The VIS server defined in VISS specification is a typical example of the server, however servers of other types which have appropriate functions should also be applicable.
+      </p>
     </section>
 
       <!-- Conformance -->
@@ -136,10 +138,11 @@
       <!-- Terminology -->
     <section id="terminology">
       <h2>Terminology</h2>
-      <p> The term 'VISS' is defined as 'Vehicle Information Service Specification' (see <a href="https://w3c.github.io/automotive/vehicle_data/vehicle_information_service.html">here</a>) which is under W3C recommendation process. The term 'VIS Server' means a server conforms to VISS spec.
+      <p> The term 'VISS' is used to refer to the 'Vehicle Information Service Specification' (see <a href="https://w3c.github.io/automotive/vehicle_data/vehicle_information_service.html">here</a>) which is in the process of developed in W3C Automotive Working Group along with this specification.
+      The term 'VIS Server' is used to refer to a server which conforms to the 'VISS' specification.
       </p>
-      <p> The term 'VIAS' is defined as 'Vehicle Information API Specification' which is this document.</p>
-      <p> The term 'VSS' is defined as 'Vehicle Signal Specification' (see <a href="https://github.com/GENIVI/vehicle_signal_specification/">here</a>) which is defined in Genivi alliance activity.
+      <p> The term 'VIAS' is used to refer to the 'Vehicle Information API Specification' which is this document.</p>
+      <p> The term 'VSS' is used to refer to the 'Vehicle Signal Specification' (see <a href="https://github.com/GENIVI/vehicle_signal_specification/">here</a>) which is defined in Genivi alliance activity.
       </p>
 
       <p>The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API (see <a href="https://www.w3.org/TR/2011/WD-websockets-20110929">here</a>) and the WebSocket Protocol (see <a href="https://tools.ietf.org/html/rfc6455">RFC6455</a>).</p>
@@ -153,7 +156,7 @@
     </section>
 
       <!-- Connection -->
-    <section id="connection" class="informative">
+    <section id="connection">
       <h2>Connection</h2>
       <p>
       This specification assumes a connection to a server provides vehicle signals in underlying layer.<br>
@@ -169,7 +172,7 @@
     </section>
 
     <!-- Security and privacy -->
-    <section id="security" class="informative">
+    <section id="security">
       <h2>Security and Privacy Considerations</h2>
       <p>
       This specification defines an interface to the underling server and does not expose any platform capabilities by itself.
