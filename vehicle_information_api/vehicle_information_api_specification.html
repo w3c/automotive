@@ -202,7 +202,7 @@
         void get(DOMString path, getCallback callback);
         void set(DOMString path, any value , setCallback callback);
         void subscribe(DOMString path, subscribeCallback callback, optional SubscribeFilters filters);
-        void unsubscribe(Subscription subscription, unsubscribeCallback callback);
+        void unsubscribe(VISSubscription subscription, unsubscribeCallback callback);
         void? disconnect();
       };
 
@@ -213,13 +213,13 @@
         attribute unsigned short? port;
       };
 
-      interface Value
+      interface VISValue
       {
         attribute any value;
         attribute DOMTimeStamp timestamp;
       };
 
-      interface Error
+      interface VISError
       {
         attribute unsigned short number;
         attribute DOMString? reason;
@@ -251,20 +251,20 @@
         <tr>
           <td><dfn>host</dfn></td>
           <td>String</td>
-          <td>(optional)</td>
+          <td>wwwivi</td>
           <td>hostname of the server</td>
         </tr>
         <tr>
           <td><dfn>protocol</dfn></td>
           <td>String</td>
-          <td>(optional)</td>
+          <td>wss</td>
           <td>
           protocol for the connection to a vehicle signal server. All the communications between the client and server MUST be appropriately encrypted. Therefore, in case of WebSocket, <code>'wss'</code> is required and in case of http, <code>'https'</code> is required. Non encrypted communication is not supported.</td>
         </tr>
         <tr>
           <td><dfn>port</dfn></td>
           <td>Integer</td>
-          <td>(optional)</td>
+          <td>443</td>
           <td>TCP port for the connection to a vehicle signal server.</td>
         </tr>
       </table>
@@ -277,13 +277,13 @@
       <pre class="idl">
       callback connectCallback = void ();
       callback disconnectCallback = void ();
-      callback errorCallback = void (Error error);
-      callback authorizeCallback = void (unsigned long TTL, Error error);
-      callback getVSSCallback = void (VSS vss, Error error);
-      callback getCallback = void (Value value, Error error);
-      callback setCallback = void (Error error);
-      callback subscribeCallback = void (Subscription subscription, Value value, Error error);
-      callback unsubscribeCallback = void (Error error);
+      callback errorCallback = void (VISError error);
+      callback authorizeCallback = void (unsigned long TTL, VISError error);
+      callback getVSSCallback = void (VSS vss, VISError error);
+      callback getCallback = void (VISValue value, VISError error);
+      callback setCallback = void (VISError error);
+      callback subscribeCallback = void (VISSubscription subscription, VISValue value, VISError error);
+      callback unsubscribeCallback = void (VISError error);
       </pre>
       <table class="parameters">
         <tr>
@@ -309,7 +309,7 @@
               <li>
                 <code>error_callback</code> (errorCallback) - A function called when an error which is not relevant to particular method except for connect() and disconnect() is occurred.
                 <ul>
-                  <li><code>error</code> (Error) - if an error which is not relevant to particular methods except for connect() and disconenct() occurred, it is passed here.</li>
+                  <li><code>error</code> (VISError) - if an error which is not relevant to particular methods except for connect() and disconenct() occurred, it is passed here.</li>
                 </ul>
               </li>
             </ul>
@@ -327,7 +327,7 @@
                 <code>callback</code> (authorizeCallback) - A function called when the operation is completed
                 <ul>
                   <li><code>TTL</code> (unsigned long) - The time-to-live value of the authorization, passed when authorization succeed.</li>
-                  <li><code>error</code> (Error) - If an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>error</code> (VISError) - If an error occurred, it is passed here, otherwise `null`</li>
                 </ul>
               </li>
             </ul>
@@ -342,7 +342,7 @@
                 <code>callback</code> (getVSSCallback) - A function called when the operation is completed
                 <ul>
                   <li><code>vss</code> (VSS) - A VSS object built from the server response</li>
-                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>error</code> (VISError) - if an error occurred, it is passed here, otherwise `null`</li>
                 </ul>
               </li>
             </ul>
@@ -358,8 +358,8 @@
               <li>
                 <code>callback</code> (getCallback) - A function called when the operation is completed
                 <ul>
-                  <li><code>value</code> (Value) - the value for the requested path.</li>
-                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>value</code> (VISValue) - the value for the requested path.</li>
+                  <li><code>error</code> (VISError) - if an error occurred, it is passed here, otherwise `null`</li>
                 <ul>
             </ul>
           </td>
@@ -374,7 +374,7 @@
               <li>
                 <code>callback</code> (setCallback) - A function called when the operation is completed
                 <ul>
-                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>error</code> (VISError) - if an error occurred, it is passed here, otherwise `null`</li>
                 </ul>
               </li>
             </ul>
@@ -382,7 +382,7 @@
         </tr>
         <tr>
           <td><dfn>subscribe(path, callback, filters)</dfn></td>
-          <td>subscribes to the given path with the filters provided and returns a Subscription object as defined below.
+          <td>subscribes to the given path with the filters provided and returns a VISSubscription object as defined below.
           After that, continuously returns the value of signals specified by 'path' by timing specified condition by 'filters'.
           </td>
           <td>
@@ -397,12 +397,12 @@
                 </ul>
                 This function will be passed:
                 <ul>
-                  <li><code>subscription</code> (Subscription) - the Subscription object representing the result of the call (see Subscription below)</li>
-                  <li><code>value</code> (Value) - the value for the subscribed path</li>
-                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>subscription</code> (VISSubscription) - the Subscription object representing the result of the call (see VISSubscription below)</li>
+                  <li><code>value</code> (VISValue) - the value for the subscribed path</li>
+                  <li><code>error</code> (VISError) - if an error occurred, it is passed here, otherwise `null`</li>
                 </ul>
               </li>
-              <li><code>filters</code> 
+              <li><code>filters</code>
               (SubscribeFilters) - applies a server-side filter to data sent. The structure of this option depends on underlying server's specification.
               </li>
             </ul>
@@ -413,11 +413,11 @@
           <td>Unsubscribe from the subscription passed.</td>
           <td>
             <ul>
-              <li><code>subscription</code> (Subscription) - the subscription object originally returned from the `subscribe()` function
+              <li><code>subscription</code> (VISSubscription) - the subscription object is obtained from callback function for `subscribe()` method
               <li>
                 <code>callback</code> (unsubscribeCallback) - A function called when the operation is completed
                 <ul>
-                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>error</code> (VISError) - if an error occurred, it is passed here, otherwise `null`</li>
                 </ul>
               </li>
             </ul>
@@ -439,8 +439,8 @@
         </tr>
       </table>
 
-      <h3>Value Interface</h3>
-      <p>Value conveys a vehicle signal or attribute value.</p>
+      <h3>VISValue Interface</h3>
+      <p>VISValue conveys a vehicle signal or attribute value.</p>
       <table class="parameters">
         <tr>
           <th>Parameter</th>
@@ -463,7 +463,7 @@
         </tr>
       </table>
 
-      <h3>Error Interface</h3>
+      <h3>VISError Interface</h3>
       <p>
       Error number, reason, message represents both of client-side and server-side error. Server-side error difinition depends on underlying server.
       Client-side error definition is implementation dependent and not defined in this document.
@@ -538,28 +538,30 @@
     </section>
 
     <section id="subscription-object">
-      <h2><code>Subscription</code> Interface</h2>
+      <h2><code>VISSubscription</code> Interface</h2>
       <pre class="idl">
       [Constructor]
-      interface Subscription {
+      interface VISSubscription {
         readonly attribute DOMString path;
-        readonly attribute SubscribeFilters? filters;
+        readonly attribute VISSubscribeFilters? filters;
       };
 
-      interface SubscribeFilters {
+      interface VISSubscribeFilters {
         attribute unsigned long? interval;
-        attribute SubscribeRange? range;
+        attribute VISSubscribeRange? range;
         attribute unsigned long? minChange;
       };
 
-      interface SubscribeRange {
+      interface VISSubscribeRange {
         attribute long? below;
         attribute long? above;
       };
       </pre>
 
-      <p>The Subscription object is not created directly, but is returned as part of the <code>VISClient#subscribe()</code> function discussed above.  Once created the object can be used to access the original options and to pass to the `VISClient#unsubscribe()` function.  The Subscription object does not expose any functions directly, but contains the following properties:</p>
-      <p>Subscriptions are immutable once created.</p>
+      <p>The VISSubscription object is not created directly, but is returned as part of the <code>VISClient#subscribe()</code> function discussed above.
+      Once created the object can be used to access the original options and to pass to the `VISClient#unsubscribe()` function.
+      The Subscription object does not expose any functions directly, but contains the following properties:</p>
+      <p>VISSubscriptions are immutable once created.</p>
 
       <table class="parameters">
         <tr>
@@ -600,7 +602,7 @@
             minChange: 50
           };
 
-          client.subscribe('body.mirrors.left', filters, (val, err1, speedSub) => {
+          client.subscribe('body.mirrors.left', (val, err1, speedSub) => {
             if (err1) {
               console.err(`Error while creating subscription: ${err1}`);
               return
@@ -615,7 +617,7 @@
                 console.err(`Error while unsubscribing: ${err2}`);
               }
             });
-          });
+          }, filters);
         };
 
         client.connect();
