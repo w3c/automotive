@@ -126,7 +126,7 @@
         <li>Provide clear feedback on errors, especially those related to security credentials.</li>
       </ul>
       <p>
-      This API specification is designed assuming to communicate with in-vehicle data servers which provides vehicle signals and data attributes.
+      This API specification is designed assuming to communicate with in-vehicle data servers which provide vehicle signals and data attributes.
       The VIS server defined in VISS specification is a typical example of the server, however servers of other types which have appropriate functions should also be applicable.
       </p>
     </section>
@@ -194,21 +194,16 @@
 
       <pre class="idl">
       [Constructor(optional VISClientOptions options)]
-      interface VISClient : EventTarget
+      interface VISClient
       {
-        attribute Function? onConnect;
-        attribute Function? onMessage;
-        attribute Function? onError;
-        attribute Function? onDisconnect;
-
-        void? connect(connectCallback callback);
+        void? connect(connectCallback connect_callback, disconnectCallback disconnect_callback, errorCallback error_callback);
         void authorize(DOMString tokens, authorizeCallback callback);
         void getVSS(getVSSCallback callback);
         void get(DOMString path, getCallback callback);
         void set(DOMString path, any value , setCallback callback);
         void subscribe(DOMString path, subscribeCallback callback, optional SubscribeFilters filters);
         void unsubscribe(Subscription subscription, unsubscribeCallback callback);
-        void? disconnect(disconnectCallback callback);
+        void? disconnect();
       };
 
       interface VISClientOptions
@@ -274,81 +269,21 @@
         </tr>
       </table>
 
-      <h3>Handler Attributes</h3>
-      <p>These define the functions called throughout the lifecycle of the client.  These can be set or changed after initializtion and connection.</p>
-
-      <table class="parameters">
-        <tr>
-          <th>Parameter</th>
-          <th>Description</th>
-        </tr>
-        <tr>
-          <td><dfn>onConnect</dfn></td>
-          <td>
-            function called when the client is connected.<br>
-            This handler is optional since this is meaningful in case of 'connection-oriented' communication only.<br>
-            This function will be passed:
-            <ul>
-              <li><code>client</code> (VISClient) - a reference of the VISClient object</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td><dfn>onMessage</dfn></td>
-          <td>
-            function that is called when any message is received.
-            This provide a low-level access to the underlying data and is most likely not used in most cases only.<br>
-            This handler is optional since this is not an essential function.
-            This function will be passed:
-            <ul>
-              <li><code>client</code> (VISClient) - a reference of the VISClient object</li>
-              <li><code>message</code> (Object) - the message body that was received. Message body format detail depend on underlying server's specification and not defined in this document.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td><dfn>onError</dfn></td>
-          <td>
-            function called when a connection error occurs.<br>
-            This handler is optional since this is defined to handle connection errors and therefore meaningful in case of 'connection-oriented' communication only<br>
-            This function will be passed:
-            <ul>
-              <li><code>client</code> (VISClient) - a reference of the VISClient object</li>
-              <li><code>error</code>
-              (Error) - the error that occurred.
-              In the case of server-side errors, this error object will be a direct representation of the server-side errors.
-              For client-side errors, the representation will be implementation-dependent.
-              </li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td><dfn>onDisconnect</dfn></td>
-          <td>
-            function called when the client is disconnected.<br>
-            This handler is optional since this is meaningful in case of 'connection-oriented' communication only.<br>
-            This function will be passed:
-            <ul>
-              <li><code>client</code> (VISClient) - a reference of the VISClient object</li>
-            </ul>
-          </td>
-        </tr>
-      </table>
-
       <h3>Methods</h3>
       <p>Once created, a client provides several functions for interacting with the server.</p>
 
       <p>Many of the functions listed below require a `path` string to be passed that identifies the portion of the VSS that is being referenced. See VSS below for how to generate this string based on traversing the VSS tree.</p>
 
       <pre class="idl">
-      callback connectCallback = void (Error error);
-      callback authorizeCallback = void (Error error, unsigned long TTL);
-      callback getVSSCallback = void (Error error, VSS vss);
-      callback getCallback = void (Error error, Value value);
+      callback connectCallback = void ();
+      callback disconnectCallback = void ();
+      callback errorCallback = void (Error error);
+      callback authorizeCallback = void (unsigned long TTL, Error error);
+      callback getVSSCallback = void (VSS vss, Error error);
+      callback getCallback = void (Value value, Error error);
       callback setCallback = void (Error error);
-      callback subscribeCallback = void (Error error, Subscription subscription, Value value);
+      callback subscribeCallback = void (Subscription subscription, Value value, Error error);
       callback unsubscribeCallback = void (Error error);
-      callback disconnectCallback = void (Error error);
       </pre>
       <table class="parameters">
         <tr>
@@ -357,17 +292,24 @@
           <th>Paramters</th>
         </tr>
         <tr>
-          <td><dfn>connect(callback)</dfn></td>
+          <td><dfn>connect(connnect_callback, disconnect_callback, error_callback)</dfn></td>
           <td>
           Initializes the connection with the server.<br>
-          This callback is optional since this is meaningful in case of 'connection-oriented' communication only.<br>
+          Use of this method is optional since this is meaningful in case of 'connection-oriented' communication only.<br>
           </td>
           <td>
             <ul>
               <li>
-                <code>callback</code> (connectCallback) - A function called when the operation is completed
+                <code>connect_callback</code> (connectCallback) - A function called when the connection is successfully established.<br>
+              </li>
+              <li>
+                <code>disconnect_callback</code> (disconnectCallback) - A function called when the connection is disconnected.<br>
+                This callback is invoked at server disconnection by any reason including execution of disconnect() method.
+              </li>
+              <li>
+                <code>error_callback</code> (errorCallback) - A function called when an error which is not relevant to particular method except for connect() and disconnect() is occurred.
                 <ul>
-                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>error</code> (Error) - if an error which is not relevant to particular methods except for connect() and disconenct() occurred, it is passed here.</li>
                 </ul>
               </li>
             </ul>
@@ -384,8 +326,8 @@
               <li>
                 <code>callback</code> (authorizeCallback) - A function called when the operation is completed
                 <ul>
-                  <li><code>error</code> (Error) - If an error occurred, it is passed here, otherwise `null`</li>
                   <li><code>TTL</code> (unsigned long) - The time-to-live value of the authorization, passed when authorization succeed.</li>
+                  <li><code>error</code> (Error) - If an error occurred, it is passed here, otherwise `null`</li>
                 </ul>
               </li>
             </ul>
@@ -399,8 +341,8 @@
               <li>
                 <code>callback</code> (getVSSCallback) - A function called when the operation is completed
                 <ul>
-                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
                   <li><code>vss</code> (VSS) - A VSS object built from the server response</li>
+                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
                 </ul>
               </li>
             </ul>
@@ -416,8 +358,8 @@
               <li>
                 <code>callback</code> (getCallback) - A function called when the operation is completed
                 <ul>
-                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
                   <li><code>value</code> (Value) - the value for the requested path.</li>
+                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
                 <ul>
             </ul>
           </td>
@@ -455,9 +397,9 @@
                 </ul>
                 This function will be passed:
                 <ul>
-                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
                   <li><code>subscription</code> (Subscription) - the Subscription object representing the result of the call (see Subscription below)</li>
                   <li><code>value</code> (Value) - the value for the subscribed path</li>
+                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
                 </ul>
               </li>
               <li><code>filters</code> 
@@ -482,19 +424,16 @@
           </td>
         </tr>
         <tr>
-          <td><dfn>disconnect(callback)</dfn></td>
+          <td><dfn>disconnect()</dfn></td>
           <td>
-          Closes the connection.  The same client can be used again by calling the `connect()` function, but subscriptions, authorization, and other state will not persist after a disconnection.<br>
-          This callback is optional since this is meaningful in case of 'connection-oriented' communication only.<br>
+          Closes the connection.
+          This method does not take a callback function as an argument since callback for disconnection should be already set by connect() method.<br>
+          The same client can be used again by calling the `connect()` function, but subscriptions, authorization, and other state will not persist after a disconnection.<br>
+          Use of this method is optional since this is meaningful in case of 'connection-oriented' communication only.<br>
           </td>
           <td>
             <ul>
-              <li>
-                <code>callback</code> (disconnectCallback) - A function called when the operation is completed
-                <ul>
-                  <li><code>error</code> (Error) - if an error occurred, it is passed here, otherwise `null`</li>
-                </ul>
-              </li>
+            No parameters
             </ul>
           </td>
         </tr>
