@@ -305,21 +305,14 @@
             <ul>
               <li>
                 <code>connectCallback</code> (connectCallback) - A function called when the connection is successfully established.<br>
-                <ul>
-                  <li><code>client</code> (VISClient) - reference to VISClient.</li>
-                </ul>
               </li>
               <li>
                 <code>disconnectCallback</code> (disconnectCallback) - A function called when the connection is disconnected.<br>
                 This callback is invoked at server disconnection by any reason including execution of disconnect() method.
-                <ul>
-                  <li><code>client</code> (VISClient) - reference to VISClient.</li>
-                </ul>
               </li>
               <li>
                 <code>errorCallback</code> (errorCallback) - A function called when an error which is not relevant to particular method except for connect() and disconnect() is occurred.
                 <ul>
-                  <li><code>client</code> (VISClient) - reference to VISClient.</li>
                   <li><code>error</code> (VISError) - if an error which is not relevant to particular methods except for connect() and disconenct() occurred, it is passed here.</li>
                 </ul>
               </li>
