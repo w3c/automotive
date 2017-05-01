@@ -196,13 +196,17 @@
       [Constructor(optional VISClientOptions options)]
       interface VISClient
       {
-        void? connect(connectCallback connect_callback, disconnectCallback disconnect_callback, errorCallback error_callback);
-        void authorize(DOMString tokens, authorizeCallback callback);
-        void getVSS(getVSSCallback callback);
-        void get(DOMString path, getCallback callback);
-        void set(DOMString path, any value , setCallback callback);
-        void subscribe(DOMString path, subscribeCallback callback, optional SubscribeFilters filters);
-        void unsubscribe(VISSubscription subscription, unsubscribeCallback callback);
+        readonly attribute DOMString? host;
+        readonly attribute DOMString? protocol;
+        readonly attribute unsigned short? port;
+
+        void? connect(ConnectCallback connectCallback, DisconnectCallback disconnectCallback, ErrorCallback errorCallback);
+        void authorize(DOMString tokens, AuthorizeCallback callback);
+        void getVSS(GetVSSCallback callback);
+        void get(DOMString path, GetCallback callback);
+        void set(DOMString path, any value , SetCallback callback);
+        void subscribe(DOMString path, SubscribeCallback callback, optional SubscribeFilters filters);
+        void unsubscribe(VISSubscription subscription, UnsubscribeCallback callback);
         void? disconnect();
       };
 
@@ -216,7 +220,7 @@
       interface VISValue
       {
         attribute any value;
-        attribute DOMTimeStamp timestamp;
+        attribute DOMTimeStamp timeStamp;
       };
 
       interface VISError
@@ -224,7 +228,7 @@
         attribute unsigned short number;
         attribute DOMString? reason;
         attribute DOMString? message;
-        attribute DOMTimeStamp timestamp;
+        attribute DOMTimeStamp timeStamp;
       };
       </pre>
 
@@ -275,15 +279,15 @@
       <p>Many of the functions listed below require a `path` string to be passed that identifies the portion of the VSS that is being referenced. See VSS below for how to generate this string based on traversing the VSS tree.</p>
 
       <pre class="idl">
-      callback connectCallback = void ();
-      callback disconnectCallback = void ();
-      callback errorCallback = void (VISError error);
-      callback authorizeCallback = void (unsigned long TTL, VISError error);
-      callback getVSSCallback = void (VSS vss, VISError error);
-      callback getCallback = void (VISValue value, VISError error);
-      callback setCallback = void (VISError error);
-      callback subscribeCallback = void (VISSubscription subscription, VISValue value, VISError error);
-      callback unsubscribeCallback = void (VISError error);
+      callback ConnectCallback = void ();
+      callback DisconnectCallback = void ();
+      callback ErrorCallback = void (VISError error);
+      callback AuthorizeCallback = void (unsigned long TTL, VISError error);
+      callback GetVSSCallback = void (VSS vss, VISError error);
+      callback GetCallback = void (VISValue value, VISError error);
+      callback SetCallback = void (VISError error);
+      callback SubscribeCallback = void (VISSubscription subscription, VISValue value, VISError error);
+      callback UnsubscribeCallback = void (VISError error);
       </pre>
       <table class="parameters">
         <tr>
@@ -292,7 +296,7 @@
           <th>Paramters</th>
         </tr>
         <tr>
-          <td><dfn>connect(connnect_callback, disconnect_callback, error_callback)</dfn></td>
+          <td><dfn>connect(connnectCallback, disconnectCallback, errorCallback)</dfn></td>
           <td>
           Initializes the connection with the server.<br>
           Use of this method is optional since this is meaningful in case of 'connection-oriented' communication only.<br>
@@ -300,14 +304,14 @@
           <td>
             <ul>
               <li>
-                <code>connect_callback</code> (connectCallback) - A function called when the connection is successfully established.<br>
+                <code>connectCallback</code> (connectCallback) - A function called when the connection is successfully established.<br>
               </li>
               <li>
-                <code>disconnect_callback</code> (disconnectCallback) - A function called when the connection is disconnected.<br>
+                <code>disconnectCallback</code> (disconnectCallback) - A function called when the connection is disconnected.<br>
                 This callback is invoked at server disconnection by any reason including execution of disconnect() method.
               </li>
               <li>
-                <code>error_callback</code> (errorCallback) - A function called when an error which is not relevant to particular method except for connect() and disconnect() is occurred.
+                <code>errorCallback</code> (errorCallback) - A function called when an error which is not relevant to particular method except for connect() and disconnect() is occurred.
                 <ul>
                   <li><code>error</code> (VISError) - if an error which is not relevant to particular methods except for connect() and disconenct() occurred, it is passed here.</li>
                 </ul>
@@ -455,7 +459,7 @@
           </td>
         </tr>
         <tr>
-          <td>timestamp</td>
+          <td>timeStamp</td>
           <td>DOMTimeStamp</td>
           <td>
             The Coordinated Universal Time (UTC) time that the server returned the response (expressed as number of milliseconds.)
@@ -496,7 +500,7 @@
           </td>
         </tr>
         <tr>
-          <td>timestamp</td>
+          <td>timeStamp</td>
           <td>DOMTimeStamp</td>
           <td>
             The Coordinated Universal Time (UTC) time that the server returned the response (expressed as number of milliseconds.)
@@ -505,7 +509,6 @@
       </table>
 
       <h3>Example</h3>
-
       <pre class="example">
         const client = new VISClient({
           host: 'vehicle-server.local',
@@ -513,13 +516,9 @@
           port: 3241,
         });
 
-        client.onError = (_client, error) => {
-          console.err(`Error with client in ${_client.state}: ${error}`);
-        };
-
-        client.onConnect = (_client) => {
-          console.log(`Connected to ${_client.protocol}://${_client.host}:${_client.port}`);
-          _client.authorize(/* TOKEN */, (err, ttl) => {
+        const connectCallback = () => {
+          console.log(`Connected to ${client.protocol}://${client.host}:${client.port}`);
+          client.authorize(/* TOKEN */, (err, ttl) => {
             if(err) {
               console.err('Authorize failed with provided token.');
               return;
@@ -528,12 +527,16 @@
           })
         };
 
-        client.connect((err) => {
-          if (err) {
-            console.err(`Error while connecting: ${err}`);
-            return;
-          }
-        });
+        const disconnectCallback = () => {
+          console.err(`Server disconnected. Try reconnect.`);
+          client.connect(connect_callback, disconnect_callback, error_callback);
+        };
+
+        const errorCallback = (error) => {
+          console.err(`Error : ${error.number}`);
+        };
+
+        client.connect(connectCallback, disconnectCallback, errorCallback);
       </pre>
     </section>
 
@@ -591,11 +594,10 @@
       </table>
 
       <h3>Example</h3>
-
       <pre class="example">
         const client = new VISClient({ host: 'vehicle-server.local' });
 
-        client.onConnect = () => {
+        const connectCallback = () => {
           const filters = {
             interval: 100,
             range: { above: 100, below: 200 },
@@ -604,7 +606,7 @@
 
           client.subscribe('body.mirrors.left', (val, err1, speedSub) => {
             if (err1) {
-              console.err(`Error while creating subscription: ${err1}`);
+              console.err(`Error while creating subscription: ${err1.number}`);
               return
             }
             if (val) {
@@ -614,14 +616,15 @@
             /* ... after some time or some event, unsubscribe from the subscription: */
             client.unsubscribe(speedSub, (err2) => {
               if (err2) {
-                console.err(`Error while unsubscribing: ${err2}`);
+                console.err(`Error while unsubscribing: ${err2.number}`);
               }
             });
           }, filters);
         };
 
-        client.connect();
+        client.connect(connectCallback);
       </pre>
+
     </section>
 
     <section id='vss-object'>
@@ -667,10 +670,13 @@
       </table>
 
       <h3>Example</h3>
-
       <pre class="example">
-        const openWindow = (_client) => {
-          _client.getVSS((err, vss) => {
+        const client = new VISClient({
+          host: 'vehicle-server.local',
+        });
+
+        const openWindow = () => {
+          client.getVSS((err, vss) => {
             const paths = vss.pathsByCSS('Row1 Left Window > Position');
             if (!paths.length) {
               console.err('Could not find front-left window in VSS');
@@ -678,7 +684,7 @@
             }
 
             if (vss.canSet(paths[0])) {
-              _client.set(paths[0], 0, (err) => {
+              client.set(paths[0], 0, (err) => {
                 if (!err) {
                   console.log(`Set window ${paths[0]} to open`);
                 }
@@ -689,16 +695,8 @@
           });
         }
 
-        const client = new VISClient({
-          host: 'vehicle-server.local',
-        });
-        client.onConnect = openWindow;
-
-        client.connect();
+        client.connect(openWindow);
       </pre>
     </section>
-
-
-
   </body>
 </html>
