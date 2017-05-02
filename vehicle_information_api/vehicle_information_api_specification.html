@@ -186,6 +186,11 @@
       Authorization tokens may goes through the library as well and if token leaking happens, security of the underlying server could be damaged.
       The underlying server itself should be considered as one of trusted origins from the VIAS JavaScript library implementation.
       </p>
+      <p>
+      Some part of vehicle data is considered as privacy sensitive and client programs SHOULD treat these data with respect to the user's right.
+      As a privacy protection enforcer, the VIAS implementation MUST obtain user's permision for exposing vehicle data to a client program.
+      If the implementation have an exceptional behavior to treat private information in emergent cases, the behavior also SHOULD be covered by the permission.
+      </p>
     </section>
 
     <!-- JavaScript Interface -->
