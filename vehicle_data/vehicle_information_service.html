@@ -975,7 +975,7 @@ function subscriptionHandler(msg){
 		}
 	</pre>
 
-  <p>This specification purposely does not define the token structure and the methods to secure tokens. Providers of the server may choose their own preferred formats and security methods. The server may also treat tokens as opaque structures and pass them on to underlying software layers for evaluation.</p>
+  <p>This specification purposely does not define the token structure and the methods to obtain token(s). Providers of the server implementation may select their own preferred token format and method for verifying the authenticity of token(s) passed to the server. The server may also treat tokens as opaque structures and pass them on to underlying software layers for evaluation.</p>
 
   <p>It is expected that client and server use the same token format. If a client presents a token using a 
 	    format that is not understood by the server, the server rejects the token.</p>
