@@ -975,34 +975,9 @@ function subscriptionHandler(msg){
 		}
 	</pre>
 
-    <p>This specification purposely does not define the token structure and the methods to secure tokens. Providers of the server may choose their own preferred formats and security methods. The server may also treat tokens as opaque structures and pass them on to underlying software layers for evaluation.</p>
+  <p>This specification purposely does not define the token structure and the methods to obtain token(s). Providers of the server implementation may select their own preferred token format and method for verifying the authenticity of token(s) passed to the server. The server may also treat tokens as opaque structures and pass them on to underlying software layers for evaluation.</p>
 
-    <p>While this specification does not mandate the token format and structure it SHALL at least contain the following elements to provide meaningful authorization:</p>
-
-    <table class="parameters">
-      <tr>
-        <th>Element</th>
-        <th>Description</th>
-      </tr>
-      <tr>
-        <td>Path</td>
-        <td>The signal path (defined <a href="#dfn-path">here</a>) the token authorizes. The path may be a branch name or contain wildcards to authorize entire branches.</td>
-      </tr>
-      <tr>
-        <td> <dfn>Actions</dfn></td>
-        <td>List of actions that the token authorizes for the path. The list contains at least one of the actions <a>getVSS</a>, <a>get</a>, <a>set</a>, <a>subscribe</a>, <a>subscription</a> and <a>unsubscribe</a>.</td>
-      </tr>
-      <tr>
-        <td> <dfn>Valid From</dfn></td>
-        <td>Timestamp in UTC indicating the date and time from which on the token is valid.</td>
-      </tr>
-      <tr>
-        <td> <dfn>Valid Until</dfn></td>
-        <td>Tmestamp in UTC indicating the date and time until which the token is valid.</td>
-      </tr>
-    </table>
-
-    	<p>It is expected that client and server use the same token format. If a client presents a token using a 
+  <p>It is expected that client and server use the same token format. If a client presents a token using a 
 	    format that is not understood by the server, the server rejects the token.</p>
 	      
 	<p>In order to make dictionary attacks more difficult, authentication will be denied after a number of failed authentication 
