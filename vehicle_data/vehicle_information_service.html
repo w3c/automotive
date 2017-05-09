@@ -305,6 +305,11 @@ function subscriptionHandler(msg){
       <!-- Terminology -->
       <section id="terminology">
 	<h2>Terminology</h2>
+  <p> The term 'VISS' is used to refer to this document, the 'Vehicle Information Service Specification'. The term 'VIS Server' is used to refer to a server which conforms to the 'VISS' specification.</p>
+  <p> The term 'VIAS' is used to refer to the 'Vehicle Information API Specification' (see <a href="https://w3c.github.io/automotive/vehicle_information_api/vehicle_information_api_specification.html">here</a>) which has been developed alongside the VISS to expose a client API which can implement the VISS.</p>
+  <p> The term 'VSS' is used to refer to the 'Vehicle Signal Specification' (see <a href="https://github.com/GENIVI/vehicle_signal_specification/">here</a>) which is defined by the GENIVI Alliance.
+  </p>
+
  	<p>The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API
  	(see <a href="https://www.w3.org/TR/2011/WD-websockets-20110929">here</a>) and the WebSocket Protocol
  	(see <a href="https://tools.ietf.org/html/rfc6455">RFC6455</a>).</p>
@@ -525,9 +530,9 @@ function subscriptionHandler(msg){
       </section>
 
 
-      <!-- Initialisation of the Web Socket -->
+      <!-- Initialisation of the WebSocket -->
       <section>
-	<h3>Initialisation of the Web Socket</h3>
+	<h3>Initialisation of the WebSocket</h3>
 
 	<p>If the client application is an HTML Application running in a web
 	runtime or is a web page running in a browser, the WebSocket
@@ -2030,7 +2035,7 @@ function subscriptionHandler(msg){
       </section>
 
       <section>
-	<h3>Web Socket Closure</h3>
+	<h3>WebSocket Closure</h3>
 	<p>The WebSocket may be closed by either the client or the
 	server by invoking the ‘close()’ method on the WebSocket
 	instance.</p>
