@@ -1138,6 +1138,42 @@ function subscriptionHandler(msg){
   }
   </pre>
 
+  <p>The following data flow example shows a request for the VSS structure within the Attribute.Body branch of the VSS. The example assumes the VSS contains two leaf nodes within the Attribute.Body branch.</p>
+    <pre class="highlight hljs javascript">
+  client -> {
+    "action": "getVSS",
+    "path": "Attribute.Body",
+    "requestId": "3875"
+  }
+  receive <- {
+    "action": "getVSS",
+    "requestId": "3875",
+    "vss": { "Attribute": {
+        "description": "Attribute signals that do not change during the power cycle of a vehicle.",
+        "type": "branch",
+        "children": {
+          "Body": {
+            "description": "All body components",
+            "type": "branch",
+            "children": {
+              "BodyType": {
+                "description": "Body type code as defined by ISO 3779",
+                "type": "string"
+              },
+              "RefuelPosition": {
+                "description": "Location of the fuel cap or charge port",
+                "type": "string",
+                "enum": ["front_left", "front_right", "middle_left", "middle_right", "rear_left", "rear_right"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "timestamp": &lt;DOMTimeStamp&gt;
+  }
+  </pre>
+
 
 	<h2>Get</h2>
 	<p>The client MAY send a 'getRequest' message to the server to get the value of one or more vehicle signals and data
