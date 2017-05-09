@@ -147,12 +147,10 @@
       via a RESTful web service but this is out of scope for this version of the specification.</p>
 
       <p>It is recommended that this Vehicle Information Service Specification (VISS) is read in conjunction with the W3C Vehicle 
-      Information API Specification (VIAS). The Vehicle Information API Specification defines a client API that wraps the data access 
+      Information API Specification (VIAS). The VIAS defines a client API that wraps the data access 
       and security primitives defined in this Service Specification. It has been defined to support the development of  
-      'standards-compliant' JavaScript libraries that can be used by web based clients.</p>
-      <p>The Vehice Information Service API MAY be invoked directly, the following example illustrates how a client could invoke the VISS API.
-      This simplified example is for illustrative purposes only, it does not show error handling and is not
-	intended to be commercial code.</p>
+      'standards-compliant' JavaScript libraries that can be used by web based clients.</p> 
+     <p>Use of the VIAS is optional as any client that can instantiate a WebSocket may connect to the VIS Server directly. The following example is for illustrative purposes only, it does not show error handling and is not intended to be commercial code.</p>
 
  <pre class="example highlight">
 // Open the WebSocket
@@ -301,7 +299,7 @@ function subscriptionHandler(msg){
       <!-- Architecture -->
       <section id="architecture" class="informative">
         <h2>Architecture</h2>
-        <h3>Introduction</h3>
+        <h3>Overview</h3>
       <p>In a typical vehicle design, signals and data are transmitted between Electronic Control Units (ECUs) connected
       via internal vehicle networks. These include Controller Area Networks (CAN), Media Oriented Systems Transport (MOST)
       and Local Interconnect Networks (LIN). ECUs on these networks broadcast messages on network buses, and other ECUs on the
