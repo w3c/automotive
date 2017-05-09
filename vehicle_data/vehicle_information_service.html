@@ -2059,10 +2059,6 @@ function subscriptionHandler(msg){
         	"requestId": "&lt;some_unique_value&gt;" }
       </pre>
 
-      <p>When the range filter is used a final message is sent when the value returned is outside
-      of the specified range. For example, if the range states { "below": 100 }, a final value may
-      be received at 101 to indicate that the value is now out of range.</p>
-
       <p>The client should not specify a minimum change amount that is smaller than it needs - in order to prevent
 	adding unnecessary load on the server. The server shall return a '429 - Too Many Request' error response if
 	it is unable to fulfil the request made by the client.</p>
