@@ -2091,16 +2091,22 @@ vehicle.close();
         The error message is used to provide message text describing the cause in more detail.</p>
 
 	<pre class="highlight hljs javascript">
-	client -> { "action": "subscribe",
-		"filters": { "&lt;filter_expression&gt;" },
-		"path": "&lt;any_vss_path&gt;",
-		"requestId": "&lt;some_unique_value&gt;" }
-	receive on error <- {
-		"error":{ "number": "&lt;error_num&gt;",
-			"reason": "&lt;error_reason&gt;",
-			"message": "&lt;error_message&gt;" },
-		"path": "&lt;any_vss_path&gt;",
-		"requestId": "&lt;some_unique_value&gt;" }
+      client -> { 
+        "action": "subscribe",
+      	"filters": { "&lt;filter_expression&gt;" },
+      	"path": "&lt;any_vss_path&gt;",
+      	"requestId": "&lt;some_unique_value&gt;" 
+      }
+      receive on error <- {
+          "action": "subscribe",
+          "requestId": "&lt;some_unique_value&gt;",
+          "error":{ 
+            "number": "&lt;error_num&gt;",
+            "reason": "&lt;error_reason&gt;",
+            "message": "&lt;error_message&gt;" 
+          },
+          "timestamp": "&lt;DOMTimeStamp&gt;" 
+        }
 	</pre>
 	<p>The server implementation supports at least the error numbers and reasons listed in the table below.</p>
 	<table class="parameters">
