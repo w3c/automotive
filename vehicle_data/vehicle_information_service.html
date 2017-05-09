@@ -341,11 +341,6 @@ function subscriptionHandler(msg){
       manner to the VIS Server. The interface and communication mechanisms that are used between the vehicle System and
       the VIS Server are outside of the scope of this specification.</p>
 
-      <figure>
-        <img src="images/W3C_Vehicle_APIs_Component_Diagram_v1_4.png" alt="Component diagram showing W3C Vehicle Information APIs">
-        <figcaption>Diagram showing Components that implement the W3C Vehicle Information APIs and their clients</figcaption>
-      </figure>
-
       <h3>VIS Server</h3>
       <p>The <dfn>VIS Server</dfn> is the vehicle system that is responsible for exposing vehicle signals and data to
       its clients by implementing the interface and behaviours defined in this <dfn>Vehicle Information Service Specification (VISS)</dfn>.</p>
@@ -357,21 +352,26 @@ function subscriptionHandler(msg){
       repeated until <dfn>leaf nodes</dfn> are reached. A 'leaf node' is a node at the end of a branch that cannot be decomposed
       because it represents a single signal or data attribute value. An example VSS tree is shown below, its contents are illustrative:</p>
 
-      <figure>
-        <img src="images/VSS_Tree_Simple_Example_v1.png" alt="Diagram showing an example Vehicle Signal tree">
-        <figcaption>Diagram showing an example Vehicle Signal Tree</figcaption>
-      </figure>
-
       <p>Signals are named according to their path using the dot notation e.g. engine.rpm.</p>
 
       <p>The client MAY invoke the VIS Server's <a>getVSS</a> method to request that the server returns metadata that
       describes which signals and data attributes could potentially be accessed provided that the user and/or device is suitably
       authorized. This and other valid VIS Server actions are defined in more detail <a href="#action">here</a>.</p>
 
+      <figure>
+        <img src="images/W3C_Vehicle_APIs_Component_Diagram_v1_5.png" alt="Component diagram showing W3C Vehicle Information APIs">
+        <figcaption>Diagram showing Components that implement the W3C Vehicle Information APIs and their clients</figcaption>
+      </figure>
+      
       <h3>In-Vehicle Clients</h3>
       <p>In-vehicle clients include both those clients that are running on an ECU in the vehicle itself,
       e.g. an ECU that implements an In Vehicle Infotainment (IVI) system, but also includes clients running on a user's
       device, e.g. a laptop, phone or tablet, that is connected via the vehicle's WiFi client (if one exists).</p>
+
+      <figure>
+        <img src="images/VSS_Tree_Simple_Example_v1.png" alt="Diagram showing an example Vehicle Signal tree">
+        <figcaption>Diagram showing an example Vehicle Signal Tree</figcaption>
+      </figure>
 
       <p>The methods defined on the VIS Server interface may be invoked by different types of on-board and off-board clients.
       On-board clients, running on the vehicle fall into one of two major categories:</p>
