@@ -136,7 +136,7 @@
          That is, it can vary based on the identity of the user (person or organisation) requesting the data and/or the application or 
 	 device (e.g. vehicle) where the request originates.</p>
 
-      <p>To support this, the Service Specification describes an extensible token based security mechanism that can optionally be used to pass tokens to the WebSocket Server,
+      <p>To support this, the Service Specification describes an extensible token based security mechanism that can optionally be used to pass tokens to the VIS Server,
         for example to represent the user of an application and/or the device that the client application is running on.</p>
 
       <p>A future revision of this specification may consider additionally exposing vehicle signals
@@ -144,7 +144,7 @@
 
       <p>A component or module running on the vehicle SHALL create a WebSocket instance which will listen for an inbound
       connection request from a client to enable secure access to vehicle signals. In this specification this module is referred
-      to as the 'WebSocket Vehicle Information Service' (WVIS) or for simplicity as 'the server'.</p>
+      to as the VIS Server or just 'the server'.</p>
 
       <p>This specification assumes that a single WebSocket is used to enable communication between a client application
       and the server. It is not explicitly prohibited for the client to request that the server opens more than one WebSocket,
@@ -229,7 +229,7 @@ function closeSocket(){
   vehicle.close();
 }
   </pre>
-  <p>Once the WebSocket connection has been established, the client is able to retrieve the VSS from the server and request signals for the clients current level of authentication.</p>
+  <p>Once the WebSocket connection has been established, the client is able to retrieve the VSS from the server and request signals for the client's current level of authentication.</p>
   <pre class="example highlight">
 // Request the entire VSS tree
 function requestVSS(){
@@ -299,7 +299,7 @@ function subscriptionHandler(msg){
       <section id="conformance">
 	<p>This specification defines conformance criteria that apply to a single product: specifically the 'in-vehicle'
 	WebSocket <dfn>Vehicle Information Service</dfn> that implements the interfaces, semantics and behaviour
-	defined in this document. For simplicity, this usually is referred to as the 'WebSocket Server' or just 'the server'</p>
+	defined in this document. For simplicity, this usually is referred to as the 'VIS Server' or just 'the server'</p>
       </section>
 
       <!-- Terminology -->
@@ -333,19 +333,19 @@ function subscriptionHandler(msg){
       whilst 'static data' or simply 'data' is used for a value that does not change e.g. vehicle length.</p>
 
       <p>The vehicle signals and static data that are available within the vehicle System are exposed in a controlled
-      manner to the Web Socket Server. The interface and communication mechanisms that are used between the vehicle System and
-      the Web Socket Server are outside of the scope of this specification.</p>
+      manner to the VIS Server. The interface and communication mechanisms that are used between the vehicle System and
+      the VIS Server are outside of the scope of this specification.</p>
 
       <figure>
         <img src="images/W3C_Vehicle_APIs_Component_Diagram_v1_4.png" alt="Component diagram showing W3C Vehicle Information APIs">
         <figcaption>Diagram showing Components that implement the W3C Vehicle Information APIs and their clients</figcaption>
       </figure>
 
-      <h3>WebSocket Server</h3>
-      <p>The <dfn>WebSocket Server</dfn> is the vehicle system that is responsible for exposing vehicle signals and data to
+      <h3>VIS Server</h3>
+      <p>The <dfn>VIS Server</dfn> is the vehicle system that is responsible for exposing vehicle signals and data to
       its clients by implementing the interface and behaviours defined in this <dfn>Vehicle Information Service Specification (VISS)</dfn>.</p>
 
-      <p>The WebSocket Server exposes signals and data in a manner that is consistent with the <dfn>Vehicle Signal Specification (VSS)</dfn>.
+      <p>The VIS Server exposes signals and data in a manner that is consistent with the <dfn>Vehicle Signal Specification (VSS)</dfn>.
       This defines a 'tree-like' logical taxonomy of the vehicle, (formally a Directed Acyclic Graph), where major vehicle structures
       (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as
       their child nodes. Each of the child nodes in the tree is further decomposed into its logical constituents, and the process is
@@ -359,22 +359,22 @@ function subscriptionHandler(msg){
 
       <p>Signals are named according to their path using the dot notation e.g. engine.rpm.</p>
 
-      <p>The client MAY invoke the WebSocket Server <a>getVSS</a> method to request that the server returns metadata that
+      <p>The client MAY invoke the VIS Server's <a>getVSS</a> method to request that the server returns metadata that
       describes which signals and data attributes could potentially be accessed provided that the user and/or device is suitably
-      authorized. This and other valid WebSocket Server actions are defined in more detail <a href="#action">here</a>.</p>
+      authorized. This and other valid VIS Server actions are defined in more detail <a href="#action">here</a>.</p>
 
       <h3>In-Vehicle Clients</h3>
       <p>In-vehicle clients include both those clients that are running on an ECU in the vehicle itself,
       e.g. an ECU that implements an In Vehicle Infotainment (IVI) system, but also includes clients running on a user's
       device, e.g. a laptop, phone or tablet, that is connected via the vehicle's WiFi client (if one exists).</p>
 
-      <p>The methods defined on the WebSocket Server interface may be invoked by different types of on-board and off-board clients.
+      <p>The methods defined on the VIS Server interface may be invoked by different types of on-board and off-board clients.
       On-board clients, running on the vehicle fall into one of two major categories:</p>
 
       <p><dfn>Applications</dfn> can access vehicle signals and data and have a User Interface that the driver or passengers in the
       vehicle can interact with.</p>
 
-      <p><dfn>Agents</dfn> typically have no user interface. They can also invoke methods exposed on the WebSocket Server but their
+      <p><dfn>Agents</dfn> typically have no user interface. They can also invoke methods exposed on the VIS Server but their
       purpose is to connect to one or more off-board e.g. <dfn>Vehicle to Everything (V2X)</dfn> internet Servers in order to send
       data off-board.</p>
 
@@ -383,9 +383,9 @@ function subscriptionHandler(msg){
       e.g. C, C++ or Objective-C; and those that run in a Managed Runtime process written using languages like C#
       or Java.</p>
 
-      <p>Web applications and web agents MAY directly invoke the Vehicle Information Service interface exposed by the WebSocker server,
+      <p>Web applications and web agents MAY directly invoke the Vehicle Information Service interface exposed by the VIS Server,
       but it is expected that they typically access vehicle signals and data via a JavaScript Library that implements the
-      W3C Vehicle Information API Specification (VIAS) (TODO Add Link when document exists). The VIAS is a client API that defines a 
+      W3C Vehicle Information API Specification (VIAS) (see <a href="https://w3c.github.io/automotive/vehicle_information_api/vehicle_information_api_specification.html">here</a>). The VIAS is a client API that defines a 
       standard approach to encapsulate or 'wrap' the API defined in this specification to make it easier for Web based clients to 
       access vehicle signals and data in a controlled way.</p>
 
@@ -398,8 +398,8 @@ function subscriptionHandler(msg){
 
       <p>At this point, internet based clients and servers do not know the dynamic IP address that was assigned to a specific vehicle.
       So normally, a vehicle has to connect to a well known endpoint, generally using a URL to connect to a V2X Server.
-      The vehicle and the internet server typically mutually authenticate and the vehicle 'registers' with the server over
-      an encrypted channel passing it a unique identifier e.g. its Vehicle Identification Number (VIN). From that point on, the server
+      The vehicle and the internet server typically mutually authenticate and the vehicle 'registers' with the V2X server over
+      an encrypted channel passing it a unique identifier e.g. its Vehicle Identification Number (VIN). From that point on, the V2X server
       has the IP address that is currently assigned to a vehicle with a particular VIN, and can share this information with other
       internet based clients and servers, which are then able to send messages to the vehicle.</p>
 
@@ -407,7 +407,7 @@ function subscriptionHandler(msg){
       IP address and the new address needs to be communicated to any interested parties. For simplicity, this is not shown in the
       component diagram, primarily because this connectivity only becomes possible after the vehicle has registered with at least one
       off-board server (which is shown) but also because these scenarios do not affect the interface and behaviours defined in this
-      WebSocket Service Specification</p>
+      Vehicle Information Service Specification.</p>
 
       <p>The component diagram shows four different types of internet based clients. A user may use a <dfn>Web Page</dfn> or a <dfn>
       Web Application</dfn> running on a phone or tablet to request access to vehicle signals on a particular vehicle. Alternatively
@@ -419,7 +419,7 @@ function subscriptionHandler(msg){
       <section id="security">
         <h2>Security and Privacy Considerations</h2>
         <h3>Introduction</h3>
-        <p>The server implementation MAY optionally restrict access to one or more vehicle signals so that they can only
+        <p>The VIS Server implementation MAY optionally restrict access to one or more vehicle signals so that they can only
 	be accessed in response to a request from an authorized user and/or device. This could be for a variety of
 	reasons, including safety, privacy or commercial considerations.</p>
 
@@ -540,7 +540,7 @@ function subscriptionHandler(msg){
 	WebSocket connection is opened on the server.</p>
 
 	<p>A client running on the vehicle is able to connect to the
-	WebSocket Server instance using the hostname 'wwwivi' and uses the
+	VIS Server instance using the hostname 'wwwivi' and uses the
 	default port 443. The hostname 'wwwivi' may locally be mapped to the localhost
 	IP address 127.0.0.1 e.g. by adding an entry to the /etc/hosts file.</p>
 
@@ -944,7 +944,7 @@ function subscriptionHandler(msg){
         <td> <dfn>Device</dfn></td>
         <td> <dfn>www-vehicle-device</dfn></td>
         <td> The originating device that is making the request to the server. This MAY be an ECU in the vehicle that is hosting the
-        WebSocket Server or MAY be a device that is connected to the vehicle via a WiFi hotspot or MAY be any other device.</td>
+        VIS Server or MAY be a device that is connected to the vehicle via a WiFi hotspot or MAY be any other device.</td>
       </tr>
     </table>
 
@@ -2047,7 +2047,7 @@ var vehicle  = new WebSocket("wss://localhost:4343", "wvss1.0");
 // Close the WebSocket
 vehicle.close();
 	</pre>
-	<p>The WebSocket server may terminate the WebSocket connection
+	<p>The VIS Server may terminate the WebSocket connection
 	if it has not received a request for a period determined by
 	the server. It is the client’s responsibility to handle this
 	gracefully and to recover and request new
