@@ -114,10 +114,10 @@
     </section>
 
     <!-- Introduction -->
-    <section>
+    <section id="introduction" class="informative">
       <h2>Introduction</h2>
 
-      <p>The vehicle SHALL expose vehicle signals and static data via a WebSocket. This
+      <p>This specification describes how a vehicle can expose vehicle signals and static data via a WebSocket. This
       enables a client to GET or SET vehicle signals and data; to SUBSCRIBE to receive
       notifications and to UNSUBSCRIBE from receiving notifications.</p>
 
@@ -139,32 +139,12 @@
       <p>To support this, the Service Specification describes an extensible token based security mechanism that can optionally be used to pass tokens to the VIS Server,
         for example to represent the user of an application and/or the device that the client application is running on.</p>
 
+      <p>A vehicle-based software module may implement the interface and behaviours defined in this specification by creating a 
+      WebSocket instance that listens for an inbound connection request from a client in order to enable secure access to vehicle signals. 
+      In this specification this module is referred to as the <dfn>VIS Server</dfn> or just 'the server'.</p>
+
       <p>A future revision of this specification may consider additionally exposing vehicle signals
       via a RESTful web service but this is out of scope for this version of the specification.</p>
-
-      <p>A component or module running on the vehicle SHALL create a WebSocket instance which will listen for an inbound
-      connection request from a client to enable secure access to vehicle signals. In this specification this module is referred
-      to as the VIS Server or just 'the server'.</p>
-
-      <p>This specification assumes that a single WebSocket is used to enable communication between a client application
-      and the server. It is not explicitly prohibited for the client to request that the server opens more than one WebSocket,
-      however, the server may refuse to open a subsequent WebSocket connection and the client is responsible for handling this
-      gracefully.</p>
-
-      <p>If more than one WebSocket connection is established between a client application and the server then each connection
-      MUST be managed independently. For example, subscriptions created using a particular WebSocket connection SHALL only trigger
-      notifications via that connection and the client MUST use that WebSocket connection to unsubscribe. </p>
-
-      <p>If more than one WebSocket connection has been established
-      between one or more clients and a particular server instance, there
-      is a risk that race conditions and concurrency issues could occur.
-      An example of this would be where two or more WebSocket connections
-      are used to update a particular setting at the same time.</p>
-
-      <p>Unless explicitly stated otherwise, the client can only assume
-      that the server implements a simple concurrency model where lost
-      updates and dirty reads could potentially occur if the server has
-      more than one WebSocket connection open.</p>
 
       <p>It is recommended that this Vehicle Information Service Specification (VISS) is read in conjunction with the W3C Vehicle 
       Information API Specification (VIAS). The Vehicle Information API Specification defines a client API that wraps the data access 
@@ -418,6 +398,26 @@ function subscriptionHandler(msg){
       Web Application</dfn> running on a phone or tablet to request access to vehicle signals on a particular vehicle. Alternatively
       these signals could be accessed using a <dfn>Native or Managed Runtime Application</dfn> or via another automated
       <dfn>Client System</dfn> or service e.g. the Traffic Management System in a 'Smart City'.</p>
+      
+      <p>This specification assumes that a single WebSocket is used to enable communication between a client application
+      and the server. It is not explicitly prohibited for the client to request that the server opens more than one WebSocket,
+      however, the server may refuse to open a subsequent WebSocket connection and the client is responsible for handling this
+      gracefully.</p>
+
+      <p>If more than one WebSocket connection is established between a client application and the server then each connection
+      MUST be managed independently. For example, subscriptions created using a particular WebSocket connection SHALL only trigger
+      notifications via that connection and the client MUST use that WebSocket connection to unsubscribe. </p>
+
+      <p>If more than one WebSocket connection has been established
+      between one or more clients and a particular server instance, there
+      is a risk that race conditions and concurrency issues could occur.
+      An example of this would be where two or more WebSocket connections
+      are used to update a particular setting at the same time.</p>
+
+      <p>Unless explicitly stated otherwise, the client can only assume
+      that the server implements a simple concurrency model where lost
+      updates and dirty reads could potentially occur if the server has
+      more than one WebSocket connection open.</p>	  
       </section>
 
       <!-- Security and privacy -->
