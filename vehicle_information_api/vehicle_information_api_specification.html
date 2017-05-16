@@ -205,14 +205,14 @@
         readonly attribute DOMString? protocol;
         readonly attribute unsigned short? port;
 
-        void? connect(ConnectCallback connectCallback, DisconnectCallback disconnectCallback, ErrorCallback errorCallback);
-        void authorize(DOMString tokens, AuthorizeCallback callback);
+        void connect(ConnectCallback connectCallback, DisconnectCallback disconnectCallback, ErrorCallback errorCallback);
+        void authorize(object tokens, AuthorizeCallback callback);
         void getVSS(GetVSSCallback callback);
         void get(DOMString path, GetCallback callback);
         void set(DOMString path, any value , SetCallback callback);
         void subscribe(DOMString path, SubscribeCallback callback, optional SubscribeFilters filters);
         void unsubscribe(VISSubscription subscription, UnsubscribeCallback callback);
-        void? disconnect();
+        void disconnect();
       };
 
       interface VISClientOptions
@@ -304,7 +304,8 @@
           <td><dfn>connect(connnectCallback, disconnectCallback, errorCallback)</dfn></td>
           <td>
           Initializes the connection with the server.<br>
-          Use of this method is optional since this is meaningful in case of 'connection-oriented' communication only.<br>
+          When underlying network is `connectionless` type(e.g. http), establishing connection with this method is not necessary.<br>
+          In such case, this method could be implemented as empty function which returns `501 not implemented` error when executed.<br>
           </td>
           <td>
             <ul>
@@ -330,7 +331,7 @@
           <td>
             <ul>
               <li><code>tokens</code> 
-              (DOMString) - Tokens provided by authorization authority. Structure of tokens depend on underlying server's specification.
+              (object) - Tokens provided by authorization authority. Structure of tokens depend on underlying server's specification.
               </li>
               <li>
                 <code>callback</code> (authorizeCallback) - A function called when the operation is completed
@@ -435,10 +436,11 @@
         <tr>
           <td><dfn>disconnect()</dfn></td>
           <td>
-          Closes the connection.
+          Closes the connection.<br>
           This method does not take a callback function as an argument since callback for disconnection should be already set by connect() method.<br>
           The same client can be used again by calling the `connect()` function, but subscriptions, authorization, and other state will not persist after a disconnection.<br>
-          Use of this method is optional since this is meaningful in case of 'connection-oriented' communication only.<br>
+          When underlying network is `connectionless` type(e.g. http(s)), use of this method is not necessary.<br>
+          In such case, this method could be implemented as empty function which returns '501 not implemented' error when executed.<br>
           </td>
           <td>
             <ul>
@@ -516,9 +518,9 @@
       <h3>Example</h3>
       <pre class="example">
         const client = new VISClient({
-          host: 'vehicle-server.local',
-          protocol: 'ws',
-          port: 3241,
+          host: 'wwwivi',
+          protocol: 'wss',
+          port: 443,
         });
 
         const connectCallback = () => {
@@ -677,7 +679,7 @@
       <h3>Example</h3>
       <pre class="example">
         const client = new VISClient({
-          host: 'vehicle-server.local',
+          host: 'wwwivi',
         });
 
         const openWindow = () => {
