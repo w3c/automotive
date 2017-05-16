@@ -114,7 +114,7 @@
         <li>Authorization token transmission (not retrieval)</li>
         <li>Request lifecycle</li>
         <li>Subscription lifecycle</li>
-        <li>VSS tree discovery and traversal</li>
+        <li>Vehicle Signal Specification (hereafter VSS) data tree discovery and traversal</li>
       </ul>
 
       <p>In general, the client should strive for the following goals:</p>
@@ -127,7 +127,8 @@
       </ul>
       <p>
       This API specification is designed assuming to communicate with in-vehicle data servers which provide vehicle signals and data attributes.
-      The VIS server defined in VISS specification is a typical example of the server, however servers of other types which have appropriate functions should also be applicable.
+      A server conforms to definition in Vehicle Information Service Specification (hereafter VISS) is a typical example of in-vehicle data server,
+      however servers of other types which have appropriate functions should also be applicable.
       </p>
     </section>
 
@@ -153,22 +154,6 @@
 
     <!-- Architecture -->
     <section id="architecture" class="informative">
-    </section>
-
-      <!-- Connection -->
-    <section id="connection">
-      <h2>Connection</h2>
-      <p>
-      This specification assumes a connection to a server provides vehicle signals in underlying layer.<br>
-      The connections could be categorized to two kinds those are 'connection-oriented' and 'connectionless'.</p>
-      <p>In case of 'connection-oriented' communications (e.g. WebSocket), a connection should be managed and kept open while client and server communicate.
-      An application can manage the connection status with APIs defined in this specification such as 'connect', 'disconnect' methods and 'onConnect', 'onDisconnect' handlers.<br>
-      In case of 'connectionless' communication (e.g. HTTP(S)), there is no demand to maintain a connection to be kept open. In that case, connection management with 'connect', 'disconnect' methods are not necessary.</p>
-      <p>From this reason, 'connect', 'disconnect' methods and 'onConnect', 'onDisconnect' handlers are defined as optional and they have to be implemented only when required.<br>
-      Examples in this document are written assuming 'connection-oriented' type for underlying communication.<br>
-      (Strictly speaking, HTTP(S) is not a 'connectionless' communication in the real meaning since it works over TCP.
-      However in case of HTTP(S), application layer does not have to be aware of connection status and from this view point, describe it as 'connectionless' communication in this context.)
-      </p>
     </section>
 
     <!-- Security and privacy -->
