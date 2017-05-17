@@ -190,14 +190,14 @@
         readonly attribute DOMString? protocol;
         readonly attribute unsigned short? port;
 
-        void connect(ConnectCallback connectCallback, DisconnectCallback disconnectCallback, ErrorCallback errorCallback);
-        void authorize(object tokens, AuthorizeCallback callback);
-        void getVSS(GetVSSCallback callback);
-        void get(DOMString path, GetCallback callback);
-        void set(DOMString path, any value , SetCallback callback);
-        void subscribe(DOMString path, SubscribeCallback callback, optional SubscribeFilters filters);
-        void unsubscribe(VISSubscription subscription, UnsubscribeCallback callback);
-        void disconnect();
+        void connect(ConnectCallback connectCallback, ErrorCallback errorCallback);
+        void authorize(object tokens, AuthorizeCallback authorizeCallback, ErrorCallback errorCallback);
+        void getVSS(GetVSSCallback getVSSCallback, ErrorCallback errorCallback);
+        void get(DOMString path, GetCallback getCallback, ErrorCallback errorCallback);
+        void set(DOMString path, any value , SetCallback setCallback, ErrorCallback errorCallback);
+        void subscribe(DOMString path, SubscribeCallback subscribeCallback, ErrorCallback errorCallback, optional SubscribeFilters filters);
+        void unsubscribe(VISSubscription subscription, UnsubscribeCallback unsubscribeCallback, ErrorCallback errorCallback);
+        void disconnect(DisconnectCallback disconnectCallback, ErrorCallback errorCallback);
       };
 
       interface VISClientOptions
@@ -272,12 +272,12 @@
       callback ConnectCallback = void ();
       callback DisconnectCallback = void ();
       callback ErrorCallback = void (VISError error);
-      callback AuthorizeCallback = void (unsigned long TTL, VISError error);
-      callback GetVSSCallback = void (VSS vss, VISError error);
-      callback GetCallback = void (VISValue value, VISError error);
-      callback SetCallback = void (VISError error);
-      callback SubscribeCallback = void (VISSubscription subscription, VISValue value, VISError error);
-      callback UnsubscribeCallback = void (VISError error);
+      callback AuthorizeCallback = void (unsigned long TTL);
+      callback GetVSSCallback = void (VSS vss);
+      callback GetCallback = void (VISValue value);
+      callback SetCallback = void ();
+      callback SubscribeCallback = void (VISSubscription subscription, VISValue value);
+      callback UnsubscribeCallback = void ();
       </pre>
       <table class="parameters">
         <tr>
@@ -286,7 +286,7 @@
           <th>Paramters</th>
         </tr>
         <tr>
-          <td><dfn>connect(connnectCallback, disconnectCallback, errorCallback)</dfn></td>
+          <td><dfn>connect(connectCallback, errorCallback)</dfn></td>
           <td>
           Initializes the connection with the server.<br>
           When underlying network is `connectionless` type(e.g. http), establishing connection with this method is not necessary.<br>
@@ -295,23 +295,19 @@
           <td>
             <ul>
               <li>
-                <code>connectCallback</code> (connectCallback) - A function called when the connection is successfully established.<br>
+                <code>connectCallback</code> (ConnectCallback) - A function called when the connection is successfully established.<br>
               </li>
               <li>
-                <code>disconnectCallback</code> (disconnectCallback) - A function called when the connection is disconnected.<br>
-                This callback is invoked at server disconnection by any reason including execution of disconnect() method.
-              </li>
-              <li>
-                <code>errorCallback</code> (errorCallback) - A function called when an error which is not relevant to particular method except for connect() and disconnect() is occurred.
+                <code>errorCallback</code> (ErrorCallback) - A function called when an error relevant to this method has been occurred.
                 <ul>
-                  <li><code>error</code> (VISError) - if an error which is not relevant to particular methods except for connect() and disconenct() occurred, it is passed here.</li>
+                  <li><code>error</code> (VISError) - Error information is passed here.</li>
                 </ul>
               </li>
             </ul>
           </td>
         </tr>
         <tr>
-          <td><dfn>authorize(tokens, callback)</dfn></td>
+          <td><dfn>authorize(tokens, authorizeCallback, errorCallback)</dfn></td>
           <td>Request access to signals and data attributes that are under access control.</td>
           <td>
             <ul>
@@ -319,64 +315,92 @@
               (object) - Tokens provided by authorization authority. Structure of tokens depend on underlying server's specification.
               </li>
               <li>
-                <code>callback</code> (authorizeCallback) - A function called when the operation is completed
+                <code>authorizeCallback</code> (AuthorizeCallback) - A function called when the operation is completed
                 <ul>
                   <li><code>TTL</code> (unsigned long) - The time-to-live value of the authorization, passed when authorization succeed.</li>
-                  <li><code>error</code> (VISError) - If an error occurred, it is passed here, otherwise `null`</li>
                 </ul>
               </li>
+
+              <li>
+                <code>errorCallback</code> (ErrorCallback) - A function called when an error relevant to this method has been occurred.
+                <ul>
+                  <li><code>error</code> (VISError) - Error information is passed here.</li>
+                </ul>
+              </li>
+
             </ul>
           </td>
         </tr>
         <tr>
-          <td><dfn>getVSS(callback)</dfn></td>
+          <td><dfn>getVSS(getVSSCallback, errorCallback)</dfn></td>
           <td>Requests the VSS from the server and calls the callback function with a VSS object as described below.</td>
           <td>
             <ul>
               <li>
-                <code>callback</code> (getVSSCallback) - A function called when the operation is completed
+                <code>getVSSCallback</code> (GetVSSCallback) - A function called when the operation is completed
                 <ul>
                   <li><code>vss</code> (VSS) - A VSS object built from the server response</li>
-                  <li><code>error</code> (VISError) - if an error occurred, it is passed here, otherwise `null`</li>
                 </ul>
               </li>
+
+              <li>
+                <code>errorCallback</code> (ErrorCallback) - A function called when an error relevant to this method has been occurred.
+                <ul>
+                  <li><code>error</code> (VISError) - Error information is passed here.</li>
+                </ul>
+              </li>
+
             </ul>
           </td>
         </tr>
         <tr>
-          <td><dfn>get(path, callback)</dfn></td>
+          <td><dfn>get(path, getCallback, errorCallback)</dfn></td>
           <td>Receives a single value from the server.
           </td>
           <td>
             <ul>
               <li><code>path</code> (DOMString)- a String representing a location within the VSS</li>
               <li>
-                <code>callback</code> (getCallback) - A function called when the operation is completed
+                <code>getCallback</code> (GetCallback) - A function called when the operation is completed
                 <ul>
                   <li><code>value</code> (VISValue) - the value for the requested path.</li>
-                  <li><code>error</code> (VISError) - if an error occurred, it is passed here, otherwise `null`</li>
+                </ul>
+              </li>
+              <li>
+                <code>errorCallback</code> (ErrorCallback) - A function called when an error relevant to this method has been occurred.
                 <ul>
+                  <li><code>error</code> (VISError) - Error information is passed here.</li>
+                </ul>
+              </li>
+
+
             </ul>
           </td>
         </tr>
         <tr>
-          <td><dfn>set(path, value, callback)</dfn></td>
+          <td><dfn>set(path, value, setCallback, errorCallback)</dfn></td>
           <td>Sends a single value to the server.</td>
           <td>
             <ul>
               <li><code>path</code> (DOMString) - a String representing a location within the VSS</li>
               <li><code>value</code> (any) - the value to pass to the server.  This must match the type as specified in the VSS.</li>
+
               <li>
-                <code>callback</code> (setCallback) - A function called when the operation is completed
+                <code>setCallback</code> (SetCallback) - A function called when the operation is completed
+              </li>
+
+              <li>
+                <code>errorCallback</code> (ErrorCallback) - A function called when an error relevant to this method has been occurred.
                 <ul>
-                  <li><code>error</code> (VISError) - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>error</code> (VISError) - Error information is passed here.</li>
                 </ul>
               </li>
+
             </ul>
           </td>
         </tr>
         <tr>
-          <td><dfn>subscribe(path, callback, filters)</dfn></td>
+          <td><dfn>subscribe(path, subscribeCallback, errorCallback, filters)</dfn></td>
           <td>subscribes to the given path with the filters provided and returns a VISSubscription object as defined below.
           After that, continuously returns the value of signals specified by 'path' by timing specified condition by 'filters'.
           </td>
@@ -384,7 +408,7 @@
             <ul>
               <li><code>path</code> (DOMString) - a String representing a location within the VSS</li>
               <li>
-                <code>callback</code> (subscribeCallback) - A function called in the cases described as follows.
+                <code>subscribeCallback</code> (SubscribeCallback) - A function called in the cases described as follows.
                 <ul>
                   <li>When the subscription has been created.</li>
                   <li>Each time a value for the subscription is received from the server.</li>
@@ -394,9 +418,16 @@
                 <ul>
                   <li><code>subscription</code> (VISSubscription) - the Subscription object representing the result of the call (see VISSubscription below)</li>
                   <li><code>value</code> (VISValue) - the value for the subscribed path</li>
-                  <li><code>error</code> (VISError) - if an error occurred, it is passed here, otherwise `null`</li>
                 </ul>
               </li>
+
+              <li>
+                <code>errorCallback</code> (ErrorCallback) - A function called when an error relevant to this method has been occurred.
+                <ul>
+                  <li><code>error</code> (VISError) - Error information is passed here.</li>
+                </ul>
+              </li>
+
               <li><code>filters</code>
               (SubscribeFilters) - applies a server-side filter to data sent. The structure of this option depends on underlying server's specification.
               </li>
@@ -404,22 +435,28 @@
           </td>
         </tr>
         <tr>
-          <td><dfn>unsubscribe(subscription, callback)</dfn></td>
+          <td><dfn>unsubscribe(subscription, unsubscribeCallback, errorCallback)</dfn></td>
           <td>Unsubscribe from the subscription passed.</td>
           <td>
             <ul>
               <li><code>subscription</code> (VISSubscription) - the subscription object is obtained from callback function for `subscribe()` method
               <li>
-                <code>callback</code> (unsubscribeCallback) - A function called when the operation is completed
+                <code>unsubscribeCallback</code> (UnsubscribeCallback) - A function called when the operation is completed
+              </li>
+
+              <li>
+                <code>errorCallback</code> (ErrorCallback) - A function called when an error relevant to this method has been occurred.
                 <ul>
-                  <li><code>error</code> (VISError) - if an error occurred, it is passed here, otherwise `null`</li>
+                  <li><code>error</code> (VISError) - Error information is passed here.</li>
                 </ul>
               </li>
+
+
             </ul>
           </td>
         </tr>
         <tr>
-          <td><dfn>disconnect()</dfn></td>
+          <td><dfn>disconnect(disconnectCallback, errorCallback)</dfn></td>
           <td>
           Closes the connection.<br>
           This method does not take a callback function as an argument since callback for disconnection should be already set by connect() method.<br>
@@ -429,7 +466,19 @@
           </td>
           <td>
             <ul>
-            No parameters
+
+              <li>
+                <code>disconnectCallback</code> (DisconnectCallback) - A function called when the connection is successfully closed.<br>
+              </li>
+
+              <li>
+                <code>errorCallback</code> (ErrorCallback) - A function called when an error relevant to this method has been occurred.
+                <ul>
+                  <li><code>error</code> (VISError) - Error information is passed here.</li>
+                </ul>
+              </li>
+
+
             </ul>
           </td>
         </tr>
@@ -510,26 +559,23 @@
 
         const connectCallback = () => {
           console.log(`Connected to ${client.protocol}://${client.host}:${client.port}`);
-          client.authorize(/* TOKEN */, (err, ttl) => {
-            if(err) {
-              console.err('Authorize failed with provided token.');
-              return;
-            }
-            /* do other things here */
-          })
-        };
+          client.authorize(/* TOKEN */, (ttl) => {
+            console.log(`Authorize succeeded. TTL: ${ttl}`);
 
-        const disconnectCallback = () => {
-          console.err(`Server disconnected. Try reconnect.`);
-          client.connect(connect_callback, disconnect_callback, error_callback);
+            /* do other things here */
+          }, (err) => {
+            console.err('Authorize failed with provided token.');
+            return;
+          })
         };
 
         const errorCallback = (error) => {
           console.err(`Error : ${error.number}`);
         };
 
-        client.connect(connectCallback, disconnectCallback, errorCallback);
+        client.connect(connectCallback, errorCallback);
       </pre>
+
     </section>
 
     <section id="subscription-object">
@@ -587,7 +633,7 @@
 
       <h3>Example</h3>
       <pre class="example">
-        const client = new VISClient({ host: 'vehicle-server.local' });
+        const client = new VISClient({ host: 'wwwivi' });
 
         const connectCallback = () => {
           const filters = {
@@ -596,26 +642,27 @@
             minChange: 50
           };
 
-          client.subscribe('body.mirrors.left', (val, err1, speedSub) => {
-            if (err1) {
-              console.err(`Error while creating subscription: ${err1.number}`);
-              return
-            }
+          client.subscribe('body.mirrors.left', (speedSub, val) => {
             if (val) {
               console.log(`Value received: ${val}`);
             }
 
             /* ... after some time or some event, unsubscribe from the subscription: */
-            client.unsubscribe(speedSub, (err2) => {
-              if (err2) {
-                console.err(`Error while unsubscribing: ${err2.number}`);
+            client.unsubscribe(speedSub, () => {
+              console.log(`Unsubscribe succeeded`);
+            }, (err) => {
+              if (err) {
+                console.err(`Error while unsubscribing: ${err.number}`);
               }
             });
+          }, (err) => {
+              console.err(`Error while subscribing: ${err.number}`);
           }, filters);
         };
 
         client.connect(connectCallback);
       </pre>
+
 
     </section>
 
@@ -668,7 +715,7 @@
         });
 
         const openWindow = () => {
-          client.getVSS((err, vss) => {
+          client.getVSS((vss) => {
             const paths = vss.pathsByCSS('Row1 Left Window > Position');
             if (!paths.length) {
               console.err('Could not find front-left window in VSS');
@@ -676,19 +723,22 @@
             }
 
             if (vss.canSet(paths[0])) {
-              client.set(paths[0], 0, (err) => {
-                if (!err) {
-                  console.log(`Set window ${paths[0]} to open`);
-                }
+              client.set(paths[0], 0, () => {
+                console.log(`Set window ${paths[0]} to open succeeded`);
+              }, (err) => {
+                console.err(`Set window ${paths[0]} to open failed: ${err.number}`);
               });
             } else {
               console.err('Not authorized to open front-left window');
             }
+          }, (err) => {
+              console.err(`Error while getVSS: ${err.number}`);
           });
         }
 
         client.connect(openWindow);
       </pre>
+
     </section>
   </body>
 </html>
