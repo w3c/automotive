@@ -195,7 +195,7 @@
         void getVSS(GetVSSCallback getVSSCallback, ErrorCallback errorCallback);
         void get(DOMString path, GetCallback getCallback, ErrorCallback errorCallback);
         void set(DOMString path, any value , SetCallback setCallback, ErrorCallback errorCallback);
-        VISSubscription subscribe(DOMString path, SubscribeCallback subscribeCallback, ErrorCallback errorCallback, optional SubscribeFilters filters);
+        VISSubscription subscribe(DOMString path, SubscriptionCallback subscriptionCallback, ErrorCallback errorCallback, optional SubscribeFilters filters);
         void unsubscribe(VISSubscription subscription, UnsubscribeCallback unsubscribeCallback, ErrorCallback errorCallback);
         void disconnect(DisconnectCallback disconnectCallback, ErrorCallback errorCallback);
       };
@@ -276,7 +276,7 @@
       callback GetVSSCallback = void (VSS vss);
       callback GetCallback = void (VISValue value);
       callback SetCallback = void ();
-      callback SubscribeCallback = void (VISValue value);
+      callback SubscriptionCallback = void (VISValue value);
       callback UnsubscribeCallback = void ();
       </pre>
       <table class="parameters">
@@ -391,7 +391,7 @@
           </td>
         </tr>
         <tr>
-          <td><dfn>subscribe(path, subscribeCallback, errorCallback, filters)</dfn></td>
+          <td><dfn>subscribe(path, subscriptionCallback, errorCallback, filters)</dfn></td>
           <td>subscribes to the given path with the filters provided and returns a <code>VISSubscription</code> as the return value.<br>
           After that, continuously returns the value of signals specified by 'path' with timing condition specified in 'filters'.<br>
           </td>
@@ -399,7 +399,7 @@
             <ul>
               <li><code>path</code> (DOMString) - a String representing a location within the VSS</li>
               <li>
-                <code>subscribeCallback</code> (SubscribeCallback) - A function called each time subscribed value is notified from the server.</li>
+                <code>subscriptionCallback</code> (SubscriptionCallback) - A function called each time subscribed value is notified from the server.</li>
                 This function will be passed:
                 <ul>
                   <li><code>value</code> (VISValue) - the value for the subscribed path</li>
@@ -439,8 +439,7 @@
           <td><dfn>disconnect(disconnectCallback, errorCallback)</dfn></td>
           <td>
           Closes the connection.<br>
-          This method does not take a callback function as an argument since callback for disconnection should be already set by connect() method.<br>
-          The same client can be used again by calling the `connect()` function, but subscriptions, authorization, and other state will not persist after a disconnection.<br>
+          The same <code>VISClient</code> object can be used again by calling the `connect()` method, but subscriptions, authorization, and other state will not persist after a disconnection.<br>
           When underlying network is `connectionless` type(e.g. http(s)), use of this method is not necessary.<br>
           In such case, this method could be implemented as empty function which returns '501 not implemented' error when executed.<br>
           </td>
@@ -596,7 +595,7 @@
           <td><dfn>filters</dfn></td>
           <td>SubscribeFilters</td>
           <td>
-            object containing the filter conditions passed to the `VISClient#subscribe()` function. Structure of this object depends on underlying server's specification.<br>
+            object containing the filter conditions passed to the <code>subscribe()</code> method. Structure of this object depends on underlying server's specification.<br>
             The following attributes are defined for the case of connecting to VIS Server and not mandatory.
             <ul>
               <li><code>interval</code></li>
@@ -654,7 +653,7 @@
       };
       </pre>
 
-      <p>The VSS object returned by the <code>VISClient#getVSS()</code> function above should provide APIs sufficient to fully traverse the VSS tree and determine what signals are available at the current permission level. Traversing the VSS tree can be accomplished using any of a number of query languages (i.e. CSS path selectors, XPath, etc.); CSS-based querying is shown in the functions below, but additional query languages may be added in the future.  It is out of scope here to define the exact traversal methods and feature set, but these function SHOULD follow standards protocols such as CSS or XPATH.</p>
+      <p>The VSS object returned by the <code>getVSS()</code> method above should provide APIs sufficient to fully traverse the VSS tree and determine what signals are available at the current permission level. Traversing the VSS tree can be accomplished using any of a number of query languages (i.e. CSS path selectors, XPath, etc.); CSS-based querying is shown in the functions below, but additional query languages may be added in the future.  It is out of scope here to define the exact traversal methods and feature set, but these function SHOULD follow standards protocols such as CSS or XPATH.</p>
 
       <table class="parameters">
         <tr>
