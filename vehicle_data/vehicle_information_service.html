@@ -99,6 +99,21 @@
             border-collapse:    collapse;
             width:  100%;
         }
+
+        .simple {
+          width:100%;
+        }
+
+        thead th{
+          border-bottom: 1px solid black;
+        }
+
+        .simple tbody th{
+          width:33%;
+          background: white;
+          color: black;        
+        }
+
     </style>
   </head>
 
@@ -634,7 +649,7 @@ function subscriptionHandler(msg){
 
 	<p>The request and response parameters contain a limited number of attributes, defined in the table below.</p>
   	<h4></h4><h4></h4>
-  	<h4>Web IDL Definitions</h4>
+  	<h4>Term Definitions</h4>
 	<table class="parameters">
 	  <tr>
 	    <th>Attribute</th>
@@ -647,22 +662,22 @@ function subscriptionHandler(msg){
 	    <td>The type of action requested by the client or delivered by the server.</td>
 	  </tr>
 	  <tr>
-	    <td> <dfn >path</dfn></td>
-	    <td>DOMString</td>
+	    <td> <dfn>path</dfn></td>
+	    <td>String</td>
 	    <td>The path to the desired vehicle signal(s), as defined by the
 	    <a href="https://www.w3.org/auto/wg/wiki/Vehicle_Information_Service_Specification#Data_Model">
 	    	Vehicle	Signal Specification (VSS)</a>.</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn>requestId</dfn></td>
-	    <td>DOMString</td>
+      <td>String</td>
 	    <td> Unique id value specified by the client. Returned by the server in
 	    the response and used by client to link the request and response
 	    messages. The value MAY be an integer or a Universally Unique Identifier (UUID).</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn>subscriptionId</dfn> </td>
-	    <td>DOMString</td>
+      <td>String</td>
 	    <td>Value returned by the server to uniquely identify each subscription.
 	    The value MAY be an integer or a Universally Unique Identifier (UUID).</td>
 	  </tr>
@@ -673,7 +688,7 @@ function subscriptionHandler(msg){
 	  </tr>
 	  <tr>
 	    <td><dfn>timestamp</dfn> </td>
-	    <td>DOMTimestamp</td>
+	    <td>integer</td>
 	    <td>The Coordinated Universal Time (UTC) time that the server returned the response (expressed as number of milliseconds).</td>
 	  </tr>
 	  <tr>
@@ -685,7 +700,7 @@ function subscriptionHandler(msg){
 	  </tr>
 	  <tr>
 	    <td> <dfn>TTL</dfn> </td>
-	    <td> int </td>
+	    <td> integer </td>
 	    <td> Returns the time to live of the authorization token in seconds.</td>
 	  </tr>
 	  <tr>
@@ -1000,30 +1015,21 @@ function subscriptionHandler(msg){
 
         <p>If more than one 'getVSS' call is made with the same 'vssRequest' message content but at different times, the metadata
         in the 'vssSuccessResponse' SHALL be the same provided the access-control state of the WebSocket channel has not changed.</p>
-      <h4>Web IDL</h4>
-      <pre class="idl">
-      interface vssRequest {
-        attribute Action action;
-        attribute DOMString? path;
-        attribute DOMString requestId;
-      };
-
-      interface vssSuccessResponse {
-        attribute Action action;
-        attribute DOMString requestId;
-        attribute object vss;
-	attribute DOMTimeStamp timestamp;	
-      };
-
-      interface vssErrorResponse {
-        attribute Action action;
-        attribute DOMString requestId;
-        attribute Error error;
-	attribute DOMTimeStamp timestamp;
-      };
-      </pre>
-<h4>JSON Schema</h4>
-<p>The schema for vssRequest is:</p>
+      <h4 data-idl id="idl-def-vssrequest">VSS Request Properties</h4>
+      <p>The properties and schema for a vssRequest is:</p>
+      <table class=simple>
+      <thead>
+        <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th rowspan='4'><dfn>vssRequest</dfn></th>
+          <tr><td><a href="#dfn-action">action</a></td><td>Action</td><td>Yes</td></tr>
+          <tr><td><a href="#dfn-path">path</a></td><td>string</td><td>Yes</td></tr>
+          <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+        </tr>
+      </tbody>
+      </table>
 <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1045,7 +1051,21 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The schema for vssSuccessResponse is:</p>
+<p>The properties and schema for a vssSuccessResponse is:</p>
+    <table class=simple>
+    <thead>
+      <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th rowspan='5'><dfn>vssSuccessResponse</dfn></th>
+        <tr><td><a href="#dfn-action">action</a></td><td>Action</td><td>Yes</td></tr>
+        <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+        <tr><td><a href="#dfn-vss">vss</a></td><td>object</td><td>Yes</td></tr>
+        <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+      </tr>
+    </tbody>
+    </table>
 <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1070,8 +1090,22 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The schema for vssErrorResponse is:</p>
-<pre>
+<p>The properties and schema for a vssErrorResponse is:</p>
+    <table class=simple>
+    <thead>
+      <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th rowspan='5'><dfn>vssErrorResponse</dfn></th>
+        <tr><td><a href="#dfn-action">action</a></td><td>Action</td><td>Yes</td></tr>
+        <tr><td><a href="#dfn-requestId">requestId</a></td><td>string</td><td>Yes</td></tr>
+        <tr><td><a href="#dfn-error">error</a></td><td>Error</td><td>Yes</td></tr>
+        <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+      </tr>
+    </tbody>
+    </table>
+    <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "VSS Error Response",
