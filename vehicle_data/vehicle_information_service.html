@@ -658,7 +658,7 @@ function subscriptionHandler(msg){
 	  </tr>
 	  <tr>
 	    <td> <dfn>action</dfn></td>
-	    <td> <a>Action</a></td>
+	    <td> <a href="#action">Action</a></td>
 	    <td>The type of action requested by the client or delivered by the server.</td>
 	  </tr>
 	  <tr>
@@ -703,14 +703,19 @@ function subscriptionHandler(msg){
 	    <td> integer </td>
 	    <td> Returns the time to live of the authorization token in seconds.</td>
 	  </tr>
+    <tr>
+      <td> <dfn>filters</dfn> </td>
+      <td> object </td>
+      <td>Provides a filtering mechanism to reduce the demands of a subscription on the server.</td>
+    </tr>
+    <tr>
+      <td> <dfn>vss</dfn> </td>
+      <td> object </td>
+      <td>Metadata describing the potentially available VSS tree.</td>
+    </tr>
 	  <tr>
-	    <td> <dfn>filters</dfn> </td>
-	    <td> object </td>
-	    <td>Provides a filtering mechanism to reduce the demands of a subscription on the server.</td>
-	  </tr>
-	  <tr>
-	    <td> <dfn>error</dfn> </td>
-	    <td> <a>Error</a> </td>
+	    <td id="dfn-error"><dfn>error</dfn></td>
+	    <td> <a href="#errors">Error</a> </td>
 	    <td> Returns an error code, reason and message.</td>
 	  </tr>
 	</table>
@@ -809,7 +814,7 @@ function subscriptionHandler(msg){
 }
 </pre>
 
-	<h4>Action</h4>
+	<h4 id="action">Action</h4>
 
 	<p>The Action enumeration is used to define the type of action requested by the client.
 	All client messages MUST contain a JSON structure that has an 'action' name/value pair and the
@@ -840,31 +845,21 @@ function subscriptionHandler(msg){
  	<p>To enable access to signals and data attributes that are under access control, the client MAY optionally pass a message
  	with an 'authorize' action to the server. The structure of the message and the associated success and error responses
          are defined below.</p>
-      <h4>WebIDL</h4>
-      <pre class="idl">
-      interface authorizeRequest
-      {
-        attribute Action action;
-        attribute DOMString tokens;
-        attribute DOMString requestId;
-      };
-
-      interface authorizeSuccessResponse
-      {
-        attribute Action action;
-        attribute int TTL;
-        attribute DOMString requestId;
-      };
-
-      interface authorizeErrorResponse
-      {
-        attribute Action action;
-      	attribute Error error;
-        attribute DOMString requestId;
-      };
-      </pre>
-<h4>JSON Schema</h4>
-<p>The schema for authorizeRequest is:</p>
+<h4 data-idl id="idl-def-authorizerequest">Authorize Request Properties</h4>
+<p>The properties and schema for an authorizeRequest is:</p>
+<table class=simple>
+<thead>
+  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <th rowspan='4'><dfn>authorizeRequest</dfn></th>
+    <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-tokens">tokens</a></td><td>object</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+  </tr>
+</tbody>
+</table>
 <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -899,7 +894,20 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The schema for authorizeSuccessResponse is:</p>
+<p>The properties and schema for an authorizeSuccessResponse is:</p>
+<table class=simple>
+<thead>
+  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <th rowspan='4'><dfn>authorizeSuccessResponse</dfn></th>
+    <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-ttl">TTL</a></td><td>integer</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+  </tr>
+</tbody>
+</table>
 <pre>    
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -922,7 +930,20 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The schema for authorizeErrorResponse is:</p>
+<p>The properties and schema for an authorizeErrorResponse is:</p>
+<table class=simple>
+<thead>
+  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <th rowspan='4'><dfn>authorizeErrorResponse</dfn></th>
+    <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-error">error</a></td><td><a href="#errors">Error</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+  </tr>
+</tbody>
+</table>
 <pre>  
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1024,7 +1045,7 @@ function subscriptionHandler(msg){
       <tbody>
         <tr>
           <th rowspan='4'><dfn>vssRequest</dfn></th>
-          <tr><td><a href="#dfn-action">action</a></td><td>Action</td><td>Yes</td></tr>
+          <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
           <tr><td><a href="#dfn-path">path</a></td><td>string</td><td>Yes</td></tr>
           <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
         </tr>
@@ -1036,7 +1057,7 @@ function subscriptionHandler(msg){
     "title": "VSS Request",
     "description": "Request metadata describing the potentially available VSS tree",
     "type": "object",
-    "required": ["action", "requestId"],
+    "required": ["action", "path", "requestId"],
     "properties": {
         "action": {
             "enum": [ "getVSS" ],
@@ -1059,7 +1080,7 @@ function subscriptionHandler(msg){
     <tbody>
       <tr>
         <th rowspan='5'><dfn>vssSuccessResponse</dfn></th>
-        <tr><td><a href="#dfn-action">action</a></td><td>Action</td><td>Yes</td></tr>
+        <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
         <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
         <tr><td><a href="#dfn-vss">vss</a></td><td>object</td><td>Yes</td></tr>
         <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
@@ -1098,9 +1119,9 @@ function subscriptionHandler(msg){
     <tbody>
       <tr>
         <th rowspan='5'><dfn>vssErrorResponse</dfn></th>
-        <tr><td><a href="#dfn-action">action</a></td><td>Action</td><td>Yes</td></tr>
-        <tr><td><a href="#dfn-requestId">requestId</a></td><td>string</td><td>Yes</td></tr>
-        <tr><td><a href="#dfn-error">error</a></td><td>Error</td><td>Yes</td></tr>
+        <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
+        <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+        <tr><td><a href="#dfn-error">error</a></td><td><a href="#errors">Error</a></td><td>Yes</td></tr>
         <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
       </tr>
     </tbody>
@@ -1171,7 +1192,7 @@ function subscriptionHandler(msg){
         }
       }
     },
-    "timestamp": &lt;DOMTimeStamp&gt;
+    "timestamp": 1496087968995
   }
   </pre>
 
@@ -1207,7 +1228,7 @@ function subscriptionHandler(msg){
         }
       }
     },
-    "timestamp": &lt;DOMTimeStamp&gt;
+    "timestamp": 1489985044000
   }
   </pre>
 
@@ -1217,33 +1238,22 @@ function subscriptionHandler(msg){
 	attributes. If the server is able to satisfy the request it SHALL return a 'getSuccessResponse' message. If the server
 	is unable to fulfil the request, e.g. because the client is not authorized to retrieve one or more of the signals,
 	then the server SHALL return a 'getErrorResponse'. The structure of these message objects is defined below:</p>
-      <h4>Web IDL</h4>
-      <pre class="idl">
-      interface getRequest
-      {
-        attribute Action action;
-        attribute DOMString path;
-        attribute DOMString requestId;
-      };
 
-      interface getSuccessResponse
-      {
-        attribute Action action;
-        attribute DOMString requestId;
-        attribute any value;
-        attribute DOMTimeStamp timestamp;
-      };
-
-      interface getErrorResponse
-      {
-        attribute Action action;
-        attribute DOMString requestId;
-        attribute Error error;
-        attribute DOMTimeStamp timestamp;
-      };
-      </pre>
-<h4>JSON Schema</h4>
-<p>The schema for getRequest is:</p>
+<h4 data-idl id="idl-def-getrequest">Get Request Properties</h4>
+<p>The properties and schema for a getRequest is:</p>
+<table class=simple>
+<thead>
+  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <th rowspan='4'><dfn>getRequest</dfn></th>
+    <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-path">path</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+  </tr>
+</tbody>
+</table>
 <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1265,7 +1275,21 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The schema for getSuccessResponse is:</p>
+<p>The properties and schema for a getSuccessResponse is:</p>
+<table class=simple>
+<thead>
+  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <th rowspan='5'><dfn>getSuccessResponse</dfn></th>
+    <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-value">value</a></td><td>object</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+  </tr>
+</tbody>
+</table>
 <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1290,7 +1314,21 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The schema for getErrorResponse is:</p>
+<p>The properties and schema for a getErrorResponse is:</p>
+<table class=simple>
+<thead>
+  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <th rowspan='5'><dfn>getErrorResponse</dfn></th>
+    <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-error">error</a></td><td><a href="#errors">Error</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+  </tr>
+</tbody>
+</table>
 <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1334,7 +1372,7 @@ function subscriptionHandler(msg){
 		"action": "get",
 		"requestId": "8756",
 		"value": 2372,
-		"timestamp": &lt;DOMTimeStamp&gt;
+		"timestamp": 1489985044000
 	}
 	</pre>
 
@@ -1356,7 +1394,7 @@ function subscriptionHandler(msg){
 		"requestId": "9078",
 		"value": { "Signal.Body.Trunk.IsLocked": false,
 			"Signal.Body.Trunk.IsOpen": true },
-		"timestamp": &lt;DOMTimeStamp&gt;
+		"timestamp": 1489985044000
 	}
 	</pre>
 
@@ -1379,7 +1417,7 @@ function subscriptionHandler(msg){
 		           {"Signal.Cabin.Door.Row1.Left.IsLocked" : true },
 			       {"Signal.Cabin.Door.Row2.Right.IsLocked" : false },
 			       {"Signal.Cabin.Door.Row2.Left.IsLocked" : true } ],
-		"timestamp": &lt;DOMTimeStamp&gt;
+		"timestamp": 1489985044000
 	}
 	</pre>
 
@@ -1400,7 +1438,7 @@ function subscriptionHandler(msg){
 		           {"Signal.Cabin.Door.Row1.Left.IsLocked" : true, "Signal.Cabin.Door.Row1.Left.Window.Position": 23},
 		           {"Signal.Cabin.Door.Row2.Right.IsLocked" : false, "Signal.Cabin.Door.Row2.Right.Window.Position": 100 },
 		           {"Signal.Cabin.Door.Row2.Left.IsLocked": true, "Signal.Cabin.Door.Row2.Left.Window.Position": 0 } ],
-		"timestamp": &lt;DOMTimeStamp&gt;
+		"timestamp": 1489985044000
 	}
 	</pre>
 	<p>The following shows a request for non-existent data</p>
@@ -1417,7 +1455,7 @@ function subscriptionHandler(msg){
 		"error": { "number":404,
 			"reason": "invalid_path",
 			"message": "The specified data path does not exist." },
-		"timestamp": &lt;DOMTimeStamp&gt;
+		"timestamp": 1489985044000
 	}
 	</pre>
 	<h2>Set</h2>
@@ -1426,30 +1464,21 @@ function subscriptionHandler(msg){
 	a 'setRequest' message to the server. If the server is able to satisfy the request it SHALL return a 'setSuccessResponse'
 	message. If an error occurs e.g. because the client is not authorized to set the requested value, or the value is read-only,
 	the server SHALL return a 'setErrorResponse' message.<p>
-      <h4>Web IDL</h4>
-      <pre class="idl">
-      interface setRequest {
-        attribute Action action;
-        attribute DOMString path;
-        attribute any value;
-        attribute DOMString requestId;
-      };
-
-      interface setSuccessResponse {
-	      attribute Action action;
-        attribute DOMString requestId;
-        attribute DOMTimeStamp timestamp;
-      };
-
-      interface setErrorResponse {
-        attribute Action action;
-        attribute DOMString requestId;
-        attribute Error error;
-        attribute DOMTimeStamp timestamp;
-      };
-      </pre>
-<h4>JSON Schema</h4>
-<p>The schema for setRequest is:</p>
+<p>The properties and schema for a setRequest is:</p>
+<table class=simple>
+<thead>
+  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <th rowspan='5'><dfn>setRequest</dfn></th>
+    <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-path">path</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-value">value</a></td><td>any</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+  </tr>
+</tbody>
+</table>
 <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1474,7 +1503,20 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The schema for setSuccessResponse is:</p>
+<p>The properties and schema for a setSuccessResponse is:</p>
+<table class=simple>
+<thead>
+  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <th rowspan='4'><dfn>setSuccessResponse</dfn></th>
+    <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+  </tr>
+</tbody>
+</table>
 <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1496,7 +1538,21 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The schema for setErrorResponse is:</p>
+<p>The properties and schema for a setErrorResponse is:</p>
+<table class=simple>
+<thead>
+  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <th rowspan='5'><dfn>setErrorResponse</dfn></th>
+    <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-error">error</a></td><td><a href="#errors">Error</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+  </tr>
+</tbody>
+</table>
 <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1537,7 +1593,7 @@ function subscriptionHandler(msg){
     receive <- {
         "action": "set",
         "requestId": "5689",
-        "timestamp": &lt;DOMTimeStamp&gt;
+        "timestamp": 1489985044000
     }
 	</pre>
 	<p>Unsuccessful set. The value cannot be set.</p>
@@ -1555,7 +1611,7 @@ function subscriptionHandler(msg){
         "error": { "number": 401,
         "reason": "read_only",
         "message": "The desired signal cannot be set since it is a read only signal"},
-        "timestamp": &lt;DOMTimeStamp&gt;
+        "timestamp": 1489985044000
     }
 	</pre>
 	<p>Unsuccessful set. The value does not exist in the specified path.</p>
@@ -1574,7 +1630,7 @@ function subscriptionHandler(msg){
         "reason": "bad_request" ,
         "message": "The server is unable to fulfil the client
                     request because the request is malformed."},
-        "timestamp": &lt;DOMTimeStamp&gt;
+        "timestamp": 1489985044000
      }
 	</pre>
 	<h2>Subscribe</h2>
@@ -1769,7 +1825,7 @@ function subscriptionHandler(msg){
     "action": "subscribe",
 		"requestId": "1004",
     "subscriptionId": "35472",
-    "timestamp": &lt;DOMTimeStamp&gt;
+    "timestamp": 1489985044000
 	}
   </pre>
   When this "subscribe" request has been successed, client will receive a notificaton with changing value continuously as below JSON structure.
@@ -1779,7 +1835,7 @@ function subscriptionHandler(msg){
     "action": "subscription",
     "subscriptionId": "35472",
     "value": 36912,
-    "timestamp": &lt;DOMTimeStamp&gt;
+    "timestamp": 1489985044000
 	}
   </pre>
 
@@ -1971,7 +2027,7 @@ function subscriptionHandler(msg){
 		"action": "unsubscribe",
 		"subscriptionId": "102",
 		"requestId": "5264",
-		"timestamp": &lt;DOMTimeStamp&gt;
+		"timestamp": 1489985044000
 	}
 	</pre>
 	The following shows an example of a 'unsubscribeRequest' and 'unsubscribeSuccessResponse' for unsubscribeAll action, in order to unsubscribe from all subscriptions.
@@ -1984,7 +2040,7 @@ function subscriptionHandler(msg){
 	receive <- {
 		"action": "unsubscribeAll",
 		"requestId": "3468",
-		"timestamp": &lt;DOMTimeStamp&gt;
+		"timestamp": 1489985044000
 	}
 	</pre>
 	The following shows an example of error case with invalid susbscriptionId.
@@ -2001,7 +2057,7 @@ function subscriptionHandler(msg){
 		"error": { "number":404,
 			"reason": "invalid_subscriptionId",
 			"message": "The specified subscription was not found." },
-    "timestamp": &lt;DOMTimeStamp&gt;
+    "timestamp": 1489985044000
 	}
 	</pre>
 
@@ -2127,19 +2183,22 @@ vehicle.close();
 
       <section>
 	<h3>Errors</h3>
-	<p>If there is an error with any of the client’s requests, the
-	server responds with an error number, reason and
+	<p>If there is an error with any of the client’s requests, the server responds with an error number, reason and
 	message.</p>
-	<h4></h4><h4></h4>
-	<h4>Web IDL</h4>
-      <pre class="idl">
-      interface Error {
-        attribute int number;
-        attribute DOMString reason;
-        attribute DOMString message;
-      };
-      </pre>
-<h4>JSON Schema</h4>
+  <p>The properties and schema for an Error object is:</p>
+  <table class=simple>
+  <thead>
+    <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan='4'><dfn>Error</dfn></th>
+      <tr><td><a href="#errorDefs">number</a></td><td>integer</td><td>Yes</td></tr>
+      <tr><td><a href="#errorDefs">reason</a></td><td>string</td><td>Yes</td></tr>
+      <tr><td><a href="#errorDefs">message</a></td><td>string</td><td>Yes</td></tr>
+    </tr>
+  </tbody>
+  </table>
 <pre>
 {
   "error": {
@@ -2169,11 +2228,11 @@ vehicle.close();
             "reason": "&lt;error_reason&gt;",
             "message": "&lt;error_message&gt;" 
           },
-          "timestamp": "&lt;DOMTimeStamp&gt;" 
+          "timestamp": "1489985044000" 
         }
 	</pre>
 	<p>The server implementation supports at least the error numbers and reasons listed in the table below.</p>
-	<table class="parameters">
+	<table id="errorDefs" class="parameters">
 	  <tr>
 	    <th>Error&nbsp;Number&nbsp;(Code)</th>
 	    <th>Error Reason</th>
