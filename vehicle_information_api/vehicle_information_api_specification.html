@@ -6,7 +6,7 @@
     <script src='https://www.w3.org/Tools/respec/respec-w3c-common' class='remove'></script>
     <script class="remove">
       var respecConfig = {
-          specStatus: "ED",
+          specStatus: "FPWD",
           shortName: "vehicle-signal-client",
           editors: [{
             name: "Powell Kinney (until 2017, while at Vinli)", company: "Vinli",
@@ -384,7 +384,7 @@
                 <code>setCallback</code> (SetCallback) - A function called when the operation is completed
               </li>
               <li>
-                <code>errorCallback</code> (ErrorCallback) - A function called when an error relevant to this method has been occurred.
+		<code>errorCallback</code> (ErrorCallback) - A function called when an error relevant to this method has been occurred.
                 <ul>
                   <li><code>error</code> (VISError) - Error information is passed here.</li>
                 </ul>
@@ -401,11 +401,14 @@
             <ul>
               <li><code>path</code> (DOMString) - a String representing a location within the VSS</li>
               <li>
-                <code>subscriptionCallback</code> (SubscriptionCallback) - A function called each time subscribed value is notified from the server.</li>
-                This function will be passed:
+                <code>subscriptionCallback</code>
+	    (SubscriptionCallback) - A function called each time
+	    subscribed value is notified from the server.
+	    <br/>
+	    This function will be passed:
                 <ul>
                   <li><code>value</code> (VISValue) - the value for the subscribed path</li>
-                </ul>
+                </ul></li>
               </li>
               <li>
                 <code>errorCallback</code> (ErrorCallback) - A function called when an error relevant to this method has been occurred.
