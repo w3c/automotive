@@ -194,11 +194,12 @@
 
         void connect(ConnectCallback connectCallback, ErrorCallback errorCallback);
         void authorize(object tokens, AuthorizeCallback authorizeCallback, ErrorCallback errorCallback);
-        void getVSS(GetVSSCallback getVSSCallback, ErrorCallback errorCallback);
+        void getVSS(DOMString path, GetVSSCallback getVSSCallback, ErrorCallback errorCallback);
         void get(DOMString path, GetCallback getCallback, ErrorCallback errorCallback);
         void set(DOMString path, any value , SetCallback setCallback, ErrorCallback errorCallback);
         VISSubscription subscribe(DOMString path, SubscriptionCallback subscriptionCallback, ErrorCallback errorCallback, optional SubscribeFilters filters);
         void unsubscribe(VISSubscription subscription, UnsubscribeCallback unsubscribeCallback, ErrorCallback errorCallback);
+        void unsubscribeAll(UnsubscribeCallback unsubscribeCallback, ErrorCallback errorCallback);
         void disconnect(DisconnectCallback disconnectCallback, ErrorCallback errorCallback);
       };
 
@@ -332,10 +333,11 @@
           </td>
         </tr>
         <tr>
-          <td><dfn>getVSS(getVSSCallback, errorCallback)</dfn></td>
+          <td><dfn>getVSS(path, getVSSCallback, errorCallback)</dfn></td>
           <td>Requests the VSS from the server and calls the callback function with a VSS object as described below.</td>
           <td>
             <ul>
+              <li><code>path</code> (DOMString)- a String representing a location within the VSS</li>
               <li>
                 <code>getVSSCallback</code> (GetVSSCallback) - A function called when the operation is completed
                 <ul>
@@ -428,6 +430,23 @@
           <td>
             <ul>
               <li><code>subscription</code> (VISSubscription) - the subscription object is obtained from callback function for `subscribe()` method
+              <li>
+                <code>unsubscribeCallback</code> (UnsubscribeCallback) - A function called when the operation is completed
+              </li>
+              <li>
+                <code>errorCallback</code> (ErrorCallback) - A function called when an error relevant to this method has been occurred.
+                <ul>
+                  <li><code>error</code> (VISError) - Error information is passed here.</li>
+                </ul>
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><dfn>unsubscribeAll(unsubscribeCallback, errorCallback)</dfn></td>
+          <td>Unsubscribe all the subscriptions.</td>
+          <td>
+            <ul>
               <li>
                 <code>unsubscribeCallback</code> (UnsubscribeCallback) - A function called when the operation is completed
               </li>
@@ -694,7 +713,7 @@
         });
 
         const openWindow = () => {
-          client.getVSS((vss) => {
+          client.getVSS('Signal.Cabin' ,(vss) => {
             const paths = vss.pathsByCSS('Row1 Left Window > Position');
             if (!paths.length) {
               console.err('Could not find front-left window in VSS');
