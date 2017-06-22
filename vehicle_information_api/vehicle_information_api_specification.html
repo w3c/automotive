@@ -6,7 +6,7 @@
     <script src='https://www.w3.org/Tools/respec/respec-w3c-common' class='remove'></script>
     <script class="remove">
       var respecConfig = {
-          specStatus: "WD",
+          specStatus: "ED",
           shortName: "vehicle-information-api",
           editors: [{
             name: "Powell Kinney (until 2017, while at Vinli)", company: "Vinli",
@@ -16,14 +16,14 @@
           {
             name: "Shinjiro Urata", company: "ACCESS",
             url: "mailto:shinjiro.urata@access-company.com",
-	    companyURL: "https://www.access-company.com/",
-	    w3cid: 58809
+      companyURL: "https://www.access-company.com/",
+      w3cid: 58809
           },
           {
             name: "Mike Aro", company: "IBM Corporation",
             url: "mailto:arom@us.ibm.com",
-	    companyURL: "https://www.ibm.com/",
-	    w3cid: 95654
+      companyURL: "https://www.ibm.com/",
+      w3cid: 95654
           }],
           edDraftURI: "https://w3c.github.io/automotive/vehicle_information_api/vehicle_information_api_specification.html",
           wg: "Automotive Working Group",
@@ -99,8 +99,8 @@
   <body>
     <!-- Abstract -->
     <section id="abstract">
-  <p>This specification defines a high level API for accessing to vehicle signals and data attributes.</p>
-  <p>The purpose of the specification is to promote a client implementation with a standard API that enables application development in a consistent manner across participating automotive manufacturers.</p>
+      <p>This specification defines a high level API for accessing to vehicle signals and data attributes.</p>
+      <p>The purpose of the specification is to promote a client implementation with a standard API that enables application development in a consistent manner across participating automotive manufacturers.</p>
     </section>
 
     <!-- Status of this document -->
@@ -134,11 +134,11 @@
       </p>
     </section>
 
-      <!-- Conformance -->
+    <!-- Conformance -->
     <section id="conformance">
     </section>
 
-      <!-- Terminology -->
+    <!-- Terminology -->
     <section id="terminology">
       <h2>Terminology</h2>
       <p> The term 'VISS' is used to refer to the 'Vehicle Information Service Specification' (see <a href="https://w3c.github.io/automotive/vehicle_data/vehicle_information_service.html">here</a>) which is in the process of developed in W3C Automotive Working Group along with this specification.
@@ -152,11 +152,10 @@
     </section>
 
     <!-- Table of Figures -->
-    <section id="tof"></section>
+    <!-- <section id="tof"></section> -->
 
     <!-- Architecture -->
-    <section id="architecture" class="informative">
-    </section>
+    <!-- <section id="architecture" class="informative"></section> -->
 
     <!-- Security and privacy -->
     <section id="security">
@@ -181,8 +180,8 @@
     </section>
 
     <!-- JavaScript Interface -->
-    <section id="visclient-class">
-      <h2><code>VISClient</code> Interface</h2>
+    <section id="visclient-class" data-dfn-for="VISClient" data-link-for="VISClient">
+      <h2><dfn><code>VISClient</code></dfn> Interface</h2>
 
       <pre class="idl">
       [Constructor(optional VISClientOptions options)]
@@ -234,7 +233,7 @@
       const client = new VISClient({ /* VISClientOptions object */ });
       </pre>
 
-      <h3>VISClientOptions Interface</h3>
+      <h3><dfn>VISClientOptions</dfn> Interface</h3>
       <p>
       VISClientOptions interface is designed assuming a connection to a vehicle signal server which is specifiable by protocol, host and port. In case the underlying connection requires other parameters, implementer can add parameters according to the requirement.<br>
       These values are set at initialization only and cannot be changed after a connection has established.</p>
@@ -289,7 +288,7 @@
           <th>Paramters</th>
         </tr>
         <tr>
-          <td><dfn>connect(connectCallback, errorCallback)</dfn></td>
+          <td><dfn>connect</dfn> (connectCallback, errorCallback)</td>
           <td>
           Initializes the connection with the server.<br>
           When underlying network is `connectionless` type(e.g. http), establishing connection with this method is not necessary.<br>
@@ -298,10 +297,10 @@
           <td>
             <ul>
               <li>
-                <code>connectCallback</code> (ConnectCallback) - A function called when the connection is successfully established.<br>
+                <dfn><code>connectCallback</code></dfn> (ConnectCallback) - A function called when the connection is successfully established.<br>
               </li>
               <li>
-                <code>errorCallback</code> (ErrorCallback) - A function called when an error relevant to this method has been occurred.
+                <dfn><code>errorCallback</code></dfn> (ErrorCallback) - A function called when an error relevant to this method has been occurred.
                 <ul>
                   <li><code>error</code> (VISError) - Error information is passed here.</li>
                 </ul>
@@ -310,7 +309,7 @@
           </td>
         </tr>
         <tr>
-          <td><dfn>authorize(tokens, authorizeCallback, errorCallback)</dfn></td>
+          <td><dfn>authorize</dfn> (tokens, authorizeCallback, errorCallback)</td>
           <td>Request access to signals and data attributes that are under access control.</td>
           <td>
             <ul>
@@ -318,7 +317,7 @@
               (object) - Tokens provided by authorization authority. Structure of tokens depend on underlying server's specification.
               </li>
               <li>
-                <code>authorizeCallback</code> (AuthorizeCallback) - A function called when the operation is completed
+                <dfn><code>authorizeCallback</code></dfn> (AuthorizeCallback) - A function called when the operation is completed
                 <ul>
                   <li><code>TTL</code> (unsigned long) - The time-to-live value of the authorization, passed when authorization succeed.</li>
                 </ul>
@@ -333,13 +332,13 @@
           </td>
         </tr>
         <tr>
-          <td><dfn>getVSS(path, getVSSCallback, errorCallback)</dfn></td>
+          <td><dfn>getVSS</dfn> (path, getVSSCallback, errorCallback)</td>
           <td>Requests the VSS from the server and calls the callback function with a VSS object as described below.</td>
           <td>
             <ul>
               <li><code>path</code> (DOMString)- a String representing a location within the VSS</li>
               <li>
-                <code>getVSSCallback</code> (GetVSSCallback) - A function called when the operation is completed
+                <dfn><code>getVSSCallback</code></dfn> (GetVSSCallback) - A function called when the operation is completed
                 <ul>
                   <li><code>vss</code> (VSS) - A VSS object built from the server response</li>
                 </ul>
@@ -354,14 +353,14 @@
           </td>
         </tr>
         <tr>
-          <td><dfn>get(path, getCallback, errorCallback)</dfn></td>
+          <td><dfn>get</dfn> (path, getCallback, errorCallback)</td>
           <td>Receives a single value from the server.
           </td>
           <td>
             <ul>
               <li><code>path</code> (DOMString)- a String representing a location within the VSS</li>
               <li>
-                <code>getCallback</code> (GetCallback) - A function called when the operation is completed
+                <dfn><code>getCallback</code></dfn> (GetCallback) - A function called when the operation is completed
                 <ul>
                   <li><code>value</code> (VISValue) - the value for the requested path.</li>
                 </ul>
@@ -376,17 +375,17 @@
           </td>
         </tr>
         <tr>
-          <td><dfn>set(path, value, setCallback, errorCallback)</dfn></td>
+          <td><dfn>set</dfn> (path, value, setCallback, errorCallback)</td>
           <td>Sends a single value to the server.</td>
           <td>
             <ul>
               <li><code>path</code> (DOMString) - a String representing a location within the VSS</li>
               <li><code>value</code> (any) - the value to pass to the server.  This must match the type as specified in the VSS.</li>
               <li>
-                <code>setCallback</code> (SetCallback) - A function called when the operation is completed
+                <dfn><code>setCallback</code></dfn> (SetCallback) - A function called when the operation is completed
               </li>
               <li>
-		<code>errorCallback</code> (ErrorCallback) - A function called when an error relevant to this method has been occurred.
+                <code>errorCallback</code> (ErrorCallback) - A function called when an error relevant to this method has been occurred.
                 <ul>
                   <li><code>error</code> (VISError) - Error information is passed here.</li>
                 </ul>
@@ -395,7 +394,7 @@
           </td>
         </tr>
         <tr>
-          <td><dfn>subscribe(path, subscriptionCallback, errorCallback, filters)</dfn></td>
+          <td><dfn>subscribe</dfn> (path, subscriptionCallback, errorCallback, filters)</td>
           <td>subscribes to the given path with the filters provided and returns a <code>VISSubscription</code> as the return value.<br>
           After that, continuously returns the value of signals specified by 'path' with timing condition specified in 'filters'.<br>
           </td>
@@ -403,11 +402,7 @@
             <ul>
               <li><code>path</code> (DOMString) - a String representing a location within the VSS</li>
               <li>
-                <code>subscriptionCallback</code>
-	    (SubscriptionCallback) - A function called each time
-	    subscribed value is notified from the server.
-	    <br/>
-	    This function will be passed:
+                <dfn><code>subscriptionCallback</code></dfn> (SubscriptionCallback) - A function called each time subscribed value is notified from the server.<br>This function will be passed:
                 <ul>
                   <li><code>value</code> (VISValue) - the value for the subscribed path</li>
                 </ul></li>
@@ -418,20 +413,19 @@
                   <li><code>error</code> (VISError) - Error information is passed here.</li>
                 </ul>
               </li>
-              <li><code>filters</code>
-              (SubscribeFilters) - applies a server-side filter to data sent. The structure of this option depends on underlying server's specification.
+              <li><code>filters</code> (SubscribeFilters) - applies a server-side filter to data sent. The structure of this option depends on underlying server's specification.
               </li>
             </ul>
           </td>
         </tr>
         <tr>
-          <td><dfn>unsubscribe(subscription, unsubscribeCallback, errorCallback)</dfn></td>
+          <td><dfn>unsubscribe</dfn> (subscription, unsubscribeCallback, errorCallback)</td>
           <td>Unsubscribe from the subscription passed.</td>
           <td>
             <ul>
               <li><code>subscription</code> (VISSubscription) - the subscription object is obtained from callback function for `subscribe()` method
               <li>
-                <code>unsubscribeCallback</code> (UnsubscribeCallback) - A function called when the operation is completed
+                <dfn><code>unsubscribeCallback</code></dfn> (UnsubscribeCallback) - A function called when the operation is completed
               </li>
               <li>
                 <code>errorCallback</code> (ErrorCallback) - A function called when an error relevant to this method has been occurred.
@@ -443,7 +437,7 @@
           </td>
         </tr>
         <tr>
-          <td><dfn>unsubscribeAll(unsubscribeCallback, errorCallback)</dfn></td>
+          <td><dfn>unsubscribeAll</dfn> (unsubscribeCallback, errorCallback)</td>
           <td>Unsubscribe all the subscriptions.</td>
           <td>
             <ul>
@@ -460,7 +454,7 @@
           </td>
         </tr>
         <tr>
-          <td><dfn>disconnect(disconnectCallback, errorCallback)</dfn></td>
+          <td><dfn>disconnect</dfn> (disconnectCallback, errorCallback)</td>
           <td>
           Closes the connection.<br>
           The same <code>VISClient</code> object can be used again by calling the `connect()` method, but subscriptions, authorization, and other state will not persist after a disconnection.<br>
@@ -470,7 +464,7 @@
           <td>
             <ul>
               <li>
-                <code>disconnectCallback</code> (DisconnectCallback) - A function called when the connection is successfully closed.<br>
+                <dfn><code>disconnectCallback</code></dfn> (DisconnectCallback) - A function called when the connection is successfully closed.<br>
               </li>
               <li>
                 <code>errorCallback</code> (ErrorCallback) - A function called when an error relevant to this method has been occurred.
@@ -483,23 +477,23 @@
         </tr>
       </table>
 
-      <h3>VISValue Interface</h3>
+      <h3><dfn>VISValue</dfn> Interface</h3>
       <p>VISValue conveys a vehicle signal or attribute value.</p>
-      <table class="parameters">
+      <table class="parameters" data-dfn-for="VISValue" data-link-for="VISValue">
         <tr>
           <th>Parameter</th>
           <th>Type</th>
           <th>Description</th>
         </tr>
         <tr>
-          <td>value</td>
+          <td><dfn>value</dfn></td>
           <td>any</td>
           <td>
             The type of 'value' varies according to the target signal or attribute. For detail, refer VSS spec.
           </td>
         </tr>
         <tr>
-          <td>timeStamp</td>
+          <td><dfn>timeStamp</dfn></td>
           <td>DOMTimeStamp</td>
           <td>
             The Coordinated Universal Time (UTC) time that the server returned the response (expressed as number of milliseconds.)
@@ -507,40 +501,40 @@
         </tr>
       </table>
 
-      <h3>VISError Interface</h3>
+      <h3><dfn>VISError</dfn> Interface</h3>
       <p>
       Error number, reason, message represents both of client-side and server-side error. Server-side error difinition depends on underlying server.
       Client-side error definition is implementation dependent and not defined in this document.
       </p>
-      <table class="parameters">
+      <table class="parameters" data-dfn-for="VISError" data-link-for="VISError">
         <tr>
           <th>Parameter</th>
           <th>Type</th>
           <th>Description</th>
         </tr>
         <tr>
-          <td>number</td>
+          <td><dfn>number</dfn></td>
           <td>unsigned short</td>
           <td>
             Error number (error code).
           </td>
         </tr>
         <tr>
-          <td>reason</td>
+          <td><dfn>reason</dfn></td>
           <td>DOMString</td>
           <td>
             Error reason. Optional.
           </td>
         </tr>
         <tr>
-          <td>message</td>
+          <td><dfn>message</dfn></td>
           <td>DOMString</td>
           <td>
             Error message. Optional.
           </td>
         </tr>
         <tr>
-          <td>timeStamp</td>
+          <td><dfn>timeStamp</dfn></td>
           <td>DOMTimeStamp</td>
           <td>
             The Coordinated Universal Time (UTC) time that the server returned the response (expressed as number of milliseconds.)
@@ -577,8 +571,8 @@
 
     </section>
 
-    <section id="subscription-object">
-      <h2><code>VISSubscription</code> Interface</h2>
+    <section id="subscription-object" data-dfn-for="VISSubscription" data-link-for="VISSubscription">
+      <h2><dfn><code>VISSubscription</code></dfn> Interface</h2>
       <pre class="idl">
       [Constructor]
       interface VISSubscription {
@@ -622,9 +616,9 @@
             object containing the filter conditions passed to the <code>subscribe()</code> method. Structure of this object depends on underlying server's specification.<br>
             The following attributes are defined for the case of connecting to VIS Server and not mandatory.
             <ul>
-              <li><code>interval</code></li>
-              <li><code>range</code></li>
-              <li><code>minChange</code></li>
+              <li><dfn><code>interval</code></dfn></li>
+              <li><dfn><code>range</code></dfn></li>
+              <li><dfn><code>minChange</code></dfn></li>
             </ul>
           </td>
         </tr>
@@ -664,8 +658,8 @@
 
     </section>
 
-    <section id='vss-object'>
-      <h2><code>VSS</code> Interface</h2>
+    <section id="vss-object" data-dfn-for="VSS" data-link-for="VSS">
+      <h2><dfn><code>VSS</code></dfn> Interface</h2>
       <pre class="idl">
       [Constructor]
       interface VSS {
@@ -685,23 +679,23 @@
           <th>Description</th>
         </tr>
         <tr>
-          <td><dfn>pathsByCSS(cssSelector)</dfn></td>
+          <td><dfn>pathsByCSS</dfn> (cssSelector)</td>
           <td>Returns array of paths that match the given selector.</td>
         </tr>
         <tr>
-          <td><dfn>pathExistsByCSS(cssSelector)</dfn></td>
+          <td><dfn>pathExistsByCSS</dfn> (cssSelector)</td>
           <td>Returns a boolean as to whether or not there exist any path that matches the given selector.</td>
         </tr>
         <tr>
-          <td><dfn>canGet(path)</dfn></td>
+          <td><dfn>canGet</dfn> (path)</td>
           <td>Returns a boolean as to whether or not the current socket (given the tokens provided up to this point) has permission to read the given path.</td>
         </tr>
         <tr>
-          <td><dfn>canSet(path)</dfn></td>
+          <td><dfn>canSet</dfn> (path)</td>
           <td>Returns a boolean as to whether or not the current socket (given the tokens provided up to this point) has permission to set the given path.</td>
         </tr>
         <tr>
-          <td><dfn>at([path])</dfn></td>
+          <td><dfn>at</dfn> ([path])</td>
           <td>Returns the raw VSS tree object rooted at path (if provided), otherwise returns the entire tree. Regarding raw VSS object definition, refer VSS spec document.</td>
         </tr>
       </table>
