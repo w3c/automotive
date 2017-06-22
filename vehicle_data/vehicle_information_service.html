@@ -1644,47 +1644,25 @@ function subscriptionHandler(msg){
 	the attributes that were passed to the server to make the
 	subscription and a 'subscriptionId' integer handle value which is used to
 	uniquely identify the subscription.</p>
-      <h4>Web IDL</h4>
-      <pre class="idl">
-
-      interface subscribeRequest {
-        attribute Action action;
-        attribute DOMString path;
-        attribute object? filters;
-        attribute DOMString requestId;
-      };
-
-      interface subscribeSuccessResponse {
-        attribute Action action;
-        attribute DOMString requestId;
-        attribute DOMString subscriptionId;
-        attribute DOMTimeStamp timestamp;
-      };
-
-      interface subscribeErrorResponse {
-        attribute Action action;
-        attribute DOMString requestId;
-        attribute Error error;
-        attribute DOMTimeStamp timestamp;
-      };
-
-      interface subscriptionNotification {
-        attribute Action action;
-        attribute DOMString subscriptionId;
-        attribute any value;
-        attribute DOMTimeStamp timestamp;
-      };
-
-      interface subscriptionNotificationError {
-        attribute Action action;     
-        attribute DOMString subscriptionId;
-        attribute Error error;
-        attribute DOMTimeStamp timestamp;
-      };
-      </pre>
-      <h4>JSON Schema</h4>
- <p>The schema for subscribeRequest is:</p>
-<pre>
+      
+ <h4 data-idl id="idl-def-subscriberequest">Subscribe Request Properties</h4>
+ <p>The properties and schema for a subscribeRequest is:</p>
+ <table class=simple>
+ <thead>
+   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+ </thead>
+ <tbody>
+   <tr>
+     <th rowspan='5'><dfn>subscribeRequest</dfn></th>
+     <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
+     <tr><td><a href="#dfn-path">path</a></td><td>string</td><td>Yes</td></tr>
+     <tr><td><a href="#dfn-filters">filters</a></td><td>object</td><td>No</td></tr>
+     <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+   </tr>
+ </tbody>
+ </table>
+ 
+ <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Subscribe Request",
@@ -1709,7 +1687,21 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The schema for subscribeSuccessResponse is:</p>
+<p>The properties and schema for a subscribeSuccessResponse is:</p>
+<table class=simple>
+<thead>
+  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <th rowspan='5'><dfn>subscribeSuccessResponse</dfn></th>
+    <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+  </tr>
+</tbody>
+</table>
 <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1734,7 +1726,21 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The schema for subscribeErrorResponse is:</p>
+<p>The properties and schema for a subscribeErrorResponse is:</p>
+<table class=simple>
+<thead>
+  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <th rowspan='5'><dfn>subscribeErrorResponse</dfn></th>
+    <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-error">error</a></td><td><a href="#errors">Error</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+  </tr>
+</tbody>
+</table>
 <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1759,7 +1765,21 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The schema for subscriptionNotification is:</p>
+<p>The properties and schema for a subscriptionNotification is:</p>
+<table class=simple>
+<thead>
+  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <th rowspan='5'><dfn>subscriptionNotification</dfn></th>
+    <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-value">value</a></td><td>any</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+  </tr>
+</tbody>
+</table>
 <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1784,7 +1804,21 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The schema for subscriptionNotificationError is:</p>
+<p>The properties and schema for a subscriptionNotificationError is:</p>
+<table class=simple>
+<thead>
+  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <th rowspan='5'><dfn>subscriptionNotificationError</dfn></th>
+    <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-error">error</a></td><td><a href="#errors">Error</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+  </tr>
+</tbody>
+</table>
 <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
