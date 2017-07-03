@@ -202,25 +202,26 @@
         void disconnect(DisconnectCallback disconnectCallback, ErrorCallback errorCallback);
       };
 
-      interface VISClientOptions
+      dictionary VISClientOptions
       {
-        attribute DOMString? host;
-        attribute DOMString? protocol;
-        attribute unsigned short? port;
+        DOMString? host;
+        DOMString? protocol;
+        unsigned short? port;
       };
 
-      interface VISValue
+
+      dictionary VISValue
       {
-        attribute any value;
-        attribute DOMTimeStamp timeStamp;
+        any value;
+        DOMTimeStamp timeStamp;
       };
 
-      interface VISError
+      dictionary VISError
       {
-        attribute unsigned short number;
-        attribute DOMString? reason;
-        attribute DOMString? message;
-        attribute DOMTimeStamp timeStamp;
+        unsigned short number;
+        DOMString? reason;
+        DOMString? message;
+        DOMTimeStamp timeStamp;
       };
       </pre>
 
@@ -233,9 +234,9 @@
       const client = new VISClient({ /* VISClientOptions object */ });
       </pre>
 
-      <h3><dfn>VISClientOptions</dfn> Interface</h3>
+      <h3><dfn>VISClientOptions</dfn> Dictionary</h3>
       <p>
-      VISClientOptions interface is designed assuming a connection to a vehicle signal server which is specifiable by protocol, host and port. In case the underlying connection requires other parameters, implementer can add parameters according to the requirement.<br>
+      VISClientOptions dictionary is designed assuming a connection to a vehicle signal server which is specifiable by protocol, host and port. In case the underlying connection requires other parameters, implementer can add parameters according to the requirement.<br>
       These values are set at initialization only and cannot be changed after a connection has established.</p>
       <table class="parameters">
         <tr>
@@ -477,7 +478,7 @@
         </tr>
       </table>
 
-      <h3><dfn>VISValue</dfn> Interface</h3>
+      <h3><dfn>VISValue</dfn> Dictionary</h3>
       <p>VISValue conveys a vehicle signal or attribute value.</p>
       <table class="parameters" data-dfn-for="VISValue" data-link-for="VISValue">
         <tr>
@@ -501,7 +502,7 @@
         </tr>
       </table>
 
-      <h3><dfn>VISError</dfn> Interface</h3>
+      <h3><dfn>VISError</dfn> Dictionary</h3>
       <p>
       Error number, reason, message represents both of client-side and server-side error. Server-side error difinition depends on underlying server.
       Client-side error definition is implementation dependent and not defined in this document.
@@ -580,15 +581,15 @@
         readonly attribute VISSubscribeFilters? filters;
       };
 
-      interface VISSubscribeFilters {
-        attribute unsigned long? interval;
-        attribute VISSubscribeRange? range;
-        attribute unsigned long? minChange;
+      dictionary VISSubscribeFilters {
+        unsigned long? interval;
+        VISSubscribeRange? range;
+        unsigned long? minChange;
       };
 
-      interface VISSubscribeRange {
-        attribute long? below;
-        attribute long? above;
+      dictionary VISSubscribeRange {
+        long? below;
+        long? above;
       };
       </pre>
 
