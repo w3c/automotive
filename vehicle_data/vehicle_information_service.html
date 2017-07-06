@@ -645,6 +645,13 @@ function subscriptionHandler(msg){
 			<a>unsubscribeErrorResponse</a>
 		</td>
 	  </tr>
+    <tr>
+      <td><a>unsubscribeAllRequest</a></td>
+      <td>
+        <a>unsubscribeAllSuccessResponse</a><br>
+      <a>unsubscribeAllErrorResponse</a>
+    </td>
+    </tr>
 	</table>
 
 	<p>The request and response parameters contain a limited number of attributes, defined in the table below.</p>
@@ -1784,7 +1791,7 @@ function subscriptionHandler(msg){
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Subscription Notification",
-    "description": "The response sent from the server upon an unsuccessful subscribe request",
+    "description": "Notification sent from the server to provide the requested data to the client",
     "type": "object",
     "required": ["action", "subscriptionId", "value", "timestamp"],
     "properties": {
@@ -1856,21 +1863,21 @@ function subscriptionHandler(msg){
 	}
 
 	receive <- {
-    "action": "subscribe",
-		"requestId": "1004",
-    "subscriptionId": "35472",
-    "timestamp": 1489985044000
+            "action": "subscribe",
+            "requestId": "1004",
+            "subscriptionId": "35472",
+            "timestamp": 1489985044000
 	}
   </pre>
   When this "subscribe" request has been successed, client will receive a notificaton with changing value continuously as below JSON structure.
 
   <pre class="highlight hljs javascript">
-  receive <- {
-    "action": "subscription",
-    "subscriptionId": "35472",
-    "value": 36912,
-    "timestamp": 1489985044000
-	}
+      receive <- {
+          "action": "subscription",
+          "subscriptionId": "35472",
+          "value": 36912,
+          "timestamp": 1489985044000
+      }
   </pre>
 
 	</pre>
@@ -1998,7 +2005,7 @@ function subscriptionHandler(msg){
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Unsubscribe Success Response",
-    "description": "The response sent from the server upon a successful subscription request",
+    "description": "The response sent from the server upon a successful unsubscribe request",
     "type": "object",
     "required": ["action", "subscriptionId", "requestId", "timestamp"],
     "properties": {
@@ -2038,7 +2045,7 @@ function subscriptionHandler(msg){
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Unsubscribe Error Response",
-    "description": "The response sent from the server upon an unsuccessful subscribe request",
+    "description": "The response sent from the server upon an unsuccessful unsubscribe request",
     "type": "object",
     "required": ["action", "subscriptionId", "requestId", "error", "timestamp"],
     "properties": {
@@ -2115,12 +2122,12 @@ function subscriptionHandler(msg){
 	</pre>
         </section>
 
-<h2>unsubscribeAll</h2>
+<h2>Unsubscribe All</h2>
 <p>To unsubscribe from all subscriptions, the client SHALL send an 'unsubscribeAllRequest' message to the server. This is
 comprised of a JSON structure which contains an action property set to 'unsubscribeAll'. This does not require a subscriptionId value. If the request is successful, or there are no active subscriptions
 to unsubscribe from, this will return an 'unsubscribeSuccessResponse'.</p>
 
-<h4 data-idl id="idl-def-unsubscribeallrequest">unsubscribeAll Request Properties</h4>
+<h4 data-idl id="idl-def-unsubscribeallrequest">Unsubscribe All Request Properties</h4>
 <p>The properties and schema for a unsubscribeAllRequest is:</p>
 <table class=simple>
   <thead>
@@ -2138,7 +2145,7 @@ to unsubscribe from, this will return an 'unsubscribeSuccessResponse'.</p>
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "unsubscribeAll Request",
-  "description": "Allows the client to unsubscribe to all of notifications on the server.",
+  "description": "Allows the client to unsubscribe from all notifications on the server.",
   "type": "object",
   "required": ["action", "requestId"],
   "properties": {
