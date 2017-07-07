@@ -1043,6 +1043,12 @@ function subscriptionHandler(msg){
 
         <p>If more than one 'getVSS' call is made with the same 'vssRequest' message content but at different times, the metadata
         in the 'vssSuccessResponse' SHALL be the same provided the access-control state of the WebSocket channel has not changed.</p>
+
+        <p>The server shall return VSS metadata for all branches and nodes in the VSS tree, with the exception of the "Private" branch, regardless of whether the client can access them under the current access controls. If a signal is requested to which the client has no access then the server will reject the request as detailed by the Get, Set, and Subscribe sections of this specification. The server shall not return the metadata for the branches and nodes within the "Private" branch unless the client has appropriate access permissions.</p>
+
+
+
+
       <h4 data-idl id="idl-def-vssrequest">VSS Request Properties</h4>
       <p>The properties and schema for a vssRequest is:</p>
       <table class=simple>
