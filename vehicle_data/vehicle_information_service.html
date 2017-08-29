@@ -550,7 +550,7 @@ function subscriptionHandler(msg){
         <h3>Token Renewal</h3>
         <p>Each security token SHALL have a specified lifetime during which it is valid. If on receiving a request for signals that are
         subject to access-control, the server determines that the request is unauthorized because the token has expired, the server
-        WILL return an error response indicating the fact and the client SHALL request a new token from the Security Authority and
+        SHALL return an error response indicating the fact and the client SHALL request a new token from the Security Authority and
         repeat the request.</p>
 
         <p>If the server returns an error response indicating that the request is forbidden, renewing the security token does
