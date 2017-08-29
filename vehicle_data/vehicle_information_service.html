@@ -321,7 +321,7 @@ function subscriptionHandler(msg){
       and Local Interconnect Networks (LIN). ECUs on these networks broadcast messages on network buses, and other ECUs on the
       bus respond to the messages.</p>
 
-      <p>In the component diagram included below, the internal vehicle CAN, MOST and LIN networks and the ECUs that communicate
+      <p>In the component diagram included in Figure 2, the internal vehicle CAN, MOST and LIN networks and the ECUs that communicate
       via these networks are abstracted and for simplicity, represented by the <dfn>System</dfn> component.</p>
 
       <p>For safety, security and commercial reasons not all clients should be able to GET, SET or SUBSCRIBE to particular vehicle
@@ -335,7 +335,7 @@ function subscriptionHandler(msg){
       manner to the VIS Server. The interface and communication mechanisms that are used between the vehicle System and
       the VIS Server are outside of the scope of this specification.</p>
 
-      <h3>VIS Server</h3>
+      <h3>Vehicle Information Service (VIS) Server</h3>
       <p>The <dfn>VIS Server</dfn> is the vehicle system that is responsible for exposing vehicle signals and data to
       its clients by implementing the interface and behaviours defined in this <dfn>Vehicle Information Service Specification (VISS)</dfn>.</p>
 
@@ -359,7 +359,7 @@ function subscriptionHandler(msg){
 
       <h3>In-Vehicle Clients</h3>
       <p>In-vehicle clients include both those clients that are running on an ECU in the vehicle itself,
-      e.g. an ECU that implements an In Vehicle Infotainment (IVI) system, but also includes clients running on a user's
+      e.g. an ECU that implements an In-Vehicle Infotainment (IVI) system, but also includes clients running on a user's
       device, e.g. a laptop, phone or tablet, that is connected via the vehicle's WiFi client (if one exists).</p>
 
       <figure>
@@ -550,7 +550,7 @@ function subscriptionHandler(msg){
         <h3>Token Renewal</h3>
         <p>Each security token SHALL have a specified lifetime during which it is valid. If on receiving a request for signals that are
         subject to access-control, the server determines that the request is unauthorized because the token has expired, the server
-        returns an error response indicating the fact and the client requests a new token from the Security Authority and
+        WILL return an error response indicating the fact and the client SHALL request a new token from the Security Authority and
         repeat the request.</p>
 
         <p>If the server returns an error response indicating that the request is forbidden, renewing the security token does
