@@ -1935,7 +1935,7 @@ function subscriptionHandler(msg){
 	data, at a rate defined either by the server or by the server side filter. If there is an
 	error with an existing subscription a subscriptionNotificationError SHALL be sent to 
 	the client. This allows the client to handle the error, for example by modifying the filter condition
-	to reduce the requested notification frequency if the server is unable to satisfy the initial demands of the client.</p>
+	to reduce the requested notification frequency.</p>
 	
 	<p>If the authentication token expires whilst a subscription is active, the server will send a 
 	subscriptionNotificationError for each subscription that can no longer be fulfilled. The client is then 
@@ -2298,12 +2298,12 @@ receive <- {
 	however it can be set on Signal.Drivetrain.InternalCombustionEngine.RPM.</p>
 
       <p>The default behaviour for a subscription is to request that the server sends a notification to the client 'onchange'. 
-      To modify this behaviour the client can use filtering options. The following filter options SHALL be supported.</p>
+      To modify this behaviour the client can use filtering options. The following filter options SHALL be supported:</p>
       <ul>
 	<li>Interval - requests that the server provides a notification every 'n' milliseconds. This allows the client to reduce the
 	load on the server if the client does not need the data more frequently.</li>
-	<li>Range - send a notification only when the value only is within a given range</li>
-	<li>Minimum change - send a notification when a value has changed by a specified amount</li>
+	<li>Range - send a notification only when the value is in a given range.</li>
+	<li>Minimum change - send a notification when a value has changed by a specified amount.</li>
       </ul>      
 	<p>The client can use filters to request that the server sends notifications based on various criteria, but 
 	it is important to note that this is just a request and the notification frequency will ultimately be determined by the server.</p>
