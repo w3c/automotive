@@ -433,7 +433,7 @@ function subscriptionHandler(msg){
       updates and dirty reads could potentially occur if the server has
       more than one WebSocket connection open.</p>
 	      
-      <h3>State Diagram</h3>
+      <h3>VIS Server State Diagram</h3>
       <p>The following diagram shows a number of possible states that the VIS Server could occupy:</p>
       <figure>
         <img src="images/VISS State Diagram v1_2.png" alt="State Diagram for VIS Server">
@@ -494,6 +494,10 @@ function subscriptionHandler(msg){
         both the user (e.g. driver of the vehicle) and for the device (e.g. the vehicle) that is hosting the client.
         A request for a different set of vehicle signals MAY require that only the user is authorized or that only the device
         is authorized to access particular signals.</p>
+	      
+	<p>The client and the server are each individually responsible for implementing security best practice. This includes
+	but is not limited to securely obtaining and verifying tokens (as applicable) and the prevention of replays or spoofing
+	of tokens by malicious actors or agents.</p>
 
         <h3>WebSocket Channel Authorization</h3>
         <p>The client MAY send a message with an 'authorize' action to modify the access-control state of the WebSocket channel.
