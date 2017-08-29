@@ -578,7 +578,9 @@ function subscriptionHandler(msg){
 	default port 443. The hostname 'wwwivi' may locally be mapped to the localhost
 	IP address 127.0.0.1 e.g. by adding an entry to the /etc/hosts file.</p>
 
-	<p>The sub-protocol name SHALL be 'wvss' with a version number suffix, e.g. wvss1.0</p>
+	<p>The sub-protocol name SHALL be 'wvss' with a version number suffix, e.g. wvss1.0. The sub-protocol version will
+	be associated with exactly one Vehicle Server Specification (VSS) version so that the client and server can 
+	correctly validate and parse request and response message packets.</p>
 	<pre class="highlight hljs javascript">
 	  <span class="hljs-keyword">var</span> vehicle  = new WebSocket("wss://wwwivi", "wvss1.0");
 	</pre>
@@ -849,9 +851,9 @@ function subscriptionHandler(msg){
 	  <dt><dfn>getVSS</dfn></dt>
 	  <dd>Allows the client to request metadata describing signals and data attributes that are potentially accessible.</dd>
 	  <dt><dfn>get</dfn></dt>
-	  <dd>Enables the client to get a value once.</dd>
+	  <dd>Enables the client to get one or more values once.</dd>
 	  <dt><dfn>set</dfn></dt>
-	  <dd>Enables the client to set a value once.</dd>
+	  <dd>Enables the client to set one or more values once.</dd>
     <dt><dfn>subscribe</dfn></dt>
     <dd>Enables the client to request notifications containing a JSON data structure with values for one or more
       vehicle signals and/or data attributes. The client requests that it is notified when the signal changes on the server.</dd>
@@ -1406,8 +1408,9 @@ function subscriptionHandler(msg){
 	</pre>
 
 	<p>In the case where the server returns a value that is a <dfn>complex type</dfn>, i.e. a value that
-	is not a single basic JavaScript type (e.g. string, number, boolean), the value SHALL be returned as
-	a set of name/value pairs in a JSON object structure. The format MUST be as defined by the Vehicle Signal Specification.<p>
+	is not a single basic JavaScript type (e.g. String, Number, Boolean), the value SHALL be returned as
+	a set of name/value pairs in a JSON object structure. The format MUST be as defined by the version of the Vehicle Signal 
+	Specification that is associated with the WebSocket sub-protocol value specified when the WebSocket is created.<p>
 
 	<p>The following shows an example of a 'getRequest' that results in the server returning a 'getSuccessResponse' with a value
 	that is a complex type:</p>
@@ -1489,7 +1492,7 @@ function subscriptionHandler(msg){
 	</pre>
 	<h2>Set</h2>
 
-	<p>The client may request that the server sets the value of a signal e.g. to lock a door or open a window by sending
+	<p>The client may request that the server sets the value of one or more signals e.g. to lock one or more doors or open a window by sending
 	a 'setRequest' message to the server. If the server is able to satisfy the request it SHALL return a 'setSuccessResponse'
 	message. If an error occurs e.g. because the client is not authorized to set the requested value, or the value is read-only,
 	the server SHALL return a 'setErrorResponse' message.<p>
@@ -1512,7 +1515,7 @@ function subscriptionHandler(msg){
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Set Request",
-    "description": "Enables the client to set a value once.",
+    "description": "Enables the client to set one or more values once.",
     "type": "object",
     "required": ["action", "path", "value", "requestId"],
     "properties": {
@@ -1876,7 +1879,8 @@ function subscriptionHandler(msg){
 
 
   <h4>Examples</h4>
-  <p>For example when client need to continuously receive "Signal.Drivetrain.Transmission.TripMeter" information from the server, it can use "subscribe" action with the target property like below.</p>
+  <p>For example when a client wishes to subscribe to receive "Signal.Drivetrain.Transmission.TripMeter" information from the server, 
+  it can use the "subscribe" action with the target path property set as follows:</p>
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "subscribe",
@@ -1891,7 +1895,11 @@ function subscriptionHandler(msg){
             "timestamp": 1489985044000
 	}
   </pre>
-  When this "subscribe" request has been successed, client will receive a notificaton with changing value continuously as below JSON structure.
+  <p>This example is for illustrative purposes only, it MAY or MAY NOT be the case that the version of the Vehicle Server Specification
+  implemented by the VIS Server includes the example path 'Signal.Drivetrain.Transmission.TripMeter'.</p>
+  
+  <p>If the "subscribe" request is successful the server will return a subscribeSuccessResponse as shown in the example above, 
+  and the client will then start to  receive subscription notifications like the one illustrated in the following JSON structure:</p>
 
   <pre class="highlight hljs javascript">
       receive <- {
@@ -1903,23 +1911,20 @@ function subscriptionHandler(msg){
   </pre>
 
 	</pre>
-	<p>The client can use the 'requestId' value to associate the successful
-	subscription response with the original request.</p>
-
 	<p>The 'subscriptionId' value is a unique value, created by the server and
-	which is used internally by the server to manage subscriptions
+	which may be used internally by the server to manage subscriptions
 	on that WebSocket instance.</p>
 
-	<p>The subscription id value may be used by the client to
+	<p>The subscriptionId value may also be used by the client to
 	unsubscribe from receiving future notifications, by passing the
-	handle value to the server with the unsubscribe action.</p>
+	value to the server with the unsubscribe action.</p>
 
 	<p>To differentiate subscription response from responses for ‘GET’
 	requests, subscription responses shall additionally include the
-	subscription id value that identifies the subscription that
+	subscriptionId value that identifies the subscription that
 	triggered that notification.</p>
 
-	<p>The server ensures that a new unique subscription id value is
+	<p>The server ensures that a new unique subscriptionId value is
 	returned for each successful subscription request on a particular
 	WebSocket connection. However the server does not guarantee that
 	subscription handle values are unique between different WebSocket
@@ -1928,22 +1933,22 @@ function subscriptionHandler(msg){
 	<p>Once the subscription is successfully registered with the server,
 	the client receives subscription notifications containing the requested
 	data, at a rate defined either by the server or by the server side filter. If there is an
-	error with an existing subscription a subscriptionNotificationError is
-	received by the client. This allows the client to handle the error, such as to reduce the subscription
-	frequency if the server is unable to satisfy the initial demands of the client.</p>
+	error with an existing subscription a subscriptionNotificationError SHALL be sent to 
+	the client. This allows the client to handle the error, for example by modifying the filter condition
+	to reduce the requested notification frequency if the server is unable to satisfy the initial demands of the client.</p>
 	
 	<p>If the authentication token expires whilst a subscription is active, the server will send a 
 	subscriptionNotificationError for each subscription that can no longer be fulfilled. The client is then 
-	responsible for requesting a renewed authentication token.</p>
+	responsible for communicating with the relevant Security Authority to renew the authentication token.</p>
 	
 	<p>After the client authentication token has expired, the server MAY continue to send notifications for data that
 	is not subject to access control restrictions. The client will NOT receive notifications for subscriptions that require
 	a valid authentication token until the client sends a renewed authentication token to the server.</p>
 	
 	<p> If a new authentication token is presented by the client to the server in a timely manner,	all existing subscriptions
-	will continue to cause notifications to be sent from the server, provided the security principal
-	has not changed. The time window during which the client MAY re-authenticate and subscriptions continue WILL be 
-	implementation dependent.</p>
+	will continue to cause notifications to be sent from the server, provided the security principal(s)
+	have not changed. The time window during which the client MAY re-authenticate and subscriptions continue WILL be 
+	implementation dependent. If the server has terminated any subscriptions, it is the responsibility of the client to renew them.</p>
 	
 	<p>At any time the server MUST only send subscription notifications for data that the client is authorized to access.</p>
 
@@ -1963,13 +1968,14 @@ function subscriptionHandler(msg){
 	that was originally used to create the subscription.</p>
 
 	<p>It is not possible to unsubscribe from a subset of signals within a subscription. The client must unsubscribe 
-	and set up a new subscription with the desired signals. For example, if there is an active subscription 
-	for all lights, using the path Signal.Body.Lights.*, and the client requires information for only Signal.Body.Lights.IsLowBeamOn,
-	the client will have to unsubscribe from the Signal.Body.Lights.* subscription and re-subscribe to Signal.Body.Lights.IsLowBeamOn.</p>
+	and set up a new subscription to receive notifications for the desired signals. For example, if there is an active 
+	subscription for all lights, using the path Signal.Body.Lights.*, and the client requires information for only 
+	Signal.Body.Lights.IsLowBeamOn,	the client will have to unsubscribe from the Signal.Body.Lights.* subscription and 
+	re-subscribe to Signal.Body.Lights.IsLowBeamOn.</p>
 
 	<p>The client should always unsubscribe from receiving notifications when it is no longer using the data. Over a long
 	vehicle journey, this significantly reduces the processing load on the server and allow the server to free memory.
-	It therefore makes it more likely that the server remains responsive to future requests from the client.</p>
+	It therefore makes it more likely that the server will remain responsive to future requests from the client.</p>
 
   <h4 data-idl id="idl-def-unsubscriberequest">Unsubscribe Request Properties</h4>
   <p>The properties and schema for a unsubscribeRequest is:</p>
@@ -2147,7 +2153,7 @@ function subscriptionHandler(msg){
 <h2>Unsubscribe All</h2>
 <p>To unsubscribe from all subscriptions, the client SHALL send an 'unsubscribeAllRequest' message to the server. This is
 comprised of a JSON structure which contains an action property set to 'unsubscribeAll'. This does not require a subscriptionId value. If the request is successful, or there are no active subscriptions
-to unsubscribe from, this will return an 'unsubscribeSuccessResponse'.</p>
+to unsubscribe from, the VIS Server will return an 'unsubscribeSuccessResponse'.</p>
 
 <h4 data-idl id="idl-def-unsubscribeallrequest">Unsubscribe All Request Properties</h4>
 <p>The properties and schema for a unsubscribeAllRequest is:</p>
@@ -2279,27 +2285,28 @@ receive <- {
       <p>'<a>Filters</a>' may be specified to enable Server side filtering
       to be used to throttle the demands of subscriptions on
       the server. This may enable the reduction of traffic if the
-      developer has received a 429 - Too Many Requests error
-      message. Server side filters are extensible, allowing for further filtering mechanisms. Support 
-      is currently provisioned for a specific range of values, time intervals and
+      developer has received a '429 - Too Many Requests' error
+      message.</p>
+      
+      <p>Server side filters are extensible, allowing for additional filtering mechanisms to be specified. Support 
+      is currently included for a specific range of values, time intervals and
       minimum changes. This can be implemented using the "filters"
       option in the subscribeRequest interface.</p>
 
-	<p>Filters can only be applied for nodes in the VSS tree, not entire branches.
+	<p>Filters can only be applied to leaf nodes in the VSS tree. They cannot be applied to entire branches.
 	For example, a filter cannot be set on Signal.Drivetrain.InternalCombustionEngine.*, 
 	however it can be set on Signal.Drivetrain.InternalCombustionEngine.RPM.</p>
 
-      <p>The default behaviour for a subscription is to send values to the client only onchange. 
-      To modify this behaviour the client can use filtering options. The following filter options 
-      SHALL be supported.</p>
+      <p>The default behaviour for a subscription is to request that the server sends a notification to the client 'onchange'. 
+      To modify this behaviour the client can use filtering options. The following filter options SHALL be supported.</p>
       <ul>
 	<li>Interval - requests that the server provides a notification every 'n' milliseconds. This allows the client to reduce the
 	load on the server if the client does not need the data more frequently.</li>
-	<li>Range - provide a value only when within a given range</li>
-	<li>Minimum change - provide data when a value has changed by a specified amount</li>
+	<li>Range - send a notification only when the value only is within a given range</li>
+	<li>Minimum change - send a notification when a value has changed by a specified amount</li>
       </ul>      
-	<p>If the filter is not set, or the server is unable to satisfy the request, the notification frequency is
-      determined by the server.</p>
+	<p>The client can use filters to request that the server sends notifications based on various criteria, but 
+	it is important to note that this is just a request and the notification frequency will ultimately be determined by the server.</p>
       
       <h4></h4>
       <h4></h4>
@@ -2346,9 +2353,6 @@ receive <- {
 	adding unnecessary load on the server. The server shall return a '429 - Too Many Request' error response if
 	it is unable to fulfil the request made by the client.</p>
 
-      <p>The section that follows defines the error responses that shall be supported by the server.</p>
-      </section>
-
       <section>
 	<h3>WebSocket Closure</h3>
 	<p>The WebSocket may be closed by either the client or the
@@ -2372,9 +2376,9 @@ vehicle.close();
 	the server. It is the client’s responsibility to handle this
 	gracefully and to recover and request new
 	subscriptions, where required.</p>
+
+      <p>The section that follows defines the error responses that shall be supported by the server.</p>
       </section>
-
-
 
       <section>
 	<h3>Errors</h3>
