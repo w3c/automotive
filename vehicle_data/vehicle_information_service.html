@@ -143,9 +143,7 @@
       <p>The term 'signal' is used here to represent an item of	data that can vary over time, for example vehicle speed,
 	 whilst the expression 'static data' is used to denote a temporally invariant property like vehicle width.</p>
 
-      <p>The GENIVI Vehicle Signal Specification (VSS) defines the set of vehicle signals and data that are exposed via this Vehicle 
-        Information Service Specification (VISS). The Vehicle Signal Specification (VSS) supports both extensibility and the ability 
-	to define private branches.</p>
+      <p>The Vehicle Information Service Specification (VISS) defines a number of methods for accessing vehicle data, however it is agnostic to the data model. Any data model where data and signals can be referenced using a string can implement the VISS. An example of such a data model is the the GENIVI Vehicle Signal Specification (VSS). The VSS supports both extensibility and the ability to define private branches and will be used for each of the examples within this specification.</p>
 
       <p>In addition, the 'tree' of signals that is accessible at any point in time may also vary depending on standard access control principles.
          That is, it can vary based on the identity of the user (person or organisation) requesting the data and/or the application or 
@@ -183,8 +181,8 @@ vehicle.onmessage = function(event){
     case "authorize":
       authHandler(msg);
       break;
-    case "getVSS":
-      getVSSHandler(msg);
+    case "getMetadata":
+      getMetadataHandler(msg);
       break;
     case "get":
       getReqHandler(msg);
@@ -211,7 +209,7 @@ vehicle.onmessage = function(event){
 function authHandler(msg) {
   if(msg.hasOwnProperty("TTL")){
     console.log("authorization successful");
-    requestVSS();
+    requestMetadata();
   } else {
     console.log("authorization unsuccessful");
   }
@@ -222,27 +220,27 @@ function closeSocket(){
   vehicle.close();
 }
   </pre>
-  <p>Once the WebSocket connection has been established, the client is able to retrieve the VSS from the server and request signals for the client's current level of authentication.</p>
+  <p>Once the WebSocket connection has been established, the client is able to retrieve the metadata from the server and request signals for the client's current level of authentication.</p>
   <pre class="example highlight">
-// Request the entire VSS tree
-function requestVSS(){
-  vehicle.send('{"action": "getVSS", "requestId": "103"}');
+// Request the entire data model, in this example the data model is defined using GENIVI's VSS
+function requestMetadata(){
+  vehicle.send('{"action": "getMetadata", "requestId": "103"}');
 }
 
-// Request the entire VSS tree and if successful, request a signal
-function getVSSHandler(msg){
-  if(msg.hasOwnProperty('vss')){
-    console.log("VSS Received");
-    console.log("VSS: " + JSON.stringify(msg.vss));
-    getSignal(vss, "Signal.Drivetrain.Transmission.Speed");
+// Request the entire data model and if successful, request a signal
+function getMetadataHandler(msg){
+  if(msg.hasOwnProperty('metadata')){
+    console.log("Metadata Received");
+    console.log("Metadata: " + JSON.stringify(msg.metadata));
+    getSignal(msg.metadata, "Signal.Drivetrain.Transmission.Speed");
   } else {
-    console.log("getVSS Error");
+    console.log("getMetadata Error");
   }
 }
 
 // Request a signal
-function getSignal(vss, path){
-  // A check could be made here to ensure the signal is available in the VSS
+function getSignal(metadata, path){
+  // A check could be made here to ensure the signal is available within the metadata
   vehicle.send('{"action": "get", "path": ' + path + ', "requestId": "105"}');
 }
   </pre>
@@ -338,7 +336,7 @@ function subscriptionHandler(msg){
       <p>The <dfn>VIS Server</dfn> is the vehicle system that is responsible for exposing vehicle signals and data to
       its clients by implementing the interface and behaviours defined in this <dfn>Vehicle Information Service Specification (VISS)</dfn>.</p>
 
-      <p>The VIS Server exposes signals and data in a manner that is consistent with the <dfn>Vehicle Signal Specification (VSS)</dfn>.
+      <p>The VIS Server exposes signals and data in a manner that is consistent with the accompanying data model. The data model is not mandated by this specification, however the recommended data model used within this specification is the <dfn>Vehicle Signal Specification (VSS)</dfn>.
       This defines a 'tree-like' logical taxonomy of the vehicle, (formally a Directed Acyclic Graph), where major vehicle structures
       (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as
       their child nodes. Each of the child nodes in the tree is further decomposed into its logical constituents, and the process is
@@ -350,9 +348,9 @@ function subscriptionHandler(msg){
         <figcaption>Diagram showing an example Vehicle Signal Tree</figcaption>
       </figure>
 	      
-      <p>Signals are named according to their path using the dot notation e.g. engine.rpm.</p>
+      <p>Within GENIVI's VSS data model, signals are named according to their path using the dot notation e.g. engine.rpm. The methods defined within this document support any path notation which can be represented as a string.</p>
 
-      <p>The client MAY invoke the VIS Server's <a>getVSS</a> method to request that the server returns metadata that
+      <p>The client MAY invoke the VIS Server's <a>getMetadata</a> method to request that the server returns metadata that
       describes which signals and data attributes could potentially be accessed provided that the user and/or device is suitably
       authorized. This and other valid VIS Server actions are defined in more detail <a href="#action">here</a>.</p>
 
@@ -609,10 +607,10 @@ function subscriptionHandler(msg){
 		</td>
 	  </tr>
 	  <tr>
-	    <td><a>vssRequest</a></td>
+	    <td><a>metadataRequest</a></td>
 	    <td>
-		<a>vssSuccessResponse</a><br>
-	        <a>vssErrorResponse</a>
+		<a>metadataSuccessResponse</a><br>
+	        <a>metadataErrorResponse</a>
 	    </td>
 	  </tr>		
 	  <tr>
@@ -716,9 +714,9 @@ function subscriptionHandler(msg){
       <td>Provides a filtering mechanism to reduce the demands of a subscription on the server.</td>
     </tr>
     <tr>
-      <td> <dfn>vss</dfn> </td>
+      <td> <dfn>metadata</dfn> </td>
       <td> object </td>
-      <td>Metadata describing the potentially available VSS tree.</td>
+      <td>Metadata describing the potentially available signal schema.</td>
     </tr>
 	  <tr>
 	    <td id="dfn-error"><dfn>error</dfn></td>
@@ -732,7 +730,7 @@ function subscriptionHandler(msg){
 {
     "definitions": {
         "action": {
-            "enum": [ "authorize", "getVSS", "get", "set", "subscribe", "subscription", "unsubscribe", "unsubscribeAll"],
+            "enum": [ "authorize", "getMetadata", "get", "set", "subscribe", "subscription", "unsubscribe", "unsubscribeAll"],
             "description": "The type of action requested by the client or delivered by the server",
         },
         "requestId": {
@@ -741,13 +739,11 @@ function subscriptionHandler(msg){
             "type": "string"
         },
         "path": {
-            "description": "The path to the desired vehicle signal(s), as defined by the Vehicle 
-              Signal Specification (VSS).",
+            "description": "The path to the desired vehicle signal(s), as defined by the metadata schema.",
             "type": "string"
         },
         "value": {
-            "description": "The path to the desired vehicle signal(s), as defined by the Vehicle 
-              Signal Specification (VSS).",
+            "description": "The data value returned by the server. This could either be a basic type, or a complex type comprised of nested name/value pairs in JSON format.",
             "type": "string"
         },
         "timestamp": {
@@ -794,8 +790,8 @@ function subscriptionHandler(msg){
               subscription.",
             "type": "string"
         },
-        "vss":{
-            "description": "Metadata describing the potentially available VSS tree.",
+        "metadata":{
+            "description": "Metadata describing the potentially available signal schema.",
             "type": "object"
         },
         "error": {
@@ -830,7 +826,7 @@ function subscriptionHandler(msg){
 	<dl title="enum Action" class="idl">
 	  <dt><dfn>authorize</dfn></dt>
 	  <dd>Enables client to pass security tokens for Security Principals to the server to support access-control.</dd>
-	  <dt><dfn>getVSS</dfn></dt>
+	  <dt><dfn>getMetadata</dfn></dt>
 	  <dd>Allows the client to request metadata describing signals and data attributes that are potentially accessible.</dd>
 	  <dt><dfn>get</dfn></dt>
 	  <dd>Enables the client to get a value once.</dd>
@@ -1031,33 +1027,33 @@ function subscriptionHandler(msg){
 		to any subsequent authentication requests. The number of failed requests and the period 
 		of time during which attempts will be denied is to be determined by the implementation.</p>    
 	
-	<h2>VSS Request</h2>
-	<p>The client MAY use the 'getVSS' action to request metadata describing the potentially available VSS tree. It does
-	this by sending a 'vssRequest' message to the server. If the server is able to return the VSS metadata, then this
-	is returned using a 'vssSuccessResponse' message. If an error occurs, the server returns a 'vssErrorResponse'
+	<h2>Metadata Request</h2>
+	<p>The client MAY use the 'getMetadata' action to request metadata describing the potentially available signal schema, for example the VSS tree. It does
+	this by sending a 'metadataRequest' message to the server. If the server is able to return the metadata, then this
+	is returned using a 'metadataSuccessResponse' message. If an error occurs, the server returns a 'metadataErrorResponse'
 	message to the client.</p>
 
-	<p>The client is able to request VSS metadata from any point in the VSS tree, such that only the metadata for the signals
-	within the given branch of the tree is returned. For example, only metadata for the chassis branch of the tree is returned
-	when the chassis path is specified. If the path is not set, the response contains the metadata for the entire VSS tree.</p>
+	<p>The client is able to request metadata from any point in the metadata's schema, such that only the metadata for the signals
+	within the given branch of the schema's hierachy is returned. For example, only metadata for the chassis branch of the VSS tree is returned
+	when the chassis path is specified. If the path is not set, the response contains the metadata for the entire signal schema.</p>
 
-        <p>If more than one 'getVSS' call is made with the same 'vssRequest' message content but at different times, the metadata
-        in the 'vssSuccessResponse' SHALL be the same provided the access-control state of the WebSocket channel has not changed.</p>
+        <p>If more than one 'getMetadata' call is made with the same 'metadataRequest' message content but at different times, the metadata
+        in the 'metadataSuccessResponse' SHALL be the same provided the access-control state of the WebSocket channel has not changed.</p>
 
-        <p>The server shall return VSS metadata for all branches and nodes in the VSS tree, with the exception of the "Private" branch, regardless of whether the client can access them under the current access controls. If a signal is requested to which the client has no access then the server will reject the request as detailed by the Get, Set, and Subscribe sections of this specification. The server shall not return the metadata for the branches and nodes within the "Private" branch unless the client has appropriate access permissions.</p>
-
-
+        <p>When the signal schema adhere's to the Vehicle Signal Specification (VSS), the server shall return metadata for all branches and nodes in the VSS tree, with the exception of the "Private" branch, regardless of whether the client can access them under the current access controls. If a signal is requested to which the client has no access then the server will reject the request as detailed by the Get, Set, and Subscribe sections of this specification. The server shall not return the metadata for the branches and nodes within the "Private" branch unless the client has appropriate access permissions. Other data models may also operate similar mechanisms.</p>
 
 
-      <h4 data-idl id="idl-def-vssrequest">VSS Request Properties</h4>
-      <p>The properties and schema for a vssRequest is:</p>
+
+
+      <h4 data-idl id="idl-def-metadataRequest">Metadata Request Properties</h4>
+      <p>The properties and schema for a metadataRequest is:</p>
       <table class=simple>
       <thead>
         <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
       </thead>
       <tbody>
         <tr>
-          <th rowspan='4'><dfn>vssRequest</dfn></th>
+          <th rowspan='4'><dfn>metadataRequest</dfn></th>
           <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
           <tr><td><a href="#dfn-path">path</a></td><td>string</td><td>Yes</td></tr>
           <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
@@ -1067,14 +1063,14 @@ function subscriptionHandler(msg){
 <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "VSS Request",
-    "description": "Request metadata describing the potentially available VSS tree",
+    "title": "Metadata Request",
+    "description": "Request metadata describing the potentially available signals",
     "type": "object",
     "required": ["action", "path", "requestId"],
     "properties": {
         "action": {
-            "enum": [ "getVSS" ],
-            "description": "The identifier for the getVSS request"
+            "enum": [ "getMetadata" ],
+            "description": "The identifier for the getMetadata request"
         },
         "path": {
             "$ref": "#/definitions/path"
@@ -1085,17 +1081,17 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The properties and schema for a vssSuccessResponse is:</p>
+<p>The properties and schema for a metadataSuccessResponse is:</p>
     <table class=simple>
     <thead>
       <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
     </thead>
     <tbody>
       <tr>
-        <th rowspan='5'><dfn>vssSuccessResponse</dfn></th>
+        <th rowspan='5'><dfn>metadataSuccessResponse</dfn></th>
         <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
         <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
-        <tr><td><a href="#dfn-vss">vss</a></td><td>object</td><td>Yes</td></tr>
+        <tr><td><a href="#dfn-metadata">metadata</a></td><td>object</td><td>Yes</td></tr>
         <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
       </tr>
     </tbody>
@@ -1103,20 +1099,20 @@ function subscriptionHandler(msg){
 <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "VSS Success Response",
-    "description": "The response sent from the server upon a successful getVSS request",
+    "title": "Metadata Success Response",
+    "description": "The response sent from the server upon a successful getMetadata request",
     "type": "object",
-    "required": ["action", "requestId", "vss", "timestamp"],
+    "required": ["action", "requestId", "metadata", "timestamp"],
     "properties": {
         "action": {
-            "enum": [ "getVSS" ],
-            "description": "The identifier for the getVSS request"
+            "enum": [ "getMetadata" ],
+            "description": "The identifier for the getMetadata request"
         },
         "requestId": {
             "$ref": "#/definitions/requestId"
         },
-        "vss": {
-            "$ref": "#/definitions/vss"
+        "metadata": {
+            "$ref": "#/definitions/metadata"
         },
 	"timestamp": {
 	    "$ref": "#/definitions/timestamp"
@@ -1124,14 +1120,14 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The properties and schema for a vssErrorResponse is:</p>
+<p>The properties and schema for a metadataErrorResponse is:</p>
     <table class=simple>
     <thead>
       <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
     </thead>
     <tbody>
       <tr>
-        <th rowspan='5'><dfn>vssErrorResponse</dfn></th>
+        <th rowspan='5'><dfn>metadataErrorResponse</dfn></th>
         <tr><td><a href="#dfn-action">action</a></td><td><a href="#action">Action</a></td><td>Yes</td></tr>
         <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
         <tr><td><a href="#dfn-error">error</a></td><td><a href="#errors">Error</a></td><td>Yes</td></tr>
@@ -1142,14 +1138,14 @@ function subscriptionHandler(msg){
     <pre>
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "VSS Error Response",
-    "description": "The response sent from the server upon an unsuccessful getVSS request",
+    "title": "Metadata Error Response",
+    "description": "The response sent from the server upon an unsuccessful getMetadata request",
     "type": "object",
     "required": ["action", "requestId", "error", "timestamp"],
     "properties": {
         "action": {
-            "enum": [ "getVSS" ],
-            "description": "The identifier for the getVSS request"
+            "enum": [ "getMetadata" ],
+            "description": "The identifier for the getMetadata request"
         },
         "requestId": {
             "$ref": "#/definitions/requestId"
@@ -1166,19 +1162,19 @@ function subscriptionHandler(msg){
       <h4>Examples</h4>
 
     <p>The following data flow example shows a request for the signal structure within the Signal.Drivetrain.InternalCombustionEngine.RPM
-	    branch containing the vehicle RPM signal. A leaf node has been chosen in this example for brevity, however entire VSS
-	    branches can also be requested using the getVSS interface.</p>
+	    branch containing the vehicle RPM signal, where the metadata is defined using a VSS tree. A leaf node has been chosen in this example for brevity, however entire VSS
+	    branches and other schemas can also be requested using the getMetadata interface.</p>
 
     <pre class="highlight hljs javascript">
   client -> {
-    "action": "getVSS",
+    "action": "getMetadata",
     "path": "Signal.Drivetrain.InternalCombustionEngine.RPM",
     "requestId": "3874"
   }
   receive <- {
-    "action": "getVSS",
+    "action": "getMetadata",
     "requestId": "3874",
-    "vss": { "Signal": {
+    "metadata": { "Signal": {
         "description": "All signals that can dynamically be updated by the vehicle",
         "type": "branch",
         "children": {
@@ -1212,14 +1208,14 @@ function subscriptionHandler(msg){
   <p>The following data flow example shows a request for the VSS structure within the Attribute.Body branch of the VSS. The example assumes the VSS contains two leaf nodes within the Attribute.Body branch.</p>
     <pre class="highlight hljs javascript">
   client -> {
-    "action": "getVSS",
+    "action": "getMetadata",
     "path": "Attribute.Body",
     "requestId": "3875"
   }
   receive <- {
-    "action": "getVSS",
+    "action": "getMetadata",
     "requestId": "3875",
-    "vss": { "Attribute": {
+    "metadata": { "Attribute": {
         "description": "Attribute signals that do not change during the power cycle of a vehicle.",
         "type": "branch",
         "children": {
@@ -2269,7 +2265,7 @@ receive <- {
       minimum changes. This can be implemented using the "filters"
       option in the subscribeRequest interface.</p>
 
-	<p>Filters can only be applied for nodes in the VSS tree, not entire branches.
+	<p>Filters can only be applied for data which is represented by a primitive type, such as leaf nodes in the VSS tree, not entire branches.
 	For example, a filter cannot be set on Signal.Drivetrain.InternalCombustionEngine.*, 
 	however it can be set on Signal.Drivetrain.InternalCombustionEngine.RPM.</p>
 
@@ -2396,7 +2392,7 @@ vehicle.close();
       client -> { 
         "action": "subscribe",
       	"filters": { "&lt;filter_expression&gt;" },
-      	"path": "&lt;any_vss_path&gt;",
+      	"path": "&lt;any_metadata_definition&gt;",
       	"requestId": "&lt;some_unique_value&gt;" 
       }
       receive on error <- {
