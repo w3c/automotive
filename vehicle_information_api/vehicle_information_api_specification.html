@@ -141,14 +141,13 @@
     <!-- Terminology -->
     <section id="terminology">
       <h2>Terminology</h2>
-      <p> The term <dfn>'VISS'</dfn> is used to refer to the '<dfn>Vehicle Information Service Specification</dfn>' (see <a href="https://w3c.github.io/automotive/vehicle_data/vehicle_information_service.html">here</a>) which is in the process of development in W3C Automotive Working Group along with this specification.
+      <p> The term 'VISS' is used to refer to 'W3C Vehicle Information Service Specification'[[vehicle-information-service]]  which is in the process of development in W3C Automotive Working Group along with this document.
       The term 'VIS Server' is used to refer to a server which conforms to the 'VISS' specification.
       </p>
-      <p> The term <dfn>'VIAS'</dfn> is used to refer to the '<dfn>Vehicle Information API Specification</dfn>' which is this document.</p>
-      <p> The term <dfn>'VSS'</dfn> is used to refer to the '<dfn>Vehicle Signal Specification</dfn>' (see <a href="https://github.com/GENIVI/vehicle_signal_specification/">here</a>) which is defined in GENIVI Alliance activity.
+      <p> The term 'VIAS' is used to refer to 'W3C Vehicle Information API Specification' which is this document.</p>
+      <p> The term 'VSS' is used to refer to the 'Vehicle Signal Specification' (see <a href="https://github.com/GENIVI/vehicle_signal_specification/">here</a>) which is defined in GENIVI Alliance activity.
       </p>
-
-      <p>The term <dfn>'WebSocket'</dfn> when used in this document, is as defined in the W3C WebSocket API (see <a href="https://www.w3.org/TR/2011/WD-websockets-20110929">here</a>) and the WebSocket Protocol (see <a href="https://tools.ietf.org/html/rfc6455">RFC6455</a>).</p>
+      <p>The term 'WebSocket' is used to refer to W3C WebSocket API [[websockets]] and the IETF's WebSocket Protocol [[rfc6455]].</p>
     </section>
 
     <!-- Table of Figures -->
@@ -228,19 +227,20 @@
 
       <section id="visclient-constructor">
         <h3>Constructor</h3>
-        <p>The <code>VISClient</code> constructor, when invoked, must return a new VISClient object.
-        This constructor can take <code>VISClientOptions</code> object as a parameter.
-        VISClientOptions is defined assuming (Secure)WebSocket or HTTP(S) as underlying communication method.
+        <p>The <code>VISClient</code> interface has two kinds of constructor.
+        One of constructor takes <code>VISClientOptions</code> object as a parameter.
+        In this case (Secure)WebSocket or HTTP(S) protocol is primarily assumed as underlying communication method
+         and to specify in-vehicle data server's host, port and protocol to communicate, the parameter<code>VISClient</code> is used.
         </p>
         <p>
-        On the other hand, since this specification does not define underlying communication method, other communication methods could be employed (e.g. MQTT, COAP, IPC, etc.)
-        Some other communication method may require information not included in VISClientOptions definition.
+        In addition, since this specification does not define underlying communication method, other protocols could be employed (e.g. MQTT, COAP, IPC, etc.)
+        Some other protocol may require information not included in VISClientOptions definition.
         To support such case, VISClientOptions may be extended according to necessities in the future update.
         </p>
         <p>
-        In other case, employed communication method may not require any of VISClientOptions parameters
-        (e.g. VIAS implementation communicate with underlying vehicle data server via IPC).
-        For such case, VISClient consturctor has another overloaded definition which requires no parameters.
+        The other constructor does not take a parameter and this assumes a case that a VIAS implementation does not expose communication detail to API users as an abstraction purpose.
+        For this case, scenarios such as "VIAS implementation already has connection information to in-vehicle data server"
+         or "VIAS implementation is integrated with vehicel data souce", could be included.
         </p>
 
         <pre class="example">
@@ -292,7 +292,7 @@
         <h3>Methods</h3>
         <p>Once created, a VISClient object provides methods shown below for interacting with the server.</p>
         <p>
-        Most of the functions listed below require a `path` string to be passed that identifies the target vehicle data items defined in GENIVI VSS.
+        Most of the methods listed below require a `path` string to be passed that identifies the target vehicle data items defined in GENIVI VSS.
         See <a>VSS</a> interface below for how to generate this string based on traversing the GENIVI VSS data tree.
         </p>
 
@@ -646,14 +646,16 @@
             <td><dfn>reason</dfn></td>
             <td>DOMString</td>
             <td>
-              Error reason. Optional.
+              Nullable.
+              Error reason.
             </td>
           </tr>
           <tr>
             <td><dfn>message</dfn></td>
             <td>DOMString</td>
             <td>
-              Error message. Optional.
+              Nullable.
+              Error message.
             </td>
           </tr>
           <tr>
@@ -698,7 +700,6 @@
     <section id="vissubscription-interface" data-dfn-for="VISSubscription" data-link-for="VISSubscription">
       <h2><dfn><code>VISSubscription</code></dfn> Interface</h2>
       <pre class="idl">
-      [Constructor]
       interface VISSubscription {
         readonly attribute DOMString path;
         readonly attribute VISSubscribeFilters? filters;
@@ -753,7 +754,7 @@
       <section id="vissubscribefilters-dictionary" data-dfn-for="VISSubscribeFilters" data-link-for="VISSubscribeFilters">
         <h3><dfn><code>VISSubscribeFilters</code></dfn> Dictionary</h3>
         <p>
-        Parameters in VISSubscribeFilters are originally defined in <a>'VISS'</a> and this specifiation refers to those definitions.
+        Parameters in VISSubscribeFilters are originally defined in 'VISS' and this specifiation refers to those definitions.
         </p>
         <table class="parameters">
           <tr>
@@ -793,7 +794,7 @@
       <section id="vissubscriberange-dictionary" data-dfn-for="VISSubscribeRange" data-link-for="VISSubscribeRange">
         <h3><dfn><code>VISSubscribeRange</code></dfn> Dictionary</h3>
         <p>
-        Parameters in VISSubscribeRange are originally defined in <a>'VISS'</a> and this specification refers to those definitions.<br>
+        Parameters in VISSubscribeRange are originally defined in 'VISS' and this specification refers to those definitions.<br>
         </p>
         <table class="parameters">
           <tr>
@@ -855,7 +856,6 @@
     <section id="vss-interface" data-dfn-for="VSS" data-link-for="VSS">
       <h2><dfn><code>VSS</code></dfn> Interface</h2>
       <pre class="idl">
-      [Constructor]
       interface VSS {
         sequence&lt;DOMString&gt; pathsByCSS(DOMString cssSelector);
         boolean pathExistsByCSS(DOMString cssSelector);
@@ -870,7 +870,7 @@
       Although traversing the VSS tree can be accomplished using any of a number of query languages (i.e. CSS path selectors, XPath, etc.),
       CSS-based querying API is defined at this time and additional query languages may be added in the future.<br>
       It is out of scope here to define the exact traversal methods and feature set and they are left as implementation dependent matter,
-      but these function SHOULD follow standards protocols such as CSS or XPATH.
+      but these methods SHOULD follow standards protocols such as CSS or XPATH.
       </p>
       <table class="parameters">
         <tr>
