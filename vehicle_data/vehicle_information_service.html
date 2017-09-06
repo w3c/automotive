@@ -487,14 +487,13 @@ function subscriptionHandler(msg){
         <p>The following diagram illustrates a scenario where the client requests vehicle speed. In this example scenario, this
         signal is not under access control and so the server returns a message containing the requested data. The client then
         requests that the server sets the vehicle trunk status to open and the server demands that the client passes access-control
-        credentials before satisfying the request. The steps are shown in more detail in the diagram below:</p>
+        credentials before satisfying the request. The sequence of steps is illustrated in the diagram below:</p>
 
         <figure>
           <img src="images/WebSocket_Security_Flow_1_900px.png" alt="WebSocket Security token flow">
-          <figcaption>Diagram showing conceptual WebSocket Security Token flow (data structures are illustrative only)</figcaption>
+          <figcaption>Diagram showing conceptual WebSocket Security Token flow (data structures are illustrative and logical content has been simplified)</figcaption>
         </figure>
 
-	      <p class="note">TODO: Update diagram to reflect auth token structure and review including other diagrams from Wiki</p>
         <p>After receiving a message with an 'authorize' action the server attempts to verify the tokens e.g. by checking
         with the issuing Security Authority. If all of the tokens that are passed to the server are valid, it returns
         a success response and all subsequent requests received by the WebSocket instance have elevated access control
