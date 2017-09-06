@@ -354,7 +354,7 @@ function subscriptionHandler(msg){
 	      
       <p>Signals are named according to their path using the dot notation e.g. engine.rpm.</p>
 
-      <p>The client MAY invoke the VIS Server's <a>getVSS</a> method to request that the server returns metadata that
+      <p>The client may invoke the VIS Server's <a>getVSS</a> method to request that the server returns metadata that
       describes which signals and data attributes could potentially be accessed provided that the user and/or device is suitably
       authorized. This and other valid VIS Server actions are defined in more detail <a href="#action">here</a>.</p>
 
@@ -383,7 +383,7 @@ function subscriptionHandler(msg){
       e.g. C, C++ or Objective-C; and those that run in a Managed Runtime process written using languages like C#
       or Java.</p>
 
-      <p>Web applications and web agents MAY directly invoke the Vehicle Information Service interface exposed by the VIS Server,
+      <p>Web applications and web agents may directly invoke the Vehicle Information Service interface exposed by the VIS Server,
       but it is expected that they typically access vehicle signals and data via a JavaScript Library that implements the
       W3C Vehicle Information API Specification (VIAS) (see <a href="https://w3c.github.io/automotive/vehicle_information_api/vehicle_information_api_specification.html">here</a>). The VIAS is a client API that defines a 
       standard approach to encapsulate or 'wrap' the API defined in this specification to make it easier for Web based clients to 
@@ -413,26 +413,7 @@ function subscriptionHandler(msg){
       Web Application</dfn> running on a phone or tablet to request access to vehicle signals on a particular vehicle. Alternatively
       these signals could be accessed using a <dfn>Native or Managed Runtime Application</dfn> or via another automated
       <dfn>Client System</dfn> or service e.g. the Traffic Management System in a 'Smart City'.</p>
-      
-      <p>This specification assumes that a single WebSocket is used to enable communication between a client application
-      and the server. It is not explicitly prohibited for the client to request that the server opens more than one WebSocket,
-      however, the server may refuse to open a subsequent WebSocket connection and the client is responsible for handling this
-      gracefully.</p>
-
-      <p>If more than one WebSocket connection is established between a client application and the server then each connection
-      MUST be managed independently. For example, subscriptions created using a particular WebSocket connection SHALL only trigger
-      notifications via that connection and the client MUST use that WebSocket connection to unsubscribe. </p>
-
-      <p>If more than one WebSocket connection has been established
-      between one or more clients and a particular server instance, there
-      is a risk that race conditions and concurrency issues could occur.
-      An example of this would be where two or more WebSocket connections
-      are used to update a particular setting at the same time.</p>
-
-      <p>Unless explicitly stated otherwise, the client can only assume
-      that the server implements a simple concurrency model where lost
-      updates and dirty reads could potentially occur if the server has
-      more than one WebSocket connection open.</p>
+           
 	      
       <h3>VIS Server State Diagram</h3>
       <p>The following diagram shows a number of possible states that the VIS Server could occupy:</p>
@@ -593,6 +574,26 @@ function subscriptionHandler(msg){
 	the server opens a WebSocket. All WebSocket communications between
 	the client and server MUST be over ‘wss’. Non encrypted communication
 	is not supported, hence the server MUST refuse ‘ws’ connection requests.</p>
+	      
+        <p>This specification assumes that a single WebSocket is used to enable communication between a client application
+        and the server. It is not explicitly prohibited for the client to request that the server opens more than one WebSocket,
+        however, the server MAY refuse to open a subsequent WebSocket connection and the client is responsible for handling this
+        gracefully.</p>
+
+        <p>If more than one WebSocket connection is established between a client application and the server then each connection
+        MUST be managed independently. For example, subscriptions created using a particular WebSocket connection shall only trigger
+        notifications via that connection and the client MUST use that WebSocket connection to unsubscribe. </p>
+
+        <p>If more than one WebSocket connection has been established
+        between one or more clients and a particular server instance, there
+        is a risk that race conditions and concurrency issues could occur.
+        An example of this would be where two or more WebSocket connections
+        are used to update a particular setting at the same time.</p>
+
+        <p>Unless explicitly stated otherwise, the client MAY only assume
+        that the server implements a simple concurrency model where lost
+        updates and dirty reads could potentially occur if the server has
+        more than one WebSocket connection open.</p>	      
       </section>
 
       <!-- Message Structure -->
