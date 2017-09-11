@@ -120,7 +120,7 @@
   <body>
     <!-- Abstract -->
     <section id="abstract">
-	<p>This specification defines a WebSocket based API for a vehicle information service that provides the functionality for client applications to get, set, subscribe and unsubscribe to vehicle signals and data attributes.</p>
+	<p>This specification defines a WebSocket based API for a Vehicle Information Service (VIS) to enable client applications to get, set, subscribe and unsubscribe to vehicle signals and data attributes.</p>
 	<p>The purpose of the specification is to promote a Server API that enables application development in a consistent manner across participating automotive manufacturers.</p>
 	  </section>
 
@@ -143,18 +143,19 @@
       <p>The term 'signal' is used here to represent an item of	data that can vary over time, for example vehicle speed,
 	 whilst the expression 'static data' is used to denote a temporally invariant property like vehicle width.</p>
 
+      <p>A vehicle-based software module may implement the interface and behaviours defined in this specification by creating a 
+      WebSocket server instance that listens for an inbound connection request from a client in order to enable secure access to vehicle signals. 
+      In this specification this module is referred to as the <dfn>VIS Server</dfn> or just 'the server'.</p>
+
       <p>The Vehicle Information Service Specification (VISS) defines a number of methods for accessing vehicle data which are strictly agnostic to the data model. Any data model where data and signals can be specified using a string could potentially be supported. However this version of the specification specifies that the data model is the GENIVI Vehicle Signal Specification (VSS). The VSS supports both extensibility and the ability to define private branches and will be used for each of the examples within this specification.</p>
 
       <p>In addition, the 'tree' of signals that is accessible at any point in time may also vary depending on standard access control principles.
          That is, it can vary based on the identity of the user (person or organisation) requesting the data and/or the application or 
 	 device (e.g. vehicle) where the request originates.</p>
 
-      <p>To support this, the Service Specification describes an extensible token based security mechanism that can optionally be used to pass tokens to the VIS Server,
+      <p>To support this, the Service Specification describes an extensible token based security mechanism that can optionally be used 
+	 to pass tokens to the VIS Server,
         for example to represent the user of an application and/or the device that the client application is running on.</p>
-
-      <p>A vehicle-based software module may implement the interface and behaviours defined in this specification by creating a 
-      WebSocket instance that listens for an inbound connection request from a client in order to enable secure access to vehicle signals. 
-      In this specification this module is referred to as the <dfn>VIS Server</dfn> or just 'the server'.</p>
 
       <p>A future revision of this specification may consider additionally exposing vehicle signals
       via a RESTful web service but this is out of scope for this version of the specification.</p>
@@ -290,13 +291,14 @@ function subscriptionHandler(msg){
       <section id="conformance">
 	<p>This specification defines conformance criteria that apply to a single product: specifically the 'in-vehicle'
 	WebSocket <dfn>Vehicle Information Service</dfn> that implements the interfaces, semantics and behaviour
-	defined in this document. For simplicity, this usually is referred to as the 'VIS Server' or just 'the server'</p>
+	defined in this document. For simplicity, the server that conforms to this specification is usually referred to as the 'VIS Server'
+	or just 'the server'</p>
       </section>
 
       <!-- Terminology -->
       <section id="terminology">
 	<h2>Terminology</h2>
-  <p> The acronym 'VISS' is used to refer to this document, the 'Vehicle Information Service Specification'. The term 'VIS Server' is used to refer to a server which conforms to the 'VISS' specification.</p>
+  <p> The acronym 'VISS' is used to refer to this document, the 'Vehicle Information Service Specification'.</p>
   <p> The acronym 'VIAS' is used to refer to the 'Vehicle Information API Specification' (see <a href="https://w3c.github.io/automotive/vehicle_information_api/vehicle_information_api_specification.html">here</a>) which has been developed alongside the VISS to expose a client API which can implement the VISS.</p>
   <p> The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' (see <a href="https://github.com/GENIVI/vehicle_signal_specification/">here</a>) which is defined by the GENIVI Alliance.
   </p>
@@ -318,7 +320,7 @@ function subscriptionHandler(msg){
       and Local Interconnect Networks (LIN). ECUs on these networks broadcast messages on network buses, and other ECUs on the
       bus respond to the messages.</p>
 
-      <p>In the component diagram included below, the internal vehicle CAN, MOST and LIN networks and the ECUs that communicate
+      <p>In the component diagram included in Figure 2, the internal vehicle CAN, MOST and LIN networks and the ECUs that communicate
       via these networks are abstracted and for simplicity, represented by the <dfn>System</dfn> component.</p>
 
       <p>For safety, security and commercial reasons not all clients should be able to GET, SET or SUBSCRIBE to particular vehicle
@@ -332,7 +334,7 @@ function subscriptionHandler(msg){
       manner to the VIS Server. The interface and communication mechanisms that are used between the vehicle System and
       the VIS Server are outside of the scope of this specification.</p>
 
-      <h3>VIS Server</h3>
+      <h3>Vehicle Information Service (VIS) Server</h3>
       <p>The <dfn>VIS Server</dfn> is the vehicle system that is responsible for exposing vehicle signals and data to
       its clients by implementing the interface and behaviours defined in this <dfn>Vehicle Information Service Specification (VISS)</dfn>.</p>
 
@@ -356,7 +358,7 @@ function subscriptionHandler(msg){
 
       <h3>In-Vehicle Clients</h3>
       <p>In-vehicle clients include both those clients that are running on an ECU in the vehicle itself,
-      e.g. an ECU that implements an In Vehicle Infotainment (IVI) system, but also includes clients running on a user's
+      e.g. an ECU that implements an In-Vehicle Infotainment (IVI) system, but also includes clients running on a user's
       device, e.g. a laptop, phone or tablet, that is connected via the vehicle's WiFi client (if one exists).</p>
 
       <figure>
@@ -367,8 +369,8 @@ function subscriptionHandler(msg){
       <p>The methods defined on the VIS Server interface may be invoked by different types of on-board and off-board clients.
       On-board clients, running on the vehicle fall into one of two major categories:</p>
 
-      <p><dfn>Applications</dfn> can access vehicle signals and data and have a User Interface that the driver or passengers in the
-      vehicle can interact with.</p>
+      <p><dfn>Applications</dfn> running in the vehicle that can access vehicle signals and data and have a User Interface that
+      the driver or passengers in the vehicle can interact with.</p>
 
       <p><dfn>Agents</dfn> typically have no user interface. They can also invoke methods exposed on the VIS Server but their
       purpose is to connect to one or more off-board e.g. <dfn>Vehicle to Everything (V2X)</dfn> internet Servers in order to send
@@ -388,8 +390,8 @@ function subscriptionHandler(msg){
       <h3>Sending Signals and Data off-board</h3>
       <p>In addition to local, in-vehicle applications and agents, a variety of internet-based clients and servers may be interested
       in accessing vehicle signals and data. However, when a vehicle is not being used, most electrical systems are shut down in
-      order to maximize battery life. This may include the systems that enable Wireless or Mobile connectivity. Then, when the vehicle
-      is powered up, various systems start up, including those that provide off-board connectivity and the vehicle typically
+      order to maximize battery life. This may include the systems that enable Wireless or Mobile connectivity. When the vehicle
+      is powered up, various systems start up, including potentially those that provide off-board connectivity and the vehicle typically
       connects either to a local WiFi network or to a Mobile Network Operator (MNO) and is dynamically assigned an IP address.</p>
 
       <p>At this point, internet based clients and servers do not know the dynamic IP address that was assigned to a specific vehicle.
@@ -428,7 +430,18 @@ function subscriptionHandler(msg){
       <p>Unless explicitly stated otherwise, the client can only assume
       that the server implements a simple concurrency model where lost
       updates and dirty reads could potentially occur if the server has
-      more than one WebSocket connection open.</p>	  
+      more than one WebSocket connection open.</p>
+	      
+      <h3>VIS Server State Diagram</h3>
+      <p>The following diagram shows a number of possible states that the VIS Server could occupy:</p>
+      <figure>
+        <img src="images/VISS State Diagram v1_2.png" alt="State Diagram for VIS Server">
+        <figcaption>State diagram for the VIS Server</figcaption>
+      </figure>
+      <p>The state diagram is for illustrative purposes only and does not assume that the VIS Server is either single or multi-threaded.
+      The implementer of the VIS Server is free to determine it's internal design and implementation, however in normal operation, 
+      it is assumed that the server will be able to accept multiple requests in quick succession and that the VIS Server 
+      will attempt to process and respond to each request in accordance with the specified API.</p>
       </section>
 
       <!-- Security and privacy -->
@@ -480,6 +493,10 @@ function subscriptionHandler(msg){
         both the user (e.g. driver of the vehicle) and for the device (e.g. the vehicle) that is hosting the client.
         A request for a different set of vehicle signals MAY require that only the user is authorized or that only the device
         is authorized to access particular signals.</p>
+	      
+	<p>The client and the server are each individually responsible for implementing security best practice. This includes
+	but is not limited to securely obtaining and verifying tokens (as applicable) and the prevention of replays or spoofing
+	of tokens by malicious actors or agents.</p>
 
         <h3>WebSocket Channel Authorization</h3>
         <p>The client MAY send a message with an 'authorize' action to modify the access-control state of the WebSocket channel.
@@ -532,7 +549,7 @@ function subscriptionHandler(msg){
         <h3>Token Renewal</h3>
         <p>Each security token SHALL have a specified lifetime during which it is valid. If on receiving a request for signals that are
         subject to access-control, the server determines that the request is unauthorized because the token has expired, the server
-        returns an error response indicating the fact and the client requests a new token from the Security Authority and
+        SHALL return an error response indicating the fact and the client SHALL request a new token from the Security Authority and
         repeat the request.</p>
 
         <p>If the server returns an error response indicating that the request is forbidden, renewing the security token does
@@ -560,7 +577,9 @@ function subscriptionHandler(msg){
 	default port 443. The hostname 'wwwivi' may locally be mapped to the localhost
 	IP address 127.0.0.1 e.g. by adding an entry to the /etc/hosts file.</p>
 
-	<p>The sub-protocol name SHALL be 'wvss' with a version number suffix, e.g. wvss1.0</p>
+	<p>The sub-protocol name SHALL be 'wvss' with a version number suffix, e.g. wvss1.0. The sub-protocol version will
+	be associated with exactly one Vehicle Server Specification (VSS) version so that the client and server can 
+	correctly validate and parse request and response message packets.</p>
 	<pre class="highlight hljs javascript">
 	  <span class="hljs-keyword">var</span> vehicle  = new WebSocket("wss://wwwivi", "wvss1.0");
 	</pre>
@@ -829,9 +848,9 @@ function subscriptionHandler(msg){
 	  <dt><dfn>getMetadata</dfn></dt>
 	  <dd>Allows the client to request metadata describing signals and data attributes that are potentially accessible.</dd>
 	  <dt><dfn>get</dfn></dt>
-	  <dd>Enables the client to get a value once.</dd>
+	  <dd>Enables the client to get one or more values once.</dd>
 	  <dt><dfn>set</dfn></dt>
-	  <dd>Enables the client to set a value once.</dd>
+	  <dd>Enables the client to set one or more values once.</dd>
     <dt><dfn>subscribe</dfn></dt>
     <dd>Enables the client to request notifications containing a JSON data structure with values for one or more
       vehicle signals and/or data attributes. The client requests that it is notified when the signal changes on the server.</dd>
@@ -1394,8 +1413,9 @@ function subscriptionHandler(msg){
 	</pre>
 
 	<p>In the case where the server returns a value that is a <dfn>complex type</dfn>, i.e. a value that
-	is not a single basic JavaScript type (e.g. string, number, boolean), the value SHALL be returned as
-	a set of name/value pairs in a JSON object structure. The format MUST be as defined by the Vehicle Signal Specification.<p>
+	is not a single basic JavaScript type (e.g. String, Number, Boolean), the value SHALL be returned as
+	a set of name/value pairs in a JSON object structure. The format MUST be as defined by the version of the Vehicle Signal 
+	Specification that is associated with the WebSocket sub-protocol value specified when the WebSocket is created.<p>
 
 	<p>The following shows an example of a 'getRequest' that results in the server returning a 'getSuccessResponse' with a value
 	that is a complex type:</p>
@@ -1477,7 +1497,7 @@ function subscriptionHandler(msg){
 	</pre>
 	<h2>Set</h2>
 
-	<p>The client may request that the server sets the value of a signal e.g. to lock a door or open a window by sending
+	<p>The client may request that the server sets the value of one or more signals e.g. to lock one or more doors or open a window by sending
 	a 'setRequest' message to the server. If the server is able to satisfy the request it SHALL return a 'setSuccessResponse'
 	message. If an error occurs e.g. because the client is not authorized to set the requested value, or the value is read-only,
 	the server SHALL return a 'setErrorResponse' message.<p>
@@ -1500,7 +1520,7 @@ function subscriptionHandler(msg){
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Set Request",
-    "description": "Enables the client to set a value once.",
+    "description": "Enables the client to set one or more values once.",
     "type": "object",
     "required": ["action", "path", "value", "requestId"],
     "properties": {
@@ -1864,7 +1884,8 @@ function subscriptionHandler(msg){
 
 
   <h4>Examples</h4>
-  <p>For example when client need to continuously receive "Signal.Drivetrain.Transmission.TripMeter" information from the server, it can use "subscribe" action with the target property like below.</p>
+  <p>For example when a client wishes to subscribe to receive "Signal.Drivetrain.Transmission.TripMeter" information from the server, 
+  it can use the "subscribe" action with the target path property set as follows:</p>
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "subscribe",
@@ -1879,7 +1900,11 @@ function subscriptionHandler(msg){
             "timestamp": 1489985044000
 	}
   </pre>
-  When this "subscribe" request has been successed, client will receive a notificaton with changing value continuously as below JSON structure.
+  <p>This example is for illustrative purposes only, it MAY or MAY NOT be the case that the version of the Vehicle Server Specification
+  implemented by the VIS Server includes the example path 'Signal.Drivetrain.Transmission.TripMeter'.</p>
+  
+  <p>If the "subscribe" request is successful the server will return a subscribeSuccessResponse as shown in the example above, 
+  and the client will then start to  receive subscription notifications like the one illustrated in the following JSON structure:</p>
 
   <pre class="highlight hljs javascript">
       receive <- {
@@ -1891,23 +1916,20 @@ function subscriptionHandler(msg){
   </pre>
 
 	</pre>
-	<p>The client can use the 'requestId' value to associate the successful
-	subscription response with the original request.</p>
-
 	<p>The 'subscriptionId' value is a unique value, created by the server and
-	which is used internally by the server to manage subscriptions
+	which may be used internally by the server to manage subscriptions
 	on that WebSocket instance.</p>
 
-	<p>The subscription id value may be used by the client to
+	<p>The subscriptionId value may also be used by the client to
 	unsubscribe from receiving future notifications, by passing the
-	handle value to the server with the unsubscribe action.</p>
+	value to the server with the unsubscribe action.</p>
 
 	<p>To differentiate subscription response from responses for ‘GET’
 	requests, subscription responses shall additionally include the
-	subscription id value that identifies the subscription that
+	subscriptionId value that identifies the subscription that
 	triggered that notification.</p>
 
-	<p>The server ensures that a new unique subscription id value is
+	<p>The server ensures that a new unique subscriptionId value is
 	returned for each successful subscription request on a particular
 	WebSocket connection. However the server does not guarantee that
 	subscription handle values are unique between different WebSocket
@@ -1916,22 +1938,22 @@ function subscriptionHandler(msg){
 	<p>Once the subscription is successfully registered with the server,
 	the client receives subscription notifications containing the requested
 	data, at a rate defined either by the server or by the server side filter. If there is an
-	error with an existing subscription a subscriptionNotificationError is
-	received by the client. This allows the client to handle the error, such as to reduce the subscription
-	frequency if the server is unable to satisfy the initial demands of the client.</p>
+	error with an existing subscription a subscriptionNotificationError SHALL be sent to 
+	the client. This allows the client to handle the error, for example by modifying the filter condition
+	to reduce the requested notification frequency.</p>
 	
 	<p>If the authentication token expires whilst a subscription is active, the server will send a 
 	subscriptionNotificationError for each subscription that can no longer be fulfilled. The client is then 
-	responsible for requesting a renewed authentication token.</p>
+	responsible for communicating with the relevant Security Authority to renew the authentication token.</p>
 	
 	<p>After the client authentication token has expired, the server MAY continue to send notifications for data that
 	is not subject to access control restrictions. The client will NOT receive notifications for subscriptions that require
 	a valid authentication token until the client sends a renewed authentication token to the server.</p>
 	
 	<p> If a new authentication token is presented by the client to the server in a timely manner,	all existing subscriptions
-	will continue to cause notifications to be sent from the server, provided the security principal
-	has not changed. The time window during which the client MAY re-authenticate and subscriptions continue WILL be 
-	implementation dependent.</p>
+	will continue to cause notifications to be sent from the server, provided the security principal(s)
+	have not changed. The time window during which the client MAY re-authenticate and subscriptions continue WILL be 
+	implementation dependent. If the server has terminated any subscriptions, it is the responsibility of the client to renew them.</p>
 	
 	<p>At any time the server MUST only send subscription notifications for data that the client is authorized to access.</p>
 
@@ -1951,13 +1973,14 @@ function subscriptionHandler(msg){
 	that was originally used to create the subscription.</p>
 
 	<p>It is not possible to unsubscribe from a subset of signals within a subscription. The client must unsubscribe 
-	and set up a new subscription with the desired signals. For example, if there is an active subscription 
-	for all lights, using the path Signal.Body.Lights.*, and the client requires information for only Signal.Body.Lights.IsLowBeamOn,
-	the client will have to unsubscribe from the Signal.Body.Lights.* subscription and re-subscribe to Signal.Body.Lights.IsLowBeamOn.</p>
+	and set up a new subscription to receive notifications for the desired signals. For example, if there is an active 
+	subscription for all lights, using the path Signal.Body.Lights.*, and the client requires information for only 
+	Signal.Body.Lights.IsLowBeamOn,	the client will have to unsubscribe from the Signal.Body.Lights.* subscription and 
+	re-subscribe to Signal.Body.Lights.IsLowBeamOn.</p>
 
 	<p>The client should always unsubscribe from receiving notifications when it is no longer using the data. Over a long
 	vehicle journey, this significantly reduces the processing load on the server and allow the server to free memory.
-	It therefore makes it more likely that the server remains responsive to future requests from the client.</p>
+	It therefore makes it more likely that the server will remain responsive to future requests from the client.</p>
 
   <h4 data-idl id="idl-def-unsubscriberequest">Unsubscribe Request Properties</h4>
   <p>The properties and schema for a unsubscribeRequest is:</p>
@@ -2135,7 +2158,7 @@ function subscriptionHandler(msg){
 <h2>Unsubscribe All</h2>
 <p>To unsubscribe from all subscriptions, the client SHALL send an 'unsubscribeAllRequest' message to the server. This is
 comprised of a JSON structure which contains an action property set to 'unsubscribeAll'. This does not require a subscriptionId value. If the request is successful, or there are no active subscriptions
-to unsubscribe from, this will return an 'unsubscribeSuccessResponse'.</p>
+to unsubscribe from, the VIS Server will return an 'unsubscribeSuccessResponse'.</p>
 
 <h4 data-idl id="idl-def-unsubscribeallrequest">Unsubscribe All Request Properties</h4>
 <p>The properties and schema for a unsubscribeAllRequest is:</p>
@@ -2267,9 +2290,11 @@ receive <- {
       <p>'<a>Filters</a>' may be specified to enable Server side filtering
       to be used to throttle the demands of subscriptions on
       the server. This may enable the reduction of traffic if the
-      developer has received a 429 - Too Many Requests error
-      message. Server side filters are extensible, allowing for further filtering mechanisms. Support 
-      is currently provisioned for a specific range of values, time intervals and
+      developer has received a '429 - Too Many Requests' error
+      message.</p>
+      
+      <p>Server side filters are extensible, allowing for additional filtering mechanisms to be specified. Support 
+      is currently included for a specific range of values, time intervals and
       minimum changes. This can be implemented using the "filters"
       option in the subscribeRequest interface.</p>
 
@@ -2277,17 +2302,16 @@ receive <- {
 	For example, a filter cannot be set on Signal.Drivetrain.InternalCombustionEngine.*, 
 	however it can be set on Signal.Drivetrain.InternalCombustionEngine.RPM.</p>
 
-      <p>The default behaviour for a subscription is to send values to the client only onchange. 
-      To modify this behaviour the client can use filtering options. The following filter options 
-      SHALL be supported.</p>
+      <p>The default behaviour for a subscription is to request that the server sends a notification to the client 'onchange'. 
+      To modify this behaviour the client can use filtering options. The following filter options SHALL be supported:</p>
       <ul>
 	<li>Interval - requests that the server provides a notification every 'n' milliseconds. This allows the client to reduce the
 	load on the server if the client does not need the data more frequently.</li>
-	<li>Range - provide a value only when within a given range</li>
-	<li>Minimum change - provide data when a value has changed by a specified amount</li>
+	<li>Range - send a notification only when the value is in a given range.</li>
+	<li>Minimum change - send a notification when a value has changed by a specified amount.</li>
       </ul>      
-	<p>If the filter is not set, or the server is unable to satisfy the request, the notification frequency is
-      determined by the server.</p>
+	<p>The client can use filters to request that the server sends notifications based on various criteria, but 
+	it is important to note that this is just a request and the notification frequency will ultimately be determined by the server.</p>
       
       <h4></h4>
       <h4></h4>
@@ -2334,9 +2358,6 @@ receive <- {
 	adding unnecessary load on the server. The server shall return a '429 - Too Many Request' error response if
 	it is unable to fulfil the request made by the client.</p>
 
-      <p>The section that follows defines the error responses that shall be supported by the server.</p>
-      </section>
-
       <section>
 	<h3>WebSocket Closure</h3>
 	<p>The WebSocket may be closed by either the client or the
@@ -2360,12 +2381,12 @@ vehicle.close();
 	the server. It is the client’s responsibility to handle this
 	gracefully and to recover and request new
 	subscriptions, where required.</p>
+
+      <p>The section that follows defines the error responses that shall be supported by the server.</p>
       </section>
 
-
-
       <section>
-	<h3>Errors</h3>
+	<h2>Errors</h2>
 	<p>If there is an error with any of the client’s requests, the server responds with an error number, reason and
 	message.</p>
   <p>The properties and schema for an Error object is:</p>
