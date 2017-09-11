@@ -291,8 +291,7 @@ function subscriptionHandler(msg){
       <section id="conformance">
 	<p>This specification defines conformance criteria that apply to a single product: specifically the 'in-vehicle'
 	WebSocket <dfn>Vehicle Information Service</dfn> that implements the interfaces, semantics and behaviour
-	defined in this document. For simplicity, the server that conforms to this specification is usually referred to as the 'VIS Server'
-	or just 'the server'</p>
+		defined in this document.</p>
       </section>
 
       <!-- Terminology -->
@@ -335,8 +334,9 @@ function subscriptionHandler(msg){
       the VIS Server are outside of the scope of this specification.</p>
 
       <h3>Vehicle Information Service (VIS) Server</h3>
-      <p>The <dfn>VIS Server</dfn> is the vehicle system that is responsible for exposing vehicle signals and data to
-      its clients by implementing the interface and behaviours defined in this <dfn>Vehicle Information Service Specification (VISS)</dfn>.</p>
+      <p>As stated above, the <strong>VIS Server</strong> is the 'in-vehicle' system that is responsible for
+	      exposing vehicle signals and data to on-board clients by implementing the interface and behaviours defined in this
+	      <dfn>Vehicle Information Service Specification (VISS)</dfn>.</p>
 
       <p>The VIS Server exposes signals and data in a manner that is consistent with the accompanying data model. The data model is not mandated by this specification, however the recommended data model used within this specification is the <dfn>Vehicle Signal Specification (VSS)</dfn>.
       This defines a 'tree-like' logical taxonomy of the vehicle, (formally a Directed Acyclic Graph), where major vehicle structures
@@ -352,7 +352,7 @@ function subscriptionHandler(msg){
 	      
       <p>Within GENIVI's VSS data model, signals are named according to their path using the dot notation e.g. engine.rpm. The methods defined within this document support any path notation which can be represented as a string.</p>
 
-      <p>The client MAY invoke the VIS Server's <a>getMetadata</a> method to request that the server returns metadata that
+      <p>The client may invoke the VIS Server's <a>getMetadata</a> method to request that the server returns metadata that
       describes which signals and data attributes could potentially be accessed provided that the user and/or device is suitably
       authorized. This and other valid VIS Server actions are defined in more detail <a href="#action">here</a>.</p>
 
@@ -381,7 +381,7 @@ function subscriptionHandler(msg){
       e.g. C, C++ or Objective-C; and those that run in a Managed Runtime process written using languages like C#
       or Java.</p>
 
-      <p>Web applications and web agents MAY directly invoke the Vehicle Information Service interface exposed by the VIS Server,
+      <p>Web applications and web agents may directly invoke the Vehicle Information Service interface exposed by the VIS Server,
       but it is expected that they typically access vehicle signals and data via a JavaScript Library that implements the
       W3C Vehicle Information API Specification (VIAS) (see <a href="https://w3c.github.io/automotive/vehicle_information_api/vehicle_information_api_specification.html">here</a>). The VIAS is a client API that defines a 
       standard approach to encapsulate or 'wrap' the API defined in this specification to make it easier for Web based clients to 
@@ -408,30 +408,10 @@ function subscriptionHandler(msg){
       Vehicle Information Service Specification.</p>
 
       <p>The component diagram shows four different types of internet based clients. A user may use a <dfn>Web Page</dfn> or a <dfn>
-      Web Application</dfn> running on a phone or tablet to request access to vehicle signals on a particular vehicle. Alternatively
-      these signals could be accessed using a <dfn>Native or Managed Runtime Application</dfn> or via another automated
+      Web Application</dfn> running on a phone or tablet connected to the vehicle's ethernet network to request access to vehicle 
+      signals on a particular vehicle. Alternatively these signals could be accessed using a <dfn>Native or Managed Runtime Application</dfn> or via another automated
       <dfn>Client System</dfn> or service e.g. the Traffic Management System in a 'Smart City'.</p>
-      
-      <p>This specification assumes that a single WebSocket is used to enable communication between a client application
-      and the server. It is not explicitly prohibited for the client to request that the server opens more than one WebSocket,
-      however, the server may refuse to open a subsequent WebSocket connection and the client is responsible for handling this
-      gracefully.</p>
-
-      <p>If more than one WebSocket connection is established between a client application and the server then each connection
-      MUST be managed independently. For example, subscriptions created using a particular WebSocket connection SHALL only trigger
-      notifications via that connection and the client MUST use that WebSocket connection to unsubscribe. </p>
-
-      <p>If more than one WebSocket connection has been established
-      between one or more clients and a particular server instance, there
-      is a risk that race conditions and concurrency issues could occur.
-      An example of this would be where two or more WebSocket connections
-      are used to update a particular setting at the same time.</p>
-
-      <p>Unless explicitly stated otherwise, the client can only assume
-      that the server implements a simple concurrency model where lost
-      updates and dirty reads could potentially occur if the server has
-      more than one WebSocket connection open.</p>
-	      
+           	      
       <h3>VIS Server State Diagram</h3>
       <p>The following diagram shows a number of possible states that the VIS Server could occupy:</p>
       <figure>
@@ -505,14 +485,13 @@ function subscriptionHandler(msg){
         <p>The following diagram illustrates a scenario where the client requests vehicle speed. In this example scenario, this
         signal is not under access control and so the server returns a message containing the requested data. The client then
         requests that the server sets the vehicle trunk status to open and the server demands that the client passes access-control
-        credentials before satisfying the request. The steps are shown in more detail in the diagram below:</p>
+        credentials before satisfying the request. The sequence of steps is illustrated in the diagram below:</p>
 
         <figure>
           <img src="images/WebSocket_Security_Flow_1_900px.png" alt="WebSocket Security token flow">
-          <figcaption>Diagram showing conceptual WebSocket Security Token flow (data structures are illustrative only)</figcaption>
+          <figcaption>Diagram showing conceptual WebSocket Security Token flow (data structures are illustrative and logical content has been simplified)</figcaption>
         </figure>
 
-	      <p class="note">TODO: Update diagram to reflect auth token structure and review including other diagrams from Wiki</p>
         <p>After receiving a message with an 'authorize' action the server attempts to verify the tokens e.g. by checking
         with the issuing Security Authority. If all of the tokens that are passed to the server are valid, it returns
         a success response and all subsequent requests received by the WebSocket instance have elevated access control
@@ -591,6 +570,26 @@ function subscriptionHandler(msg){
 	the server opens a WebSocket. All WebSocket communications between
 	the client and server MUST be over ‘wss’. Non encrypted communication
 	is not supported, hence the server MUST refuse ‘ws’ connection requests.</p>
+	      
+        <p>This specification assumes that a single WebSocket is used to enable communication between a client application
+        and the server. It is not explicitly prohibited for the client to request that the server opens more than one WebSocket,
+        however, the server MAY refuse to open a subsequent WebSocket connection and the client is responsible for handling this
+        gracefully.</p>
+
+        <p>If more than one WebSocket connection is established between a client application and the server then each connection
+        MUST be managed independently. For example, subscriptions created using a particular WebSocket connection shall only trigger
+        notifications via that connection and the client MUST use that WebSocket connection to unsubscribe. </p>
+
+        <p>If more than one WebSocket connection has been established
+        between one or more clients and a particular server instance, there
+        is a risk that race conditions and concurrency issues could occur.
+        An example of this would be where two or more WebSocket connections
+        are used to update a particular setting at the same time.</p>
+
+        <p>Unless explicitly stated otherwise, the client MAY only assume
+        that the server implements a simple concurrency model where lost
+        updates and dirty reads could potentially occur if the server has
+        more than one WebSocket connection open.</p>	      
       </section>
 
       <!-- Message Structure -->
@@ -738,7 +737,7 @@ function subscriptionHandler(msg){
       <td>Metadata describing the potentially available signal tree.</td>
     </tr>
 	  <tr>
-	    <td id="dfn-error"><dfn>error</dfn></td>
+		  <td id="dfn-error"><strong><italic>error</italic></strong></td>
 	    <td> <a href="#errors">Error</a> </td>
 	    <td> Returns an error code, reason and message.</td>
 	  </tr>
@@ -762,7 +761,8 @@ function subscriptionHandler(msg){
             "type": "string"
         },
         "value": {
-            "description": "The data value returned by the server. This could either be a basic type, or a complex type comprised of nested name/value pairs in JSON format.",
+            "description": "The data value returned by the server. This could either be a basic type, or a complex type
+	                    comprised of nested name/value pairs in JSON format.",
             "type": "string"
         },
         "timestamp": {
