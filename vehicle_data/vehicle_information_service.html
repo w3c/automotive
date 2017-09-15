@@ -113,7 +113,7 @@
           background: white;
           color: black;        
         }
-
+        pre { white-space: pre-wrap;}
     </style>
   </head>
 
@@ -752,8 +752,7 @@ function subscriptionHandler(msg){
             "description": "The type of action requested by the client or delivered by the server",
         },
         "requestId": {
-            "description": "Returned by the server in the response and used by the client to 
-              link the request and response messages.",
+            "description": "Returned by the server in the response and used by the client to link the request and response messages.",
             "type": "string"
         },
         "path": {
@@ -761,52 +760,43 @@ function subscriptionHandler(msg){
             "type": "string"
         },
         "value": {
-            "description": "The data value returned by the server. This could either be a basic type, or a complex type
-	                    comprised of nested name/value pairs in JSON format.",
+            "description": "The data value returned by the server. This could either be a basic type, or a complex type comprised of nested name/value pairs in JSON format.",
             "type": "string"
         },
         "timestamp": {
-            "description": "The Coordinated Universal Time (UTC) time that the server returned 
-              the response (expressed as number of milliseconds).",
+            "description": "The Coordinated Universal Time (UTC) time that the server returned the response (expressed as number of milliseconds).",
             "type": "integer"
         },
         "filters": {
-            "description": "May be specified in order to throttle the demands of subscriptions 
-              on the server.",
+            "description": "May be specified in order to throttle the demands of subscriptions on the server.",
             "type": ["object", "null"],
             "properties": {
                 "interval": {
-                    "description": "The subscription will provide notifications with a period 
-                      equal to this field's value.",
+                    "description": "The subscription will provide notifications with a period equal to this field's value.",
                     "type": "integer"                   
                 },
                 "range": {
-                    "description": "The subscription will provide notifications only when within 
-                      a given range.",
+                    "description": "The subscription will provide notifications only when within a given range.",
                     "type": "object",
                     "properties":{
                       "below": {
-                        "description": "The subscription will provide notifications when the value 
-                          is less or equal to this field's value.",
+                        "description": "The subscription will provide notifications when the value is less or equal to this field's value.",
                         "type": "integer"  
                       },
                       "above": {
-                        "description": "The subscription will provide notifications when the value 
-                          is greater than or equal to this field's value.",
+                        "description": "The subscription will provide notifications when the value is greater than or equal to this field's value.",
                         "type": "integer"  
-                      },
+                      }
                     }                   
                 },
                 "minChange": {
-                    "description": "The subscription will provide notifications when a value has 
-                      changed by the amount specified in this field.",
+                    "description": "The subscription will provide notifications when a value has changed by the amount specified in this field.",
                     "type": "integer"                   
                 }
             }
         },
         "subscriptionId":{
-            "description": "Integer handle value which is used to uniquely identify the 
-              subscription.",
+            "description": "Integer handle value which is used to uniquely identify the subscription.",
             "type": "string"
         },
         "metadata":{
@@ -822,14 +812,13 @@ function subscriptionHandler(msg){
                     "type": "integer"                   
                 },
                 "reason": {
-                    "description": "Pre-defined string value that can be used to distinguish 
-                      between errors that have the same code",
+                    "description": "Pre-defined string value that can be used to distinguish between errors that have the same code",
                     "type": "string"                    
                 },
                 "message": {
                     "description": "Message text describing the cause in more detail",
                     "type": "string"                    
-                },
+                }
             }   
         }
     }
@@ -892,20 +881,18 @@ function subscriptionHandler(msg){
     "properties": {
         "action": {
             "enum": [ "authorize" ],
-            "description": "The identifier for the authorize request",
+            "description": "The identifier for the authorize request"
         },
         "tokens": {
             "description": "Extensible key-value pair token mechanism used for access control",
             "type": "object",
             "properties": {
                 "authorization": {
-                    "description": "The user token, for the user that the client is making 
-                      requests on behalf of",
+                    "description": "The user token, for the user that the client is making requests on behalf of",
                     "type": "string"
                 },
                 "www-vehicle-device": {
-                    "description": "The device token for the originating device that is making 
-                      the request to the server",
+                    "description": "The device token for the originating device that is making the request to the server",
                     "type": "string"
                 }
             }
@@ -1703,8 +1690,7 @@ function subscriptionHandler(msg){
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Subscribe Request",
-    "description": "Allows the client to subscribe to time-varying signal notifications on the 
-      server.",
+    "description": "Allows the client to subscribe to time-varying signal notifications on the server.",
     "type": "object",
     "required": ["action", "path", "requestId"],
     "properties": {
@@ -1860,8 +1846,7 @@ function subscriptionHandler(msg){
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Subscription Notification Error",
-    "description": "Error message sent by the server when there is an error with an existing 
-      subscription",
+    "description": "Error message sent by the server when there is an error with an existing subscription",
     "type": "object",
     "required": ["action", "subscriptionId", "error", "timestamp"],
     "properties": {
@@ -2001,8 +1986,7 @@ function subscriptionHandler(msg){
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Unsubscribe Request",
-    "description": "Allows the client to unsubscribe to time-varying signal notifications on 
-      the server.",
+    "description": "Allows the client to unsubscribe to time-varying signal notifications on the server.",
     "type": "object",
     "required": ["action", "subscriptionId", "requestId"],
     "properties": {
