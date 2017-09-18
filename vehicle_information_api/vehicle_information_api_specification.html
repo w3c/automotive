@@ -116,7 +116,7 @@
         <li>Authorization token transmission (not retrieval)</li>
         <li>Request lifecycle</li>
         <li>Subscription lifecycle</li>
-        <li>Vehicle Signal Specification (hereafter VSS) data tree discovery and traversal</li>
+        <li>Metadata object tree discovery and traversal. An example is a VSS tree of Vehicle Signal Specification(VSS)</li>
       </ul>
 
       <p>In general, the client should strive for the following goals:</p>
@@ -145,7 +145,7 @@
       The term 'VIS Server' is used to refer to a server which conforms to the 'VISS' specification.
       </p>
       <p> The term 'VIAS' is used to refer to 'W3C Vehicle Information API Specification' which is this document.</p>
-      <p> The term 'VSS' is used to refer to the 'Vehicle Signal Specification' (see <a href="https://github.com/GENIVI/vehicle_signal_specification/">here</a>) which is defined in GENIVI Alliance activity.
+      <p> The term 'VSS' is used to refer to the 'Vehicle Signal Specification'[[!VSS]] which is defined in GENIVI Alliance activity.
       </p>
       <p>The term 'WebSocket' is used to refer to W3C WebSocket API [[websockets]] and the IETF's WebSocket Protocol [[rfc6455]].</p>
     </section>
@@ -193,7 +193,7 @@
 
         void connect(ConnectCallback connectCallback, ErrorCallback errorCallback);
         void authorize(object tokens, AuthorizeCallback authorizeCallback, ErrorCallback errorCallback);
-        void getVSS(DOMString path, GetVSSCallback getVSSCallback, ErrorCallback errorCallback);
+        void getMetadata(DOMString path, GetMetadataCallback getMetadataCallback, ErrorCallback errorCallback);
         void get(DOMString path, GetCallback getCallback, ErrorCallback errorCallback);
         void set(DOMString path, any value , SetCallback setCallback, ErrorCallback errorCallback);
         VISSubscription subscribe(DOMString path, SubscriptionCallback subscriptionCallback, ErrorCallback errorCallback, optional VISSubscribeFilters filters);
@@ -293,7 +293,7 @@
         <p>Once created, a VISClient object provides methods shown below for interacting with the server.</p>
         <p>
         Most of the methods listed below require a `path` string to be passed that identifies the target vehicle data items defined in GENIVI VSS.
-        See <a>VSS</a> interface below for how to generate this string based on traversing the GENIVI VSS data tree.
+        See <a>Metadata</a> interface below for how to generate this string based on traversing the GENIVI VSS data tree.
         </p>
 
         <table class="parameters">
@@ -338,13 +338,13 @@
             </td>
           </tr>
           <tr>
-            <td><dfn>getVSS</dfn> (path, getVSSCallback, errorCallback)</td>
-            <td>Requests the VSS data object from the server and calls the callback function with a VSS data object as described below.</td>
+            <td><dfn>getMetadata</dfn> (path, getMetadataCallback, errorCallback)</td>
+            <td>Requests the metadata object from the server and calls the callback function with a metadata object as described below.</td>
             <td>
               <ul>
-                <li>path (DOMString)- a String representing a location within the VSS</li>
+                <li>path (DOMString)- a String representing a location within the metadata object tree</li>
                 <li>
-                  getVSSCallback (<code><a>GetVSSCallback</a></code>) - A function called when the operation is completed
+                  getMetadataCallback (<code><a>GetMetadataCallback</a></code>) - A function called when the operation is completed
                 </li>
                 <li>
                   errorCallback (<code><a>ErrorCallback</a></code>) - A function called when an error relevant to this method has been occurred.
@@ -358,7 +358,7 @@
             </td>
             <td>
               <ul>
-                <li>path (DOMString)- a String representing a location within the VSS</li>
+                <li>path (DOMString)- a String representing a location within the metadata object tree</li>
                 <li>
                   getCallback (<code><a>GetCallback</a></code>) - A function called when the operation is completed
                 </li>
@@ -373,7 +373,7 @@
             <td>Sends a single value to the server.</td>
             <td>
               <ul>
-                <li>path (DOMString) - a String representing a location within the VSS</li>
+                <li>path (DOMString) - a String representing a location within the metadata object tree</li>
                 <li>value (any) - the value to pass to the server.  This must match the type as specified in the VSS.</li>
                 <li>
                   setCallback (<code><a>SetCallback</a></code>) - A function called when the operation is completed
@@ -391,7 +391,7 @@
             </td>
             <td>
               <ul>
-                <li>path (DOMString) - a String representing a location within the VSS</li>
+                <li>path (DOMString) - a String representing a location within the metadata object tree</li>
                 <li>
                   subscriptionCallback (<code><a>SubscriptionCallback</a></code>) - A function called each time subscribed value is notified from the server.<br>This function will be passed:
                 </li>
@@ -466,7 +466,7 @@
         callback DisconnectCallback = void ();
         callback ErrorCallback = void (VISError error);
         callback AuthorizeCallback = void (unsigned long TTL);
-        callback GetVSSCallback = void (VSS vss);
+        callback GetMetadataCallback = void (Metadata metadata);
         callback GetCallback = void (VISValue value);
         callback SetCallback = void ();
         callback SubscriptionCallback = void (VISValue value);
@@ -512,12 +512,12 @@
           </tr>
 
           <tr>
-            <td><dfn>GetVSSCallback</dfn></td>
-            <td>A function called when getVSS method succeeded.<br>
-            The retrieved VSS data object is passed by <code>vss</code> parameter in JSON format.
+            <td><dfn>GetMetadataCallback</dfn></td>
+            <td>A function called when getMetadata method succeeded.<br>
+            The retrieved metadata object is passed by <code>metadata</code> parameter in JSON format.
             </td>
-            <td>vss</td>
-            <td><code><a>VSS</a></code></td>
+            <td>metadata</td>
+            <td><code><a>Metadata</a></code></td>
           </tr>
 
           <tr>
@@ -853,10 +853,10 @@
 
     </section>
 
-    <section id="vss-interface" data-dfn-for="VSS" data-link-for="VSS">
-      <h2><dfn><code>VSS</code></dfn> Interface</h2>
+    <section id="metadata-interface" data-dfn-for="Metadata" data-link-for="Metadata">
+      <h2><dfn><code>Metadata</code></dfn> Interface</h2>
       <pre class="idl">
-      interface VSS {
+      interface Metadata {
         sequence&lt;DOMString&gt; pathsByCSS(DOMString cssSelector);
         boolean pathExistsByCSS(DOMString cssSelector);
         boolean canGet(DOMString path);
@@ -865,9 +865,9 @@
       };
       </pre>
 
-      <p>The VSS object returned by the <code>getVSS()</code> method above should provide APIs sufficient to fully traverse the VSS tree
+      <p>The Metadata object returned by the <code>getMetadata()</code> method above should provide APIs sufficient to fully traverse the metadata object tree
       and determine what signals are available at the current permission level.<br>
-      Although traversing the VSS tree can be accomplished using any of a number of query languages (i.e. CSS path selectors, XPath, etc.),
+      Although traversing the object tree can be accomplished using any of a number of query languages (i.e. CSS path selectors, XPath, etc.),
       CSS-based querying API is defined at this time and additional query languages may be added in the future.<br>
       It is out of scope here to define the exact traversal methods and feature set and they are left as implementation dependent matter,
       but these methods SHOULD follow standards protocols such as CSS or XPATH.
@@ -895,7 +895,7 @@
         </tr>
         <tr>
           <td><dfn>at</dfn> ([path])</td>
-          <td>Returns the raw VSS tree object rooted at path (if provided), otherwise returns the entire tree. Regarding raw VSS object definition, refer VSS spec document.</td>
+          <td>Returns the raw metadata tree object rooted at path (if provided), otherwise returns the entire tree. Regarding raw metadata object definition, refer VSS spec document.</td>
         </tr>
       </table>
 
@@ -906,14 +906,14 @@
         });
 
         const openWindow = () => {
-          client.getVSS('Signal.Cabin' ,(vss) => {
-            const paths = vss.pathsByCSS('Row1 Left Window > Position');
+          client.getMetadata('Signal.Cabin' ,(metadata) => {
+            const paths = metadata.pathsByCSS('Row1 Left Window > Position');
             if (!paths.length) {
-              console.err('Could not find front-left window in VSS');
+              console.err('Could not find front-left window in Metadata');
               return;
             }
 
-            if (vss.canSet(paths[0])) {
+            if (metadata.canSet(paths[0])) {
               client.set(paths[0], 0, () => {
                 console.log(`Set window ${paths[0]} to open succeeded`);
               }, (err) => {
@@ -923,7 +923,7 @@
               console.err('Not authorized to open front-left window');
             }
           }, (err) => {
-              console.err(`Error while getVSS: ${err.number}`);
+              console.err(`Error while getMetadata: ${err.number}`);
           });
         }
 
