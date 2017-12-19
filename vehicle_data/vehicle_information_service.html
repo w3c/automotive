@@ -561,8 +561,8 @@ function subscriptionHandler(msg){
 	suitable standards compliant WebSocket library to request that a
 	WebSocket connection is opened on the server.</p>
 
-	<p>Implementations that support additional devices or multiple services
-        should provide discovery. Alternatively location of VIS
+	<p>Implementations that support additional devices or multiple VIS services
+        should provide discovery. Alternatively, the location of a particular VIS
         Server instance on the local vehicle network may be handled by
         configuration, either as part of a package manifest or by consulting a
         registry on application install. The 'wwwivi' hostname in this
@@ -580,7 +580,6 @@ function subscriptionHandler(msg){
 	<pre class="highlight hljs javascript">
 	  <span class="hljs-keyword">var</span> vehicle  = new WebSocket("wss://wwwivi", "wvss1.0");
 	</pre>
-	
 	<p>The client SHALL connect to the server over HTTPS and request that
 	the server opens a WebSocket. All WebSocket communications between
 	the client and server MUST be over ‘wss’. Non encrypted communication
