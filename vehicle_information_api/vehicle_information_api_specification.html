@@ -202,15 +202,15 @@
         readonly attribute DOMString? protocol;
         readonly attribute unsigned short? port;
 
-        void connect(ConnectCallback connectCallback, ErrorCallback errorCallback);
-        void authorize(object tokens, AuthorizeCallback authorizeCallback, ErrorCallback errorCallback);
-        void getMetadata(DOMString path, GetMetadataCallback getMetadataCallback, ErrorCallback errorCallback);
-        void get(DOMString path, GetCallback getCallback, ErrorCallback errorCallback);
-        void set(DOMString path, any value , SetCallback setCallback, ErrorCallback errorCallback);
+        [NewObject] Promise &lt void &gt connect();
+        [NewObject] Promise &lt unsigned long &gt authorize(object tokens);
+        [NewObject] Promise &lt Metadata &gt getMetadata(DOMString path);
+        [NewObject] Promise &lt VISValue &gt get(DOMString path);
+        [NewObject] Promise &lt void &gt set(DOMString path, any value);
         VISSubscription subscribe(DOMString path, SubscriptionCallback subscriptionCallback, ErrorCallback errorCallback, optional VISSubscribeFilters filters);
-        void unsubscribe(VISSubscription subscription, UnsubscribeCallback unsubscribeCallback, ErrorCallback errorCallback);
-        void unsubscribeAll(UnsubscribeCallback unsubscribeCallback, ErrorCallback errorCallback);
-        void disconnect(DisconnectCallback disconnectCallback, ErrorCallback errorCallback);
+        [NewObject] Promise &lt void &gt unsubscribe(VISSubscription subscription);
+        [NewObject] Promise &lt void &gt unsubscribeAll();
+        [NewObject] Promise &lt void &gt disconnect();
       };
 
       dictionary VISClientOptions
@@ -219,7 +219,6 @@
         DOMString? protocol;
         unsigned short? port;
       };
-
 
       dictionary VISValue
       {
@@ -314,84 +313,66 @@
             <th>Parameters</th>
           </tr>
           <tr>
-            <td><dfn>connect</dfn> (connectCallback, errorCallback)</td>
+            <td><dfn>connect</dfn> ()</td>
             <td>
             Initializes the connection with the server.<br>
             When a VIAS implementation assumes underlying network as `connectionless` type(e.g. http), establishing connection with this method is not necessary.<br>
             In such case, this method can be implemented as an empty function which returns `501 not implemented` error when executed.<br>
+            This method returns Promise.<br>
             </td>
             <td>
               <ul>
-                <li>
-                  connectCallback (<code><a>ConnectCallback</a></code>) - A function called when the connection is successfully established.<br>
-                </li>
-                <li>
-                  errorCallback (<code><a>ErrorCallback</a></code>) - A function called when an error relevant to this method has been occurred.
-                </li>
               </ul>
             </td>
           </tr>
           <tr>
-            <td><dfn>authorize</dfn> (tokens, authorizeCallback, errorCallback)</td>
-            <td>Request access to signals and data attributes that are under access control.</td>
+            <td><dfn>authorize</dfn> (tokens)</td>
+            <td>
+            Request access to signals and data attributes that are under access control.<br>
+            This method returns Promise.<br>
+            </td>
             <td>
               <ul>
                 <li>tokens
                 (object) - Tokens provided by authorization authority. Structure of tokens depend on underlying server's specification.
                 </li>
-                <li>
-                  authorizeCallback (<code><a>AuthorizeCallback</a></code>) - A function called when the operation is completed
-                </li>
-                <li>
-                  errorCallback (<code><a>ErrorCallback</a></code>) - A function called when an error relevant to this method has been occurred.
-                </li>
               </ul>
             </td>
           </tr>
           <tr>
-            <td><dfn>getMetadata</dfn> (path, getMetadataCallback, errorCallback)</td>
-            <td>Requests the metadata object from the server and calls the callback function with a metadata object as described below.</td>
+            <td><dfn>getMetadata</dfn> (path)</td>
             <td>
-              <ul>
-                <li>path (DOMString)- a String representing a location within the metadata object tree</li>
-                <li>
-                  getMetadataCallback (<code><a>GetMetadataCallback</a></code>) - A function called when the operation is completed
-                </li>
-                <li>
-                  errorCallback (<code><a>ErrorCallback</a></code>) - A function called when an error relevant to this method has been occurred.
-                </li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td><dfn>get</dfn> (path, getCallback, errorCallback)</td>
-            <td>Receives a single value from the server.
+            Requests a metadata object which matches with specified path.<br>
+            This method returns Promise.<br>
             </td>
             <td>
               <ul>
                 <li>path (DOMString)- a String representing a location within the metadata object tree</li>
-                <li>
-                  getCallback (<code><a>GetCallback</a></code>) - A function called when the operation is completed
-                </li>
-                <li>
-                  errorCallback (<code><a>ErrorCallback</a></code>) - A function called when an error relevant to this method has been occurred.
-                </li>
               </ul>
             </td>
           </tr>
           <tr>
-            <td><dfn>set</dfn> (path, value, setCallback, errorCallback)</td>
-            <td>Sends a single value to the server.</td>
+            <td><dfn>get</dfn> (path)</td>
+            <td>
+            Receives a single value from the server.<br>
+            This method returns Promise.<br>
+            </td>
+            <td>
+              <ul>
+                <li>path (DOMString)- a String representing a location within the metadata object tree</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td><dfn>set</dfn> (path, value)</td>
+            <td>
+            Sends a single value to the server.<br>
+            This method returns Promise.<br>
+            </td>
             <td>
               <ul>
                 <li>path (DOMString) - a String representing a location within the metadata object tree</li>
                 <li>value (any) - the value to pass to the server.  This must match the type as specified in the VSS.</li>
-                <li>
-                  setCallback (<code><a>SetCallback</a></code>) - A function called when the operation is completed
-                </li>
-                <li>
-                  errorCallback (<code><a>ErrorCallback</a></code>) - A function called when an error relevant to this method has been occurred.
-                </li>
               </ul>
             </td>
           </tr>
@@ -417,50 +398,39 @@
             </td>
           </tr>
           <tr>
-            <td><dfn>unsubscribe</dfn> (subscription, unsubscribeCallback, errorCallback)</td>
-            <td>Unsubscribe from the subscription passed.</td>
+            <td><dfn>unsubscribe</dfn> (subscription)</td>
+            <td>
+            Unsubscribe from the subscription passed.<br>
+            This method returns Promise.<br>
+            </td>
             <td>
               <ul>
                 <li>subscription (<code><a>VISSubscription</a></code>) - the subscription object is obtained from callback function for `subscribe()` method
-                <li>
-                  unsubscribeCallback (<code><a>UnsubscribeCallback</a></code>) - A function called when the operation is completed
-                </li>
-                <li>
-                  errorCallback (<code><a>ErrorCallback</a></code>) - A function called when an error relevant to this method has been occurred.
-                </li>
               </ul>
             </td>
           </tr>
           <tr>
-            <td><dfn>unsubscribeAll</dfn> (unsubscribeCallback, errorCallback)</td>
-            <td>Unsubscribe all the subscriptions.</td>
+            <td><dfn>unsubscribeAll</dfn> ()</td>
+            <td>
+            Unsubscribe all the subscriptions.<br>
+            This method returns Promise.<br>
+            </td>
             <td>
               <ul>
-                <li>
-                  unsubscribeCallback (<code><a>UnsubscribeCallback</a></code>) - A function called when the operation is completed
-                </li>
-                <li>
-                  errorCallback (<code><a>ErrorCallback</a></code>) - A function called when an error relevant to this method has been occurred.
-                </li>
               </ul>
             </td>
           </tr>
           <tr>
-            <td><dfn>disconnect</dfn> (disconnectCallback, errorCallback)</td>
+            <td><dfn>disconnect</dfn> ()</td>
             <td>
             Closes the connection.<br>
             The same <code><a>VISClient</a></code> object can be used again by calling the `connect()` method, but subscriptions, authorization, and other state will not persist after a disconnection.<br>
             When underlying network is `connectionless` type(e.g. http(s)), use of this method is not necessary.<br>
             In such case, this method could be implemented as empty function which returns '501 not implemented' error when executed.<br>
+            This method returns Promise.<br>
             </td>
             <td>
               <ul>
-                <li>
-                  disconnectCallback (<code><a>DisconnectCallback</a></code>) - A function called when the connection is successfully closed.<br>
-                </li>
-                <li>
-                  errorCallback (<code><a>ErrorCallback</a></code>) - A function called when an error relevant to this method has been occurred.
-                </li>
               </ul>
             </td>
           </tr>
@@ -473,15 +443,8 @@
         The following callback functions are defined to be used with methods of <code><a>VISClient</a></code>.
         </p>
         <pre class="idl">
-        callback ConnectCallback = void ();
-        callback DisconnectCallback = void ();
-        callback ErrorCallback = void (VISError error);
-        callback AuthorizeCallback = void (unsigned long TTL);
-        callback GetMetadataCallback = void (Metadata metadata);
-        callback GetCallback = void (VISValue value);
-        callback SetCallback = void ();
         callback SubscriptionCallback = void (VISValue value);
-        callback UnsubscribeCallback = void ();
+        callback ErrorCallback = void (VISError error);
         </pre>
 
         <table class="parameters">
@@ -490,63 +453,6 @@
             <th>Description</th>
             <th>Parameter</th>
             <th>Type</th>
-          </tr>
-
-          <tr>
-            <td><dfn>ConnectCallback</dfn></td>
-            <td>A function called when the connection is successfully established.</td>
-            <td>None</td>
-            <td>None</td>
-          </tr>
-          <tr>
-            <td><dfn>DisconnectCallback</dfn></td>
-            <td>A function called when the connection is successfully closed.</td>
-            <td>None</td>
-            <td>None</td>
-          </tr>
-          <tr>
-            <td><dfn>ErrorCallback</dfn></td>
-            <td>A function called when a error occurred in the associated method.<br>
-            Error information is passed by <code>error</code> parameter.
-            </td>
-            <td>error</td>
-            <td><code><a>VISError</a></code></td>
-          </tr>
-
-          <tr>
-            <td><dfn>AuthorizeCallback</dfn></td>
-            <td>A function called when authorize method succeeded.<br>
-            The time-to-live value of the authorization is passed by <code>TTL</code> parameter.
-            </td>
-            <td>TTL</td>
-            <td>unsigned long</td>
-          </tr>
-
-          <tr>
-            <td><dfn>GetMetadataCallback</dfn></td>
-            <td>A function called when getMetadata method succeeded.<br>
-            The retrieved metadata object is passed by <code>metadata</code> parameter in JSON format.
-            </td>
-            <td>metadata</td>
-            <td><code><a>Metadata</a></code></td>
-          </tr>
-
-          <tr>
-            <td><dfn>GetCallback</dfn></td>
-            <td>A function called when get method succeeded.<br>
-            The retrieved data is passed by <code>value</code> parameter.
-            </td>
-            <td>value</td>
-            <td><code><a>VISValue</a></code></td>
-          </tr>
-
-          <tr>
-            <td><dfn>SetCallback</dfn></td>
-            <td>
-            A function called when set method succeeded.
-            </td>
-            <td>None</td>
-            <td>None</td>
           </tr>
 
           <tr>
@@ -560,13 +466,13 @@
           </tr>
 
           <tr>
-            <td><dfn>UnsubscribeCallback</dfn></td>
-            <td>A function called when unsubscribe method succeeded.
+            <td><dfn>ErrorCallback</dfn></td>
+            <td>A function called when a error occurred in the associated method.<br>
+            Error information is passed by <code>error</code> parameter.
             </td>
-            <td>None</td>
-            <td>None</td>
+            <td>error</td>
+            <td><code><a>VISError</a></code></td>
           </tr>
-
         </table>
       </section>
 
@@ -687,23 +593,14 @@
           port: 443,
         });
 
-        const connectCallback = () => {
+        client.connect().then( () => {
           console.log(`Connected to ${client.protocol}://${client.host}:${client.port}`);
-          client.authorize(/* TOKEN */, (ttl) => {
-            console.log(`Authorize succeeded. TTL: ${ttl}`);
-
-            /* do other things here */
-          }, (err) => {
-            console.err('Authorize failed with provided token.');
-            return;
-          })
-        };
-
-        const errorCallback = (error) => {
-          console.err(`Error : ${error.number}`);
-        };
-
-        client.connect(connectCallback, errorCallback);
+          return client.authorize(/* TOKEN */);
+        }).then( (ttl) => {
+          console.log(`Authorize succeeded. TTL: ${ttl}`);
+        }).catch( (err) => {
+          console.error(`Error : ${error.number}`);
+        });
       </pre>
 
     </section>
@@ -834,32 +731,28 @@
       <pre class="example">
         const client = new VISClient({ host: 'wwwivi' });
 
-        const connectCallback = () => {
+        client.connect().then( () => {
           const filters = {
             interval: 100,
             range: { above: 100, below: 200 },
             minChange: 50
           };
 
-          var subscription = client.subscribe('body.mirrors.left', (val) => {
+          let subscription = client.subscribe('body.mirrors.left', (val) => {
             if (val) {
               console.log(`Value received: ${val}`);
             }
 
             /* ... after some time or some event, unsubscribe from the subscription: */
-            client.unsubscribe(subscription, () => {
+            client.unsubscribe(subscription).then( () => {
               console.log(`Unsubscribe succeeded`);
-            }, (err) => {
-              if (err) {
-                console.err(`Error while unsubscribing: ${err.number}`);
-              }
+            }).catch( (err) => {
+              console.error(`Error while unsubscribing: ${err.number}`);
             });
           }, (err) => {
-              console.err(`Error while subscribing: ${err.number}`);
+              console.error(`Error while subscribing: ${err.number}`);
           }, filters);
-        };
-
-        client.connect(connectCallback);
+        });
       </pre>
 
     </section>
@@ -916,29 +809,19 @@
           host: 'wwwivi',
         });
 
-        const openWindow = () => {
-          client.getMetadata('Signal.Cabin' ,(metadata) => {
-            const paths = metadata.pathsByCSS('Row1 Left Window > Position');
-            if (!paths.length) {
-              console.err('Could not find front-left window in Metadata');
-              return;
-            }
+        client.connect().then( () => {
+          return client.getMetadata('Signal.Cabin');
+        }).then( (metadata) => {
+          const paths = metadata.pathsByCSS('Row1 Left Window > Position');
+          if (paths.length > 1 && metadata.canSet(paths[0])) {
+            return client.set(paths[0], 100); // '100' means window full open
+          }
+        }).then( () => {
+          console.log(`Set window ${paths[0]} to open succeeded`);
+        }).catch( (err) => {
+          console.error(`Set window ${paths[0]} to open failed: ${err.number}`);
+        });
 
-            if (metadata.canSet(paths[0])) {
-              client.set(paths[0], 0, () => {
-                console.log(`Set window ${paths[0]} to open succeeded`);
-              }, (err) => {
-                console.err(`Set window ${paths[0]} to open failed: ${err.number}`);
-              });
-            } else {
-              console.err('Not authorized to open front-left window');
-            }
-          }, (err) => {
-              console.err(`Error while getMetadata: ${err.number}`);
-          });
-        }
-
-        client.connect(openWindow);
       </pre>
 
     </section>
