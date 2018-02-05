@@ -11,7 +11,7 @@
           shortName:            "vehicle-information-service",
           previousMaturity: "WD",
           previousPublishDate: "2016-10-20",
-          implementationReportURI: "https://w3c.github.io/automotive/vehicle_data/viss_implementations.html",
+          implementationReportURI: "https://www.w3.org/auto/wg/wiki/VISS_implementations",
       	  crEnd: "2018-03-08",      
           editors:  [{
             name: "Kevin Gavigan", company: "Jaguar Land Rover",
@@ -140,6 +140,20 @@
 
     <!-- Status of this document -->
     <section id="sotd">
+<p>Since the <a
+href="https://www.w3.org/TR/2016/WD-vehicle-information-service-20161020/">previous
+Working Draft of this specification</a>, the following <a href="viss-diff.html">changes have
+ been brought</a> to the document:</p>
+ <ul>
+   <li>remove static hostname binding for the service, encouraging
+   discovery or use of an onboard registry</li>
+   <li>added metadataRequest and unsubscribeAllRequest methods</li>
+   <li>changed getVSS method to getMetadata</li>
+   <li>added protection for token dictionary attacks</li>
+   <li>added concept of private and public data branches</li>
+   <li>allow multiple signals to be get or set simultaneously instead
+   of individually</li>
+ </ul>
     </section>
 
     <!-- Introduction -->
