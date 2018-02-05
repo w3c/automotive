@@ -79,7 +79,7 @@
       </div>
       
          <p style="padding: 0.5ex; border: 1px solid green"> This proposed charter is available 
-      on <a href="https://github.com/w3c/automotive/charter-2018.html">GitHub</a>. 
+      on <a href="https://github.com/w3c/automotive/blob/gh-pages/charter-2018.html">GitHub</a>. 
     Feel free to raise <a href="https://github.com/w3c/automotive/issues">issues</a>.
           </p>
 
@@ -144,22 +144,20 @@
 
       <section id="scope" class="scope">
 	<h2>Scope</h2>
-        <p> This group will develop service specifications for exposing vehicle data and information
-          from automotive network buses (e.g. <a href="http://en.wikipedia.org/wiki/MOST_Bus">MOST
-            (Media Oriented Systems Transport)</a> or <a href="http://en.wikipedia.org/wiki/CAN_bus">CAN
-            (Controller Area Network))</a>, media, navigation,
-	    notification and other in-vehicle-infotainment (IVI) services to
-	    application environments. The vehicle service will
-          expose information such as the vehicle brand, model, year, fuel type,
-          transmission type, steering wheel position, tire pressure, oil level,
-          wiper position, lights, doors, windows and seat settings as well as
-          navigation, trip computer data, climate control data, speed, RPMs,
-          acceleration, gears and other vehicle sensor data.</p>
-        <p>The specification(s) produced by this Working Group will include
-          security and privacy considerations.</p>
-        <p>Members of the Working Group should review other working groups'
-          deliverables that are identified as being relevant to the Working
-          Group's mission. </p>
+        <p>This group will develop service specifications for exposing vehicle data and other information around vehicle centric functions.</p>
+		<p>A common pattern will be described to unify the style the different service interfaces are using</p>
+		<p>The specification(s) produced by this Working Group will include security and privacy considerations.</p>
+        <p>Members of the Working Group should review other working groups' deliverables that are identified as being relevant to the Working Group's mission.</p>
+		<p>Services in mind include but are not limited to
+			<ul>
+				<li>Vehicle Data</li>
+				<ul><li>vehicle brand, model, year, fuel type, transmission type, steering wheel position, tire pressure, oil level, wiper position, lights, doors, windows and seat settings as well as navigation, trip computer data, climate control data, speed, RPMs, acceleration, gears, &#8230;</li></ul>
+				<li>media</li>
+				<ul><li>media control, track lists, &#8230;</li></ul>
+				<li>navigation</li>
+				<ul><li>route manipulation, points of interests, &#8230;</li></ul>
+			</ul>
+		</p>
 
         <div id="section-out-of-scope">
           <h3 id="out-of-scope">Out of Scope</h3>
@@ -176,7 +174,7 @@
 
         <div>
           <h3>Success Criteria</h3>
-          <p>In order to advance to <a href="https://www.w3.org/2017/Process-20170301/#RecsPR" title="Proposed Recommendation">Proposed Recommendation</a>, each specification is expected to have <a href="https://www.w3.org/2017/Process-20170301/#implementation-experience">at least two independent implementations</a> of each of feature defined in the specification.</p>
+          <p>In order to advance to <a href="https://www.w3.org/2017/Process-20170301/#RecsPR" title="Proposed Recommendation">Proposed Recommendation</a>, each specification is expected to have <a href="https://www.w3.org/2017/Process-20170301/#implementation-experience">at least two independent implementations</a> for every feature defined in the specification.</p>
           <p>Each specification should contain a section detailing any known security or privacy implications for implementers, Web authors, and end users.</p>
           <p>Testing plans for each specification, starting from the earliest drafts.</p>
         </div>
@@ -219,13 +217,24 @@
           <dl>
             <dt id="web-foo" class="spec">Restful Service Interface (RSI)</dt>
             <dd>
-              <p>This specification expands on VISS to expose services
-	      through a HTTP REST interface. The framework will be
-	      used for vehicle signals, media, notifications,
-	      navigation and other services for in-vehicle-infotainment.</p>
+              <p>This specification expands on VISS to expose services through interfaces in a restful style.
+			  The group will create a <b>common pattern</b> which will be used for services in the vehicle universe.
+			  The pattern could be used for vehicle signals, media, navigation and other services for in vehicle functions.</p>
 
               <p class="draft-status"><b>Draft state:</b> <a href="https://www.w3.org/Submission/2016/01/">Member Submission</a></p>
               <p class="milestone"><b>Expected completion:</b> <i class="todo">[Q2 2019]</i></p>
+	    </dd>
+	  </dl>
+	  
+	  </dl>
+          <dl>
+            <dt id="web-foo" class="spec">typical vehicle services</dt>
+            <dd>
+              <p>The behaviour and interface of a number of services within the scope of a vehicle will be described using the pattern requested above. 
+			  Ideas for service to be described are: vehicle signals, media, navigation and other services for in vehicle functions.</p>
+
+              <p class="draft-status"><b>Draft state (for some):</b> <a href="https://www.w3.org/Submission/2016/01/">Member Submission</a></p>
+              <p class="milestone"><b>Expected completion:</b> <i class="todo">[Q4 2019] and earlier</i></p>
 	    </dd>
 	  </dl>
 <!-- 
