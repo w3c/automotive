@@ -7,8 +7,12 @@
             class='remove'></script>
     <script class="remove">
       var respecConfig = {
-          specStatus:           "ED",
+          specStatus:           "CR",
           shortName:            "vehicle-information-service",
+          previousMaturity: "WD",
+          previousPublishDate: "2016-10-20",
+          implementationReportURI: "https://w3c.github.io/automotive/vehicle_data/viss_implementations.html",
+      	  crEnd: "2018-03-08",      
           editors:  [{
             name: "Kevin Gavigan", company: "Jaguar Land Rover",
             url: "mailto:kgavigan@jaguarlandrover.com",
@@ -416,7 +420,7 @@ function subscriptionHandler(msg){
       <h3>VIS Server State Diagram</h3>
       <p>The following diagram shows a number of possible states that the VIS Server could occupy:</p>
       <figure>
-        <img src="images/VISS State Diagram v1_2.png" alt="State Diagram for VIS Server">
+        <img src="images/VISS_State_Diagram_v1_2.png" alt="State Diagram for VIS Server">
         <figcaption>State diagram for the VIS Server</figcaption>
       </figure>
       <p>The state diagram is for illustrative purposes only and does not assume that the VIS Server is either single or multi-threaded.
@@ -742,7 +746,7 @@ function subscriptionHandler(msg){
       <td>Metadata describing the potentially available signal tree.</td>
     </tr>
 	  <tr>
-		  <td id="dfn-error"><strong><italic>error</italic></strong></td>
+		  <td id="dfn-error"><strong>error</strong></td>
 	    <td> <a href="#errors">Error</a> </td>
 	    <td> Returns an error code, reason and message.</td>
 	  </tr>
