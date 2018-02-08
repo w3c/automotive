@@ -876,7 +876,7 @@ function subscriptionHandler(msg){
  	with an 'authorize' action to the server. The structure of the message and the associated success and error responses
          are defined below.</p>
 <h4 data-idl id="idl-def-authorizerequest">Authorize Request Properties</h4>
-<p>The properties and schema for an authorizeRequest is:</p>
+<p>The authorizeRequest has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -894,7 +894,7 @@ function subscriptionHandler(msg){
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Authorize Request",
-    "description": "Enables the user to set access controls for the vehicle signals",
+    "description": "Enables the client to pass security token(s) to the server that can be used to authorize access to signals and data",
     "type": "object",
     "required": ["action", "tokens", "requestId"],
     "properties": {
@@ -922,7 +922,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The properties and schema for an authorizeSuccessResponse is:</p>
+<p>The authorizeSuccessResponse has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -958,7 +958,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The properties and schema for an authorizeErrorResponse is:</p>
+<p>The authorizeErrorResponse has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1075,11 +1075,8 @@ function subscriptionHandler(msg){
 
         Other data models may also operate similar mechanisms.</p>
 
-
-
-
       <h4 data-idl id="idl-def-metadataRequest">Metadata Request Properties</h4>
-      <p>The properties and schema for a metadataRequest is:</p>
+      <p>The metadataRequest has the following properties and schema:</p>
       <table class=simple>
       <thead>
         <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1114,7 +1111,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The properties and schema for a metadataSuccessResponse is:</p>
+<p>The metadataSuccessResponse has the following properties and schema:</p>
     <table class=simple>
     <thead>
       <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1153,7 +1150,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The properties and schema for a metadataErrorResponse is:</p>
+<p>The metadataErrorResponse has the following properties and schema:</p>
     <table class=simple>
     <thead>
       <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1282,7 +1279,7 @@ function subscriptionHandler(msg){
 	then the server SHALL return a 'getErrorResponse'. The structure of these message objects is defined below:</p>
 
 <h4 data-idl id="idl-def-getrequest">Get Request Properties</h4>
-<p>The properties and schema for a getRequest is:</p>
+<p>The getRequest has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1317,7 +1314,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The properties and schema for a getSuccessResponse is:</p>
+<p>The getSuccessResponse has the following properties and schema:/p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1356,7 +1353,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The properties and schema for a getErrorResponse is:</p>
+<p>The getErrorResponse has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1507,7 +1504,7 @@ function subscriptionHandler(msg){
 	a 'setRequest' message to the server. If the server is able to satisfy the request it SHALL return a 'setSuccessResponse'
 	message. If an error occurs e.g. because the client is not authorized to set the requested value, or the value is read-only,
 	the server SHALL return a 'setErrorResponse' message.<p>
-<p>The properties and schema for a setRequest is:</p>
+<p>The setRequest has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1546,7 +1543,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The properties and schema for a setSuccessResponse is:</p>
+<p>The setSuccessResponse has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1581,7 +1578,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The properties and schema for a setErrorResponse is:</p>
+<p>The setErrorResponse has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1689,7 +1686,7 @@ function subscriptionHandler(msg){
 	uniquely identify the subscription.</p>
       
  <h4 data-idl id="idl-def-subscriberequest">Subscribe Request Properties</h4>
- <p>The properties and schema for a subscribeRequest is:</p>
+ <p>The subscribeRequest has the following properties and schema:</p>
  <table class=simple>
  <thead>
    <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1729,7 +1726,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The properties and schema for a subscribeSuccessResponse is:</p>
+<p>The subscribeSuccessResponse has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1768,7 +1765,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The properties and schema for a subscribeErrorResponse is:</p>
+<p>The subscribeErrorResponse has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1807,7 +1804,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The properties and schema for a subscriptionNotification is:</p>
+<p>The subscriptionNotification has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1846,7 +1843,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The properties and schema for a subscriptionNotificationError is:</p>
+<p>The subscriptionNotificationError has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1987,7 +1984,7 @@ function subscriptionHandler(msg){
 	It therefore makes it more likely that the server will remain responsive to future requests from the client.</p>
 
   <h4 data-idl id="idl-def-unsubscriberequest">Unsubscribe Request Properties</h4>
-  <p>The properties and schema for a unsubscribeRequest is:</p>
+  <p>The unsubscribeRequest has the following properties and schema:</p>
   <table class=simple>
   <thead>
     <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -2022,7 +2019,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The properties and schema for a unsubscribeSuccessResponse is:</p>
+<p>The unsubscribeSuccessResponse has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -2061,7 +2058,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The properties and schema for a unsubscribeErrorResponse is:</p>
+<p>The unsubscribeErrorResponse has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -2164,7 +2161,7 @@ comprised of a JSON structure which contains an action property set to 'unsubscr
 to unsubscribe from, the VIS Server will return an 'unsubscribeSuccessResponse'.</p>
 
 <h4 data-idl id="idl-def-unsubscribeallrequest">Unsubscribe All Request Properties</h4>
-<p>The properties and schema for a unsubscribeAllRequest is:</p>
+<p>The unsubscribeAllRequest has the following properties and schema:</p>
 <table class=simple>
   <thead>
     <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -2196,7 +2193,7 @@ to unsubscribe from, the VIS Server will return an 'unsubscribeSuccessResponse'.
 }
 </pre>
 
-<p>The properties and schema for a unsubscribeAllSuccessResponse is:</p>
+<p>The unsubscribeAllSuccessResponse has the following properties and schema:</p>
 <table class=simple>
   <thead>
     <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -2232,7 +2229,7 @@ to unsubscribe from, the VIS Server will return an 'unsubscribeSuccessResponse'.
 }
 </pre>
 
-<p>The properties and schema for a unsubscribeAllErrorResponse is:</p>
+<p>The unsubscribeAllErrorResponse has the following properties and schema:</p>
 <table class=simple>
   <thead>
     <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
