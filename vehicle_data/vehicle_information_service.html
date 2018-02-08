@@ -513,8 +513,8 @@ function subscriptionHandler(msg){
         privileges. Specifically, each of the GET, SET, SUBSCRIBE and UNSUBSCRIBE actions have the access control rights
         that the server deems to be appropriate for the security principals represented by the token(s).</p>
 
-        <p>If the client sends a subsequent 'authorize' message to the server with different token value(s). If one or more of these
-        are invalid, then the server returns an error response and the WebSocket access control status remain unchanged.
+        <p>If the client sends a subsequent <a href="#authorize">authorize</a> message to the server with different token value(s), if one or more of these
+        are invalid, then the server SHALL return an error response and the WebSocket access control status remains unchanged.
         However, if the new token values are valid, then the server returns a success response and the access control
         privileges associated with the new token(s) only, applies for all requests from that point.</p>
 
@@ -526,7 +526,7 @@ function subscriptionHandler(msg){
         Hence, the server MAY implement any type of token that is  consistent with this standardized approach and MAY optionally
         define additional token(s) for other Security Principal type(s). If this is the case, it is expected that the precise type of security tokens that are supported by a particular server
         implementation, the format of those tokens and all additional error codes and reasons (e.g. to indicate that an
-        additional token type has expired and needs to be renewed) is defined in the Server's documentation.</p>
+        additional token type has expired and needs to be renewed) SHALL be defined in the Server's documentation.</p>
 
         <h3>Use of Encryption</h3>
         <p>To support a layered security model and to help establish a 'defence in depth', all vehicle signal and data communications
@@ -543,10 +543,10 @@ function subscriptionHandler(msg){
         <h3>Token Renewal</h3>
         <p>Each security token SHALL have a specified lifetime during which it is valid. If on receiving a request for signals that are
         subject to access-control, the server determines that the request is unauthorized because the token has expired, the server
-        SHALL return an error response indicating the fact and the client SHALL request a new token from the Security Authority and
+        SHALL return an error response indicating the fact and the client MAY request a new token from the Security Authority and
         repeat the request.</p>
 
-        <p>If the server returns an error response indicating that the request is forbidden, renewing the security token does
+        <p>If the server returns an error response indicating that the request is forbidden, renewing the security token would
         not make the request valid. In this case, the client should not repeat the request unless some other change has been made
         that may mean the request is now valid.</p>
       </section>
