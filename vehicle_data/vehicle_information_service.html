@@ -384,14 +384,14 @@ function subscriptionHandler(msg){
       device, e.g. a laptop, phone or tablet, that is connected via the vehicle's WiFi client (if one exists).</p>
 
       <figure>
-        <img src="images/W3C_Vehicle_API_Component_Diagram_v1_6.png" alt="Component diagram showing W3C Vehicle Information APIs">
+        <img src="images/W3C_Vehicle_API_Component_Diagram_v1_7.png" alt="Component diagram showing W3C Vehicle Information APIs">
         <figcaption>Diagram showing Components that implement the W3C Vehicle Information APIs and their clients</figcaption>
       </figure>
 
       <p>The methods defined on the VIS Server interface may be invoked by different types of on-board and off-board clients.
       On-board clients, running on the vehicle fall into one of two major categories:</p>
 
-      <p><dfn>Applications</dfn> running in the vehicle that can access vehicle signals and data and have a User Interface that
+      <p><dfn>Applications</dfn> running in the vehicle that can access vehicle signals and data and have a user interface that
       the driver or passengers in the vehicle can interact with.</p>
 
       <p><dfn>Agents</dfn> typically have no user interface. They can also invoke methods exposed on the VIS Server but their
@@ -428,7 +428,7 @@ function subscriptionHandler(msg){
       <p>The component diagram shows four different types of internet based clients. A user may use a <dfn>Web Page</dfn> or a <dfn>
       Web Application</dfn> running on a phone or tablet connected to the vehicle's ethernet network to request access to vehicle 
       signals on a particular vehicle. Alternatively these signals could be accessed using a <dfn>Native or Managed Runtime Application</dfn> or via another automated
-      <dfn>Client System</dfn> or service e.g. the Traffic Management System in a 'Smart City'.</p>
+      <dfn>Client System</dfn> or service e.g. an onboard agent communicating with a Traffic Management System in a 'Smart City'.</p>
            	      
       <h3>VIS Server State Diagram</h3>
       <p>The following diagram shows a number of possible states that the VIS Server could occupy:</p>
