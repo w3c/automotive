@@ -174,13 +174,13 @@ Working Draft of this specification</a>, the following <a href="viss-diff.html">
       WebSocket server instance that listens for an inbound connection request from a client in order to enable secure access to vehicle signals. 
       In this specification this module is referred to as the <dfn>VIS Server</dfn> or just 'the server'.</p>
 
-      <p>The Vehicle Information Service Specification (VISS) defines a number of methods for accessing vehicle data which are strictly agnostic to the data model. Any data model where data and signals can be specified using a string could potentially be supported. However this version of the specification specifies that the data model is the GENIVI Vehicle Signal Specification [[!VSS]]. The VSS supports both extensibility and the ability to define private branches and will be used for each of the examples within this specification.</p>
+      <p>This specification defines a number of methods for accessing vehicle data which are strictly agnostic to the data model. Any data model where data and signals can be specified using a string could potentially be supported. However this version of the specification specifies that the data model is the GENIVI Vehicle Signal Specification [[!VSS]]. The VSS supports both extensibility and the ability to define private branches and will be used for each of the examples within this specification.</p>
 
       <p>In addition, the 'tree' of signals that is accessible at any point in time may also vary depending on standard access control principles.
          That is, it can vary based on the identity of the user (person or organisation) requesting the data and/or the application or 
 	 device (e.g. vehicle) where the request originates.</p>
 
-      <p>To support this, the Service Specification describes an extensible token based security mechanism that can optionally be used 
+      <p>To support this, the VIS Specification describes an extensible token based security mechanism that can optionally be used 
 	 to pass tokens to the VIS Server,
         for example to represent the user of an application and/or the device that the client application is running on.</p>
 
@@ -248,7 +248,7 @@ function closeSocket(){
   <pre class="example highlight">
 // Request the entire data model, in this example the data model is defined using GENIVI's VSS
 function requestMetadata(){
-  vehicle.send('{"action": "getMetadata", "requestId": "103"}');
+  vehicle.send('{"action": "getMetadata", "requestId": "104"}');
 }
 
 // Request the entire data model and if successful, request a signal
@@ -351,8 +351,8 @@ function subscriptionHandler(msg){
       <p>In this specification, the term 'signal' refers to a value that can change over time, for example, vehicle speed,
       whilst 'static data' or simply 'data' is used for a value that does not change e.g. vehicle length.</p>
 
-      <p>The vehicle signals and static data that are available within the vehicle System are exposed in a controlled
-      manner to the VIS Server. The interface and communication mechanisms that are used between the vehicle System and
+      <p>The vehicle signals and static data that are available within the vehicle system are exposed in a controlled
+      manner to the VIS Server. The interface and communication mechanisms that are used between the vehicle system and
       the VIS Server are outside of the scope of this specification.</p>
 
       <h3>Vehicle Information Service (VIS) Server</h3>
