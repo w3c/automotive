@@ -1053,20 +1053,25 @@ function subscriptionHandler(msg){
 		of time during which attempts will be denied is to be determined by the implementation.</p>    
 	
 	<h2>Metadata Request</h2>
-	<p>The client MAY use the 'getMetadata' action to request metadata describing the potentially available signal schema, for example the VSS tree. It does
-	this by sending a 'metadataRequest' message to the server. If the server is able to return the metadata, then this
-	is returned using a 'metadataSuccessResponse' message. If an error occurs, the server returns a 'metadataErrorResponse'
-	message to the client.</p>
+	<p>The client MAY use the <a>getMetadata</a> action to request metadata describing the potentially available signal schema, 
+        for example the VSS tree. It does this by sending a <a>metadataRequest</a> message to the server. If the server is able to
+	return the metadata, then this is returned using a <a>metadataSuccessResponse</a> message. If an error occurs, the server 
+	returns a <a>metadataErrorResponse</a> message to the client.</p>
 
 	<p>The client is able to request metadata from any point in the signal tree, such that only the metadata for the signals
 	within the given branch of the schema's hierachy is returned. For example, only metadata for the chassis branch of the VSS tree is returned
 	when the chassis path is specified. If the path is not set, the response contains the metadata for the entire signal tree.</p>
 
-        <p>If more than one 'getMetadata' call is made with the same 'metadataRequest' message content but at different times, the metadata
-        in the 'metadataSuccessResponse' SHALL be the same provided the access-control state of the WebSocket channel has not changed.</p>
+        <p>If more than one <a>getMetadata</a> call is made with the same <a>metadataRequest</a> message content but at different times, 
+	the metadata in the <a>metadataSuccessResponse</a> SHALL be the same provided the access-control state of the WebSocket channel 
+	has not changed.</p>
 
-        <p>The Vehicle Signal Server (VSS) specification allows branches to be defined as either public or private. The VIS server will satisfy a request for metadata in a public branch regardless of the access control permissions associated with the client making the request. This means that a user could see that a particular signal in a public branch is available but they may not be currently authorised to Get, Set, or Subscribe to that signal. If a branch is defined to be 'private', only suitably authorised clients will be able to retrieve metadata for that branch. This is to enable vehicle manufacturers to 
-        apply access controls to metadata for commercially sensitive signals and data.</p>
+        <p>The Vehicle Signal Server (VSS) specification allows branches to be defined as either public or private. The VIS server will 
+	satisfy a request for metadata in a public branch regardless of the access control permissions associated with the client 
+	making the request. This means that a user could see that a particular signal in a public branch is available but they may not 
+	be currently authorised to Get, Set, or Subscribe to that signal. If a branch is defined to be 'private', only suitably 
+	authorised clients will be able to retrieve metadata for that branch. This is to enable vehicle manufacturers to apply access 
+	controls to metadata for commercially sensitive signals and data.</p>
 
         <p>      
         If a signal is requested to which the client has no access then the server will reject the request as detailed by the Get, Set, and Subscribe sections of this specification. The server shall only return metadata for the branches and nodes which are classified as "Private" branch unless the client has appropriate access permissions. 
@@ -1938,11 +1943,10 @@ function subscriptionHandler(msg){
 	subscription handle values are unique between different WebSocket
 	instances.</p>
 
-	<p>Once the subscription is successfully registered with the server,
-	the client receives subscription notifications containing the requested
-	data, at a rate defined either by the server or by the server side filter. If there is an
-	error with an existing subscription a subscriptionNotificationError SHALL be sent to 
-	the client. This allows the client to handle the error, for example by modifying the filter condition
+        <p>Once the subscription is successfully registered with the server, the client MAY receive subscription notifications 
+	containing the requested data. The notification rate MAY be specified using a server side filter. If there is an
+	error with an existing subscription a <a>subscriptionNotificationError</a> SHALL be sent to 
+	the client. This allows the client to handle the error, for example by modifying the <a>filter</a> condition
 	to reduce the requested notification frequency.</p>
 	
 	<p>If the authentication token expires whilst a subscription is active, the server will send a 
