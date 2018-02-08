@@ -875,7 +875,7 @@ function subscriptionHandler(msg){
  	<p>To enable access to signals and data attributes that are under access control, the client MAY optionally pass a message
  	with an 'authorize' action to the server. The structure of the message and the associated success and error responses
          are defined below.</p>
-<h4 data-idl id="idl-def-authorizerequest">Authorize Request Properties</h4>
+<h4 data-idl id="idl-def-authorizerequest">Authorize Request</h4>
 <p>The authorizeRequest has the following properties and schema:</p>
 <table class=simple>
 <thead>
@@ -1075,7 +1075,7 @@ function subscriptionHandler(msg){
 
         Other data models may also operate similar mechanisms.</p>
 
-      <h4 data-idl id="idl-def-metadataRequest">Metadata Request Properties</h4>
+      <h4 data-idl id="idl-def-metadataRequest">Metadata Request</h4>
       <p>The metadataRequest has the following properties and schema:</p>
       <table class=simple>
       <thead>
@@ -1278,7 +1278,7 @@ function subscriptionHandler(msg){
 	is unable to fulfil the request, e.g. because the client is not authorized to retrieve one or more of the signals,
 	then the server SHALL return a 'getErrorResponse'. The structure of these message objects is defined below:</p>
 
-<h4 data-idl id="idl-def-getrequest">Get Request Properties</h4>
+<h4 data-idl id="idl-def-getrequest">Get Request</h4>
 <p>The getRequest has the following properties and schema:</p>
 <table class=simple>
 <thead>
@@ -1314,7 +1314,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The getSuccessResponse has the following properties and schema:/p>
+<p>The getSuccessResponse has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1504,6 +1504,8 @@ function subscriptionHandler(msg){
 	a 'setRequest' message to the server. If the server is able to satisfy the request it SHALL return a 'setSuccessResponse'
 	message. If an error occurs e.g. because the client is not authorized to set the requested value, or the value is read-only,
 	the server SHALL return a 'setErrorResponse' message.<p>
+	
+<h4 data-idl id="idl-def-setrequest">Set Request</h4>
 <p>The setRequest has the following properties and schema:</p>
 <table class=simple>
 <thead>
@@ -1685,7 +1687,7 @@ function subscriptionHandler(msg){
 	subscription and a 'subscriptionId' integer handle value which is used to
 	uniquely identify the subscription.</p>
       
- <h4 data-idl id="idl-def-subscriberequest">Subscribe Request Properties</h4>
+ <h4 data-idl id="idl-def-subscriberequest">Subscribe Request</h4>
  <p>The subscribeRequest has the following properties and schema:</p>
  <table class=simple>
  <thead>
@@ -2389,7 +2391,7 @@ vehicle.close();
 	<h2>Errors</h2>
 	<p>If there is an error with any of the client’s requests, the server responds with an error number, reason and
 	message.</p>
-  <p>The properties and schema for an Error object is:</p>
+  <p>The Error object has the following properties and schema:</p>
   <table class=simple>
   <thead>
     <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
