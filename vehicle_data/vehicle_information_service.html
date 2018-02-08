@@ -1946,7 +1946,7 @@ function subscriptionHandler(msg){
         <p>Once the subscription is successfully registered with the server, the client MAY receive subscription notifications 
 	containing the requested data. The notification rate MAY be specified using a server side filter. If there is an
 	error with an existing subscription a <a>subscriptionNotificationError</a> SHALL be sent to 
-	the client. This allows the client to handle the error, for example by modifying the <a>filter</a> condition
+	the client. This allows the client to handle the error, for example by modifying the <a href="#filters">filter</a> condition
 	to reduce the requested notification frequency.</p>
 	
 	<p>If the authentication token expires whilst a subscription is active, the server will send a 
