@@ -154,7 +154,6 @@ Working Draft of this specification</a>, the following <a href="viss-diff.html">
    of individually</li>
  </ul>
     </section>
-
     <!-- Introduction -->
     <section id="introduction" class="informative">
       <h2>Introduction</h2>
@@ -294,8 +293,7 @@ function subscriptionHandler(msg){
       console.log("The current engine rpm is " + msg.value);
     }
 }
-
-  </pre>
+</pre>
         <p>The target platform supported by the specification is exclusively passenger vehicles. Use of this
 	specification for non-passenger applications (for example heavy machinery, marine and airline infotainment) is
 	not prohibited, but is not covered in the design or content of the API.</p>
@@ -320,10 +318,9 @@ function subscriptionHandler(msg){
       <!-- Terminology -->
       <section id="terminology">
 	<h2>Terminology</h2>
-  <p> The acronym 'VISS' is used to refer to this document, the 'Vehicle Information Service Specification'.</p>
-  <p> The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' (see <a href="https://github.com/GENIVI/vehicle_signal_specification/">here</a>) which is defined by the GENIVI Alliance.
-  </p>
-
+        <p> The acronym 'VISS' is used to refer to this document, the 'Vehicle Information Service Specification'.</p>
+        <p> The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' (see <a href="https://github.com/GENIVI/vehicle_signal_specification/">here</a>) which is defined by the GENIVI Alliance.
+        </p>
  	<p>The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API
  	(see <a href="https://www.w3.org/TR/2011/WD-websockets-20110929">here</a>) and the WebSocket Protocol
  	(see <a href="https://tools.ietf.org/html/rfc6455">RFC6455</a>).</p>
@@ -428,7 +425,7 @@ function subscriptionHandler(msg){
       <p>The component diagram shows four different types of internet based clients. A user may use a <dfn>Web Page</dfn> or a <dfn>
       Web Application</dfn> running on a phone or tablet connected to the vehicle's ethernet network to request access to vehicle 
       signals on a particular vehicle. Alternatively these signals could be accessed using a <dfn>Native or Managed Runtime Application</dfn> or via another automated
-      <dfn>Client System</dfn> or service e.g. an onboard agent communicating with a Traffic Management System in a 'Smart City'.</p>
+      <dfn>Client System</dfn> or service, for example an onboard agent communicating with a Traffic Management System in a 'Smart City'.</p>
            	      
       <h3>VIS Server State Diagram</h3>
       <p>The following diagram shows a number of possible states that the VIS Server could occupy:</p>
@@ -456,7 +453,7 @@ function subscriptionHandler(msg){
         <p>The different types of Security Principal, the approach taken to control access to signals and the importance of data privacy are described in the sections that follow.</p>
 
         <h3>Security Principals</h3>
-	<p>The types of security principal include:</p>
+	<p>The types of security principal SHALL include:</p>
 
         <table class="parameters">
 	  <tr>
@@ -485,7 +482,7 @@ function subscriptionHandler(msg){
 
         <p>For each security principal that must be authorized by the server, the client SHALL obtain and pass a security token
         e.g. an OAuth 2.0 token (see <a href="https://tools.ietf.org/html/rfc6749">RFC6749</a>) to the server using a message
-        containing an 'authorize' action as defined <a href="#authorize">here</a>.</p>
+        containing an <a href="#authorize">authorize</a> action.</p>
 
         <p>A server implementation MAY require that a request for a particular signal includes a security token for
         both the user (e.g. driver of the vehicle) and for the device (e.g. the vehicle) that is hosting the client.
@@ -497,7 +494,7 @@ function subscriptionHandler(msg){
 	of tokens by malicious actors or agents.</p>
 
         <h3>WebSocket Channel Authorization</h3>
-        <p>The client MAY send a message with an 'authorize' action to modify the access-control state of the WebSocket channel.
+        <p>The client MAY send a message with an <a href="#authorize">authorize</a> action to modify the access-control state of the WebSocket channel.
         The message structure is defined in detail <a href="#message-structure">here</a>.</p>
 
         <p>The following diagram illustrates a scenario where the client requests vehicle speed. In this example scenario, this
@@ -506,11 +503,11 @@ function subscriptionHandler(msg){
         credentials before satisfying the request. The sequence of steps is illustrated in the diagram below:</p>
 
         <figure>
-          <img src="images/WebSocket_Security_Flow_1_900px.png" alt="WebSocket Security token flow">
+          <img src="images/WebSocket_Security_Flow_1_900px_v2.png" alt="WebSocket Security token flow">
           <figcaption>Diagram showing conceptual WebSocket Security Token flow (data structures are illustrative and logical content has been simplified)</figcaption>
         </figure>
 
-        <p>After receiving a message with an 'authorize' action the server attempts to verify the tokens e.g. by checking
+        <p>After receiving a message with an <a href="#authorize">authorize</a> action the server attempts to verify the tokens e.g. by checking
         with the issuing Security Authority. If all of the tokens that are passed to the server are valid, it returns
         a success response and all subsequent requests received by the WebSocket instance have elevated access control
         privileges. Specifically, each of the GET, SET, SUBSCRIBE and UNSUBSCRIBE actions have the access control rights
