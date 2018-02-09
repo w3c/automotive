@@ -876,7 +876,7 @@ function subscriptionHandler(msg){
  	with an 'authorize' action to the server. The structure of the message and the associated success and error responses
          are defined below.</p>
 <h4 data-idl id="idl-def-authorizerequest">Authorize Request</h4>
-<p>The authorizeRequest has the following properties and schema:</p>
+<p>The <a>authorizeRequest</a> has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -922,7 +922,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The authorizeSuccessResponse has the following properties and schema:</p>
+<p>The <a>authorizeSuccessResponse</a> has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -958,7 +958,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The authorizeErrorResponse has the following properties and schema:</p>
+<p>The <a>authorizeErrorResponse</a> has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1116,7 +1116,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The metadataSuccessResponse has the following properties and schema:</p>
+<p>The <a>metadataSuccessResponse</a> has the following properties and schema:</p>
     <table class=simple>
     <thead>
       <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1155,7 +1155,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The metadataErrorResponse has the following properties and schema:</p>
+<p>The <a>metadataErrorResponse</a> has the following properties and schema:</p>
     <table class=simple>
     <thead>
       <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1284,7 +1284,7 @@ function subscriptionHandler(msg){
 	then the server SHALL return a 'getErrorResponse'. The structure of these message objects is defined below:</p>
 
 <h4 data-idl id="idl-def-getrequest">Get Request</h4>
-<p>The getRequest has the following properties and schema:</p>
+<p>The <a>getRequest</a> has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1319,7 +1319,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The getSuccessResponse has the following properties and schema:</p>
+<p>The <a>getSuccessResponse</a> has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1358,7 +1358,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The getErrorResponse has the following properties and schema:</p>
+<p>The <a>getErrorResponse</a> has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1404,7 +1404,7 @@ function subscriptionHandler(msg){
       attributes that correspond to a particular path are defined in the Vehicle Signal Specification.</p>
 
       <p>The example below shows the JSON structure for a 'getRequest' message sent by the client to obtain the engine RPM value
-      and a 'getSuccessResponse' returned by the server.</p>
+      and a <a>getSuccessResponse</a> returned by the server.</p>
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "get",
@@ -1511,7 +1511,7 @@ function subscriptionHandler(msg){
 	the server SHALL return a 'setErrorResponse' message.<p>
 	
 <h4 data-idl id="idl-def-setrequest">Set Request</h4>
-<p>The setRequest has the following properties and schema:</p>
+<p>The <a>setRequest</a> has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1550,7 +1550,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The setSuccessResponse has the following properties and schema:</p>
+<p>The <a>setSuccessResponse</a> has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1585,7 +1585,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The setErrorResponse has the following properties and schema:</p>
+<p>The <a>setErrorResponse</a> has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1693,7 +1693,7 @@ function subscriptionHandler(msg){
 	uniquely identify the subscription.</p>
       
  <h4 data-idl id="idl-def-subscriberequest">Subscribe Request</h4>
- <p>The subscribeRequest has the following properties and schema:</p>
+ <p>The <a>subscribeRequest</a> has the following properties and schema:</p>
  <table class=simple>
  <thead>
    <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1733,7 +1733,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The subscribeSuccessResponse has the following properties and schema:</p>
+<p>The <a>subscribeSuccessResponse</a> has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1772,7 +1772,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The subscribeErrorResponse has the following properties and schema:</p>
+<p>The <a>subscribeErrorResponse</a> has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1811,7 +1811,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The subscriptionNotification has the following properties and schema:</p>
+<p>The <a>subscriptionNotification</a> has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1850,7 +1850,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The subscriptionNotificationError has the following properties and schema:</p>
+<p>The <a>subscriptionNotificationError</a> has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -1924,7 +1924,7 @@ function subscriptionHandler(msg){
   </pre>
 
 	</pre>
-	<p>The 'subscriptionId' value is a unique value, created by the server and
+	<p>The subscriptionId value is a unique value, created by the server and
 	which may be used internally by the server to manage subscriptions
 	on that WebSocket instance.</p>
 
@@ -1971,10 +1971,10 @@ function subscriptionHandler(msg){
   	<p>An example of a subscription can be found <a href="#introduction">here</a>.</p>
 
 	<h2>Unsubscribe</h2>
-        <p>To unsubscribe from a subscription, the client SHALL send an 'unsubscribeRequest' message to the server. This is
-        comprised of a JSON structure which contains an action property set to 'unsubscribe' and a string containing the
-        'subscriptionId'. If the server is able to satisfy the request it returns an 'unsubscribeSuccessResponse'. If an error
-	occurs, for example because an invalid subscriptionId is passed to the server, an 'unsubscribeErrorResponse' is returned.</p>
+        <p>To unsubscribe from a subscription, the client SHALL send an <a>unsubscribeRequest</a> message to the server. This is
+        comprised of a JSON structure which contains an action property set to <a>unsubscribe</a> and a string containing the
+        'subscriptionId'. If the server is able to satisfy the request it returns an <a>unsubscribeSuccessResponse</a>. If an error
+	occurs, for example because an invalid subscriptionId is passed to the server, an <a>unsubscribeErrorResponse</a> is returned.</p>
 
 	<p>If the client has created more than one WebSocket instance, it MUST always unsubscribe using the same WebSocket instance
 	that was originally used to create the subscription.</p>
@@ -1990,7 +1990,7 @@ function subscriptionHandler(msg){
 	It therefore makes it more likely that the server will remain responsive to future requests from the client.</p>
 
   <h4 data-idl id="idl-def-unsubscriberequest">Unsubscribe Request</h4>
-  <p>The unsubscribeRequest has the following properties and schema:</p>
+  <p>The <a>unsubscribeRequest</a> has the following properties and schema:</p>
   <table class=simple>
   <thead>
     <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -2025,7 +2025,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The unsubscribeSuccessResponse has the following properties and schema:</p>
+<p>The <a>unsubscribeSuccessResponse</a> has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -2064,7 +2064,7 @@ function subscriptionHandler(msg){
     }
 }
 </pre>
-<p>The unsubscribeErrorResponse has the following properties and schema:</p>
+<p>The <a>unsubscribeErrorResponse</a> has the following properties and schema:</p>
 <table class=simple>
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -2109,7 +2109,8 @@ function subscriptionHandler(msg){
 </pre>
 
       <h4>Examples</h4>
-	The example below shows the JSON message structure for a 'unsubscribeRequest' and 'unsubscribeSuccessResponse' to unsubscribe from a single subscription.
+	The example below shows the JSON message structure for an <a>unsubscribeRequest</a> and an<a>unsubscribeSuccessResponse</a> 
+        which are used when unsubscribing from a single subscription.
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "unsubscribe",
@@ -2162,9 +2163,10 @@ function subscriptionHandler(msg){
         </section>
 
 <h2>Unsubscribe All</h2>
-<p>To unsubscribe from all subscriptions, the client SHALL send an 'unsubscribeAllRequest' message to the server. This is
-comprised of a JSON structure which contains an action property set to 'unsubscribeAll'. This does not require a subscriptionId value. If the request is successful, or there are no active subscriptions
-to unsubscribe from, the VIS Server will return an 'unsubscribeSuccessResponse'.</p>
+<p>To unsubscribe from all subscriptions, the client SHALL send an <a>unsubscribeAllRequest</a> message to the server. This is
+comprised of a JSON structure which contains an action property set to <a>unsubscribeAll</a>. This does not require a 
+subscriptionId value. If the request is successful, or there are no active subscriptions
+to unsubscribe from, the VIS Server will return an <a>unsubscribeSuccessResponse</a>.</p>
 
 <h4 data-idl id="idl-def-unsubscribeallrequest">Unsubscribe All Request</h4>
 <p>The unsubscribeAllRequest has the following properties and schema:</p>
@@ -2199,7 +2201,7 @@ to unsubscribe from, the VIS Server will return an 'unsubscribeSuccessResponse'.
 }
 </pre>
 
-<p>The unsubscribeAllSuccessResponse has the following properties and schema:</p>
+<p>The <a>unsubscribeAllSuccessResponse</a> has the following properties and schema:</p>
 <table class=simple>
   <thead>
     <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -2235,7 +2237,7 @@ to unsubscribe from, the VIS Server will return an 'unsubscribeSuccessResponse'.
 }
 </pre>
 
-<p>The unsubscribeAllErrorResponse has the following properties and schema:</p>
+<p>The <a>unsubscribeAllErrorResponse</a> has the following properties and schema:</p>
 <table class=simple>
   <thead>
     <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -2276,7 +2278,8 @@ to unsubscribe from, the VIS Server will return an 'unsubscribeSuccessResponse'.
 </pre>
 
 <h4>Examples</h4>
-The example below shows an example of a 'unsubscribeAllRequest' and 'unsubscribeAllSuccessResponse' for unsubscribeAll action, in order to unsubscribe from all subscriptions.
+The example below shows an <a>unsubscribeAllRequest</a> and an <a>unsubscribeAllSuccessResponse</a> for the 
+<a>unsubscribeAll</a> action. This is used by the client to unsubscribe from all subscriptions created for that client.
 
 <pre class="highlight hljs javascript">
 client -> {
