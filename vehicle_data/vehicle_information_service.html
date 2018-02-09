@@ -433,7 +433,7 @@ function subscriptionHandler(msg){
         <figcaption>State diagram for the VIS Server</figcaption>
       </figure>
       <p>The state diagram is for illustrative purposes only and does not assume that the VIS Server is either single or multi-threaded.
-      The implementer of the VIS Server is free to determine it's internal design and implementation, however in normal operation, 
+      The implementer of the VIS Server is free to determine its internal design and implementation, however in normal operation, 
       it is assumed that the server will be able to accept multiple requests in quick succession and that the VIS Server 
       will attempt to process and respond to each request in accordance with the specified API.</p>
       </section>
@@ -846,8 +846,8 @@ function subscriptionHandler(msg){
 	<h4 id="action">Action</h4>
 
 	<p>The Action enumeration is used to define the type of action requested by the client.
-	All client messages MUST contain a JSON structure that has an 'action' name/value pair and the
-	value of the 'action' property MUST be one of the values specified in the enumeration:</p>
+	All client messages MUST contain a JSON structure that has an <a>action</a> name/value pair and the
+	value of the <a>action</a> property MUST be one of the values specified in the enumeration:</p>
 
 	<dl title="enum Action" class="idl">
 	  <dt><dfn>authorize</dfn></dt>
@@ -872,8 +872,8 @@ function subscriptionHandler(msg){
 
 	<h2>Authorize</h2>
  	<p>To enable access to signals and data attributes that are under access control, the client MAY optionally pass a message
- 	with an 'authorize' action to the server. The structure of the message and the associated success and error responses
-         are defined below.</p>
+	with an <a>authorize</a> action to the server. The structure of the message and the associated success and error responses 
+        are defined below.</p>
 <h4 data-idl id="idl-def-authorizerequest">Authorize Request</h4>
 <p>The <a>authorizeRequest</a> has the following properties and schema:</p>
 <table class=simple>
@@ -1275,10 +1275,10 @@ function subscriptionHandler(msg){
 
 
 	<h2>Get</h2>
-	<p>The client MAY send a 'getRequest' message to the server to get the value of one or more vehicle signals and data
-	attributes. If the server is able to satisfy the request it SHALL return a 'getSuccessResponse' message. If the server
+	<p>The client MAY send a <a>getRequest</a> message to the server to get the value of one or more vehicle signals and data
+	attributes. If the server is able to satisfy the request it SHALL return a <a>getSuccessResponse</a> message. If the server
 	is unable to fulfil the request, e.g. because the client is not authorized to retrieve one or more of the signals,
-	then the server SHALL return a 'getErrorResponse'. The structure of these message objects is defined below:</p>
+	then the server SHALL return a <a>getErrorResponse</a>. The structure of these message objects is defined below:</p>
 
 <h4 data-idl id="idl-def-getrequest">Get Request</h4>
 <p>The <a>getRequest</a> has the following properties and schema:</p>
@@ -1422,8 +1422,8 @@ function subscriptionHandler(msg){
 	a set of name/value pairs in a JSON object structure. The format MUST be as defined by the version of the Vehicle Signal 
 	Specification that is associated with the WebSocket sub-protocol value specified when the WebSocket is created.<p>
 
-	<p>The following shows an example of a 'getRequest' that results in the server returning a 'getSuccessResponse' with a value
-	that is a complex type:</p>
+	<p>The following shows an example of a <a>getRequest</a> that results in the server returning a <a>getSuccessResponse</a> with 
+	a value	that is a complex type:</p>
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "get",
@@ -1505,7 +1505,7 @@ function subscriptionHandler(msg){
 	<p>The client may request that the server sets the value of one or more signals e.g. to lock one or more doors or open a window 
 	by sending a <a>setRequest</a> message to the server. If the server is able to satisfy the request it SHALL return a 
 	<a>setSuccessResponse</a> message. If an error occurs e.g. because the client is not authorized to set the requested value, 
-	or the value is read-only, the server SHALL return a 'setErrorResponse' message.<p>
+	or the value is read-only, the server SHALL return a <a>setErrorResponse</a> message.<p>
 	
 <h4 data-idl id="idl-def-setrequest">Set Request</h4>
 <p>The <a>setRequest</a> has the following properties and schema:</p>
@@ -1686,7 +1686,7 @@ function subscriptionHandler(msg){
 	<p>When the client makes a request to the server to create a new
 	subscription, a JSON data object is returned. This object contains
 	the attributes that were passed to the server to make the
-	subscription and a 'subscriptionId' integer handle value which is used to
+	subscription and a subscriptionId integer handle value which is used to
 	uniquely identify the subscription.</p>
       
  <h4 data-idl id="idl-def-subscriberequest">Subscribe Request</h4>
