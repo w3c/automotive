@@ -502,8 +502,8 @@ function subscriptionHandler(msg){
         credentials before satisfying the request. The sequence of steps is illustrated in the diagram below:</p>
 
         <figure>
-          <img src="images/WebSocket_Security_Flow_1_900px_v2.png" alt="WebSocket Security token flow">
-          <figcaption>Diagram showing conceptual WebSocket Security Token flow (data structures are illustrative and logical content has been simplified)</figcaption>
+          <img src="images/WebSocket_Security_Flow_1_900px_v3.png" alt="WebSocket Security token flow">
+          <figcaption>Diagram showing conceptual WebSocket Security Token flow</figcaption>
         </figure>
 
         <p>After receiving a message with an <a href="#authorize">authorize</a> action the server attempts to verify the tokens e.g. by checking
@@ -2108,7 +2108,7 @@ function subscriptionHandler(msg){
 </pre>
 
       <h4>Examples</h4>
-	The example below shows the JSON message structure for an <a>unsubscribeRequest</a> and an<a>unsubscribeSuccessResponse</a> 
+	The example below shows the JSON message structure for an <a>unsubscribeRequest</a> and an <a>unsubscribeSuccessResponse</a> 
         which are used when unsubscribing from a single subscription.
 	<pre class="highlight hljs javascript">
 	client -> {
