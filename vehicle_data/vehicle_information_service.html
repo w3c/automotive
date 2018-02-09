@@ -1073,11 +1073,9 @@ function subscriptionHandler(msg){
 	controls to metadata for commercially sensitive signals and data.</p>
 
         <p>      
-        If a signal is requested to which the client has no access then the server will reject the request as detailed by the Get, Set, and Subscribe sections of this specification. The server shall only return metadata for the branches and nodes which are classified as "Private" branch unless the client has appropriate access permissions. 
-
-
-
-        Other data models may also operate similar mechanisms.</p>
+        If a signal is requested to which the client has no access then the server will reject the request as detailed by the Get, 
+	Set, and Subscribe sections of this specification. The server shall only return metadata for branches and nodes which are 
+	classified as private if the client has appropriate access permissions.</p> 
 
       <h4 data-idl id="idl-def-metadataRequest">Metadata Request</h4>
       <p>The <a>metadataRequest</a> has the following properties and schema:</p>
