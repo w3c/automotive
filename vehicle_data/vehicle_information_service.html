@@ -1400,7 +1400,7 @@ function subscriptionHandler(msg){
       <p>It is important to note that all examples involving paths are illustrative. Valid path values and the signals and data
       attributes that correspond to a particular path are defined in the Vehicle Signal Specification.</p>
 
-      <p>The example below shows the JSON structure for a 'getRequest' message sent by the client to obtain the engine RPM value
+      <p>The example below shows the JSON structure for a <a>getRequest</a> message sent by the client to obtain the engine RPM value
       and a <a>getSuccessResponse</a> returned by the server.</p>
 	<pre class="highlight hljs javascript">
 	client -> {
@@ -1443,7 +1443,7 @@ function subscriptionHandler(msg){
 	<p>One or more wildcards (denoted by asterisk '*') MAY be included at
 	any level in the path to specify that all nodes at that level are to be included.</p>
 
-	<p>In the example below, the path in the 'getRequest' includes a wildcard at the levels above
+	<p>In the example below, the path in the <a>getRequest</a> includes a wildcard at the levels above
 	the leaf (signal) node, in order to request just the 'IsLocked' state for all doors.</p>
 	<pre class="highlight hljs javascript">
 	client -> {
@@ -1502,10 +1502,10 @@ function subscriptionHandler(msg){
 	</pre>
 	<h2>Set</h2>
 
-	<p>The client may request that the server sets the value of one or more signals e.g. to lock one or more doors or open a window by sending
-	a 'setRequest' message to the server. If the server is able to satisfy the request it SHALL return a 'setSuccessResponse'
-	message. If an error occurs e.g. because the client is not authorized to set the requested value, or the value is read-only,
-	the server SHALL return a 'setErrorResponse' message.<p>
+	<p>The client may request that the server sets the value of one or more signals e.g. to lock one or more doors or open a window 
+	by sending a <a>setRequest</a> message to the server. If the server is able to satisfy the request it SHALL return a 
+	<a>setSuccessResponse</a> message. If an error occurs e.g. because the client is not authorized to set the requested value, 
+	or the value is read-only, the server SHALL return a 'setErrorResponse' message.<p>
 	
 <h4 data-idl id="idl-def-setrequest">Set Request</h4>
 <p>The <a>setRequest</a> has the following properties and schema:</p>
@@ -1678,7 +1678,7 @@ function subscriptionHandler(msg){
      }
 	</pre>
 	<h2>Subscribe</h2>
-	<p>Vehicle data subscriptions provide data to the client whenever the signal changes on the server,
+	<p>Vehicle data subscriptions can provide data to the client whenever a signal changes on the server,
 	unless otherwise specified using Server Side Filtering. The server MAY reduce the number of notifications
 	sent to the client in order to reduce processing demands, particularly when the client has subscribed to
 	continuously varying signals.</p>
@@ -1890,7 +1890,7 @@ function subscriptionHandler(msg){
 
   <h4>Examples</h4>
   <p>For example when a client wishes to subscribe to receive "Signal.Drivetrain.Transmission.TripMeter" information from the server, 
-  it can use the "subscribe" action with the target path property set as follows:</p>
+	  it can use the <a>subscribe</a> action with the target path property set as follows:</p>
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "subscribe",
@@ -1908,8 +1908,9 @@ function subscriptionHandler(msg){
   <p>This example is for illustrative purposes only, it MAY or MAY NOT be the case that the version of the Vehicle Server Specification
   implemented by the VIS Server includes the example path 'Signal.Drivetrain.Transmission.TripMeter'.</p>
   
-  <p>If the "subscribe" request is successful the server will return a subscribeSuccessResponse as shown in the example above, 
-  and the client will then start to  receive subscription notifications like the one illustrated in the following JSON structure:</p>
+  <p>If the <a>subscribeRequest</a> is successful the server will return a <a>subscribeSuccessResponse</a> as shown in the example 
+  above, and the client will then start to receive subscription notifications like the one illustrated in the following JSON 
+  structure:</p>
 
   <pre class="highlight hljs javascript">
       receive <- {
@@ -1947,7 +1948,7 @@ function subscriptionHandler(msg){
 	to reduce the requested notification frequency.</p>
 	
 	<p>If the authentication token expires whilst a subscription is active, the server will send a 
-	subscriptionNotificationError for each subscription that can no longer be fulfilled. The client is then 
+	<a>subscriptionNotificationError</a> for each subscription that can no longer be fulfilled. The client is then 
 	responsible for communicating with the relevant Security Authority to renew the authentication token.</p>
 	
 	<p>After the client authentication token has expired, the server MAY continue to send notifications for data that
@@ -1970,7 +1971,7 @@ function subscriptionHandler(msg){
 	<h2>Unsubscribe</h2>
         <p>To unsubscribe from a subscription, the client SHALL send an <a>unsubscribeRequest</a> message to the server. This is
         comprised of a JSON structure which contains an action property set to <a>unsubscribe</a> and a string containing the
-        'subscriptionId'. If the server is able to satisfy the request it returns an <a>unsubscribeSuccessResponse</a>. If an error
+        subscriptionId. If the server is able to satisfy the request it returns an <a>unsubscribeSuccessResponse</a>. If an error
 	occurs, for example because an invalid subscriptionId is passed to the server, an <a>unsubscribeErrorResponse</a> is returned.</p>
 
 	<p>If the client has created more than one WebSocket instance, it MUST always unsubscribe using the same WebSocket instance
@@ -2123,7 +2124,7 @@ function subscriptionHandler(msg){
 	}
 	</pre>
 
-	The following shows an example of error case with invalid susbscriptionId.
+	The following shows an example of error case with invalid subscriptionId.
 	<pre class="highlight hljs javascript">
 	client -> {
 		"action": "unsubscribe",
@@ -2146,7 +2147,7 @@ function subscriptionHandler(msg){
 		vehicle.send('{ "action": "unsubscribe", "subscriptionId": "102", "requestId": "5429" }');
 
 		// set handler
-		vehicle.onmesssage(function(event){
+		vehicle.onmessage(function(event){
 			var msg = JSON.parse(event.data);
 			// success case
 			if(msg.hasOwnProperty("requestId") && msg.requestId == "5429"){
@@ -2301,7 +2302,7 @@ receive <- {
       
       <p>Server side filters are extensible, allowing for additional filtering mechanisms to be specified. Support 
       is currently included for a specific range of values, time intervals and
-      minimum changes. This can be implemented using the "filters"
+      minimum changes. This can be implemented using the <a>filters</a>
       option in the subscribeRequest interface.</p>
 
 	<p>Filters can only be applied for data which is represented by a primitive type, such as leaf nodes in the VSS tree, not entire branches.
@@ -2333,36 +2334,36 @@ receive <- {
       <h4>Examples</h4>
 	<p>The following structures are examples of subscribeRequest objects which are requesting server side filters</p>
       <pre class="highlight hljs javascript">
-	//client receives data every 100ms
+	//client requests data every 100ms
 	{ "action": "subscribe", "path": "&lt;any_path&gt;",
         	"filters": { "interval": 100 },
         	"requestId": "&lt;some_unique_value&gt;" }
 
-	//client receives data when the value is between 100 and 200 (inclusive)
+	//client requests data when the value is between 100 and 200 (inclusive)
 	{ "action": "subscribe", "path": "&lt;any_path&gt;",
         	"filters": { "range": { "above": 100, "below": 200 } },
         	"requestId": "&lt;some_unique_value&gt;" }
 
-	//client receives data when the value is below 100 (inclusive)
+	//client requests data when the value is below 100 (inclusive)
 	{ "action": "subscribe", "path": "&lt;any_path&gt;",
         	"filters": { "range": { "below": 100 } },
         	"requestId": "&lt;some_unique_value&gt;" }
 
-	//client receives data when the value changes by 100 units
+	//client requests data when the value changes by 100 units
 	{ "action": "subscribe", "path": "&lt;any_path&gt;",
         	"filters": { "minChange": 100 },
         	"requestId": "&lt;some_unique_value&gt;" }
 
-	//client receives data when the value is above 200 (inclusive)
-	//and the value changes by 20 units
+	//client requests data when the value is above 200 (inclusive)
+	//and the value changes by at least 20 units
 	{ "action": "subscribe", "path": "&lt;any_path&gt;",
         	"filters": { "range": { "below": 200 }, "minChange": 20},
         	"requestId": "&lt;some_unique_value&gt;" }
       </pre>
 
-      <p>The client should not specify a minimum change amount that is smaller than it needs - in order to prevent
-	adding unnecessary load on the server. The server shall return a '429 - Too Many Request' error response if
-	it is unable to fulfil the request made by the client.</p>
+      <p>In order to prevent adding unnecessary load on the server, the client should not specify a minimum change amount that is 
+      smaller than it needs. The server SHALL return a '429 - Too Many Request' error response if it is unable to fulfil the request 
+      made by the client because it is processing too many requests.</p>
       </section>
       <section>
 	<h3>WebSocket Closure</h3>
@@ -2441,7 +2442,7 @@ vehicle.close();
           "timestamp": "1489985044000" 
         }
 	</pre>
-	<p>The server implementation supports at least the error numbers and reasons listed in the table below.</p>
+	<p>The server implementation SHALL support at least the error numbers and reasons listed in the table below.</p>
 	<table id="errorDefs" class="parameters">
 	  <tr>
 	    <th>Error&nbsp;Number&nbsp;(Code)</th>
