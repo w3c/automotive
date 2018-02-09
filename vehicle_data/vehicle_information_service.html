@@ -269,8 +269,7 @@ function getSignal(metadata, path){
   </pre>
 
   <p>The client is also able to subscribe to signals if the client's authentication permits access.</p>
-
-  <pre class="example highlight">
+  <pre class="example highlight" id="subscriptionExample">
 // Set a subscription, assuming the same authorization and set up from Example 1
 var rpmSubscriptionId, rpmRequestId = "106";
 
@@ -1968,7 +1967,7 @@ function subscriptionHandler(msg){
 	The client is then responsible for renewing subscriptions. The client MUST close the WebSocket connection if the server 
 	data is no longer required.</p>
 
-  	<p>An example of a subscription can be found <a href="#introduction">here</a>.</p>
+  	<p>An example of a subscription can be found <a href="#subscriptionExample">here</a>.</p>
 
 	<h2>Unsubscribe</h2>
         <p>To unsubscribe from a subscription, the client SHALL send an <a>unsubscribeRequest</a> message to the server. This is
@@ -2296,7 +2295,7 @@ receive <- {
 
     <section>
       <h3>Server Side Filtering</h3>
-      <p>'<a>Filters</a>' may be specified to enable Server side filtering
+      <p><a>Filters</a> may be specified to enable Server side filtering
       to be used to throttle the demands of subscriptions on
       the server. This may enable the reduction of traffic if the
       developer has received a '429 - Too Many Requests' error
