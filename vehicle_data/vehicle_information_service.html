@@ -709,7 +709,7 @@ function subscriptionHandler(msg){
 	    <td> <dfn>requestId</dfn></td>
       <td>String</td>
 	    <td> Unique id value specified by the client. Returned by the server in
-	    the response and used by client to link the request and response
+	    the response and used by the client to link the request and response
 	    messages. The value MAY be an integer or a Universally Unique Identifier (UUID).</td>
 	  </tr>
 	  <tr>
@@ -763,7 +763,7 @@ function subscriptionHandler(msg){
     "definitions": {
         "action": {
             "enum": [ "authorize", "getMetadata", "get", "set", "subscribe", "subscription", "unsubscribe", "unsubscribeAll"],
-            "description": "The type of action requested by the client or delivered by the server",
+            "description": "The type of action requested by the client and/or delivered by the server",
         },
         "requestId": {
             "description": "Returned by the server in the response and used by the client to link the request and response messages.",
@@ -1010,7 +1010,7 @@ function subscriptionHandler(msg){
       </tr>
     </table>
 
-    <p>The 'tokens' JSON fragment MAY contain an 'authorization' structure that contains just a single name/value pair, for example,
+<p>The 'tokens' JSON fragment MAY contain an 'authorization' structure that contains just a single name/value pair, for example,
     to pass only the user token. Or it may contain only the 'www-vehicle-device' name/value pair to pass the just the vehicle token;
     alternatively it MAY include name/value pairs for both the 'authorization' and 'www-vehicle-device' tokens.
     These alternatives are illustrated in the following example:</p>
