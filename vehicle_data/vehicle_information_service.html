@@ -167,7 +167,7 @@ Working Draft of this specification</a>, the following <a href="viss-diff.html">
          particular point in time.</p>
 	    
       <p>The term 'signal' is used here to represent an item of	data that can vary over time, for example vehicle speed,
-	 whilst the expression 'static data' is used to denote a temporally invariant property like vehicle width.</p>
+	 whilst the expressions 'static data' or simply 'data' are used to denote a temporally invariant property like vehicle length.</p>
 
       <p>A vehicle-based software module may implement the interface and behaviours defined in this specification by creating a 
       WebSocket server instance that listens for an inbound connection request from a client in order to enable secure access to vehicle signals. 
@@ -343,9 +343,6 @@ function subscriptionHandler(msg){
       signals and data attributes. As a consequence, access-control must be managed so clients cannot simply connect directly to ECUs
       or to CAN, MOST or LIN network buses.</p>
 
-      <p>In this specification, the term 'signal' refers to a value that can change over time, for example, vehicle speed,
-      whilst 'static data' or simply 'data' is used for a value that does not change e.g. vehicle length.</p>
-
       <p>The vehicle signals and static data that are available within the vehicle system are exposed in a controlled
       manner to the VIS Server. The interface and communication mechanisms that are used between the vehicle system and
       the VIS Server are outside of the scope of this specification.</p>
@@ -359,7 +356,7 @@ function subscriptionHandler(msg){
       This defines a 'tree-like' logical taxonomy of the vehicle, (formally a Directed Acyclic Graph), where major vehicle structures
       (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as
       their child nodes. Each of the child nodes in the tree is further decomposed into its logical constituents, and the process is
-      repeated until <dfn>leaf nodes</dfn> are reached. A 'leaf node' is a node at the end of a branch that cannot be decomposed
+      repeated until <dfn>leaf nodes</dfn> are reached. A leaf node is a node at the end of a branch that cannot be decomposed
       because it represents a single signal or data attribute value. An example VSS tree is shown below, its contents are illustrative:</p>
 	      
       <figure>
@@ -448,7 +445,7 @@ function subscriptionHandler(msg){
 	<p>Hence, a request to GET, SET, SUBSCRIBE or UNSUBSCRIBE to data may require the client to demonstrate
 	to the server that the request is from one or more suitably authorized Security Principals.</p>
 
-        <p>The different types of Security Principal, the approach taken to control access to signals and the importance of data privacy are described in the sections that follow.</p>
+        <p>The different types of Security Principal; the approach taken to control access to signals and the importance of data privacy are described in the sections that follow.</p>
 
         <h3>Security Principals</h3>
 	<p>The types of security principal SHALL include:</p>
@@ -473,7 +470,7 @@ function subscriptionHandler(msg){
 
 	<h3>Access Control and Authorization</h3>
         <p>When a client makes a request to access signal data it is performing the request on behalf of one or more
-        Security Principals, that is, for a particular user and/or vehicle/device.</p>
+        Security Principals, for example for a particular user and/or vehicle/device.</p>
 
         <p>Access to signals is managed and controlled by the server. The server MAY elect not to enforce access
         controls on a particular signal or set of signals and to enforce different access controls on other signals.</p>
