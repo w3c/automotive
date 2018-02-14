@@ -524,7 +524,7 @@ function subscriptionHandler(msg){
         additional token type has expired and needs to be renewed) SHALL be defined in the Server's documentation.</p>
 
         <h3>Use of Encryption</h3>
-        <p>To support a layered security model and to help establish a 'defence in depth', all vehicle signal and data communications
+        <p>To support a layered security model and to help establish a 'defense in depth', all vehicle signal and data communications
         between the client and server MUST be strongly encrypted. This is to make it more difficult for an attacker to eavesdrop or
         tamper with the security tokens; the request data or the response payload.</p>
 
@@ -1053,7 +1053,7 @@ function subscriptionHandler(msg){
 	returns a <a>metadataErrorResponse</a> message to the client.</p>
 
 	<p>The client is able to request metadata from any point in the signal tree, such that only the metadata for the signals
-	within the given branch of the schema's hierachy is returned. For example, only metadata for the chassis branch of the VSS tree is returned
+	within the given branch of the schema's hierarchy is returned. For example, only metadata for the chassis branch of the VSS tree is returned
 	when the chassis path is specified. If the path is not set, the response contains the metadata for the entire signal tree.</p>
 
         <p>If more than one <a>getMetadata</a> call is made with the same <a>metadataRequest</a> message content but at different times, 
@@ -1272,7 +1272,7 @@ function subscriptionHandler(msg){
 	<h2>Get</h2>
 	<p>The client MAY send a <a>getRequest</a> message to the server to get the value of one or more vehicle signals and data
 	attributes. If the server is able to satisfy the request it SHALL return a <a>getSuccessResponse</a> message. If the server
-	is unable to fulfil the request, e.g. because the client is not authorized to retrieve one or more of the signals,
+	is unable to fulfill the request, e.g. because the client is not authorized to retrieve one or more of the signals,
 	then the server SHALL return a <a>getErrorResponse</a>. The structure of these message objects is defined below:</p>
 
 <h4 data-idl id="idl-def-getrequest">Get Request</h4>
@@ -1667,7 +1667,7 @@ function subscriptionHandler(msg){
         "requestId": "2311",
         "error": { "number": 400,
         "reason": "bad_request" ,
-        "message": "The server is unable to fulfil the client
+        "message": "The server is unable to fulfill the client
                     request because the request is malformed."},
         "timestamp": 1489985044000
      }
@@ -2357,7 +2357,7 @@ receive <- {
       </pre>
 
       <p>In order to prevent adding unnecessary load on the server, the client should not specify a minimum change amount that is 
-      smaller than it needs. The server SHALL return a '429 - Too Many Request' error response if it is unable to fulfil the request 
+      smaller than it needs. The server SHALL return a '429 - Too Many Request' error response if it is unable to fulfill the request 
       made by the client because it is processing too many requests.</p>
       </section>
       <section>
@@ -2452,7 +2452,7 @@ vehicle.close();
 	  <tr>
 	    <td>400 (Bad Request)</td>
 	    <td>bad_request	</td>
-	    <td>The server is unable to fulfil the client request because the request is malformed.</td>
+	    <td>The server is unable to fulfill the client request because the request is malformed.</td>
 	  </tr>
 	  <tr>
 	    <td>400 (Bad Request)</td>
