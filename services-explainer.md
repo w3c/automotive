@@ -43,7 +43,7 @@ HTTP2's connections need to be re-established regularly but otherwise closer to 
 
 ## Considered alternatives
 
-###WebIDL
+### WebIDL
 
 The W3C Automotive Web Platform Business Group produced draft specifications for creating first class vehicle objects to browser runtimes. When the Automotive Working Group was chartered it was to further this start. 
 
@@ -51,15 +51,15 @@ The industry is split between HTML5, Qt, Java and other programming frameworks n
 
 Adding signals as new technology such as lidar is applied to vehicles would require updates to the specification, vehicle.getLidarDistance("front", "left") making a separate data model desireable. We intend to snapshot the data model and assign version information for it that will be conveyed through the service specification.
 
-###Sensors API
+### Sensors API
 
 At the Sapporo TPAC the W3C Auto WG met with various other groups including Device and Sensors group. They were persuasive in encouraging the auto group to explore their approach, representing the vehicle as a collection of sensors. This was explored for some time and the thought exercise led us to abandon the WebIDL approach. Representing a vehicle as a collection of sensors however was not the best fit (@@Kevin).
 
-###WoT
+### WoT
 
 We have similarly met with the W3C Web of Things Working Group on multiple occasions. While again having similar needs to other standards work at W3C (Sensors), a vehicle is a very specialized thing in the IoT requiring a vehicle centric approach. We are continuing to collaborate with WoT. Samsung and ETRI have created a proof of concept based on W3C Vehicle Information Service Specification (VISS) in OCF.
 
-###ViWi
+### ViWi
 
 VW was following our activity and appreciated the switch to a service based approach, somewhat similar to theirs. With their different brands (VW, Audi, Scania, Porsche, Skoda...) and varying architecture, they are a microcosm for the auto industry needing a consistent means to access information across their different brands and having difficulty attracting content providers to write applications for them. They joined W3C and contributed their Volkswagen Infotainment Web Interface (ViWi).  The W3C Auto group also refers to this as Restful Service Interface (RSI) instead of the branded ViWi.
 
