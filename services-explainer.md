@@ -4,7 +4,7 @@
 
 ## Introduction:
 
-The W3C Automotive Working Group is creating standards to expose services within vehicles using Web Technology. Specifically we areworking on signals, media (services and library), navigation, notifications. 
+The W3C Automotive Working Group is creating standards to expose services within vehicles using Web Technology. Specifically we areworking on signals, media (services and library), navigation, notifications with potentially others to follow.
 
 Of the various areas, signals has been the most important. In addition to being useful for applications interacting with the vehicle operator and passengers, it enables data sampling and edge computing before sending to the cloud for better fleet management, insurance discounts for better drivers, urban planning, traffic management etc. Vehicles for the last couple decades have moved from mechanical to more electronic, various components are a mix of silicon, software and mechanical with the various electronic control units (ECU) communicating to one another over local networks. Some data elements are static such as the vehicle identification number but most are dynamic and change frequently every few milliseconds. Each auto manufacturer handles signals somewhat differently and there is a strong need for a common data model and standard method to access these signals.
 
