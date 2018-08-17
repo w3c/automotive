@@ -762,7 +762,7 @@ function subscriptionHandler(msg){
     "definitions": {
         "action": {
             "enum": [ "authorize", "getMetadata", "get", "set", "subscribe", "subscription", "unsubscribe", "unsubscribeAll"],
-            "description": "The type of action requested by the client and/or delivered by the server",
+            "description": "The type of action requested by the client and/or delivered by the server"
         },
         "requestId": {
             "description": "Returned by the server in the response and used by the client to link the request and response messages.",
@@ -940,7 +940,7 @@ function subscriptionHandler(msg){
     "properties": {
         "action": {
             "enum": [ "authorize" ],
-            "description": "The identifier for the authorize request",
+            "description": "The identifier for the authorize request"
         },
         "TTL": {
             "description": "The time to live of the authorization token",
@@ -976,7 +976,7 @@ function subscriptionHandler(msg){
     "properties": {
         "action": {
             "enum": [ "authorize" ],
-            "description": "The identifier for the authorize request",
+            "description": "The identifier for the authorize request"
         },
         "error": {
             "$ref": "#/definitions/error"
@@ -1300,7 +1300,7 @@ function subscriptionHandler(msg){
     "properties": {
         "action": {
             "enum": [ "get" ],
-            "description": "The identifier for the get request",
+            "description": "The identifier for the get request"
         },
         "path": {
             "$ref": "#/definitions/path"
@@ -1336,7 +1336,7 @@ function subscriptionHandler(msg){
     "properties": {
         "action": {
             "enum": [ "get" ],
-            "description": "The identifier for the get request",
+            "description": "The identifier for the get request"
         },
         "requestId": {
             "$ref": "#/definitions/requestId"
@@ -1375,7 +1375,7 @@ function subscriptionHandler(msg){
     "properties": {
         "action": {
             "enum": [ "get" ],
-            "description": "The identifier for the get request",
+            "description": "The identifier for the get request"
         },
         "requestId": {
             "$ref": "#/definitions/requestId"
@@ -1528,7 +1528,7 @@ function subscriptionHandler(msg){
     "properties": {
         "action": {
             "enum": [ "set" ],
-            "description": "The identifier for the set request",
+            "description": "The identifier for the set request"
         },
         "path": {
             "$ref": "#/definitions/path"
@@ -1566,7 +1566,7 @@ function subscriptionHandler(msg){
     "properties": {
         "action": {
             "enum": [ "set" ],
-            "description": "The identifier for the set request",
+            "description": "The identifier for the set request"
         },
         "requestId": {
             "$ref": "#/definitions/requestId"
@@ -1602,7 +1602,7 @@ function subscriptionHandler(msg){
     "properties": {
         "action": {
             "enum": [ "set" ],
-            "description": "The identifier for the set request",
+            "description": "The identifier for the set request"
         },
         "requestId": {
             "$ref": "#/definitions/requestId"
@@ -1750,7 +1750,7 @@ function subscriptionHandler(msg){
     "properties": {
         "action": {
             "enum": [ "subscribe" ],
-            "description": "The identifier for the subscription request",
+            "description": "The identifier for the subscription request"
         },
         "requestId": {
             "$ref": "#/definitions/requestId"
@@ -1789,7 +1789,7 @@ function subscriptionHandler(msg){
     "properties": {
         "action": {
             "enum": [ "subscribe" ],
-            "description": "The identifier for the subscription request",
+            "description": "The identifier for the subscription request"
         },
         "requestId": {
             "$ref": "#/definitions/requestId"
@@ -1828,7 +1828,7 @@ function subscriptionHandler(msg){
     "properties": {
         "action": {
             "enum": [ "subscription" ],
-            "description": "The identifier for the subscription notification",
+            "description": "The identifier for the subscription notification"
         },
         "subscriptionId": {
             "$ref": "#/definitions/subscriptionId"
@@ -1867,7 +1867,7 @@ function subscriptionHandler(msg){
     "properties": {
         "action": {
             "enum": [ "subscription" ],
-            "description": "The identifier for the subscription notification",
+            "description": "The identifier for the subscription notification"
         },
         "subscriptionId": {
             "$ref": "#/definitions/subscriptionId"
