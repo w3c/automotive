@@ -10,7 +10,7 @@ Of the various areas, signals has been the most important. In addition to being 
 
 W3C collaborates with GENIVI, an automotive consortium, and is leveraging [their data model VSS](https://github.com/GENIVI/vehicle_signal_specification/). Currently there are over 800 signals with many more intended as electric and driver-assist / autonomous (eg lidar) vehicle signals are being added.
 
-While web technologies are the basis, the intent is not to expose vehicles' services directly on the web. We are creating an in-vehicle (on-board) environment to be able to run third party applications directly on the vehicle itself. It is not desireable to have a vehicle directly addressable over the web for privacy and security reasons. Applications running on the vehicles will be interacting with web services and sending information to the cloud. Automotive big data is a significant use case for this standards work and we recently launched a task force on it.
+We are developing specifications that allows applications through the use of web technologies to access signals from vehicle sensors and to carry out actions via the vehicle actuators. The next version of the specification is planned to include also other data domains, such as media and navigation. The applications can reside anywhere - inside the vehicle, on smartphones and in the cloud - as long as security and privacy constraints are met. Automotive big data is a significant use case for this standards work and we recently launched a task force on it.
 
 ### Goals
 * Reduce industry fragmentation and provide consistency
