@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>Vehicle Services Interface_Transport</title>
+    <script 
+     src='https://www.w3.org/Tools/respec/respec-w3c-common' 
+     class='remove'></script>
+    <script class='remove'>
+      var respecConfig = {
+        specStatus: "ED",
+        editors: [{
+          name: "Ulf Bjorkengren, Volvo Cars",
+          url: "http://www.volvocars.com/intl",
+        }],
+        edDraftURI: "http://some.github.repo",
+        shortName: "VSI-TRANSPORT"
+      };
+    </script>
+  </head>
+  <body>
+    <section id='abstract'>
+      <p>This document, the VSI TRANSPORT specification, describes the VSI transport protocols, and the mapping of the message layer on these transports. The companion specification VSI CORE describes the messaging layer.</p>
+    </section>
+    <section id='sotd'>
+      <p>
+        This is required.
+      </p>
+    </section>
+    <section data-dfn-for="Foo">
+      <h2>Introduction</h2>
+      <p>This document describes the transport bindings of the Vehicle Service Interface. The split between transport bindings and messaging layer specifications improves readability and simplify
+extending VSI to further transports in the future. The VSI supports multiple transport bindings, namely HTTPS and secure WebSockets.</p>
+    </section>
+    <section data-dfn-for="Foo">
+      <h2>Conformance</h2>
+      <p>As well as sections marked as non-normative, all authoring guidelines, diagrams, examples, and notes in this specification are non-normative. Everything else in this specification is normative.
+ The key words MAY, MUST, and SHALL are to be interpreted as described in <a href='#rfc2119'>[RFC2119]</a>.</p>
+    </section>
+    <section data-dfn-for="Foo">
+      <h2>Terminology</h2>
+      <p>The acronym 'VSI' is used to refer to this document, the 'Vehicle Service Interface' specification.
+ The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance.
+ The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.</p>
+    </section>
+    <section data-dfn-for="Foo">
+      <h2>Table of Figures</h2>
+      <p><!-- <a href="#xxx"></a>.  -->Diagram showing xxx.</p>
+    </section>
+    <section data-dfn-for="Foo">
+      <h2>Transport protocols</h2>
+      <section data-dfn-for="Foo">
+        <h2>HTTPS</h2>
+        <p>xxx</p>
+        <section data-dfn-for="Foo">
+          <h2>Session life time management</h2>
+          <section data-dfn-for="Foo">
+            <h2>Initialization</h2>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Closure</h2>
+          </section>
+        </section>
+        <section data-dfn-for="Foo">
+          <h2>Transport messages</h2>
+          <section data-dfn-for="Foo">
+            <h2>Read</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br>
+              GET VSS-Root/Car/Drivetrain/InternalCombustionEngine/RPM HTTP/1.1<br>
+              Host: 127.0.0.1:1337<br>
+              Connection: keep-alive<br>
+              Accept: application/json<br>
+              User-Agent: Chrome/34.0.1847.137 Safari/537.36<br>
+              Accept-Encoding: gzip,deflate<br>
+              Accept-Language: en-US,en;q=0.8,de;q=0.6<br><br>
+              {<br>
+              <blockquote>
+                "method": "get",<br>
+                "path": "VSS-Root.Car.Drivetrain.InternalCombustionEngine.RPM",<br>
+                "requestId": "8756"<br>
+              </blockquote>
+              }<br><br>
+              Response:<br>
+              HTTP/1.1 200 OK<br>
+              X-Powered-By: Express<br>
+              Vary: Accept-Encoding<br>
+              Content-Type: application/json; charset=utf-8<br>
+              ETag: "-32550834"<br>
+              Content-Encoding: gzip<br>
+              Date: Tue, 13 Jun 2014 19:47:27 GMT<br>
+              Connection: keep-alive<br>
+              Transfer-Encoding: chunked<br><br>
+              {<br>
+              <blockquote>
+                "method": "get",<br>
+                "requestId": "8756",<br>
+                "value": 2372,<br>
+                "timestamp": 1489985044000<br>
+              </blockquote>
+              }<br>
+            </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Update</h2>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Create</h2>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Delete</h2>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Subscribe</h2>
+            <p>The subscibe method is not supported over HTTPS.</p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Unsubscribe</h2>
+            <p>The unsubscibe method is not supported over HTTPS.</p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Service discovery</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br>
+              GET VSS-Root/Car/Drivetrain/$spec HTTP/1.1<br>
+              Host: 127.0.0.1:1337<br>
+              Connection: keep-alive<br>
+              Accept: application/json<br>
+              User-Agent: Chrome/34.0.1847.137 Safari/537.36<br>
+              Accept-Encoding: gzip,deflate<br>
+              Accept-Language: en-US,en;q=0.8,de;q=0.6<br><br>
+              {<br>
+              <blockquote>
+                "method": "get",<br>
+                "path": "VSS-Root.Car.Drivetrain.$spec",<br>
+                "requestId": "5687"<br>
+              </blockquote>
+              }<br><br>
+              Response:<br>
+              HTTP/1.1 200 OK<br>
+              X-Powered-By: Express<br>
+              Vary: Accept-Encoding<br>
+              Content-Type: application/json; charset=utf-8<br>
+              ETag: "-32550834"<br>
+              Content-Encoding: gzip<br>
+              Date: Tue, 13 Jun 2014 19:47:27 GMT<br>
+              Connection: keep-alive<br>
+              Transfer-Encoding: chunked<br><br>
+              {<br>
+              <blockquote>
+                "requestId": "5687",<br>
+                "metadata": 'object',<br>
+                "timestamp": 1489985044000<br>
+              </blockquote>
+              }<br>
+            </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Authorization</h2>
+          </section>
+        </section>
+      </section>
+      <section data-dfn-for="Foo">
+        <h2>Secure WebSockets</h2>
+        <p>xxx</p>
+        <section data-dfn-for="Foo">
+          <h2>Session life time management</h2>
+          <section data-dfn-for="Foo">
+            <h2>Initialization</h2>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Closure</h2>
+          </section>
+        </section>
+        <section data-dfn-for="Foo">
+          <h2>Transport messages</h2>
+          <section data-dfn-for="Foo">
+            <h2>Read</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br> 
+              {<br>
+              <blockquote>
+                "method": "get",<br>
+                "path": "VSS-Root.Car.Drivetrain.InternalCombustionEngine.RPM",<br>
+                "requestId": "8756"<br>
+              </blockquote>
+              }<br><br>
+              Response:<br>
+              {<br>
+              <blockquote>
+                "requestId": "8756",<br>
+                "value": 2372,<br>
+                "timestamp": 1489985044000<br>
+              </blockquote>
+              }<br>
+            </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Update</h2>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Create</h2>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Delete</h2>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Subscribe</h2>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Unsubscribe</h2>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Service discovery</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br> 
+              {<br>
+              <blockquote>
+                "method": "get",<br>
+                "path": "VSS-Root.Car.Drivetrain.$spec",<br>
+                "requestId": "5687"<br>
+              </blockquote>
+              }<br><br>
+              Response:<br>
+              {<br>
+              <blockquote>
+                "requestId": "5687",<br>
+                "metadata": 'object',<br>
+                "timestamp": 1489985044000<br>
+              </blockquote>
+              }<br>
+            </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Authorization</h2>
+          </section>
+        </section>
+      </section>
+    </section>
+    <section id="appendix_a">
+      <h2>Appendix A: References</h2>
+      <p id=rfc2119>RFC2119: Key words for use in RFCs to Indicate Requirement Levels. S. Bradner. IETF. March 1997. Best Current Practice. URL: https://tools.ietf.org/html/rfc2119</p>
+    </section>
+  </body>
+</html>
