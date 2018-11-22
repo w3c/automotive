@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>Vehicle Services Interface_Core</title>
+    <script 
+     src='https://www.w3.org/Tools/respec/respec-w3c-common' 
+     class='remove'></script>
+    <script class='remove'>
+      var respecConfig = {
+        specStatus: "ED",
+        editors: [{
+          name: "Ulf Bjorkengren, Volvo Cars",
+          url: "http://www.volvocars.com/intl",
+        }],
+        edDraftURI: "http://some.github.repo",
+        shortName: "VSI-CORE"
+      };
+    </script>
+  </head>
+  <body>
+    <section id='abstract'>
+      <p>
+        This document, the VSI CORE specification, describes the VSI messaging layer. The companion specification VSI TRANSPORT details the mapping of the messaging layer to selected transports.
+      </p>
+    </section>
+    <section id='sotd'>
+      <p>
+        This is required.
+      </p>
+    </section>
+    <section data-dfn-for="Foo">
+      <h2>Introduction</h2>
+      <p>This document describes the messaging layer. The separation between transport and messaging layer improves readability and simplify extending VSI to further transports in the future. The VSI messaging layer uses a RESTful design with an interface and a data model.</p>
+    </section>
+    <section data-dfn-for="Foo">
+      <h2>Conformance</h2>
+      <p>As well as sections marked as non-normative, all authoring guidelines, diagrams, examples, and notes in this specification are non-normative. Everything else in this specification is normative.The key words MAY, MUST, and SHALL are to be interpreted as described in <a href='#rfc2119'>[RFC2119]</a>.</p>
+    </section>
+    <section data-dfn-for="Foo">
+      <h2>Terminology</h2>
+      <p>The acronym 'VSI' is used to refer to this document, the 'Vehicle Service Interface' specification.The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance.The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.</p>
+    </section>
+    <section data-dfn-for="Foo">
+      <h2>Table of Figures</h2>
+      <p><a href="#vsstree"></a>. Diagram showing an example Vehicle Signal Tree.</p>
+    </section>
+    <section data-dfn-for="Foo">
+      <h2>Data model</h2>
+      <section data-dfn-for="Foo">
+        <h2>Vehicle Signal Specification</h2>
+        <p>The data model used within this specification is the Vehicle Signal Specification (VSS). This defines a 'tree-like' logical taxonomy of the vehicle, (formally a Directed Acyclic Graph), where major vehicle structures (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as their child nodes. Each of the child nodes in the tree is further decomposed into its logical constituents, and the process is repeated until leaf nodes are reached. A leaf node is a node at the end of a branch that cannot be decomposed because it represents a single signal or data attribute value. An example VSS tree is shown below, its contents are illustrative:</p>
+        <figure id="vsstree">
+          <img src="VSS_tree.png" alt="">
+          <figcaption>Diagram showing an example Vehicle Signal tree.</figcaption>
+        </figure>
+        <p>Within the VSS data model, data sources are named according to their path using a dot notation e.g. engine.rpm. The interface methods defined within this document support path notations as specified by VSS. A path can be appended with a query expression as described in chapter <a href='#query'></a>.</p>
+      </section>
+      <section data-dfn-for="Foo">
+        <h2>Data types</h2>
+      </section>
+      <section data-dfn-for="Foo">
+        <h2>Status codes</h2>
+      </section>
+    </section>
+    <section id="query">
+      <h2>Queries</h2>
+      <p>Query description.</p>
+    </section>
+    <section data-dfn-for="Foo">
+      <h2>Security</h2>
+    </section>
+    <section data-dfn-for="Foo">
+      <h2>Interface</h2>
+      <section data-dfn-for="Foo">
+        <h2>Transport payload</h2>
+        <p>See <a href='#appendix_a'></a> for the payload format of the messages for respective methods below.</p>
+      </section>
+      <section data-dfn-for="Foo">
+        <h2>Transport aligned methods</h2>
+        <p>The interface described in this document shall be possible to map onto different transport protocols. In order to simplify that mapping, a small set of general methods that are likely to be easily implementable in different transport protocols will be used to express the functional needs of this interface. The set of methods are:</p>
+        <ul>
+          <li>Get</li>
+          <li>Post</li>
+          <li>Put</li>
+          <li>Delete</li>
+        </ul>  
+        <p>The sub-chapters below specify how these methods are used for the different functional needs.</p>
+      </section>
+      <section data-dfn-for="Foo">
+        <h2>Functional methods</h2>
+        <section data-dfn-for="Foo">
+          <h2>Read</h2>
+          <p>The client MAY send a Read message to the server to get the value of one or more vehicle data sources. If the server is able to satisfy the Request it SHALL return a Response message. If the server is unable to fulfil the request, then the server SHALL return an ErrorResponse message. The structure of these message objects are defined below:</p>
+          <b>Transport method: get</b>
+          <ul>  
+            <li>Request message parameters:</li>
+            <ul>  
+              <li>Path: The address to one or more leave nodes in the VSS tree.</li>
+              <li>RequestId: A unique Id for this client&rsquo;s session.</li>
+            </ul>  
+            <li>Response message parameters:</li>
+            <ul>  
+              <li>RequestId: A copy of the RequestId in the request message. </li>
+              <li>Value: One or more values associated with the addressed VSS leaves.</li>
+              <li>Timestamp: A timestamp associated with the retrieval of the requested data.</li>
+            </ul>  
+            <li>ErrorResponse message parameters: </li>
+            <ul>  
+              <li>RequestId: A copy of the RequestId in the request message.</li>
+              <li>Error: Information describing the error reason.</li>
+              <li>Timestamp: A timestamp associated with the failed retrieval of the requested data.</ul></li>
+            </ul>  
+          </ul>  
+        </section>
+        <section data-dfn-for="Foo">
+          <h2>Update</h2>
+          <p>The client MAY request that the server sets the value of one or more data sources. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The structure of these message objects are defined below:</p>
+          <b>Transport method: post</b>
+          <ul>  
+            <li>Request message parameters:</li>
+            <ul>  
+              <li>Path: The address to one or more leave nodes in the VSS tree.</li>
+              <li>Value: The value to set the data source to.</li>
+              <li>RequestId: A unique Id for this client&rsquo;s session.</li>
+            </ul>  
+            <li>Response message parameters:</li>
+            <ul>  
+              <li>RequestId: A copy of the RequestId in the request message. </li>
+              <li>Timestamp: A timestamp associated with the retrieval of the requested data.</li>
+            </ul>  
+            <li>ErrorResponse message parameters: </li>
+            <ul>  
+              <li>RequestId: A copy of the RequestId in the request message.</li>
+              <li>Error: Information describing the error reason.</li>
+              <li>Timestamp: A timestamp associated with the failed retrieval of the requested data.</ul></li>
+            </ul>  
+          </ul>  
+        </section>
+        <section data-dfn-for="Foo">
+          <h2>Create</h2>
+        </section>
+        <section data-dfn-for="Foo">
+          <h2>Delete</h2>
+        </section>
+        <section data-dfn-for="Foo">
+          <h2>Subscribe</h2>
+        </section>
+        <section data-dfn-for="Foo">
+          <h2>Unsubscribe</h2>
+        </section>
+        <section data-dfn-for="Foo">
+          <h2>Service discovery</h2>
+          <p>The client MAY request that the server returns the VSS tree content. The client is able to request metadata from any point in the signal tree, such that only the metadata for the nodes within the given branch of the tree is returned. For example, only metadata for the chassis branch of the VSS tree is returned when the chassis path is specified. If the path is set to the VSS root, the response contains the metadata for the entire tree. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The structure of these message objects are defined below:</p>
+          <b>Transport method: get</b>
+          <ul>  
+            <li>Request message parameters:</li>
+            <ul>  
+              <li>Path: The address to one or more nodes in the VSS tree.</li>
+              <li>RequestId: A unique Id for this client&rsquo;s session.</li>
+            </ul>  
+            <li>Response message parameters:</li>
+            <ul>  
+              <li>RequestId: A copy of the RequestId in the request message. </li>
+              <li>Metadata: The content of the VSS tree where the root is specified by the path.</li>
+              <li>Timestamp: A timestamp associated with the retrieval of the requested data.</li>
+            </ul>  
+            <li>ErrorResponse message parameters: </li>
+            <ul>  
+              <li>RequestId: A copy of the RequestId in the request message.</li>
+              <li>Error: Information describing the error reason.</li>
+              <li>Timestamp: A timestamp associated with the failed retrieval of the requested data.</ul></li>
+            </ul>  
+          </ul>  
+        </section>
+        <section data-dfn-for="Foo">
+          <h2>Authorization</h2>
+        </section>
+      </section>
+    </section>
+    <section id="appendix_a">
+      <h2>Appendix A: JSON Schema Definitions</h2>
+      <p>The payload that is sent over the supported transport protocols SHALL use the JSON definitions in this appendix, unless otherwise specified in the VSI TRANSPORT specification.</p>
+    </section>
+    <section id="appendix_b">
+      <h2>Appendix B: References</h2>
+      <p id=rfc2119>RFC2119: Key words for use in RFCs to Indicate Requirement Levels. S. Bradner. IETF. March 1997. Best Current Practice. URL: https://tools.ietf.org/html/rfc2119</p>
+    </section>
+  </body>
+</html>
