@@ -77,22 +77,10 @@
         <p>See <a href='#appendix_a'></a> for the payload format of the messages for respective methods below.</p>
       </section>
       <section data-dfn-for="Foo">
-        <h2>Transport aligned methods</h2>
-        <p>The interface described in this document shall be possible to map onto different transport protocols. In order to simplify that mapping, a small set of general methods that are likely to be easily implementable in different transport protocols will be used to express the functional needs of this interface. The set of methods are:</p>
-        <ul>
-          <li>Get</li>
-          <li>Post</li>
-          <li>Put</li>
-          <li>Delete</li>
-        </ul>  
-        <p>The sub-chapters below specify how these methods are used for the different functional needs.</p>
-      </section>
-      <section data-dfn-for="Foo">
         <h2>Functional methods</h2>
         <section data-dfn-for="Foo">
           <h2>Read</h2>
           <p>The client MAY send a Read message to the server to get the value of one or more vehicle data sources. If the server is able to satisfy the Request it SHALL return a Response message. If the server is unable to fulfil the request, then the server SHALL return an ErrorResponse message. The structure of these message objects are defined below:</p>
-          <b>Transport method: get</b>
           <ul>  
             <li>Request message parameters:</li>
             <ul>  
@@ -103,20 +91,19 @@
             <ul>  
               <li>RequestId: A copy of the RequestId in the request message. </li>
               <li>Value: One or more values associated with the addressed VSS leaves.</li>
-              <li>Timestamp: A timestamp associated with the retrieval of the requested data.</li>
+              <li>Timestamp: A timestamp associated with the request.</li>
             </ul>  
             <li>ErrorResponse message parameters: </li>
             <ul>  
               <li>RequestId: A copy of the RequestId in the request message.</li>
               <li>Error: Information describing the error reason.</li>
-              <li>Timestamp: A timestamp associated with the failed retrieval of the requested data.</ul></li>
+              <li>Timestamp: A timestamp associated with the failed request.</li>
             </ul>  
           </ul>  
         </section>
         <section data-dfn-for="Foo">
           <h2>Update</h2>
           <p>The client MAY request that the server sets the value of one or more data sources. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The structure of these message objects are defined below:</p>
-          <b>Transport method: post</b>
           <ul>  
             <li>Request message parameters:</li>
             <ul>  
@@ -127,13 +114,13 @@
             <li>Response message parameters:</li>
             <ul>  
               <li>RequestId: A copy of the RequestId in the request message. </li>
-              <li>Timestamp: A timestamp associated with the retrieval of the requested data.</li>
+              <li>Timestamp: A timestamp associated with the request.</li>
             </ul>  
             <li>ErrorResponse message parameters: </li>
             <ul>  
               <li>RequestId: A copy of the RequestId in the request message.</li>
               <li>Error: Information describing the error reason.</li>
-              <li>Timestamp: A timestamp associated with the failed retrieval of the requested data.</ul></li>
+              <li>Timestamp: A timestamp associated with the failed request.</li>
             </ul>  
           </ul>  
         </section>
@@ -144,37 +131,103 @@
           <h2>Delete</h2>
         </section>
         <section data-dfn-for="Foo">
-          <h2>Subscribe</h2>
-        </section>
-        <section data-dfn-for="Foo">
-          <h2>Unsubscribe</h2>
-        </section>
-        <section data-dfn-for="Foo">
           <h2>Service discovery</h2>
           <p>The client MAY request that the server returns the VSS tree content. The client is able to request metadata from any point in the signal tree, such that only the metadata for the nodes within the given branch of the tree is returned. For example, only metadata for the chassis branch of the VSS tree is returned when the chassis path is specified. If the path is set to the VSS root, the response contains the metadata for the entire tree. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The structure of these message objects are defined below:</p>
-          <b>Transport method: get</b>
           <ul>  
             <li>Request message parameters:</li>
             <ul>  
-              <li>Path: The address to one or more nodes in the VSS tree.</li>
+              <li>Path: The address to one or more nodes in the VSS tree, followed by the path segment "$spec".</li>
               <li>RequestId: A unique Id for this client&rsquo;s session.</li>
             </ul>  
             <li>Response message parameters:</li>
             <ul>  
               <li>RequestId: A copy of the RequestId in the request message. </li>
               <li>Metadata: The content of the VSS tree where the root is specified by the path.</li>
-              <li>Timestamp: A timestamp associated with the retrieval of the requested data.</li>
+              <li>Timestamp: A timestamp associated with the request.</li>
             </ul>  
             <li>ErrorResponse message parameters: </li>
             <ul>  
               <li>RequestId: A copy of the RequestId in the request message.</li>
               <li>Error: Information describing the error reason.</li>
-              <li>Timestamp: A timestamp associated with the failed retrieval of the requested data.</ul></li>
+              <li>Timestamp: A timestamp associated with the failed request.</li>
             </ul>  
           </ul>  
         </section>
         <section data-dfn-for="Foo">
-          <h2>Authorization</h2>
+          <h2>Authorize</h2>
+          <p>To enable access to signals and data attributes that are under access control, the client MAY optionally pass a message with an authorize action to the server. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The structure of these message objects are defined below:</p>
+          <ul>  
+            <li>Request message parameters:</li>
+            <ul>  
+              <li>Path: The address to one or more nodes in the VSS tree, followed by the path segment "$token".</li>
+              <li>Tokens: An object containing the token(s) required for obtaining access.</li>
+              <li>RequestId: A unique Id for this client&rsquo;s session.</li>
+            </ul>  
+            <li>Response message parameters:</li>
+            <ul>  
+              <li>TTL: The time to live for the token.</li>
+              <li>RequestId: A copy of the RequestId in the request message. </li>
+            </ul>  
+            <li>ErrorResponse message parameters: </li>
+            <ul>  
+              <li>RequestId: A copy of the RequestId in the request message.</li>
+              <li>Error: Information describing the error reason.</li>
+            </ul>  
+          </ul>  
+        </section>
+        <section data-dfn-for="Foo">
+          <h2>Subscribe</h2>
+          <p>Vehicle data subscriptions can provide data to the client whenever a signal changes on the server, unless otherwise specified using Server Side Filtering. The server MAY reduce the number of notifications sent to the client in order to reduce processing demands, particularly when the client has subscribed to continuously varying signals.<br>When the client makes a request to the server to create a new subscription, a JSON data object is returned. This object contains the attributes that were passed to the server to make the subscription and a subscriptionId integer handle value which is used to uniquely identify the subscription. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The structure of these message objects are defined below:</p>
+          <ul>  
+            <li>Request message parameters:</li>
+            <ul>  
+              <li>Path: The address to one or more nodes in the VSS tree.</li>
+              <li>Filters: An object containing the filter rule(s) for data dispatch.</li>
+              <li>RequestId: A unique Id for this client&rsquo;s session.</li>
+            </ul>  
+            <li>Response message parameters:</li>
+            <ul>  
+              <li>SubscriptionId: An Id associated with the subscription request.</li>
+              <li>RequestId: A copy of the RequestId in the request message. </li>
+              <li>Timestamp: A timestamp associated with the request execution.</li>
+            </ul>
+            <li>ErrorResponse message parameters: </li>
+            <ul>  
+              <li>RequestId: A copy of the RequestId in the request message.</li>
+              <li>Error: Information describing the error reason.</li>
+              <li>Timestamp: A timestamp associated with the failed request execution.</li>
+            </ul>  
+            <li>Notification message parameters: </li>
+            <ul>  
+              <li>SubscriptionId: The Id associated with the subscription request.</li>
+              <li>Value: The data to be passed back to the client according to the filter rules.</li>
+              <li>Timestamp: A timestamp associated with the failed request execution.</li>
+            </ul>  
+          </ul>  
+        </section>
+        <section data-dfn-for="Foo">
+          <h2>Unsubscribe</h2>
+          <p>To unsubscribe from a subscription, the client SHALL send an unsubscribe request message to the server, containing the subscriptionId. To unsubscribe to all subscriptions owned by the client, the subscriptionId is set to -1.<br>If the client has created more than one WebSocket instance, it MUST always unsubscribe using the same WebSocket instance that was originally used to create the subscription.<br>It is not possible to unsubscribe from a subset of signals within a subscription. The client must unsubscribe and set up a new subscription to receive notifications for the desired signals.<br>The client should always unsubscribe from receiving notifications when it is no longer using the data. Over a long vehicle journey, this significantly reduces the processing load on the server and allow the server to free memory. It therefore makes it more likely that the server will remain responsive to future requests from the client. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The structure of these message objects are defined below:</p>
+          <ul>  
+            <li>Request message parameters:</li>
+            <ul>  
+              <li>SubscriptionId: The Id associated with the subscription.</li>
+              <li>RequestId: A unique Id for this client&rsquo;s session.</li>
+            </ul>  
+            <li>Response message parameters:</li>
+            <ul>  
+              <li>SubscriptionId: The subscriptionId(s) that are unsubscribed to.</li>
+              <li>RequestId: A copy of the RequestId in the request message. </li>
+              <li>Timestamp: A timestamp associated with the request execution.</li>
+            </ul>  
+            <li>ErrorResponse message parameters: </li>
+            <ul>  
+              <li>SubscriptionId: A copy of the SubscriptionId in the request message.</li>
+              <li>RequestId: A copy of the RequestId in the request message.</li>
+              <li>Error: Information describing the error reason.</li>
+              <li>Timestamp: A timestamp associated with the failed request execution.</li>
+            </ul>  
+          </ul>  
         </section>
       </section>
     </section>

@@ -48,6 +48,17 @@ extending VSI to further transports in the future. The VSI supports multiple tra
       <p><!-- <a href="#xxx"></a>.  -->Diagram showing xxx.</p>
     </section>
     <section data-dfn-for="Foo">
+      <h2>Transport aligned methods</h2>
+      <p>The interface described in this document shall be possible to map onto different transport protocols. In order to simplify that mapping, a small set of general methods that are likely to be easily implementable in different transport protocols will be used to express the functional needs of this interface. The set of methods are:</p>
+      <ul>
+        <li>Get</li>
+        <li>Post</li>
+        <li>Put</li>
+        <li>Delete</li>
+      </ul>  
+      <p>The sub-chapters below specify how these methods are used for the different functional needs.</p>
+    </section>
+    <section data-dfn-for="Foo">
       <h2>Transport protocols</h2>
       <section data-dfn-for="Foo">
         <h2>HTTPS</h2>
@@ -94,7 +105,6 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               Transfer-Encoding: chunked<br><br>
               {<br>
               <blockquote>
-                "method": "get",<br>
                 "requestId": "8756",<br>
                 "value": 2372,<br>
                 "timestamp": 1489985044000<br>
@@ -104,20 +114,46 @@ extending VSI to further transports in the future. The VSI supports multiple tra
           </section>
           <section data-dfn-for="Foo">
             <h2>Update</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:??how represent wildcard path with URL??<br>
+              POST /VSS-Root/Cabin/Door/*/*/IsLocked HTTP/1.1<br>
+              Host: 127.0.0.1:9000<br>
+              Connection: keep-alive<br>
+              Accept: application/json<br>
+              User-Agent: Chrome/34.0.1847.137 Safari/537.36<br>
+              Accept-Encoding: gzip,deflate<br>
+              Accept-Language: en-US,en;q=0.8,de;q=0.6<br><br>
+              {<br>
+              <blockquote>
+                "method": "post",<br>
+                "path": "VSS-Root.Cabin.Door.*.*.IsLocked",<br>
+                "value": true,<br>
+                "requestId": "5678"<br>
+              </blockquote>
+              }<br><br>
+              Response:<br>
+              HTTP/1.1 201 Created<br>
+              Vary: Accept-Encoding<br>
+              Content-Type: application/json; charset=utf-8<br>
+              ETag: "-32550834"<br>
+              Content-Encoding: gzip<br>
+              Date: Tue, 07 Apr 1980 00:00:00 GMT<br>
+              Connection: keep-alive<br>
+              Transfer-Encoding: chunked<br><br>
+              {<br>
+              <blockquote>
+                "requestId": "5678",<br>
+                "timestamp": 1489985044000<br>
+              </blockquote>
+              }<br>
+            </p>
           </section>
           <section data-dfn-for="Foo">
             <h2>Create</h2>
           </section>
           <section data-dfn-for="Foo">
             <h2>Delete</h2>
-          </section>
-          <section data-dfn-for="Foo">
-            <h2>Subscribe</h2>
-            <p>The subscibe method is not supported over HTTPS.</p>
-          </section>
-          <section data-dfn-for="Foo">
-            <h2>Unsubscribe</h2>
-            <p>The unsubscibe method is not supported over HTTPS.</p>
           </section>
           <section data-dfn-for="Foo">
             <h2>Service discovery</h2>
@@ -158,7 +194,51 @@ extending VSI to further transports in the future. The VSI supports multiple tra
             </p>
           </section>
           <section data-dfn-for="Foo">
-            <h2>Authorization</h2>
+            <h2>Authorize</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br>
+              GET VSS-Root/Car/Drivetrain/$token HTTP/1.1<br>
+              Host: 127.0.0.1:1337<br>
+              Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds<br>
+              Connection: keep-alive<br>
+              Accept: application/json<br>
+              User-Agent: Chrome/34.0.1847.137 Safari/537.36<br>
+              Accept-Encoding: gzip,deflate<br>
+              Accept-Language: en-US,en;q=0.8,de;q=0.6<br><br>
+              {<br>
+              <blockquote>
+                "method": "post",<br>
+                "path": "VSS-Root.Car.Drivetrain.$token",<br>
+                "tokens": { "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds" }<br>
+                "requestId": "8657"<br>
+              </blockquote>
+              }<br><br>
+              Response:<br>
+              HTTP/1.1 200 OK<br>
+              X-Powered-By: Express<br>
+              Vary: Accept-Encoding<br>
+              Content-Type: application/json; charset=utf-8<br>
+              ETag: "-32550834"<br>
+              Content-Encoding: gzip<br>
+              Date: Tue, 13 Jun 2014 19:47:27 GMT<br>
+              Connection: keep-alive<br>
+              Transfer-Encoding: chunked<br><br>
+              {<br>
+              <blockquote>
+                "TTL": "3600",<br>
+                "requestId": "8657",<br>
+              </blockquote>
+              }<br>
+            </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Subscribe</h2>
+            <p>The subscribe method is not supported over HTTPS.</p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Unsubscribe</h2>
+            <p>The unsubscribe method is not supported over HTTPS.</p>
           </section>
         </section>
       </section>
@@ -200,18 +280,31 @@ extending VSI to further transports in the future. The VSI supports multiple tra
           </section>
           <section data-dfn-for="Foo">
             <h2>Update</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br> 
+              {<br>
+              <blockquote>
+                "method": "post",<br>
+                "path": "VSS-Root.Cabin.Door.*.*.IsLocked",<br>
+                "value": true,<br>
+                "requestId": "5687"<br>
+              </blockquote>
+              }<br><br>
+              Response:<br>
+              {<br>
+              <blockquote>
+                "requestId": "5687",<br>
+                "timestamp": 1489985044000<br>
+              </blockquote>
+              }<br>
+            </p>
           </section>
           <section data-dfn-for="Foo">
             <h2>Create</h2>
           </section>
           <section data-dfn-for="Foo">
             <h2>Delete</h2>
-          </section>
-          <section data-dfn-for="Foo">
-            <h2>Subscribe</h2>
-          </section>
-          <section data-dfn-for="Foo">
-            <h2>Unsubscribe</h2>
           </section>
           <section data-dfn-for="Foo">
             <h2>Service discovery</h2>
@@ -236,7 +329,71 @@ extending VSI to further transports in the future. The VSI supports multiple tra
             </p>
           </section>
           <section data-dfn-for="Foo">
-            <h2>Authorization</h2>
+            <h2>Authorize</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br> 
+              {<br>
+              <blockquote>
+                "method": "post",<br>
+                "path": "VSS-Root.Car.Drivetrain.$token",<br>
+                "tokens": { "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds" }<br>
+                "requestId": "8657"<br>
+              </blockquote>
+              }<br><br>
+              Response:<br>
+              {<br>
+              <blockquote>
+                "TTL": "3600",<br>
+                "requestId": "8657",<br>
+              </blockquote>
+              }<br>
+            </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Subscribe</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br> 
+              {<br>
+              <blockquote>
+                "method": "get",<br>
+                "path": "VSS-Root.Car.Drivetrain",<br>
+                "filters": { "interval": 100 }<br>
+                "requestId": "6578"<br>
+              </blockquote>
+              }<br><br>
+              Response:<br>
+              {<br>
+              <blockquote>
+                "subscriptionId": "12345",<br>
+                "requestId": "6578",<br>
+                "timestamp": 1489985044000<br>
+              </blockquote
+              }<br>
+            </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Unsubscribe</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br> 
+              {<br>
+              <blockquote>
+                "method": "get",<br>
+                "subscriptionId": "-1",<br>
+                "requestId": "5786"<br>
+              </blockquote>
+              }<br><br>
+              Response:<br>
+              {<br>
+              <blockquote>
+                "subscriptionId": [ "12345", "23451" ],<br>
+                "requestId": "5786",<br>
+                "timestamp": 1489985044000<br>
+              </blockquote>
+              }<br>
+            </p>
           </section>
         </section>
       </section>
