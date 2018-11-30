@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>"no name yet"-Interface</title>
+    <script 
+     src='https://www.w3.org/Tools/respec/respec-w3c-common' 
+     class='remove'></script>
+    <script class='remove'>
+      var respecConfig = {
+        specStatus: "ED",
+        editors: [{
+          name: "Patrick Lünnemann",
+          url: "mailto:patrick.luennemann@carmeq.com",
+        }],
+        edDraftURI: "https://github.com/w3c/automotive/blob/generation_two/interface/interface_gen2.html",
+        shortName: "interface-gen2"
+      };
+    </script>
+  </head>
+  <body>
+    <section id='abstract'>
+      <p>
+        This is required.
+      </p>
+    </section>
+    <section id='sotd'>
+      <p>
+        This document is in its infant phase.
+		We have to agree on the scope of this document.
+      </p>
+    </section>
+
+	<section>
+	<h2>General stuff</h2>
+	<pre>
+	Internationalization:
+	* https://www.w3.org/International/core/Overview
+	Accessibility
+	</pre>
+    </section>
+	</section>
+	
+    <section data-dfn-for="query-filter">
+      <h2>Queries and Filters</h2>
+	  <pre>
+
+Queries: http://www.w3.org/2018/05/29-auto-minutes.html#item01
+
+SPARQL: http://www.w3.org/2018/06/21-auto-minutes.html#item01
+
+* Discussion: https://www.w3.org/2018/05/29-auto-minutes
+* it is part addressing the data in question, part filtering for a certain set of data
+* filtering
+** we want to be able to ask for "all doors which are open"
+** problem: to much work for source implementation possible if to much possibilities to structure a query
+** use of resources on service side might be limited
+** idea: service can "tell" what kind of filter/query possibilities are offered. Client may solve the rest
+** capabilities for filtering might be depending on implementation. expected data amount vs. complicated implementation
+** filtering shall be possible on every value which is "easily describable" (e.g. binary blobs might not be filterable)
+** Other solutions
+*** xpath
+*** SQL
+	  </pre>
+    </section>
+    <section data-dfn-for="iaa">
+      <h2>Authorization, Authentication and Identity</h2>
+	  <pre>
+* Authentication http://www.w3.org/2018/04/19-auto-minutes.html#item03
+* Volvo assesment: https://lists.w3.org/Archives/Public/public-automotive/2018Aug/0002.html
+* https://www.w3.org/2018/09/25-auto-minutes.html#item01
+
+	  </pre>
+    </section>
+    <section data-dfn-for="adressing">
+      <h2>Adressing</h2>
+	  <pre>	  
+* http://www.w3.org/2018/08/21-auto-minutes.html#item02
+* http://www.w3.org/2018/08/28-auto-minutes.html#item01
+* decentralized identifiers: https://w3c-ccg.github.io/did-wg-proposal/
+	  </pre>
+    </section>
+    <section data-dfn-for="statuscodes">
+      <h2>Status Codes</h2>
+	  <pre>
+* https://www.w3.org/2018/07/17-auto-minutes.html
+	  </pre>
+    </section>
+    <section data-dfn-for="datatypes">
+      <h2>Data Types</h2>
+	  <pre>
+* Streaming Data: https://www.w3.org/2018/09/11-auto-minutes.html#item04
+	  </pre>
+    </section>
+	<section data-dfn-for="versioning">
+      <h2>Versioning</h2>
+	  <pre>
+	http://www.w3.org/2018/08/21-auto-minutes.html#item03
+	</pre>
+    </section>
+	<section data-dfn-for="objects">
+      <h2>Objects</h2>
+	  <pre>
+* Grouping: http://www.w3.org/2018/05/22-auto-minutes.html#item02
+* Types: https://www.w3.org/2018/06/12-auto-minutes.html#item02
+* Nested Objects: http://www.w3.org/2018/04/19-auto-minutes.html#item03
+* Extension: https://www.w3.org/2018/06/19-auto-minutes.html#item01
+* Ontology Summary: https://lists.w3.org/Archives/Member/member-automotive/2018Jul/0007.html
+
+* object oriented
+* interlinking the objects
+	</pre>
+    </section>
+	<section data-dfn-for="ontology">
+      <h2>Structure / Ontology</h2>
+	  <pre>
+	* to reduce "complexity"
+* handle a bunch of objects as a "collection" with a certain version
+	</pre>
+	<section data-dfn-for="grouping">
+      <h2>Grouping</h2>
+	  <pre>
+	* Discussion: [https://www.w3.org/2018/05/22-auto-minutes.html, WG Call 2018-05-22]
+* Data values shall not be buried for developers, it shall be logical from a developers point of view (Data Value)
+* Data values shall be easily structure into a rough object like approach (Object)
+* Similar objects shall be grouped by a context (Cluster)
+* Example:
+** Cluster: Body
+*** Object: Window (or List of windows)
+**** data value: position
+**** data value: dirty
+*** Object: Doors (or list of doors)
+**** data value: locked
+**** data value: closed
+**** data value: window
+	</pre>
+    </section>
+	
+    </section>
+	<section data-dfn-for="privacy">
+	<h2>Privacy</h2>
+	<section data-dfn-for="consent">
+      <h2>Usage Consent</h2>
+	  <pre>
+* describe allowed usage of an object/dataset/signal
+* GDPR
+* LPL - Armin Gerls Slides
+	</pre>
+    </section>
+    </section>
+
+
+	<section data-dfn-for="security">
+	<h2>Security</h2>
+	</section>
+
+    <section data-dfn-for="Foo">
+      <h2>Start your spec!</h2>
+      <pre class="idl">
+      interface Foo {
+        attribute Bar bar;
+        void doTheFoo();
+      };
+      </pre>
+      <p>The <dfn>Foo</dfn> interface represents a Foo.</p>
+      <p>The <dfn>doTheFoo()</dfn> method does the foo.</p>
+    </section>
+  </body>
+</html>
