@@ -51,17 +51,6 @@ extending VSI to further transports in the future. The VSI supports multiple tra
       <h2>Transport common definitions</h2>
       <p>This chapter defines features that SHALL be common for all transport protocols.</p>
       <section data-dfn-for="Foo">
-        <h2>Transport aligned methods</h2>
-        <p>The interface described in this document shall be possible to map onto different transport protocols. In order to simplify that mapping, a small set of general methods that are likely to be easily implementable in different transport protocols will be used to express the functional needs of this interface. The set of methods are:</p>
-        <ul>
-          <li>Get</li>
-          <li>Post</li>
-          <li>Put</li>
-          <li>Delete</li>
-        </ul>  
-        <p>The implementation of the functional methods in the different transport protocols MUST not use any other methods than the ones listed above.</p>
-      </section>
-      <section data-dfn-for="Foo">
         <h2>Status codes</h2>
         <p>This section extends each Status-Code with implication and handling information for a client. The general meaning of status codes remains untouched. The client has to work with any response with a status code defined in <a href='#rfc2616'>[RFC2616]</a>. However, some status codes are generally not expected by the client, those codes are not shown in the table below. If received by a client, they can be ignored.</p>
         <tbody>
@@ -185,14 +174,15 @@ extending VSI to further transports in the future. The VSI supports multiple tra
       </section>
       <section data-dfn-for="Foo">
         <h2>Transport payload</h2>
-        <p>The payload SHALL have JSON format. The payload SHALL be identical on the different transport protocols. See <a href='#appendix_b'></a> for the payload format of the messages for respective methods below.</p>
+        <p>The payload SHALL have JSON format. See <a href='#appendix_b'></a> for the payload format of the messages for the different transport protocols.</p>
       </section>
     </section>
     <section data-dfn-for="Foo">
       <h2>Transport protocols</h2>
+      <p>The transport protocols supported are the secure versions of HTTP and WebSockets. Further transport protocols may be supported in future versions of this specification.</p>
       <section data-dfn-for="Foo">
         <h2>HTTPS</h2>
-        <p>xxx</p>
+        <p>The message data components described in the CORE document are in the first hand mapped to required HTTP parameters, and only when there is no appropriate mapping it is mapped to the payload.</p>
         <section data-dfn-for="Foo">
           <h2>Session life time management</h2>
           <section data-dfn-for="Foo">
@@ -216,13 +206,6 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               User-Agent: Chrome/34.0.1847.137 Safari/537.36<br>
               Accept-Encoding: gzip,deflate<br>
               Accept-Language: en-US,en;q=0.8,de;q=0.6<br><br>
-              {<br>
-              <blockquote>
-                "method": "get",<br>
-                "path": "VSS-Root.Car.Drivetrain.InternalCombustionEngine.RPM",<br>
-                "requestId": "8756"<br>
-              </blockquote>
-              }<br><br>
               Response:<br>
               HTTP/1.1 200 OK<br>
               X-Powered-By: Express<br>
@@ -235,7 +218,6 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               Transfer-Encoding: chunked<br><br>
               {<br>
               <blockquote>
-                "requestId": "8756",<br>
                 "value": 2372,<br>
                 "timestamp": 1489985044000<br>
               </blockquote>
@@ -256,10 +238,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               Accept-Language: en-US,en;q=0.8,de;q=0.6<br><br>
               {<br>
               <blockquote>
-                "method": "post",<br>
-                "path": "VSS-Root.Cabin.Door.*.*.IsLocked",<br>
                 "value": true,<br>
-                "requestId": "5678"<br>
               </blockquote>
               }<br><br>
               Response:<br>
@@ -273,7 +252,6 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               Transfer-Encoding: chunked<br><br>
               {<br>
               <blockquote>
-                "requestId": "5678",<br>
                 "timestamp": 1489985044000<br>
               </blockquote>
               }<br>
@@ -290,20 +268,13 @@ extending VSI to further transports in the future. The VSI supports multiple tra
             <p>
               <b>Example:</b><br>
               Request:<br>
-              GET VSS-Root/Car/Drivetrain/$spec HTTP/1.1<br>
+              GET VSS-Root/Car/Drivetrain?$spec HTTP/1.1<br>
               Host: 127.0.0.1:1337<br>
               Connection: keep-alive<br>
               Accept: application/json<br>
               User-Agent: Chrome/34.0.1847.137 Safari/537.36<br>
               Accept-Encoding: gzip,deflate<br>
               Accept-Language: en-US,en;q=0.8,de;q=0.6<br><br>
-              {<br>
-              <blockquote>
-                "method": "get",<br>
-                "path": "VSS-Root.Car.Drivetrain.$spec",<br>
-                "requestId": "5687"<br>
-              </blockquote>
-              }<br><br>
               Response:<br>
               HTTP/1.1 200 OK<br>
               X-Powered-By: Express<br>
@@ -316,7 +287,6 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               Transfer-Encoding: chunked<br><br>
               {<br>
               <blockquote>
-                "requestId": "5687",<br>
                 "metadata": 'object',<br>
                 "timestamp": 1489985044000<br>
               </blockquote>
@@ -328,7 +298,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
             <p>
               <b>Example:</b><br>
               Request:<br>
-              GET VSS-Root/Car/Drivetrain/$token HTTP/1.1<br>
+              POST VSS-Root/Car/Drivetrain?$token HTTP/1.1<br>
               Host: 127.0.0.1:1337<br>
               Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds<br>
               Connection: keep-alive<br>
@@ -336,14 +306,6 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               User-Agent: Chrome/34.0.1847.137 Safari/537.36<br>
               Accept-Encoding: gzip,deflate<br>
               Accept-Language: en-US,en;q=0.8,de;q=0.6<br><br>
-              {<br>
-              <blockquote>
-                "method": "post",<br>
-                "path": "VSS-Root.Car.Drivetrain.$token",<br>
-                "tokens": { "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds" }<br>
-                "requestId": "8657"<br>
-              </blockquote>
-              }<br><br>
               Response:<br>
               HTTP/1.1 200 OK<br>
               X-Powered-By: Express<br>
@@ -357,7 +319,6 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               {<br>
               <blockquote>
                 "TTL": "3600",<br>
-                "requestId": "8657",<br>
               </blockquote>
               }<br>
             </p>
@@ -374,7 +335,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
       </section>
       <section data-dfn-for="Foo">
         <h2>Secure WebSockets</h2>
-        <p>xxx</p>
+        <p>As the WebSocket protocol does not implicitly provide a logical association between the request and response messages described here a key-value pair with the keyname "requestId" is added to the data components described in the CORE document. As the WebSockets protocol neither specifies a set of explicit methods, another key-value pair with the keyname "action" is also added. See <a href='#appendix_b'></a> for the declaration of these new key-value pairs. All data components are mapped to the payload.</p>
         <section data-dfn-for="Foo">
           <h2>Session life time management</h2>
           <section data-dfn-for="Foo">
@@ -393,7 +354,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               Request:<br> 
               {<br>
               <blockquote>
-                "method": "get",<br>
+                "action": "getRequest",<br>
                 "path": "VSS-Root.Car.Drivetrain.InternalCombustionEngine.RPM",<br>
                 "requestId": "8756"<br>
               </blockquote>
@@ -401,6 +362,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               Response:<br>
               {<br>
               <blockquote>
+                "action": "getSuccessResponse",<br>
                 "requestId": "8756",<br>
                 "value": 2372,<br>
                 "timestamp": 1489985044000<br>
@@ -415,7 +377,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               Request:<br> 
               {<br>
               <blockquote>
-                "method": "post",<br>
+                "action": "setRequest",<br>
                 "path": "VSS-Root.Cabin.Door.*.*.IsLocked",<br>
                 "value": true,<br>
                 "requestId": "5687"<br>
@@ -424,6 +386,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               Response:<br>
               {<br>
               <blockquote>
+                "action": "setSuccessResponse",<br>
                 "requestId": "5687",<br>
                 "timestamp": 1489985044000<br>
               </blockquote>
@@ -443,14 +406,15 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               Request:<br> 
               {<br>
               <blockquote>
-                "method": "get",<br>
-                "path": "VSS-Root.Car.Drivetrain.$spec",<br>
+                "action": "metadataRequest",<br>
+                "path": "VSS-Root.Car.Drivetrain",<br>
                 "requestId": "5687"<br>
               </blockquote>
               }<br><br>
               Response:<br>
               {<br>
               <blockquote>
+                "action": "metadataSuccessResponse",<br>
                 "requestId": "5687",<br>
                 "metadata": 'object',<br>
                 "timestamp": 1489985044000<br>
@@ -465,8 +429,8 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               Request:<br> 
               {<br>
               <blockquote>
-                "method": "post",<br>
-                "path": "VSS-Root.Car.Drivetrain.$token",<br>
+                "action": "authorizeRequest",<br>
+                "path": "VSS-Root.Car.Drivetrain",<br>
                 "tokens": { "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds" }<br>
                 "requestId": "8657"<br>
               </blockquote>
@@ -474,6 +438,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               Response:<br>
               {<br>
               <blockquote>
+                "action": "authorizeSuccessResponse",<br>
                 "TTL": "3600",<br>
                 "requestId": "8657",<br>
               </blockquote>
@@ -487,7 +452,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               Request:<br> 
               {<br>
               <blockquote>
-                "method": "get",<br>
+                "action": "subscribeRequest",<br>
                 "path": "VSS-Root.Car.Drivetrain",<br>
                 "filters": { "interval": 100 }<br>
                 "requestId": "6578"<br>
@@ -496,8 +461,18 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               Response:<br>
               {<br>
               <blockquote>
+                "action": "subscribeSuccessResponse",<br>
                 "subscriptionId": "12345",<br>
                 "requestId": "6578",<br>
+                "timestamp": 1489985044000<br>
+              </blockquote
+              }<br><br>
+              Notification:<br>
+              {<br>
+              <blockquote>
+                "action": "subscriptionNotification",<br>
+                "subscriptionId": "12345",<br>
+                "value": 'a value',<br>
                 "timestamp": 1489985044000<br>
               </blockquote
               }<br>
@@ -510,7 +485,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               Request:<br> 
               {<br>
               <blockquote>
-                "method": "get",<br>
+                "action": "unsubscribeRequest",<br>
                 "subscriptionId": "-1",<br>
                 "requestId": "5786"<br>
               </blockquote>
@@ -518,6 +493,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               Response:<br>
               {<br>
               <blockquote>
+                "action": "unsubscribeSuccessResponse",<br>
                 "subscriptionId": [ "12345", "23451" ],<br>
                 "requestId": "5786",<br>
                 "timestamp": 1489985044000<br>
