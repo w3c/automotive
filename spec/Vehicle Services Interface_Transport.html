@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>Vehicle Services Interface_Transport</title>
+    <script 
+     src='https://www.w3.org/Tools/respec/respec-w3c-common' 
+     class='remove'></script>
+    <script class='remove'>
+      var respecConfig = {
+        specStatus: "ED",
+        editors: [{
+          name: "Ulf Bjorkengren, Volvo Cars",
+          url: "http://www.volvocars.com/intl",
+        }],
+        edDraftURI: "http://some.github.repo",
+        shortName: "VSI-TRANSPORT"
+      };
+    </script>
+  </head>
+  <body>
+    <section id='abstract'>
+      <p>This document, the VSI TRANSPORT specification, describes the VSI transport protocols, and the mapping of the message layer on these transports. The companion specification VSI CORE describes the messaging layer.</p>
+    </section>
+    <section id='sotd'>
+      <p>
+        This is required.
+      </p>
+    </section>
+    <section data-dfn-for="Foo">
+      <h2>Introduction</h2>
+      <p>This document describes the transport bindings of the Vehicle Service Interface. The split between transport bindings and messaging layer specifications improves readability and simplify
+extending VSI to further transports in the future. The VSI supports multiple transport bindings, namely HTTPS and secure WebSockets.</p>
+    </section>
+    <section data-dfn-for="Foo">
+      <h2>Conformance</h2>
+      <p>As well as sections marked as non-normative, all authoring guidelines, diagrams, examples, and notes in this specification are non-normative. Everything else in this specification is normative.
+ The key words MAY, MUST, and SHALL are to be interpreted as described in <a href='#rfc2119'>[RFC2119]</a>.</p>
+    </section>
+    <section data-dfn-for="Foo">
+      <h2>Terminology</h2>
+      <p>The acronym 'VSI' is used to refer to this document, the 'Vehicle Service Interface' specification.
+ The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance.
+ The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.</p>
+    </section>
+    <section data-dfn-for="Foo">
+      <h2>Table of Figures</h2>
+      <p><!-- <a href="#xxx"></a>.  -->Diagram showing xxx.</p>
+    </section>
+    <section data-dfn-for="Foo">
+      <h2>Transport common definitions</h2>
+      <p>This chapter defines features that SHALL be common for all transport protocols.</p>
+      <section data-dfn-for="Foo">
+        <h2>Status codes</h2>
+        <p>This section extends each Status-Code with implication and handling information for a client. The general meaning of status codes remains untouched. The client has to work with any response with a status code defined in <a href='#rfc2616'>[RFC2616]</a>. However, some status codes are generally not expected by the client, those codes are not shown in the table below. If received by a client, they can be ignored.</p>
+        <tbody>
+          <table style="width:100%">
+          <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Implication</th>
+            <th>Client-side treatment</th>
+          </tr>
+          <tr>
+            <td>101</td>
+            <td>Switching Protocols</td>
+            <td>Only used for establishing websockets, see <a href="https://tools.ietf.org/html/rfc6455#section-4.2.2">RFC6455 section 4.2.2</a>.</td>
+            <td>None</td>
+          </tr>
+          <tr>
+            <td>200</td>
+            <td>OK</td>
+            <td>Used for successful HTTP Requests. This code is used to acknowledge successful change of the resource or element.</td>
+            <td>None</td>
+          </tr>
+          <tr>
+            <td>201</td>
+            <td>Created</td>
+            <td>Used for successfully creating new entities.</td>
+            <td>None</td>
+          </tr>
+          <tr>
+            <td>202</td>
+            <td>Accepted</td>
+            <td>The request has been accepted for processing, but the processing has not been completed. The request might or might not eventually be acted upon. There is no guarantee that the request will be fullfilled.</td>
+            <td>Subscribe to affected entity, if the actual outcome is of interest.</td>
+          </tr>
+          <tr>
+            <td>300</td>
+            <td>Multiple Choices</td>
+            <td>Used if multiple services match the request criteria (service registry only)</td>
+            <td>Client has to select and re-request</td>
+          </tr>
+          <tr>
+            <td>304</td>
+            <td>Not Modified</td>
+            <td>If the entity is not modified, this status code can be sent. This indicates that the client should look for this entity in its cache.</td>
+            <td>None</td>
+          </tr>
+          <tr>
+            <td>307</td>
+            <td>Temporary Redirect</td>
+            <td>The requested resource has moved. The new location is send as an absolute URL in the response HTTP-Header <code>Location</code> field.</td>
+            <td>Client should submit a new HTTP request.</td>
+          </tr>
+          <tr>
+            <td>400</td>
+            <td>Bad Request</td>
+            <td>The client submitted a malformed request, repeating the request will not help.</td>
+            <td>Client has to make sure to send a valid request.</td>
+          </tr>
+          <tr>
+            <td>401</td>
+            <td>Unauthorized</td>
+            <td>This request requires authentication.</td>
+            <td>If client is not authenticated, client has to authenticate.</td>
+          </tr>
+          <tr>
+            <td>403</td>
+            <td>Forbidden</td>
+            <td>The client has insufficient rights to obtain the requested information or has submitted an HTTP request with POST method to a property, which is <code>read-only</code> or not allowed to be set by the client(e.g. <code>POST</code> on <code>/car/info</code> property <code>vehicleIdentication</code>).</td>
+            <td>If client do not have access rights, client has to acquire access rights.</td>
+          </tr>
+          <tr>
+            <td>404</td>
+            <td>Not Found</td>
+            <td>The service cannot find the entity, this may be a permanent or temporary condition. Do not expect elements to be generally available. This status code is treated as a valid response. <strong>Use-case specific error handling is required.</strong></td>
+            <td>None</td>
+          </tr>
+          <tr>
+            <td>409</td>
+            <td>Conflict</td>
+            <td>It is not possible to establish the required state. This might be the case if a client wants to set an objects property that is not writable or that currently can not be set. The <code>message</code> property of <a href="#statusobject">StatusObject</a> may have information for the client to recognize the source of the conflict. This information is only for debugging and development purposes.</td>
+            <td>Resource specific treatment is necessary (e.g. media audioSource might be disabled during navigation announcements, the clients tries to un-mute media). See <a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.10">status code 409</a> for more information.</td>
+          </tr>
+          <tr>
+            <td>429</td>
+            <td>Too Many Requests</td>
+            <td>The user has sent too many requests in a given amount of time.</td>
+            <td>Used to rate-limit access to a certain resource or element</td>
+          </tr>
+          <tr>
+            <td>451</td>
+            <td>Unavailable For Legal Reasons</td>
+            <td>A server operator has received a legal demand to deny access to a resource or to a set of resources that includes the requested resource.</td>
+            <td>Sent, when for any legal reason access to a resource or element is (temporarily) blocked</td>
+          </tr>
+          <tr>
+            <td>500</td>
+            <td>Internal Server Error</td>
+            <td>The server encountered an unexpected condition which prevented it from fulfilling the request.</td>
+            <td>There is no client-side fix/solution for this kind of errors.</td>
+          </tr>
+          <tr>
+            <td>501</td>
+            <td>Not Implemented</td>
+            <td>The server does not support the functionality required to fulfill the request. Unless specified otherwise in service specific status code handling, this error indicates a not-permitted error.</td>
+            <td>Not applicable.</td>
+          </tr>
+          <tr>
+            <td>503</td>
+            <td>Service Unavailable</td>
+            <td>Service is currently unable to handle the request. This implies a temporary problem which will be solved after a given delay. If known, the delay <strong>may</strong> be indicated in a <code>Retry-After</code> header.</td>
+            <td>Client should retry to submit the request after delay.</td>
+          </tr>
+          <tr>
+            <td>504</td>
+            <td>Gateway Time-out</td>
+            <td>The request can not be fulfilled because server acts as a proxy and did not receive a timely response from remote component (e.g. ECU of driver assistance).</td>
+            <td>There is no client-side fix/solution for this kind of error. If the remote component expected to be reachable after a delay in this power-cycle then server sends a response with status code 503.</td>
+          </tr>
+          </table>
+        </tbody>
+      </section>
+      <section data-dfn-for="Foo">
+        <h2>Transport payload</h2>
+        <p>The payload SHALL have JSON format. See <a href='#appendix_b'></a> for the payload format of the messages for the different transport protocols.</p>
+      </section>
+    </section>
+    <section data-dfn-for="Foo">
+      <h2>Transport protocols</h2>
+      <p>The transport protocols supported are the secure versions of HTTP and WebSockets. Further transport protocols may be supported in future versions of this specification.</p>
+      <section data-dfn-for="Foo">
+        <h2>HTTPS</h2>
+        <p>The message data components described in the CORE document are in the first hand mapped to required HTTP parameters, and only when there is no appropriate mapping it is mapped to the payload.</p>
+        <section data-dfn-for="Foo">
+          <h2>Session life time management</h2>
+          <section data-dfn-for="Foo">
+            <h2>Initialization</h2>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Closure</h2>
+          </section>
+        </section>
+        <section data-dfn-for="Foo">
+          <h2>Transport messages</h2>
+          <section data-dfn-for="Foo">
+            <h2>Read</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br>
+              GET VSS-Root/Car/Drivetrain/InternalCombustionEngine/RPM HTTP/1.1<br>
+              Host: 127.0.0.1:1337<br>
+              Connection: keep-alive<br>
+              Accept: application/json<br>
+              User-Agent: Chrome/34.0.1847.137 Safari/537.36<br>
+              Accept-Encoding: gzip,deflate<br>
+              Accept-Language: en-US,en;q=0.8,de;q=0.6<br><br>
+              Response:<br>
+              HTTP/1.1 200 OK<br>
+              X-Powered-By: Express<br>
+              Vary: Accept-Encoding<br>
+              Content-Type: application/json; charset=utf-8<br>
+              ETag: "-32550834"<br>
+              Content-Encoding: gzip<br>
+              Date: Tue, 13 Jun 2014 19:47:27 GMT<br>
+              Connection: keep-alive<br>
+              Transfer-Encoding: chunked<br><br>
+              {<br>
+              <blockquote>
+                "value": 2372,<br>
+                "timestamp": 1489985044000<br>
+              </blockquote>
+              }<br>
+            </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Update</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:??how represent wildcard path with URL??<br>
+              POST /VSS-Root/Cabin/Door/*/*/IsLocked HTTP/1.1<br>
+              Host: 127.0.0.1:9000<br>
+              Connection: keep-alive<br>
+              Accept: application/json<br>
+              User-Agent: Chrome/34.0.1847.137 Safari/537.36<br>
+              Accept-Encoding: gzip,deflate<br>
+              Accept-Language: en-US,en;q=0.8,de;q=0.6<br><br>
+              {<br>
+              <blockquote>
+                "value": true,<br>
+              </blockquote>
+              }<br><br>
+              Response:<br>
+              HTTP/1.1 201 Created<br>
+              Vary: Accept-Encoding<br>
+              Content-Type: application/json; charset=utf-8<br>
+              ETag: "-32550834"<br>
+              Content-Encoding: gzip<br>
+              Date: Tue, 07 Apr 1980 00:00:00 GMT<br>
+              Connection: keep-alive<br>
+              Transfer-Encoding: chunked<br><br>
+              {<br>
+              <blockquote>
+                "timestamp": 1489985044000<br>
+              </blockquote>
+              }<br>
+            </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Create</h2>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Delete</h2>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Service discovery</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br>
+              GET VSS-Root/Car/Drivetrain?$spec HTTP/1.1<br>
+              Host: 127.0.0.1:1337<br>
+              Connection: keep-alive<br>
+              Accept: application/json<br>
+              User-Agent: Chrome/34.0.1847.137 Safari/537.36<br>
+              Accept-Encoding: gzip,deflate<br>
+              Accept-Language: en-US,en;q=0.8,de;q=0.6<br><br>
+              Response:<br>
+              HTTP/1.1 200 OK<br>
+              X-Powered-By: Express<br>
+              Vary: Accept-Encoding<br>
+              Content-Type: application/json; charset=utf-8<br>
+              ETag: "-32550834"<br>
+              Content-Encoding: gzip<br>
+              Date: Tue, 13 Jun 2014 19:47:27 GMT<br>
+              Connection: keep-alive<br>
+              Transfer-Encoding: chunked<br><br>
+              {<br>
+              <blockquote>
+                "metadata": 'object',<br>
+                "timestamp": 1489985044000<br>
+              </blockquote>
+              }<br>
+            </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Authorize</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br>
+              POST VSS-Root/Car/Drivetrain?$token HTTP/1.1<br>
+              Host: 127.0.0.1:1337<br>
+              Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds<br>
+              Connection: keep-alive<br>
+              Accept: application/json<br>
+              User-Agent: Chrome/34.0.1847.137 Safari/537.36<br>
+              Accept-Encoding: gzip,deflate<br>
+              Accept-Language: en-US,en;q=0.8,de;q=0.6<br><br>
+              Response:<br>
+              HTTP/1.1 200 OK<br>
+              X-Powered-By: Express<br>
+              Vary: Accept-Encoding<br>
+              Content-Type: application/json; charset=utf-8<br>
+              ETag: "-32550834"<br>
+              Content-Encoding: gzip<br>
+              Date: Tue, 13 Jun 2014 19:47:27 GMT<br>
+              Connection: keep-alive<br>
+              Transfer-Encoding: chunked<br><br>
+              {<br>
+              <blockquote>
+                "TTL": "3600",<br>
+              </blockquote>
+              }<br>
+            </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Subscribe</h2>
+            <p>The subscribe method is not supported over HTTPS.</p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Unsubscribe</h2>
+            <p>The unsubscribe method is not supported over HTTPS.</p>
+          </section>
+        </section>
+      </section>
+      <section data-dfn-for="Foo">
+        <h2>Secure WebSockets</h2>
+        <p>As the WebSocket protocol does not implicitly provide a logical association between the request and response messages described here a key-value pair with the keyname "requestId" is added to the data components described in the CORE document. As the WebSockets protocol neither specifies a set of explicit methods, another key-value pair with the keyname "action" is also added. See <a href='#appendix_b'></a> for the declaration of these new key-value pairs. All data components are mapped to the payload.</p>
+        <section data-dfn-for="Foo">
+          <h2>Session life time management</h2>
+          <section data-dfn-for="Foo">
+            <h2>Initialization</h2>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Closure</h2>
+          </section>
+        </section>
+        <section data-dfn-for="Foo">
+          <h2>Transport messages</h2>
+          <section data-dfn-for="Foo">
+            <h2>Read</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br> 
+              {<br>
+              <blockquote>
+                "action": "getRequest",<br>
+                "path": "VSS-Root.Car.Drivetrain.InternalCombustionEngine.RPM",<br>
+                "requestId": "8756"<br>
+              </blockquote>
+              }<br><br>
+              Response:<br>
+              {<br>
+              <blockquote>
+                "action": "getSuccessResponse",<br>
+                "requestId": "8756",<br>
+                "value": 2372,<br>
+                "timestamp": 1489985044000<br>
+              </blockquote>
+              }<br>
+            </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Update</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br> 
+              {<br>
+              <blockquote>
+                "action": "setRequest",<br>
+                "path": "VSS-Root.Cabin.Door.*.*.IsLocked",<br>
+                "value": true,<br>
+                "requestId": "5687"<br>
+              </blockquote>
+              }<br><br>
+              Response:<br>
+              {<br>
+              <blockquote>
+                "action": "setSuccessResponse",<br>
+                "requestId": "5687",<br>
+                "timestamp": 1489985044000<br>
+              </blockquote>
+              }<br>
+            </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Create</h2>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Delete</h2>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Service discovery</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br> 
+              {<br>
+              <blockquote>
+                "action": "metadataRequest",<br>
+                "path": "VSS-Root.Car.Drivetrain",<br>
+                "requestId": "5687"<br>
+              </blockquote>
+              }<br><br>
+              Response:<br>
+              {<br>
+              <blockquote>
+                "action": "metadataSuccessResponse",<br>
+                "requestId": "5687",<br>
+                "metadata": 'object',<br>
+                "timestamp": 1489985044000<br>
+              </blockquote>
+              }<br>
+            </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Authorize</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br> 
+              {<br>
+              <blockquote>
+                "action": "authorizeRequest",<br>
+                "path": "VSS-Root.Car.Drivetrain",<br>
+                "tokens": { "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds" }<br>
+                "requestId": "8657"<br>
+              </blockquote>
+              }<br><br>
+              Response:<br>
+              {<br>
+              <blockquote>
+                "action": "authorizeSuccessResponse",<br>
+                "TTL": "3600",<br>
+                "requestId": "8657",<br>
+              </blockquote>
+              }<br>
+            </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Subscribe</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br> 
+              {<br>
+              <blockquote>
+                "action": "subscribeRequest",<br>
+                "path": "VSS-Root.Car.Drivetrain",<br>
+                "filters": { "interval": 100 }<br>
+                "requestId": "6578"<br>
+              </blockquote>
+              }<br><br>
+              Response:<br>
+              {<br>
+              <blockquote>
+                "action": "subscribeSuccessResponse",<br>
+                "subscriptionId": "12345",<br>
+                "requestId": "6578",<br>
+                "timestamp": 1489985044000<br>
+              </blockquote
+              }<br><br>
+              Notification:<br>
+              {<br>
+              <blockquote>
+                "action": "subscriptionNotification",<br>
+                "subscriptionId": "12345",<br>
+                "value": 'a value',<br>
+                "timestamp": 1489985044000<br>
+              </blockquote
+              }<br>
+            </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Unsubscribe</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br> 
+              {<br>
+              <blockquote>
+                "action": "unsubscribeRequest",<br>
+                "subscriptionId": "-1",<br>
+                "requestId": "5786"<br>
+              </blockquote>
+              }<br><br>
+              Response:<br>
+              {<br>
+              <blockquote>
+                "action": "unsubscribeSuccessResponse",<br>
+                "subscriptionId": [ "12345", "23451" ],<br>
+                "requestId": "5786",<br>
+                "timestamp": 1489985044000<br>
+              </blockquote>
+              }<br>
+            </p>
+          </section>
+        </section>
+      </section>
+    </section>
+    <section id="appendix_a">
+      <h2>Appendix A: References</h2>
+      <p id=rfc2119>RFC2119: Key words for use in RFCs to Indicate Requirement Levels. S. Bradner. IETF. March 1997. Best Current Practice. URL: https://tools.ietf.org/html/rfc2119</p>
+      <p id=rfc2616>RFC2616: Hypertext Transfer Protocol -- HTTP/1.1. Fielding, et al. IETF. June 1999. URL: https://tools.ietf.org/html/rfc2616</p>
+    </section>
+    <section id="appendix_b">
+      <h2>Appendix B: JSON Schema Definitions</h2>
+      <p>The payload that is sent over the supported transport protocols SHALL use the JSON definitions in this appendix, unless otherwise specified in the VSI TRANSPORT specification.</p>
+    </section>
+  </body>
+</html>
