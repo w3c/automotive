@@ -99,6 +99,34 @@ If only the direct children of the Door node is of interest, the path then shoul
 And for the case of getting two generations of children to the Door node, two wildcards needs to be appended.<br><br>However, for any other action than a service discovery, the path above, ending with a wildcard, would lead to the return of all leave nodes at any depth under the Door node.
 </p>
         </section>
+        <section data-dfn-for="Foo">
+          <h2>Wildcard usage over HTTP</h2>
+          <p>The <a href='#rfc3986'>[RFC 3986 "Uniform Resource Identifier (URI): Generic Syntax"]</a> declares the asterix (*) as a reserved character, which then must be percent encoded if to be present in the path component of a URI. For readability and convenience reasons an alternative HTTPURL encoding is introduced here, which is to replace the asterix by the in RFC 3986 unreserved character tilde  (~).<br>
+          <blockquote>
+            The wildcard character asterix (*) used in the VSS path shall in HTTP URLs either be percent encoded as (%2A), or represented by the tilde character (~).<br>
+          </blockquote>
+          <blockquote>
+            The use of wildcards must be supported when a client connects to the server via the Websocket protocol.<br>
+            The use of wildcards is optionally supported when a client connects to the server via the HTTP protocol. If not supported by the server, the error code XXX shall be returned.<br>
+          </blockquote></p>
+          <section data-dfn-for="Foo">
+            <h2>Example</h2>
+            <p>
+              The VSS path 
+              <blockquote>
+                Vehicle.Cabin.Door.*.*.IsOpen<br>
+              </blockquote>
+              is URL encoded to
+              <blockquote>
+                /Vehicle/Cabin/Door/%2A /%2A /IsOpen<br>
+              </blockquote>
+              or alternatively
+              <blockquote>
+                /Vehicle/Cabin/Door/~/~/IsOpen<br>
+              </blockquote>
+            </p>
+          </section>
+        </section>
       </section>
       <section data-dfn-for="Foo">
         <h2>Query</h2>
@@ -250,6 +278,7 @@ And for the case of getting two generations of children to the Door node, two wi
     <section id="appendix_a">
       <h2>Appendix A: References</h2>
       <p id=rfc2119>RFC2119: Key words for use in RFCs to Indicate Requirement Levels. S. Bradner. IETF. March 1997. Best Current Practice. URL: https://tools.ietf.org/html/rfc2119</p>
+      <p id=rfc3986>RFC3986: Uniform Resource Identifier (URI): Generic Syntax. T. Berners-Lee et al. IETF. January 2005. URL: https://tools.ietf.org/html/rfc3986</p>
     </section>
   </body>
 </html>
