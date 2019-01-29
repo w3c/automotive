@@ -47,15 +47,40 @@
     </section>
     <section data-dfn-for="Foo">
       <h2>Data model</h2>
-      <section data-dfn-for="Foo">
-        <h2>Vehicle Signal Specification</h2>
-        <p>The data model used within this specification is the Vehicle Signal Specification (VSS). This defines a 'tree-like' logical taxonomy of the vehicle, (formally a Directed Acyclic Graph), where major vehicle structures (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as their child nodes. Each of the child nodes in the tree is further decomposed into its logical constituents, and the process is repeated until leaf nodes are reached. A leaf node is a node at the end of a branch that cannot be decomposed because it represents a single signal or data attribute value. An example VSS tree is shown below, its contents are illustrative:</p>
+		<p>
+		The basic data model behind that can be accessed with this interface is tree-like logical taxonomy of the whole vehicle. 
+		It is represented by a directed acyclic graph.
+		</p>
+		
+		<p>
+		It is already known and used in the Vehicle Signal Specification (VSS).
+		This example shows that major vehicle structures (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as their child nodes. 
+		Each of the child nodes in the tree is further decomposed into its logical constituents, 
+		and the process is repeated until leaf nodes are reached. 
+		A leaf node is a node at the end of a branch that cannot be decomposed because it represents a single signal or data attribute value. 
+		An example VSS tree is shown below, its contents are illustrative:         
+		</p>
         <figure id="vsstree">
           <img src="pics/VSS_tree.png" alt="">
           <figcaption>Diagram showing an example Vehicle Signal tree.</figcaption>
         </figure>
-        <p>Within the VSS data model, data sources are named according to their path using a dot notation e.g. engine.rpm. The interface methods defined within this document support path notations as specified by VSS. A path can be appended with a query expression as described in chapter <a href='#search_mechanisms'></a>.</p>
+	  <section data-dfn-for="Foo">
+        <h2>Tree elements</h2>
+		<p>
+		<table>
+			<tr><th>Name</th>		<th>Description</th></tr>
+			<tr><th>Element</th>	<td>tbd</td></tr>
+			<tr><th>rbranch</th>	<td>tbd</td></tr>
+			<tr><th>signal</th>		<td>a data element that is describing something and changing through time</td></tr>
+			<tr><th>branch</th>		<td>tbd</td></tr>
+			<tr><th>attribute</th>	<td>a data element that is describing something and not changing through time</td></tr>
+		</table>
       </section>
+
+      <section data-dfn-for="Foo">
+        <h2>addressing</h2>
+      </section>
+
       <section data-dfn-for="Foo">
         <h2>Data types</h2>
       </section>
