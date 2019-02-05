@@ -200,7 +200,24 @@ And for the case of getting two generations of children to the Door node, two wi
 		  </p>
 		</section>
         <section data-dfn-for="Foo">
-          <h2>Delete</h2>
+          <h2>`delete`</h2>
+		  <p>Purpose: removing all selected values under a specified `path`</p>
+          <p>The service MAY expose a `delete` method.
+		  The client MAY use the `delete` method of the service to request the deletion of existing values managed by the service.
+		  If the service is able to satisfy the request it MUST return a `change` response. 
+		  If an error occurs the service MUST return an `error` response.</p>
+		  <p>arguments: 
+			<ul>
+				<li>`path` fully qualified path to a base node</li>
+				<li>`filter` selection criterias for specific values under the given `path`</li>
+			</ul>
+		  </p>
+          <p>responses:
+			<ul>  
+				<li>`change` response describing what went well</li>
+				<li>`error` response describing what went wrong</li>
+			</ul>
+		  </p>
         </section>
         <section data-dfn-for="Foo">
           <h2>Service discovery</h2>
