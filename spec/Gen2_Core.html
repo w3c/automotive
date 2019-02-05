@@ -159,24 +159,25 @@ And for the case of getting two generations of children to the Door node, two wi
 		  </p>
         </section>
         <section data-dfn-for="Foo">
-          <h2>Update</h2>
-          <p>The client MAY request that the server sets the value of one or more data sources. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
-          <ul>  
-            <li>Request message parameters:</li>
-            <ul>  
-              <li>Path: The address to one or more leave nodes in the VSS tree.</li>
-              <li>Value: The value to set the data source to.</li>
-            </ul>  
-            <li>Response message parameters:</li>
-            <ul>  
-              <li>Timestamp: A timestamp associated with the request.</li>
-            </ul>  
-            <li>ErrorResponse message parameters: </li>
-            <ul>  
-              <li>Error: Information describing the error reason.</li>
-              <li>Timestamp: A timestamp associated with the failed request.</li>
-            </ul>  
-          </ul>  
+          <h2>`update`</h2>
+		  <p>Purpose: providing new values to the service for a specified `path`</p>
+          <p>The service MAY expose an `update` method.
+		  The client MAY use the `update` method of the service to request a change to values managed by the service. 
+		  If the service is able to satisfy the request it MUST return a `change` response. 
+		  If an error occurs the service MUST return an `error` response.</p>
+		  <p>arguments: 
+			<ul>
+				<li>`path` fully qualified path to a base node</li>
+				<li>`filter` selection criterias for specific values under the given `path`</li>
+				<li>`change` new value that shall be applied</li>
+			</ul>
+		  </p>
+          <p>responses:
+			<ul>  
+				<li>`change` response describing what went well</li>
+				<li>`error` response describing what went wrong</li>
+			</ul>
+		  </p>
         </section>
         <section data-dfn-for="Foo">
           <h2>Create</h2>
@@ -279,6 +280,13 @@ And for the case of getting two generations of children to the Door node, two wi
 		    <ul>  
               <li>Value: One or more values associated with the addressed VSS leaves.</li>
               <li>Timestamp: A timestamp associated with the request.</li>
+            </ul>  
+        </section>
+		<section data-dfn-for="Foo">
+          <h2>`change`</h2>
+		    <ul>
+              <li>changed applied immediately or later</li>
+			  <li>list changed paths</li>
             </ul>  
         </section>
 		<section data-dfn-for="Foo">
