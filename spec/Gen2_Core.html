@@ -84,6 +84,26 @@
       <section data-dfn-for="Foo">
         <h2>Data types</h2>
       </section>
+        <section data-dfn-for="Foo">
+          <h2>Service discovery</h2>
+          <p>The client MAY request that the server returns the VSS tree content. The client is able to request metadata from any point in the signal tree, such that only the metadata for the nodes within the given branch of the tree is returned. For example, only metadata for the chassis branch of the VSS tree is returned when the chassis path is specified. If the path is set to the VSS root, the response contains the metadata for the entire tree. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
+          <ul>  
+            <li>Request message parameters:</li>
+            <ul>  
+              <li>Path: The address to one or more nodes in the VSS tree, followed by the path segment "$spec".</li>
+            </ul>  
+            <li>Response message parameters:</li>
+            <ul>  
+              <li>Metadata: The content of the VSS tree where the root is specified by the path.</li>
+              <li>Timestamp: A timestamp associated with the request.</li>
+            </ul>  
+            <li>ErrorResponse message parameters: </li>
+            <ul>  
+              <li>Error: Information describing the error reason.</li>
+              <li>Timestamp: A timestamp associated with the failed request.</li>
+            </ul>  
+          </ul>  
+        </section>
     </section>
     <section id="search_mechanisms">
       <h2>Search mechanisms</h2>
@@ -132,6 +152,26 @@ And for the case of getting two generations of children to the Door node, two wi
     </section>
     <section data-dfn-for="Foo">
       <h2>Security</h2>
+	          <section data-dfn-for="Foo">
+          <h2>Authorize</h2>
+          <p>To enable access to signals and data attributes that are under access control, the client MAY optionally pass a message with an authorize action to the server. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
+          <ul>  
+            <li>Request message parameters:</li>
+            <ul>  
+              <li>Path: The address to one or more nodes in the VSS tree, followed by the path segment "$token".</li>
+              <li>Tokens: An object containing the token(s) required for obtaining access.</li>
+            </ul>  
+            <li>Response message parameters:</li>
+            <ul>  
+              <li>TTL: The time to live for the token.</li>
+            </ul>  
+            <li>ErrorResponse message parameters: </li>
+            <ul>  
+              <li>Error: Information describing the error reason.</li>
+            </ul>  
+          </ul>  
+        </section>
+
     </section>
     <section data-dfn-for="Foo">
       <h2>Interface</h2>
@@ -218,45 +258,6 @@ And for the case of getting two generations of children to the Door node, two wi
 				<li>`error` response describing what went wrong</li>
 			</ul>
 		  </p>
-        </section>
-        <section data-dfn-for="Foo">
-          <h2>Service discovery</h2>
-          <p>The client MAY request that the server returns the VSS tree content. The client is able to request metadata from any point in the signal tree, such that only the metadata for the nodes within the given branch of the tree is returned. For example, only metadata for the chassis branch of the VSS tree is returned when the chassis path is specified. If the path is set to the VSS root, the response contains the metadata for the entire tree. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
-          <ul>  
-            <li>Request message parameters:</li>
-            <ul>  
-              <li>Path: The address to one or more nodes in the VSS tree, followed by the path segment "$spec".</li>
-            </ul>  
-            <li>Response message parameters:</li>
-            <ul>  
-              <li>Metadata: The content of the VSS tree where the root is specified by the path.</li>
-              <li>Timestamp: A timestamp associated with the request.</li>
-            </ul>  
-            <li>ErrorResponse message parameters: </li>
-            <ul>  
-              <li>Error: Information describing the error reason.</li>
-              <li>Timestamp: A timestamp associated with the failed request.</li>
-            </ul>  
-          </ul>  
-        </section>
-        <section data-dfn-for="Foo">
-          <h2>Authorize</h2>
-          <p>To enable access to signals and data attributes that are under access control, the client MAY optionally pass a message with an authorize action to the server. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
-          <ul>  
-            <li>Request message parameters:</li>
-            <ul>  
-              <li>Path: The address to one or more nodes in the VSS tree, followed by the path segment "$token".</li>
-              <li>Tokens: An object containing the token(s) required for obtaining access.</li>
-            </ul>  
-            <li>Response message parameters:</li>
-            <ul>  
-              <li>TTL: The time to live for the token.</li>
-            </ul>  
-            <li>ErrorResponse message parameters: </li>
-            <ul>  
-              <li>Error: Information describing the error reason.</li>
-            </ul>  
-          </ul>  
         </section>
         <section data-dfn-for="Foo">
 		  <h2>`subscribe`</h2>
