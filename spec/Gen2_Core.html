@@ -259,31 +259,27 @@ And for the case of getting two generations of children to the Door node, two wi
           </ul>  
         </section>
         <section data-dfn-for="Foo">
-          <h2>Subscribe</h2>
-          <p>Vehicle data subscriptions can provide data to the client whenever a signal changes on the server, unless otherwise specified using Server Side Filtering. The server MAY reduce the number of notifications sent to the client in order to reduce processing demands, particularly when the client has subscribed to continuously varying signals.<br>When the client makes a request to the server to create a new subscription, a JSON data object is returned. This object contains the attributes that were passed to the server to make the subscription and a subscriptionId integer handle value which is used to uniquely identify the subscription. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
-          <ul>  
-            <li>Request message parameters:</li>
-            <ul>  
-              <li>Path: The address to one or more nodes in the VSS tree.</li>
-              <li>Filters: An object containing the filter rule(s) for data dispatch.</li>
-            </ul>  
-            <li>Response message parameters:</li>
-            <ul>  
-              <li>SubscriptionId: An Id associated with the subscription request.</li>
-              <li>Timestamp: A timestamp associated with the request execution.</li>
-            </ul>
-            <li>ErrorResponse message parameters: </li>
-            <ul>  
-              <li>Error: Information describing the error reason.</li>
-              <li>Timestamp: A timestamp associated with the failed request execution.</li>
-            </ul>  
-            <li>Notification message parameters: </li>
-            <ul>  
-              <li>SubscriptionId: The Id associated with the subscription request.</li>
-              <li>Value: The data to be passed back to the client according to the filter rules.</li>
-              <li>Timestamp: A timestamp associated with the failed request execution.</li>
-            </ul>  
-          </ul>  
+		  <h2>`subscribe`</h2>
+		  <p>Purpose: monitor changes made to values under a specified `path`</p>
+          <p>The service MAY expose a `subscribe` method.
+		  The client MAY use the `subscribe` method of the service to request being informed of changes made to values managed by the service.
+		  The service MUST issue a notification if the equivalent `read` `content` response would change.
+		  If the service is able to satisfy the request it MUST return a `subscription` response.
+		  If an error occurs the service MUST return an `error` response.</p>
+		  <p>arguments: 
+			<ul>
+				<li>`path` fully qualified path to a base node</li>
+				<li>`filter` selection criterias for specific values under the given `path`</li>
+				<li>`contract` describing the expectations for the client receiving notifications</li>
+			</ul>
+		  </p>
+          <p>responses:
+			<ul>  
+				<li>`subscription` response describing the status of the subscription</li>
+				<li>`contract` describing the rules for the service sending notifications to the client</li>
+				<li>`error` response describing what went wrong</li>
+			</ul>
+		  </p>
         </section>
         <section data-dfn-for="Foo">
           <h2>Unsubscribe</h2>
@@ -322,6 +318,14 @@ And for the case of getting two generations of children to the Door node, two wi
               <li>changed applied immediately or later</li>
 			  <li>list changed paths</li>
             </ul>  
+        </section>
+		<section data-dfn-for="Foo">
+          <h2>`subscription`</h2>
+		  status of the subscription
+        </section>
+		<section data-dfn-for="Foo">
+          <h2>`contract`</h2>
+		  describing the rules for subscriptions/notifications
         </section>
 		<section data-dfn-for="Foo">
           <h2>`error`</h2>
