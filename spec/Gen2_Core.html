@@ -282,6 +282,22 @@ And for the case of getting two generations of children to the Door node, two wi
 		  </p>
         </section>
         <section data-dfn-for="Foo">
+		  <h2>`notify`</h2>
+		  <p>Purpose: informs of changes made to values under a `subscription`</p>
+          <p>The client MUST expose a `notify` method if it uses the `subscribe` method of a service.
+		  The service MUST use the `notify` method of the client to inform of changes made to values managed by the service under the given `subscription` by sending a `content` response.
+		  The service MUST ignore any response from the client. 
+		  </p>
+		  <p>arguments: 
+			<ul>
+				<li>`subscription` identifying the subscription</li>
+				<li>`content` response fulfilling the request</li>
+			</ul>
+		  </p>
+          <p>responses: none
+		  </p>
+        </section>
+        <section data-dfn-for="Foo">
 		  <h2>`unsubscribe`</h2>
 		  <p>Purpose: stop monitoring the changes made to values under a `subscription`</p>
           <p>The service MUST expose a `unsubscribe` method if an `subscribe` method is exposed.
