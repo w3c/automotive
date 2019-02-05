@@ -264,7 +264,7 @@ And for the case of getting two generations of children to the Door node, two wi
           <p>The service MAY expose a `subscribe` method.
 		  The client MAY use the `subscribe` method of the service to request being informed of changes made to values managed by the service.
 		  The service MUST issue a notification if the equivalent `read` `content` response would change.
-		  If the service is able to satisfy the request it MUST return a `subscription` response.
+		  If the service is able to satisfy the request it MUST return a `subscription` and `contract` response.
 		  If an error occurs the service MUST return an `error` response.</p>
 		  <p>arguments: 
 			<ul>
@@ -282,25 +282,24 @@ And for the case of getting two generations of children to the Door node, two wi
 		  </p>
         </section>
         <section data-dfn-for="Foo">
-          <h2>Unsubscribe</h2>
-          <p>To unsubscribe from a subscription, the client SHALL send an unsubscribe request message to the server, containing the subscriptionId. To unsubscribe to all subscriptions owned by the client, the subscriptionId is set to -1.<br>If the client has created more than one WebSocket instance, it MUST always unsubscribe using the same WebSocket instance that was originally used to create the subscription.<br>It is not possible to unsubscribe from a subset of signals within a subscription. The client must unsubscribe and set up a new subscription to receive notifications for the desired signals.<br>The client should always unsubscribe from receiving notifications when it is no longer using the data. Over a long vehicle journey, this significantly reduces the processing load on the server and allow the server to free memory. It therefore makes it more likely that the server will remain responsive to future requests from the client. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
-          <ul>  
-            <li>Request message parameters:</li>
-            <ul>  
-              <li>SubscriptionId: The Id associated with the subscription.</li>
-            </ul>  
-            <li>Response message parameters:</li>
-            <ul>  
-              <li>SubscriptionId: The subscriptionId(s) that are unsubscribed to.</li>
-              <li>Timestamp: A timestamp associated with the request execution.</li>
-            </ul>  
-            <li>ErrorResponse message parameters: </li>
-            <ul>  
-              <li>SubscriptionId: A copy of the SubscriptionId in the request message.</li>
-              <li>Error: Information describing the error reason.</li>
-              <li>Timestamp: A timestamp associated with the failed request execution.</li>
-            </ul>  
-          </ul>  
+		  <h2>`unsubscribe`</h2>
+		  <p>Purpose: stop monitoring the changes made to values under a `subscription`</p>
+          <p>The service MUST expose a `unsubscribe` method if an `subscribe` method is exposed.
+		  The client MAY use the `unsubscribe` method of the service to cancel being informed of changes made to values managed by the service under the given `subscription`.
+		  The service MUST stop issuing notifications.
+		  If the service is able to satisfy the request it MUST return a `subscription` response.
+		  If an error occurs the service MUST return an `error` response.</p>
+		  <p>arguments: 
+			<ul>
+				<li>`subscription` identifying the subscription</li>
+			</ul>
+		  </p>
+          <p>responses:
+			<ul>  
+				<li>`subscription` response describing the status of the subscription</li>
+				<li>`error` response describing what went wrong</li>
+			</ul>
+		  </p>
         </section>
       </section>
 	  <section data-dfn-for="Foo">
