@@ -138,24 +138,25 @@ And for the case of getting two generations of children to the Door node, two wi
       <section data-dfn-for="Foo">
         <h2>Methods</h2>
         <section data-dfn-for="Foo">
-          <h2>Read</h2>
-          <p>The client MAY send a Read message to the server to get the value of one or more vehicle data sources. If the server is able to satisfy the Request it SHALL return a Response message. If the server is unable to fulfil the request, then the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
-          <ul>  
-            <li>Request message parameters:</li>
-            <ul>  
-              <li>Path: The address to one or more leave nodes in the VSS tree.</li>
-            </ul>  
-            <li>Response message parameters:</li>
-            <ul>  
-              <li>Value: One or more values associated with the addressed VSS leaves.</li>
-              <li>Timestamp: A timestamp associated with the request.</li>
-            </ul>  
-            <li>ErrorResponse message parameters: </li>
-            <ul>  
-              <li>Error: Information describing the error reason.</li>
-              <li>Timestamp: A timestamp associated with the failed request.</li>
-            </ul>  
-          </ul>  
+          <h2>`read`</h2>
+		  <p>Purpose: obtain a representation of the value addressed by the given path</p>
+          <p>The service MUST expose a `read` method.
+		  The client MAY use the `read` method of the service to retrieve values managed by the service. 
+		  If the service is able to satisfy the request it MUST return a `content` response.
+		  If the service is unable to fulfil the request, then the service MUST return an `error` response.
+		  The client MAY have to authenticate via the `authenticate` method before being able to access the values.</p>
+		  <p>arguments: 
+			<ul>
+				<li>`path` fully qualified path to a base node</li>
+				<li>`filter` selection criterias for specific values under the given `path`</li>
+			</ul>
+		  </p>
+          <p>responses:
+			<ul>  
+				<li>`content` response fulfilling the request</li>
+				<li>`error` response describing what went wrong</li>
+			</ul>
+		  </p>
         </section>
         <section data-dfn-for="Foo">
           <h2>Update</h2>
@@ -269,6 +270,23 @@ And for the case of getting two generations of children to the Door node, two wi
               <li>Timestamp: A timestamp associated with the failed request execution.</li>
             </ul>  
           </ul>  
+        </section>
+      </section>
+	  <section data-dfn-for="Foo">
+        <h2>Responses</h2>
+		<section data-dfn-for="Foo">
+          <h2>`content`</h2>
+		    <ul>  
+              <li>Value: One or more values associated with the addressed VSS leaves.</li>
+              <li>Timestamp: A timestamp associated with the request.</li>
+            </ul>  
+        </section>
+		<section data-dfn-for="Foo">
+          <h2>`error`</h2>
+		              <ul>  
+              <li>Error: Information describing the error reason.</li>
+              <li>Timestamp: A timestamp associated with the failed request.</li>
+            </ul>
         </section>
       </section>
     </section>
