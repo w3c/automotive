@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>Vehicle Services Interface_Core</title>
+    <title>Gen2 - Core</title>
     <script 
      src='https://www.w3.org/Tools/respec/respec-w3c-common' 
      class='remove'></script>
@@ -10,18 +10,24 @@
       var respecConfig = {
         specStatus: "ED",
         editors: [{
-          name: "Ulf Bjorkengren, Volvo Cars",
-          url: "https://www.volvocars.com/intl",
+          name: "Ulf Bjorkengren",
+		  company: "Volvo Cars",
+          companyURL: "https://www.volvocars.com/intl"
+        },
+		{
+          name: "Patrick Lünnemann",
+		  company: "Volkswagen Group",
+          companyURL: "https://www.volkswagenag.com"
         }],
-        edDraftURI: "https://some.github.repo",
-        shortName: "VSI-CORE"
+        edDraftURI: "https://github.com/w3c/automotive/blob/gh-pages/spec/Gen2_Core.html",
+        shortName: "Gen2-core"
       };
     </script>
   </head>
   <body>
     <section id='abstract'>
       <p>
-        This document, the VSI CORE specification, describes the VSI messaging layer. The companion specification VSI TRANSPORT details the mapping of the messaging layer to selected transports.
+        This document, the Gen2 core specification, describes the Gen2 messaging layer. The companion specification Gen2 transport details the mapping of the messaging layer to selected transports.
       </p>
     </section>
     <section id='sotd'>
@@ -31,7 +37,7 @@
     </section>
     <section data-dfn-for="Foo">
       <h2>Introduction</h2>
-      <p>This document describes the messaging layer. The separation between transport and messaging layer improves readability and simplify extending VSI to further transports in the future. The VSI messaging layer uses a RESTful design with an interface and a data model.</p>
+      <p>This document describes the messaging layer. The separation between transport and messaging layer improves readability and simplify extending Gen2 to further transports in the future. The Gen2 messaging layer uses a RESTful design with an interface and a data model.</p>
     </section>
     <section data-dfn-for="Foo">
       <h2>Conformance</h2>
@@ -39,7 +45,7 @@
     </section>
     <section data-dfn-for="Foo">
       <h2>Terminology</h2>
-      <p>The acronym 'VSI' is used to refer to this document, the 'Vehicle Service Interface' specification.The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance.The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.</p>
+      <p>The acronym 'Gen2' is used to refer to this document, the second generation specification. The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance. The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.</p>
     </section>
     <section data-dfn-for="Foo">
       <h2>Table of Figures</h2>
