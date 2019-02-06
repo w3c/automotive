@@ -167,6 +167,25 @@
 			</blockquote>
 			</p>
 		</section>
+     <section data-dfn-for="rules">
+        <h3>Rules</h2>
+		These are the <dfn>rule</dfn>s that are known to check to be used in a <a>query</a> to filter <a>content</a> responses.
+		<table border="1">
+			<tr><th>name</th><th><a>data type</a></th><th>Description</th><th>Example</th></tr>
+			<tr>
+				<th>true</th>
+				<td>boolean</td>
+				<td>checks if the data value is true</td>
+				<td>true(/vehicle/cabin/Row1/Left/Door/isLocked)</td>
+			</tr>
+			<tr>
+				<th>contains</th>
+				<td>string</td>
+				<td>checks if a given string is cotained in another one</td>
+				<td>contains(/vehicle/cabin/Row1/Left/Door/name, "blue")</td>
+			</tr>
+		</table>
+      </section>
     </section>
     <section data-dfn-for="Foo">
       <h2>Security</h2>
