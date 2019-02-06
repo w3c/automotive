@@ -118,7 +118,7 @@ The response would then contain the lock status of all doors like below.<br>
           <blockquote>
             "value": [ {" /Vehicle/Cabin/Door/Row1/Right/IsLocked" : true },<br>
             {" /Vehicle/Cabin/Door/Row1/Left/IsLocked" : true },<br>
-            {" /Vehicle/Cabin/Door/Row2vRight/IsLocked" : false },<br>
+            {" /Vehicle/Cabin/Door/Row2/Right/IsLocked" : false },<br>
 	    {" /Vehicle/Cabin/Door/Row2/Left/IsLocked" : true } ]<br>
           </blockquote>
 A client service discovery request for all doors of the car. In this case it is implied that the response shall contain the nodes in any branches below the root node indicated by the path, so there is no need to add a wildcard as the last segment.<br>
