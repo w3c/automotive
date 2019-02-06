@@ -77,8 +77,17 @@
 		</table>
       </section>
 
-      <section data-dfn-for="Foo">
-        <h2>addressing</h2>
+      <section data-dfn-for="address">
+        <h2>Addressing</h2>
+		<p>Addressing of elements is done using URIs as defined in [[RFC3986]].</p>
+		<p><a>scheme</a>:<a>authority</a>/<a>path</a></p>
+		<p>
+		The <dfn>scheme</dfn> describes the protocol to use to reach the addressed element.
+		The <dfn>authority</dfn> describes where to reach the service holding and managing the data representation.
+		Scheme and authority are defined within the protocol adaptation.</p>
+		<p>
+		<dfn>Path</dfn> describes the location of a specific data representation within a service.
+		It is the path through the tree, the data representation, implemented by the service.</p>
       </section>
 
       <section data-dfn-for="Foo">
@@ -103,23 +112,23 @@
           <h2>Examples</h2>
           <p>A client read request for the door lock status of all doors. There are two path segments specifying a particular door, the "RowX" and the "Left/Right" segments, so to cover all doors of the car both these segments must have a wildcard inserted.<br>
           <blockquote>
-            "path": "Vehicle.Cabin.Door.*.*.IsLocked"<br>
+            "path": "/Vehicle/Cabin/Door/*/*/IsLocked"<br>
           </blockquote>
 The response would then contain the lock status of all doors like below.<br>
           <blockquote>
-            "value": [ {" Vehicle.Cabin.Door.Row1.Right.IsLocked" : true },<br>
-            {" Vehicle.Cabin.Door.Row1.Left.IsLocked" : true },<br>
-            {" Vehicle.Cabin.Door.Row2.Right.IsLocked" : false },<br>
-	    {" Vehicle.Cabin.Door.Row2.Left.IsLocked" : true } ]<br>
+            "value": [ {" /Vehicle/Cabin/Door/Row1/Right/IsLocked" : true },<br>
+            {" /Vehicle/Cabin/Door/Row1/Left/IsLocked" : true },<br>
+            {" /Vehicle/Cabin/Door/Row2vRight/IsLocked" : false },<br>
+	    {" /Vehicle/Cabin/Door/Row2/Left/IsLocked" : true } ]<br>
           </blockquote>
 A client service discovery request for all doors of the car. In this case it is implied that the response shall contain the nodes in any branches below the root node indicated by the path, so there is no need to add a wildcard as the last segment.<br>
           <blockquote>
-            "path": "Vehicle.Cabin.Door"<br>
+            "path": "/Vehicle/Cabin/Door"<br>
           </blockquote>
 The response to the path above will include all nodes in any branches, to any deep, below the root node Door as denoted in the path.<br>
 If only the direct children of the Door node is of interest, the path then should have one wildcard appended after the Door path segment.<br>
           <blockquote>
-            "path": "Vehicle.Cabin.Door.*"<br>
+            "path": "/Vehicle/Cabin/Door/*"<br>
           </blockquote>
 And for the case of getting two generations of children to the Door node, two wildcards needs to be appended.<br><br>However, for any other action than a service discovery, the path above, ending with a wildcard, would lead to the return of all leave nodes at any depth under the Door node.
 </p>
