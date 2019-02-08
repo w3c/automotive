@@ -57,7 +57,7 @@ if (location.protocol=="file:") {
 	//if running via file shared workers are not available
 	var deflater;
 } else {
-	var deflater = window.SharedWorker && new SharedWorker('rawdeflate.js');
+	var deflater = window.SharedWorker && new SharedWorker('./plantuml/rawdeflate.js');
 	if (deflater) {
 	  deflater.port.addEventListener('message', done_deflating, false);
 	  deflater.port.start();
