@@ -144,6 +144,87 @@
         </figure>
 	  <section data-dfn-for="tree-elements">
         <h2>Tree elements</h2>
+		<section data-dfn-for="UInt8">
+			<h3><dfn>UInt8</dfn></h3>
+			<p>Type: unsigned 8-bit integer<br>
+			Min: 0 | Max: 255</p>
+			<div class="issue">really going to use several number types?</div>
+		</section>
+		<section data-dfn-for="Int8">
+			<h3><dfn>Int8</dfn></h3>
+			<p>Type: signed 8-bit integer<br>
+			Min: -128 | Max: 127</p>
+			<div class="issue">really going to use several number types?</div>
+		</section>
+		<section data-dfn-for="UInt16">
+			<h3><dfn>UInt16</dfn></h3>
+			<p>Type: unsigned 16-bit integer	<br>
+			Min: 0 | Max: 65535</p>
+			<div class="issue">really going to use several number types?</div>
+		</section>
+		<section data-dfn-for="Int16">
+			<h3><dfn>Int16</dfn></h3>
+			<p>Type: signed 16-bit integer<br>
+			Min: -32768	 | Max: 32767</p>
+			<div class="issue">really going to use several number types?</div>
+		</section>
+		<section data-dfn-for="UInt32">
+			<h3><dfn>UInt32</dfn></h3>
+			<p>Type: unsigned 32-bit integer<br>
+			Min: 0 | Max: 4294967295</p>
+			<div class="issue">really going to use several number types?</div>
+		</section>
+		<section data-dfn-for="Int32">
+			<h3><dfn>Int32</dfn></h3>
+			<p>Type: signed 32-bit integer<br>
+			Min: -2147483648 | Max: 2147483647</p>
+			<div class="issue">really going to use several number types?</div>
+		</section>
+		<section data-dfn-for="UInt64">
+			<h3><dfn>UInt64</dfn></h3>
+			<p>Type: unsigned 64-bit integer<br>
+			Min: 0 | Max: 2^64</p>
+			<div class="issue">really going to use several number types?</div>
+		</section>
+		<section data-dfn-for="Int64">
+			<h3><dfn>Int64</dfn></h3>
+			<p>Type: signed 64-bit integer<br>
+			Min: -2^63 | Max: 2^63-1</p>
+			<div class="issue">really going to use several number types?</div>
+		</section>
+		<section data-dfn-for="Boolean">
+			<h3><dfn>Boolean</dfn></h3>
+			<p>Type: boolean value<br>
+			false / true</p>
+		</section>
+		<section data-dfn-for="Float">
+			<h3><dfn>Float</dfn></h3>
+			<p>Type: floating point number<br>
+			Min: -3.4e -38 | Max: 3.4e 38</p>
+			<div class="issue">really going to use several number types?</div>
+		</section>
+		<section data-dfn-for="Double">
+			<h3><dfn>Double</dfn></h3>
+			<p>Type: double precision floating point number<br>
+			Min: -1.7e -300 | Max: 1.7e 300</p>
+			<div class="issue">really going to use several number types?</div>
+		</section>
+		<section data-dfn-for="String">
+			<h3><dfn>String</dfn></h3>
+			<p>Type: character string</p>
+		</section>
+		<section data-dfn-for="ByteBuffer">
+			<h3><dfn>ByteBuffer</dfn></h3>
+			<p>Type: buffer of bytes (aka BLOB)</p>
+		</section>
+      </section>
+
+      <section data-dfn-for="Foo">
+        <h2>addressing</h2>
+      </section>
+
+      <section data-dfn-for="data-types">
+        <h2>Data Types</h2>
 		<section data-dfn-for="branch">
 			<h3><dfn>branch</dfn></h3>
 			<p>
@@ -185,14 +266,8 @@
 		</section>
       </section>
 
-      <section data-dfn-for="Foo">
-        <h2>addressing</h2>
-      </section>
-
-      <section data-dfn-for="Foo">
-        <h2>Data types</h2>
-      </section>
     </section>
+	
     <section id="search_mechanisms">
       <h2>Search mechanisms</h2>
       <p>There are two mechanisms available for a client to search for tree nodes of interest: wildcards and queries, which are explained in the chapters below.</p>
