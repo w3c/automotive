@@ -144,6 +144,41 @@
         </figure>
 	  <section data-dfn-for="tree-elements">
         <h2>Tree elements</h2>
+		<section data-dfn-for="rbranch">
+			<h3><dfn>rbranch</dfn></h3>
+			<p>
+			A node under an <a>rbranch</a> MUST be an <a>element</a>.
+			</p>
+			<div class="issue">to be described more</div>
+		</section>
+		<section data-dfn-for="sensor">
+			<h3><dfn>sensor</dfn></h3>
+			<p>A leaf that describes non-static read-only signal.</p>
+		</section>
+		<section data-dfn-for="attribute">
+			<h3><dfn>attribute</dfn></h3>
+			<p>A leaf that describes static read-only value.</p>
+		</section>
+		<section data-dfn-for="stream">
+			<h3><dfn>stream</dfn></h3>
+			<p>A leaf that references a data stream, e.g. a video stream.</p>
+		</section>		
+		<section data-dfn-for="actuator">
+			<h3><dfn>actuator</dfn></h3>
+			<p>A leaf the same as <a>sensor</a> which additionaly can be changed.</p>
+		</section>
+		<section data-dfn-for="element">
+			<h3><dfn>element</dfn></h3>
+			<div class="issue">to be described</div>
+		</section>
+      </section>
+
+      <section data-dfn-for="Foo">
+        <h2>addressing</h2>
+      </section>
+
+      <section data-dfn-for="data-types">
+        <h2>Data Types</h2>
 		<section data-dfn-for="UInt8">
 			<h3><dfn>UInt8</dfn></h3>
 			<p>Type: unsigned 8-bit integer<br>
@@ -217,14 +252,6 @@
 			<h3><dfn>ByteBuffer</dfn></h3>
 			<p>Type: buffer of bytes (aka BLOB)</p>
 		</section>
-      </section>
-
-      <section data-dfn-for="Foo">
-        <h2>addressing</h2>
-      </section>
-
-      <section data-dfn-for="data-types">
-        <h2>Data Types</h2>
 		<section data-dfn-for="branch">
 			<h3><dfn>branch</dfn></h3>
 			<p>
@@ -236,34 +263,7 @@
 			<a>stream</a>
 			</p>
 			<div class="issue">to be described more</div>
-		</section>
-		<section data-dfn-for="rbranch">
-			<h3><dfn>rbranch</dfn></h3>
-			<p>
-			A node under an <a>rbranch</a> MUST be an <a>element</a>.
-			</p>
-			<div class="issue">to be described more</div>
-		</section>
-		<section data-dfn-for="sensor">
-			<h3><dfn>sensor</dfn></h3>
-			<p>A leaf that describes non-static read-only signal.</p>
-		</section>
-		<section data-dfn-for="attribute">
-			<h3><dfn>attribute</dfn></h3>
-			<p>A leaf that describes static read-only value.</p>
-		</section>
-		<section data-dfn-for="stream">
-			<h3><dfn>stream</dfn></h3>
-			<p>A leaf that references a data stream, e.g. a video stream.</p>
 		</section>		
-		<section data-dfn-for="actuator">
-			<h3><dfn>actuator</dfn></h3>
-			<p>A leaf the same as <a>sensor</a> which additionaly can be changed.</p>
-		</section>
-		<section data-dfn-for="element">
-			<h3><dfn>element</dfn></h3>
-			<div class="issue">to be described</div>
-		</section>
       </section>
 
     </section>
