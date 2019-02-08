@@ -87,15 +87,14 @@
     </section>
     <section id="filter-mechanisms">
       <h2>Filtering</h2>
-	  <p>Most times it is not the best way to get a whole part of the data representation from the service and looking for a specific set with a specific value.
+	  <p>Most times it is not the best way to get a whole part of the data representation from the service when looking for a specific set with a specific value.
 	  This section describes how to build the queries to search for specific parts of the data representation.
 	  </p> 
-		<p>A <dfn>query</dfn> is a description to filter a result in an specific form.</p>
-		<p>The <a>query</a> can be given with the request from a client to a service additionally to the <a>path</a> to get a <a>content</a> response.
-		The <a>query</a> describes certain rules that filter the <a>content</a> response. Next to the rules the expected <a dfn="node">nodes</a> are given.
-		<ul>
+	  <p>A <dfn>query</dfn> is a description to taylor and filter the data resulting of a <a>read</a>.</p>
+	  <p>The <a>query</a> can be given with the request from a client to a service additionally to the <a>path</a> to get a <a>content</a> response.
+	  The <a>query</a> describes certain rules that filter the <a>content</a> response. 
+	  <ul>
 			<li>path: describing the part of the tree that shall be filtered in</li>
-			<li>nodes: the type of node that shall be returned</li>
 			<li>rules: these have to match in the nodes for the node to be part of the <a>content</a> response.</li>
 		<ul>
 		</p>
@@ -146,7 +145,6 @@
 			</p>
 			<p>
 			The <a>path</a> that shall be inspected is "/vehicle/cabin". <br>
-			The <a>node</a> that shall be returned is "/vehicle/cabin/*/*/Door".<br>
 			The <a>rule</a> is that "/vehicle/cabin/*/*/Door/isLocked" shall be "true".<br>
 			</p>
 			<p>
