@@ -96,11 +96,11 @@
 	  <ul>
 			<li>path: describing the part of the tree that shall be filtered in</li>
 			<li>rules: these have to match in the nodes for the node to be part of the <a>content</a> response.</li>
-		<ul>
+	  </ul>
 		</p>
-		<section id="filter-example">
-			<h3>Example</h2>
-			<p>		
+		<div class="example">
+		<h3>Example</h3>
+			<p>
 			All open doors shall be given. The tree looks as follows:
 			<blockquote>
 				<ul><li>/vehicle/cabin
@@ -164,31 +164,78 @@
 			</ul>
 			</blockquote>
 			</p>
-		</section>
+		</div>
      <section data-dfn-for="rules">
         <h3>Rules</h2>
-		These are the <dfn>rules</dfn> that are known to check to be used in a <a>query</a> to filter <a>content</a> responses.
+		<p>
+		A <dfn>rule</dfn> is an expression that describes a characteristic of nodes that shall be returned by a <a>query</a>.
+		<a>Rules</a> are applied to a leaf and descibe a desired attribute of a node.
 		All <a>rules</a> MUST return either FALSE or TRUE.
-		It is possible to combine several <a>rules</a> to one greater <a>rule</a>
+		</p>
+		<p>
+		These are the <a>rules</a> that are known to check to be used in a <a>query</a> to filter <a>content</a> responses.
+		
 		<table border="1">
-			<tr><th>name</th><th><a>data type</a></th><th>Description</th><th>Example</th></tr>
+			<tr><th>name</th><th><a>input type</a></th><th>Description</th><th>Example</th></tr>
 			<tr>
 				<th><dfn>true</dfn></th>
 				<td><a>boolean</a></td>
-				<td>checks if the data value is true</td>
-				<td>true(/vehicle/cabin/Row1/Left/Door/isLocked)</td>
+				<td>matches if the data value is true</td>
+				<td>true(isLocked)</td>
 			</tr>
 			<tr>
 				<th><dfn>false</dfn></th>
 				<td><a>boolean</a></td>
-				<td>checks if the data value is false</td>
-				<td>false(/vehicle/cabin/Row1/Left/Door/isLocked)</td>
+				<td>matches if the data value is false</td>
+				<td>false(isLocked)</td>
 			</tr>
+			<tr>
+				<th><dfn>contains</dfn></th>
+				<td><a>string</a></td>
+				<td>matches if a given string is contained in another one</td>
+				<td>contains(name, "blue")</td>
+			</tr>
+			<tr>
+				<th><dfn>equal</dfn></th>
+				<td>(<a>string</a>|<a>boolean</a>|<a>number</a>)</td>
+				<td>matches if a value is equal to a given value</td>
+				<td>equal(name, "Red Door")</td>
+			</tr>
+			<tr>
+				<th><dfn>greaterThan</dfn></th>
+				<td><a>number</a></td>
+				<td>matches if a given number is greater than the value</td>
+				<td>greaterThan(windowPosition, 0.2)</td>
+			</tr>
+			<tr>
+				<th><dfn>smallerThan</dfn></th>
+				<td><a>number</a></td>
+				<td>matches if a given number is smaller than the value</td>
+				<td>smallerThan(windowPosition, 0.2)</td>
+			</tr>
+			<tr>
+				<th><dfn>greaterThanEqual</dfn></th>
+				<td><a>number</a></td>
+				<td>matches if a given number is greater than the value or equal to the value</td>
+				<td>greaterThan(windowPosition, 0.2)</td>
+			</tr>
+			<tr>
+				<th><dfn>smallerThanEqual</dfn></th>
+				<td><a>number</a></td>
+				<td>matches if a given number is smaller than the value or equal to the value</td>
+				<td>smallerThan(windowPosition, 0.2)</td>
+			</tr>
+		</table>
+		</p>
+		<p>
+		It MUST be possible to combine several <a>rules</a> to one greater <a>rule</a>. This is possible with the following operators.
+		
+		<table border="1">
 			<tr>
 				<th><dfn>not</dfn></th>
 				<td><a>rule</a></td>
 				<td>negates the return of a rule</td>
-				<td>not(true(/vehicle/cabin/Row1/Left/Door/isLocked))</td>
+				<td>not(true(isLocked))</td>
 			</tr>
 			<tr>
 				<th><dfn>and</dfn></th>
@@ -202,43 +249,8 @@
 				<td>returns true if one of the <a>rules</a> evaluates true</td>
 				<td>or(ruleA,ruleB)</td>
 			</tr>
-			<tr>
-				<th><dfn>contains</dfn></th>
-				<td><a>string</a>,<a>string</a></td>
-				<td>checks if a given string is cotained in another one</td>
-				<td>contains(/vehicle/cabin/Row1/Left/Door/name, "blue")</td>
-			</tr>
-			<tr>
-				<th><dfn>equal</dfn></th>
-				<td>(<a>string</a>|<a>boolean</a>|<a>number</a>),(<a>string</a>|<a>boolean</a>|<a>number</a>)</td>
-				<td>checks if a value is equal to a given value</td>
-				<td>equal(/vehicle/cabin/Row1/Left/Door/name, "Red Door")</td>
-			</tr>
-			<tr>
-				<th><dfn>greaterThan</dfn></th>
-				<td><a>number</a>,<a>number</a></td>
-				<td>checks if a given number is greater than the value</td>
-				<td>greaterThan(/vehicle/cabin/Row1/Left/Door/windowPosition, 0.2)</td>
-			</tr>
-			<tr>
-				<th><dfn>smallerThan</dfn></th>
-				<td><a>number</a>,<a>number</a></td>
-				<td>checks if a given number is smaller than the value</td>
-				<td>smallerThan(/vehicle/cabin/Row1/Left/Door/windowPosition, 0.2)</td>
-			</tr>
-			<tr>
-				<th><dfn>greaterThanEqual</dfn></th>
-				<td><a>number</a>,<a>number</a></td>
-				<td>checks if a given number is greater than the value or equal to the value</td>
-				<td>greaterThan(/vehicle/cabin/Row1/Left/Door/windowPosition, 0.2)</td>
-			</tr>
-			<tr>
-				<th><dfn>smallerThanEqual</dfn></th>
-				<td><a>number</a>,<a>number</a></td>
-				<td>checks if a given number is smaller than the value or equal to the value</td>
-				<td>smallerThan(/vehicle/cabin/Row1/Left/Door/windowPosition, 0.2)</td>
-			</tr>
 		</table>
+		</p>
       </section>
     </section>
     <section data-dfn-for="Foo">
