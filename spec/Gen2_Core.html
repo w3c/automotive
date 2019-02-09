@@ -60,119 +60,93 @@
 		This <a href="#tree-example">example</a> shows that major vehicle structures (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as their child nodes.
 		Each of the child nodes in the tree is further decomposed into its logical constituents, 
 		and the process is repeated until leafs are reached.
-		A composable node MUST be either a <a>branch</a> or an <a>rbranch</a>.
-		A leaf at the end of a <a>branch</a> cannot be decomposed because and will have an information stored in e.g. a <a>sensor</a>, <a>actuator</a>, <a>stream</a> or <a>attribute</a>.
-		A leaf under an <a>rbranch</a> MUST be an <a>element</a>.
+		</p>
+		<p>
+		A node in the tree can have one of two types.
+		Leafs in the tree are <a>values</a>. 
+		The path to a leaf is built by <a>branches</a>.
 		</p>
         <figure id="tree-example" class="example">
 			<img uml='
 			@startuml 
-				skinparam component {
-					BorderColor Black
+				skinparam usecase {
 					FontSize 16
-					
-					BackgroundColor<<branch>> MediumSeaGreen
-					FontColor<<branch>> White
-					
-					BackgroundColor<<rbranch>> Red
-					FontColor<<rbranch>> White
-					
-					BackgroundColor<<attribute>> Yellow
-					FontColor<<attribute>> Black
-					
-					BackgroundColor<<sensor>> CornflowerBlue
-					FontColor<<sensor>> White
-					
-					BackgroundColor<<actuator>> DarkGrey
-					FontColor<<actuator>> White
-					
-					BackgroundColor<<element>> LightCoral
-					FontColor<<element>> White				
+					BackgroundColor CornflowerBlue
+					FontColor Black
+					BorderColor Black
 				}
-				[VSS-Root] -- [Media]
-				[VSS-Root] -- [Car]
-				[VSS-Root] -- [Private]
-				[VSS-Root]<<branch>>
-				[Media]<<branch>>
-				[Private]<<branch>>
-				[Car]<<branch>>
+
+				skinparam component {
+					FontSize 16
+					BorderColor Black					
+					BackgroundColor MediumSeaGreen
+					FontColor Black
+				}
+
+				[Root] -- [Media]
+				[Root] -- [Car]
+				[Root] -- [Private]
+
+				[...] as more2
+				[Private] -- more2
+				[...] as more3
+				[Private] -- more3
 				
 				[Media] -- [Collections]
-				[Collections] .. [30321564123]
-				[Collections]<<rbranch>>
-				[30321564123]<<element>>
+				[Collections] -- [30321564123]
+				[30321564123] -- (name)
+				[30321564123] -- (rating)
 				
 				[Car] -- [Engine]
 				[Car] -- [Body]
-				[Engine]<<branch>>
-				[Body]<<branch>>
 				
-				[Engine] -- [RPM]
-				[Engine] -- [Speed]
-				[Engine] -- [Fueltype]
-				[RPM]<<sensor>>
-				[Speed]<<sensor>>
-				[Fueltype]<<attribute>>
-				
+				[Engine] -- (RPM)
+				[Engine] -- (Speed)
+				[Engine] -- (Fueltype)
+
 				[Body] -- [Mirror]
 				[Body] -- [Door]
-				[Body] -- [Weight]
-				[Mirror]<<branch>>
-				[Door]<<branch>>
-				[Weight]<<attribute>>
+				[Body] -- (Weight)
 				
-				[Door] -- [&nbsp;...&nbsp;]
-				[&nbsp;...&nbsp;]<<branch>>
+				[...] as more1
+				[Door] -- more1
 				
 				[Mirror] -- [Left]
-				[Left] -- [Heated]
-				[Left] -- [Dimmed]
-				[Left] -- [Fold]
-				[Left]<<branch>>
-				[Right]<<branch>>
-				[Heated]<<sensor>>
-				[Dimmed]<<sensor>>
-				[Fold]<<actuator>>
-				
+				[Left] -- (Heated)
+				[Left] -- (Dimmed)
+				[Left] -- (Fold)
+
 				[Mirror] -- [Right]
-				[Right] -- [ ... ]
-				[ ... ]<<branch>>
-				
+				[Right] -- (...)
 			@enduml
 			'>
           <figcaption>Diagram showing an example tree.</figcaption>
         </figure>
 	  <section data-dfn-for="tree-elements">
         <h2>Tree elements</h2>
-		<section data-dfn-for="rbranch">
-			<h3><dfn>rbranch</dfn></h3>
+		<section data-dfn-for="branch">
+			<h3><dfn>branch</dfn></h3>
 			<p>
-			A node under an <a>rbranch</a> MUST be an <a>element</a>.
+			A <a>branch</a> MUST have a schema attached that describes it sub-nodes. 
+			It MUST be marked for every sub-<a>branch</a> if only one instance is allowed or multiple instances are allowed.
+			A <a>branch</a> MUST have a <a>name</a> that makes the <a>branches</a> convention/type <span class="issue">not clear that it expresses the type</span> understandable.
+			The <a>name</a> is set by the schema. 
+			A <a>branch</a> MUST have an <a>id</a> that makes the identifiable and addressable.
+			The <a>id</a> is managed by the service implementation.
 			</p>
-			<div class="issue">to be described more</div>
 		</section>
-		<section data-dfn-for="sensor">
-			<h3><dfn>sensor</dfn></h3>
-			<p>A leaf that describes non-static read-only signal.</p>
-		</section>
-		<section data-dfn-for="attribute">
-			<h3><dfn>attribute</dfn></h3>
-			<p>A leaf that describes static read-only value.</p>
-		</section>
-		<section data-dfn-for="stream">
-			<h3><dfn>stream</dfn></h3>
-			<p>A leaf that references a data stream, e.g. a video stream.</p>
-		</section>		
-		<section data-dfn-for="actuator">
-			<h3><dfn>actuator</dfn></h3>
-			<p>A leaf the same as <a>sensor</a> which additionaly can be changed.</p>
-		</section>
-		<section data-dfn-for="element">
-			<h3><dfn>element</dfn></h3>
-			<div class="issue">to be described</div>
+		<section data-dfn-for="value">
+			<h3><dfn>value</dfn></h3>
+			<p>
+			A <a>value</a> MUST have an <a>name</a> that identifies the <a>value</a>.
+			The <a>name</a> of a <a>value</a> MUST be only present once within a <a>branch</a>-node.
+			The <a>name</a> is set via the schema and makes the <a>value</a> understandable.
+			A <a>value</a> MUST have a <a>schema</a> that describes the <a href="#data-types">data type</a> and restrictions of the value.
+			A <a>value</a> MUST have a data field that stores the data.
+			</p>
 		</section>
       </section>
-
+	  
       <section data-dfn-for="Foo">
         <h2>addressing</h2>
       </section>
@@ -263,7 +237,76 @@
 			<a>stream</a>
 			</p>
 			<div class="issue">to be described more</div>
-		</section>		
+		</section>
+      </section>
+
+      <section data-dfn-for="branch-types">
+        <h2>Default Branch Types</h2>
+		<p>
+		A set of default <a>branch</a> types is defined. 
+		These types help to have a common understanding how a branch can be understood 
+		and allows for easy reuse of code throught several schemas.
+		These types MUST be implemented.
+		</p>
+		<section data-dfn-for="remote-branch">
+			<h3><dfn>remote branch</dfn></h3>
+			<p>
+			A <a>remote branch</a> is <a>branch</a> that MUST point to another <a>service</a> that implements a <a>tree</a>.
+			The other <a>services</a> are called remotes. At least one remote MUST be defined. A <a>remote</a> must contain a <a>schema</a> and a <a>authority</a>.
+			
+			It MAY point to a sub-part of the <a>tree</a> by setting a <a>path</a>. If no <a>path</a> is given <code>/</code> is assumed.
+			
+			</p>
+        <figure id="remote-branch-example" class="example">
+			<img uml='
+			@startuml 
+				skinparam usecase {
+					FontSize 16
+					BackgroundColor CornflowerBlue
+					FontColor Black
+					BorderColor Black
+				}
+
+				skinparam component {
+					FontSize 16
+					BorderColor Black					
+					BackgroundColor MediumSeaGreen
+					FontColor Black
+				}
+
+				[Root] -- [Media]
+				[Root] -- [Car]
+
+				note left of Media: remote branch
+				[Media] -- [Collections]
+				[Collections] -- [Remotes]
+				[Collections] -- (path\n"/collections")
+				[Collections] .. [remote]
+				
+				note left of Remotes: list of remotes
+				
+				[Remotes] -- (Scheme\n"http")
+				[Remotes] -- (Authority\n"127.0.0.1:1337")
+				
+				
+				package "Remote http://127.0.0.1:1337/Collections" as remote {
+					[30321564123] -- (name)
+					[30321564123] -- (rating)
+				}
+				
+				note bottom of remote: Remote representation of a part of a tree
+				
+				[Car] -- [Engine]
+				[Car] -- [...]
+				
+				[Engine] -- (RPM)
+				[Engine] -- (Speed)
+			@enduml
+			'>
+          <figcaption>Example of a remote branch</figcaption>
+        </figure>
+			
+		</section>				
       </section>
 
     </section>
