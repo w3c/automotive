@@ -4,21 +4,21 @@
     <meta charset='utf-8'>
     <title>Gen2 - Core</title>
     <script 
-     src='https://www.w3.org/Tools/respec/respec-w3c-common' 
-     class='remove'></script>
+      src='https://www.w3.org/Tools/respec/respec-w3c-common' 
+      class='remove'></script>
     <script class='remove'>
       var respecConfig = {
         specStatus: "ED",
         editors: [{
           name: "Ulf Bjorkengren",
-		  company: "Volvo Cars",
+          company: "Volvo Cars",
           companyURL: "https://www.volvocars.com/intl"
         },
-		{
+        {
           name: "Patrick Lünnemann",
-		  company: "Volkswagen Group",
+          company: "Volkswagen Group",
           companyURL: "https://www.volkswagenag.com",
-		  w3cid: 95844
+          w3cid: 95844
         }],
         edDraftURI: "https://github.com/w3c/automotive/blob/gh-pages/spec/Gen2_Core.html",
         shortName: "Gen2-core"
@@ -43,34 +43,34 @@
     </section>
     <section data-dfn-for="data-model">
       <h2>Data model</h2>
-		<p>
-		The basic data model behind that can be accessed with this interface is tree-like logical taxonomy of the whole vehicle. 
-		It is represented by a directed acyclic graph.
-		</p>
-		
-		<p>
-		It is already known and used in the Vehicle Signal Specification (VSS).
-		This example shows that major vehicle structures (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as their child nodes. 
-		Each of the child nodes in the tree is further decomposed into its logical constituents, 
-		and the process is repeated until leaf nodes are reached. 
-		A leaf node is a node at the end of a branch that cannot be decomposed because it represents a single signal or data attribute value. 
-		An example VSS tree is shown below, its contents are illustrative:         
-		</p>
+    <p>
+    The basic data model behind that can be accessed with this interface is tree-like logical taxonomy of the whole vehicle. 
+    It is represented by a directed acyclic graph.
+    </p>
+    
+    <p>
+    It is already known and used in the Vehicle Signal Specification (VSS).
+    This example shows that major vehicle structures (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as their child nodes. 
+    Each of the child nodes in the tree is further decomposed into its logical constituents, 
+    and the process is repeated until leaf nodes are reached. 
+    A leaf node is a node at the end of a branch that cannot be decomposed because it represents a single signal or data attribute value. 
+    An example VSS tree is shown below, its contents are illustrative:         
+    </p>
         <figure id="vsstree">
           <img src="pics/VSS_tree.png" alt="">
           <figcaption>Diagram showing an example Vehicle Signal tree.</figcaption>
         </figure>
-	  <section data-dfn-for="tree-elements">
+    <section data-dfn-for="tree-elements">
         <h2>Tree elements</h2>
-		<p>
-		<table>
-			<tr><th>Name</th>		<th>Description</th></tr>
-			<tr><th>Element</th>	<td>tbd</td></tr>
-			<tr><th>rbranch</th>	<td>tbd</td></tr>
-			<tr><th>signal</th>		<td>a data element that is describing something and changing through time</td></tr>
-			<tr><th>branch</th>		<td>tbd</td></tr>
-			<tr><th>attribute</th>	<td>a data element that is describing something and not changing through time</td></tr>
-		</table>
+    <p>
+    <table>
+      <tr><th>Name</th>    <th>Description</th></tr>
+      <tr><th>Element</th>  <td>tbd</td></tr>
+      <tr><th>rbranch</th>  <td>tbd</td></tr>
+      <tr><th>signal</th>    <td>a data element that is describing something and changing through time</td></tr>
+      <tr><th>branch</th>    <td>tbd</td></tr>
+      <tr><th>attribute</th>  <td>a data element that is describing something and not changing through time</td></tr>
+    </table>
       </section>
 
       <section data-dfn-for="addressing">
@@ -97,28 +97,29 @@
           </ul>  
         <section id="wildcard-examples">
           <h2>Examples</h2>
-          <p>A client read request for the door lock status of all doors. There are two path segments specifying a particular door, the "RowX" and the "Left/Right" segments, so to cover all doors of the car both these segments must have a wildcard inserted.<br>
-          <blockquote>
-            "path": "Vehicle.Cabin.Door.*.*.IsLocked"<br>
-          </blockquote>
-The response would then contain the lock status of all doors like below.<br>
-          <blockquote>
-            "value": [ {" Vehicle.Cabin.Door.Row1.Right.IsLocked" : true },<br>
-            {" Vehicle.Cabin.Door.Row1.Left.IsLocked" : true },<br>
-            {" Vehicle.Cabin.Door.Row2.Right.IsLocked" : false },<br>
-	    {" Vehicle.Cabin.Door.Row2.Left.IsLocked" : true } ]<br>
-          </blockquote>
-A client service discovery request for all doors of the car. In this case it is implied that the response shall contain the nodes in any branches below the root node indicated by the path, so there is no need to add a wildcard as the last segment.<br>
-          <blockquote>
-            "path": "Vehicle.Cabin.Door"<br>
-          </blockquote>
-The response to the path above will include all nodes in any branches, to any deep, below the root node Door as denoted in the path.<br>
-If only the direct children of the Door node is of interest, the path then should have one wildcard appended after the Door path segment.<br>
-          <blockquote>
-            "path": "Vehicle.Cabin.Door.*"<br>
-          </blockquote>
-And for the case of getting two generations of children to the Door node, two wildcards needs to be appended.<br><br>However, for any other action than a service discovery, the path above, ending with a wildcard, would lead to the return of all leave nodes at any depth under the Door node.
-</p>
+          <p>
+            A client read request for the door lock status of all doors. There are two path segments specifying a particular door, the "RowX" and the "Left/Right" segments, so to cover all doors of the car both these segments must have a wildcard inserted.<br>
+            <blockquote>
+              "path": "Vehicle.Cabin.Door.*.*.IsLocked"<br>
+            </blockquote>
+  The response would then contain the lock status of all doors like below.<br>
+            <blockquote>
+              "value": [ {" Vehicle.Cabin.Door.Row1.Right.IsLocked" : true },<br>
+              {" Vehicle.Cabin.Door.Row1.Left.IsLocked" : true },<br>
+              {" Vehicle.Cabin.Door.Row2.Right.IsLocked" : false },<br>
+              {" Vehicle.Cabin.Door.Row2.Left.IsLocked" : true } ]<br>
+            </blockquote>
+            A client service discovery request for all doors of the car. In this case it is implied that the response shall contain the nodes in any branches below the root node indicated by the path, so there is no need to add a wildcard as the last segment.<br>
+            <blockquote>
+              "path": "Vehicle.Cabin.Door"<br>
+            </blockquote>
+            The response to the path above will include all nodes in any branches, to any deep, below the root node Door as denoted in the path.<br>
+            If only the direct children of the Door node is of interest, the path then should have one wildcard appended after the Door path segment.<br>
+            <blockquote>
+              "path": "Vehicle.Cabin.Door.*"<br>
+            </blockquote>
+            And for the case of getting two generations of children to the Door node, two wildcards needs to be appended.<br><br>However, for any other action than a service discovery, the path above, ending with a wildcard, would lead to the return of all leave nodes at any depth under the Door node.
+          </p>
         </section>
       </section>
       <section data-dfn-for="query">
@@ -128,12 +129,12 @@ And for the case of getting two generations of children to the Door node, two wi
     </section>
     <section id="security">
       <h2>Security</h2>
-	  <div class="issue" title="describe security section">
-		  The security section has to be descrbided.
-		  Helpful discussion might be:<br>
-		  Authentication: <a href="http://www.w3.org/2018/04/19-auto-minutes.html#item03">http://www.w3.org/2018/04/19-auto-minutes.html#item03</a><br>
-		  Volvo assesment: <a href="https://lists.w3.org/Archives/Public/public-automotive/2018Aug/0002.html">https://lists.w3.org/Archives/Public/public-automotive/2018Aug/0002.html</a>, <a href="https://www.w3.org/2018/09/25-auto-minutes.html#item01">https://www.w3.org/2018/09/25-auto-minutes.html#item01</a>
-	  </div>
+    <div class="issue" title="describe security section">
+      The security section has to be descrbided.
+      Helpful discussion might be:<br>
+      Authentication: <a href="http://www.w3.org/2018/04/19-auto-minutes.html#item03">http://www.w3.org/2018/04/19-auto-minutes.html#item03</a><br>
+      Volvo assesment: <a href="https://lists.w3.org/Archives/Public/public-automotive/2018Aug/0002.html">https://lists.w3.org/Archives/Public/public-automotive/2018Aug/0002.html</a>, <a href="https://www.w3.org/2018/09/25-auto-minutes.html#item01">https://www.w3.org/2018/09/25-auto-minutes.html#item01</a>
+    </div>
     </section>
     <section data-dfn-for="interface">
       <h2>Interface</h2>
@@ -275,7 +276,7 @@ And for the case of getting two generations of children to the Door node, two wi
       </section>
     </section>
 
-	<section id="issue-summary" class="appendix"></section>
-	<section id="tof" class="appendix"></section>
+  <section id="issue-summary" class="appendix"></section>
+  <section id="tof" class="appendix"></section>
   </body>
 </html>
