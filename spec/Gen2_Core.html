@@ -46,40 +46,44 @@
     </section>
     <section data-dfn-for="data-model">
       <h2>Data model</h2>
-    <p>
-    The basic data model behind that can be accessed with this interface is tree-like logical taxonomy of the whole vehicle. 
-    It is represented by a directed acyclic graph.
-    </p>
-    
-    <p>
-    It is already known and used in the Vehicle Signal Specification (VSS).
-    This example shows that major vehicle structures (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as their child nodes. 
-    Each of the child nodes in the tree is further decomposed into its logical constituents, 
-    and the process is repeated until leaf nodes are reached. 
-    A leaf node is a node at the end of a branch that cannot be decomposed because it represents a single signal or data attribute value. 
-    An example VSS tree is shown below, its contents are illustrative:         
-    </p>
-        <figure id="vsstree">
+		<p>
+		The basic data model behind that can be accessed with this interface is a tree-like logical taxonomy of the whole vehicle.
+		It is represented by a directed acyclic graph.
+		</p>
+		<p>
+		It is derived from <a href="https://github.com/GENIVI/vehicle_signal_specification/blob/master/README.md">GENIVI's Vehicle Signal Specification</a> (VSS).
+		<span class="issue">is this the correct link?</span>
+		This <a href="#tree-example">example</a> shows that major vehicle structures (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as their child nodes.
+		Each of the child nodes in the tree is further decomposed into its logical constituents, 
+		and the process is repeated until leafs are reached.
+		A composable node MUST be either a <a>branch</a> or an <a>rbranch</a>.
+		A leaf at the end of a <a>branch</a> cannot be decomposed because and will have an information stored in e.g. a <a>sensor</a>, <a>actuator</a>, <a>stream</a> or <a>attribute</a>.
+		A leaf under an <a>rbranch</a> MUST be an <a>element</a>.
+		</p>
+    <figure id="tree-example" class="example">
 			<img uml='
 			@startuml 
 				skinparam component {
+					BorderColor Black
 					FontSize 16
-					BackgroundColor<<element>> Red
-					BorderColor<<element>> Black
 					
-					BackgroundColor<<rbranch>> Transparent
-					BorderColor<<rbranch>> Red
+					BackgroundColor<<branch>> MediumSeaGreen
+					FontColor<<branch>> White
 					
-					BackgroundColor<<signal>> Green
-					BorderColor<<signal>> Black
-					FontColor<<signal>> White
+					BackgroundColor<<rbranch>> Red
+					FontColor<<rbranch>> White
 					
-					BackgroundColor<<branch>> White
-					BorderColor<<branch>> Green
-					FontColor<<branch>> Green
+					BackgroundColor<<attribute>> Yellow
+					FontColor<<attribute>> Black
 					
-					BackgroundColor<<attribute>> White
-					BorderColor<<attribute>> Black
+					BackgroundColor<<sensor>> CornflowerBlue
+					FontColor<<sensor>> White
+					
+					BackgroundColor<<actuator>> DarkGrey
+					FontColor<<actuator>> White
+					
+					BackgroundColor<<element>> LightCoral
+					FontColor<<element>> White				
 				}
 				[VSS-Root] -- [Media]
 				[VSS-Root] -- [Car]
@@ -102,8 +106,8 @@
 				[Engine] -- [RPM]
 				[Engine] -- [Speed]
 				[Engine] -- [Fueltype]
-				[RPM]<<signal>>
-				[Speed]<<signal>>
+				[RPM]<<sensor>>
+				[Speed]<<sensor>>
 				[Fueltype]<<attribute>>
 				
 				[Body] -- [Mirror]
@@ -119,10 +123,12 @@
 				[Mirror] -- [Left]
 				[Left] -- [Heated]
 				[Left] -- [Dimmed]
+				[Left] -- [Fold]
 				[Left]<<branch>>
 				[Right]<<branch>>
-				[Heated]<<signal>>
-				[Dimmed]<<signal>>
+				[Heated]<<sensor>>
+				[Dimmed]<<sensor>>
+				[Fold]<<actuator>>
 				
 				[Mirror] -- [Right]
 				[Right] -- [ ... ]
@@ -130,19 +136,37 @@
 				
 			@enduml
 			'>
-          <figcaption>Diagram showing an example Vehicle Signal tree.</figcaption>
-        </figure>
-    <section data-dfn-for="tree-elements">
+        <figcaption>Diagram showing an example tree.</figcaption>
+      </figure>
+	    <section data-dfn-for="tree-elements">
         <h2>Tree elements</h2>
-    <p>
-    <table>
-      <tr><th>Name</th>    <th>Description</th></tr>
-      <tr><th>Element</th>  <td>tbd</td></tr>
-      <tr><th>rbranch</th>  <td>tbd</td></tr>
-      <tr><th>signal</th>    <td>a data element that is describing something and changing through time</td></tr>
-      <tr><th>branch</th>    <td>tbd</td></tr>
-      <tr><th>attribute</th>  <td>a data element that is describing something and not changing through time</td></tr>
-    </table>
+        <section data-dfn-for="rbranch">
+          <h3><dfn>rbranch</dfn></h3>
+          <p>
+          A node under an <a>rbranch</a> MUST be an <a>element</a>.
+          </p>
+          <div class="issue">to be described more</div>
+        </section>
+        <section data-dfn-for="sensor">
+          <h3><dfn>sensor</dfn></h3>
+          <p>A leaf that describes non-static read-only signal.</p>
+        </section>
+        <section data-dfn-for="attribute">
+          <h3><dfn>attribute</dfn></h3>
+          <p>A leaf that describes static read-only value.</p>
+        </section>
+        <section data-dfn-for="stream">
+          <h3><dfn>stream</dfn></h3>
+          <p>A leaf that references a data stream, e.g. a video stream.</p>
+        </section>		
+        <section data-dfn-for="actuator">
+          <h3><dfn>actuator</dfn></h3>
+          <p>A leaf the same as <a>sensor</a> which additionaly can be changed.</p>
+        </section>
+        <section data-dfn-for="element">
+          <h3><dfn>element</dfn></h3>
+          <div class="issue">to be described</div>
+        </section>
       </section>
 
       <section data-dfn-for="address">
@@ -157,9 +181,95 @@
       </section>
       
       <section data-dfn-for="data-types">
-        <h2>Data types</h2>
+        <h2>Data Types</h2>
+        <section data-dfn-for="UInt8">
+          <h3><dfn>UInt8</dfn></h3>
+          <p>Type: unsigned 8-bit integer<br>
+          Min: 0 | Max: 255</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="Int8">
+          <h3><dfn>Int8</dfn></h3>
+          <p>Type: signed 8-bit integer<br>
+          Min: -128 | Max: 127</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="UInt16">
+          <h3><dfn>UInt16</dfn></h3>
+          <p>Type: unsigned 16-bit integer	<br>
+          Min: 0 | Max: 65535</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="Int16">
+          <h3><dfn>Int16</dfn></h3>
+          <p>Type: signed 16-bit integer<br>
+          Min: -32768	 | Max: 32767</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="UInt32">
+          <h3><dfn>UInt32</dfn></h3>
+          <p>Type: unsigned 32-bit integer<br>
+          Min: 0 | Max: 4294967295</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="Int32">
+          <h3><dfn>Int32</dfn></h3>
+          <p>Type: signed 32-bit integer<br>
+          Min: -2147483648 | Max: 2147483647</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="UInt64">
+          <h3><dfn>UInt64</dfn></h3>
+          <p>Type: unsigned 64-bit integer<br>
+          Min: 0 | Max: 2^64</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="Int64">
+          <h3><dfn>Int64</dfn></h3>
+          <p>Type: signed 64-bit integer<br>
+          Min: -2^63 | Max: 2^63-1</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="Boolean">
+          <h3><dfn>Boolean</dfn></h3>
+          <p>Type: boolean value<br>
+          false / true</p>
+        </section>
+        <section data-dfn-for="Float">
+          <h3><dfn>Float</dfn></h3>
+          <p>Type: floating point number<br>
+          Min: -3.4e -38 | Max: 3.4e 38</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="Double">
+          <h3><dfn>Double</dfn></h3>
+          <p>Type: double precision floating point number<br>
+          Min: -1.7e -300 | Max: 1.7e 300</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="String">
+          <h3><dfn>String</dfn></h3>
+          <p>Type: character string</p>
+        </section>
+        <section data-dfn-for="ByteBuffer">
+          <h3><dfn>ByteBuffer</dfn></h3>
+          <p>Type: buffer of bytes (aka BLOB)</p>
+        </section>
+        <section data-dfn-for="branch">
+          <h3><dfn>branch</dfn></h3>
+          <p>
+          A <a>branch</a> is an entity that MUST host one of the following node types: 
+          <a>branch</a>, 
+          <a>rbranch</a>, 
+          <a>sensor</a>, 
+          <a>attribute</a>, 
+          <a>stream</a>
+          </p>
+          <div class="issue">to be described more</div>
+        </section>		
       </section>
     </section>
+	
     <section id="search_mechanisms">
       <h2>Search mechanisms</h2>
       <p>There are two mechanisms available for a client to search for tree nodes of interest: wildcards and queries, which are explained in the chapters below.</p>
