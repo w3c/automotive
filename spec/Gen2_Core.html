@@ -2,51 +2,47 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>Vehicle Services Interface_Core</title>
+    <title>Gen2 - Core</title>
     <script 
-     src='https://www.w3.org/Tools/respec/respec-w3c-common' 
-     class='remove'></script>
-	<script type="text/javascript" src="plantuml/jquery.js"></script>
-	<script type="text/javascript" src="plantuml/jquery_plantuml.js"></script>
-	<script type="text/javascript" src="plantuml/rawdeflate.js"></script>	 
+      src='https://www.w3.org/Tools/respec/respec-w3c-common' 
+      class='remove'></script>
+    <script type="text/javascript" src="plantuml/jquery.js"></script>
+    <script type="text/javascript" src="plantuml/jquery_plantuml.js"></script>
+    <script type="text/javascript" src="plantuml/rawdeflate.js"></script>	 
     <script class='remove'>
       var respecConfig = {
         specStatus: "ED",
         editors: [{
-          name: "Ulf Bjorkengren, Volvo Cars",
-          url: "https://www.volvocars.com/intl",
+          name: "Ulf Bjorkengren",
+          company: "Volvo Cars",
+          companyURL: "https://www.volvocars.com/intl"
+        },
+        {
+          name: "Patrick Lünnemann",
+          company: "Volkswagen Group",
+          companyURL: "https://www.volkswagenag.com",
+          w3cid: 95844
         }],
-        edDraftURI: "https://some.github.repo",
-        shortName: "VSI-CORE"
+        edDraftURI: "https://github.com/w3c/automotive/blob/gh-pages/spec/Gen2_Core.html",
+        shortName: "Gen2-core"
       };
     </script>
   </head>
   <body>
     <section id='abstract'>
       <p>
-        This document, the VSI CORE specification, describes the VSI messaging layer. The companion specification VSI TRANSPORT details the mapping of the messaging layer to selected transports.
+        This document, the Gen2 core specification, describes the Gen2 messaging layer. The companion specification Gen2 transport details the mapping of the messaging layer to selected transports.
       </p>
     </section>
-    <section id='sotd'>
-      <p>
-        This is required.
-      </p>
-    </section>
-    <section data-dfn-for="Foo">
+    <section id='sotd'></section>
+    <section id="introduction">
       <h2>Introduction</h2>
-      <p>This document describes the messaging layer. The separation between transport and messaging layer improves readability and simplify extending VSI to further transports in the future. The VSI messaging layer uses a RESTful design with an interface and a data model.</p>
+      <p>This document describes the messaging layer. The separation between transport and messaging layer improves readability and simplify extending Gen2 to further transports in the future. The Gen2 messaging layer uses a RESTful design with an interface and a data model.</p>
     </section>
-    <section data-dfn-for="Foo">
-      <h2>Conformance</h2>
-      <p>As well as sections marked as non-normative, all authoring guidelines, diagrams, examples, and notes in this specification are non-normative. Everything else in this specification is normative.The key words MAY, MUST, and SHALL are to be interpreted as described in <a href='#rfc2119'>[RFC2119]</a>.</p>
-    </section>
-    <section data-dfn-for="Foo">
+    <section id="conformance"></section>
+    <section id="terms">
       <h2>Terminology</h2>
-      <p>The acronym 'VSI' is used to refer to this document, the 'Vehicle Service Interface' specification.The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance.The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.</p>
-    </section>
-    <section data-dfn-for="Foo">
-      <h2>Table of Figures</h2>
-      <p><a href="#vsstree"></a>. Diagram showing an example Vehicle Signal Tree.</p>
+      <p>The acronym 'Gen2' is used to refer to this document, the second generation specification. The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance. The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.</p>
     </section>
     <section data-dfn-for="data-model">
       <h2>Data model</h2>
@@ -64,7 +60,7 @@
 		A leaf at the end of a <a>branch</a> cannot be decomposed because and will have an information stored in e.g. a <a>sensor</a>, <a>actuator</a>, <a>stream</a> or <a>attribute</a>.
 		A leaf under an <a>rbranch</a> MUST be an <a>element</a>.
 		</p>
-        <figure id="tree-example" class="example">
+    <figure id="tree-example" class="example">
 			<img uml='
 			@startuml 
 				skinparam component {
@@ -140,138 +136,137 @@
 				
 			@enduml
 			'>
-          <figcaption>Diagram showing an example tree.</figcaption>
-        </figure>
-	  <section data-dfn-for="tree-elements">
+        <figcaption>Diagram showing an example tree.</figcaption>
+      </figure>
+	    <section data-dfn-for="tree-elements">
         <h2>Tree elements</h2>
-		<section data-dfn-for="rbranch">
-			<h3><dfn>rbranch</dfn></h3>
-			<p>
-			A node under an <a>rbranch</a> MUST be an <a>element</a>.
-			</p>
-			<div class="issue">to be described more</div>
-		</section>
-		<section data-dfn-for="sensor">
-			<h3><dfn>sensor</dfn></h3>
-			<p>A leaf that describes non-static read-only signal.</p>
-		</section>
-		<section data-dfn-for="attribute">
-			<h3><dfn>attribute</dfn></h3>
-			<p>A leaf that describes static read-only value.</p>
-		</section>
-		<section data-dfn-for="stream">
-			<h3><dfn>stream</dfn></h3>
-			<p>A leaf that references a data stream, e.g. a video stream.</p>
-		</section>		
-		<section data-dfn-for="actuator">
-			<h3><dfn>actuator</dfn></h3>
-			<p>A leaf the same as <a>sensor</a> which additionaly can be changed.</p>
-		</section>
-		<section data-dfn-for="element">
-			<h3><dfn>element</dfn></h3>
-			<div class="issue">to be described</div>
-		</section>
+        <section data-dfn-for="rbranch">
+          <h3><dfn>rbranch</dfn></h3>
+          <p>
+          A node under an <a>rbranch</a> MUST be an <a>element</a>.
+          </p>
+          <div class="issue">to be described more</div>
+        </section>
+        <section data-dfn-for="sensor">
+          <h3><dfn>sensor</dfn></h3>
+          <p>A leaf that describes non-static read-only signal.</p>
+        </section>
+        <section data-dfn-for="attribute">
+          <h3><dfn>attribute</dfn></h3>
+          <p>A leaf that describes static read-only value.</p>
+        </section>
+        <section data-dfn-for="stream">
+          <h3><dfn>stream</dfn></h3>
+          <p>A leaf that references a data stream, e.g. a video stream.</p>
+        </section>		
+        <section data-dfn-for="actuator">
+          <h3><dfn>actuator</dfn></h3>
+          <p>A leaf the same as <a>sensor</a> which additionaly can be changed.</p>
+        </section>
+        <section data-dfn-for="element">
+          <h3><dfn>element</dfn></h3>
+          <div class="issue">to be described</div>
+        </section>
       </section>
 
-      <section data-dfn-for="Foo">
+      <section data-dfn-for="addressing">
         <h2>addressing</h2>
       </section>
 
       <section data-dfn-for="data-types">
         <h2>Data Types</h2>
-		<section data-dfn-for="UInt8">
-			<h3><dfn>UInt8</dfn></h3>
-			<p>Type: unsigned 8-bit integer<br>
-			Min: 0 | Max: 255</p>
-			<div class="issue">really going to use several number types?</div>
-		</section>
-		<section data-dfn-for="Int8">
-			<h3><dfn>Int8</dfn></h3>
-			<p>Type: signed 8-bit integer<br>
-			Min: -128 | Max: 127</p>
-			<div class="issue">really going to use several number types?</div>
-		</section>
-		<section data-dfn-for="UInt16">
-			<h3><dfn>UInt16</dfn></h3>
-			<p>Type: unsigned 16-bit integer	<br>
-			Min: 0 | Max: 65535</p>
-			<div class="issue">really going to use several number types?</div>
-		</section>
-		<section data-dfn-for="Int16">
-			<h3><dfn>Int16</dfn></h3>
-			<p>Type: signed 16-bit integer<br>
-			Min: -32768	 | Max: 32767</p>
-			<div class="issue">really going to use several number types?</div>
-		</section>
-		<section data-dfn-for="UInt32">
-			<h3><dfn>UInt32</dfn></h3>
-			<p>Type: unsigned 32-bit integer<br>
-			Min: 0 | Max: 4294967295</p>
-			<div class="issue">really going to use several number types?</div>
-		</section>
-		<section data-dfn-for="Int32">
-			<h3><dfn>Int32</dfn></h3>
-			<p>Type: signed 32-bit integer<br>
-			Min: -2147483648 | Max: 2147483647</p>
-			<div class="issue">really going to use several number types?</div>
-		</section>
-		<section data-dfn-for="UInt64">
-			<h3><dfn>UInt64</dfn></h3>
-			<p>Type: unsigned 64-bit integer<br>
-			Min: 0 | Max: 2^64</p>
-			<div class="issue">really going to use several number types?</div>
-		</section>
-		<section data-dfn-for="Int64">
-			<h3><dfn>Int64</dfn></h3>
-			<p>Type: signed 64-bit integer<br>
-			Min: -2^63 | Max: 2^63-1</p>
-			<div class="issue">really going to use several number types?</div>
-		</section>
-		<section data-dfn-for="Boolean">
-			<h3><dfn>Boolean</dfn></h3>
-			<p>Type: boolean value<br>
-			false / true</p>
-		</section>
-		<section data-dfn-for="Float">
-			<h3><dfn>Float</dfn></h3>
-			<p>Type: floating point number<br>
-			Min: -3.4e -38 | Max: 3.4e 38</p>
-			<div class="issue">really going to use several number types?</div>
-		</section>
-		<section data-dfn-for="Double">
-			<h3><dfn>Double</dfn></h3>
-			<p>Type: double precision floating point number<br>
-			Min: -1.7e -300 | Max: 1.7e 300</p>
-			<div class="issue">really going to use several number types?</div>
-		</section>
-		<section data-dfn-for="String">
-			<h3><dfn>String</dfn></h3>
-			<p>Type: character string</p>
-		</section>
-		<section data-dfn-for="ByteBuffer">
-			<h3><dfn>ByteBuffer</dfn></h3>
-			<p>Type: buffer of bytes (aka BLOB)</p>
-		</section>
-		<section data-dfn-for="branch">
-			<h3><dfn>branch</dfn></h3>
-			<p>
-			A <a>branch</a> is an entity that MUST host one of the following node types: 
-			<a>branch</a>, 
-			<a>rbranch</a>, 
-			<a>sensor</a>, 
-			<a>attribute</a>, 
-			<a>stream</a>
-			</p>
-			<div class="issue">to be described more</div>
-		</section>		
+        <section data-dfn-for="UInt8">
+          <h3><dfn>UInt8</dfn></h3>
+          <p>Type: unsigned 8-bit integer<br>
+          Min: 0 | Max: 255</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="Int8">
+          <h3><dfn>Int8</dfn></h3>
+          <p>Type: signed 8-bit integer<br>
+          Min: -128 | Max: 127</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="UInt16">
+          <h3><dfn>UInt16</dfn></h3>
+          <p>Type: unsigned 16-bit integer	<br>
+          Min: 0 | Max: 65535</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="Int16">
+          <h3><dfn>Int16</dfn></h3>
+          <p>Type: signed 16-bit integer<br>
+          Min: -32768	 | Max: 32767</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="UInt32">
+          <h3><dfn>UInt32</dfn></h3>
+          <p>Type: unsigned 32-bit integer<br>
+          Min: 0 | Max: 4294967295</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="Int32">
+          <h3><dfn>Int32</dfn></h3>
+          <p>Type: signed 32-bit integer<br>
+          Min: -2147483648 | Max: 2147483647</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="UInt64">
+          <h3><dfn>UInt64</dfn></h3>
+          <p>Type: unsigned 64-bit integer<br>
+          Min: 0 | Max: 2^64</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="Int64">
+          <h3><dfn>Int64</dfn></h3>
+          <p>Type: signed 64-bit integer<br>
+          Min: -2^63 | Max: 2^63-1</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="Boolean">
+          <h3><dfn>Boolean</dfn></h3>
+          <p>Type: boolean value<br>
+          false / true</p>
+        </section>
+        <section data-dfn-for="Float">
+          <h3><dfn>Float</dfn></h3>
+          <p>Type: floating point number<br>
+          Min: -3.4e -38 | Max: 3.4e 38</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="Double">
+          <h3><dfn>Double</dfn></h3>
+          <p>Type: double precision floating point number<br>
+          Min: -1.7e -300 | Max: 1.7e 300</p>
+          <div class="issue">really going to use several number types?</div>
+        </section>
+        <section data-dfn-for="String">
+          <h3><dfn>String</dfn></h3>
+          <p>Type: character string</p>
+        </section>
+        <section data-dfn-for="ByteBuffer">
+          <h3><dfn>ByteBuffer</dfn></h3>
+          <p>Type: buffer of bytes (aka BLOB)</p>
+        </section>
+        <section data-dfn-for="branch">
+          <h3><dfn>branch</dfn></h3>
+          <p>
+          A <a>branch</a> is an entity that MUST host one of the following node types: 
+          <a>branch</a>, 
+          <a>rbranch</a>, 
+          <a>sensor</a>, 
+          <a>attribute</a>, 
+          <a>stream</a>
+          </p>
+          <div class="issue">to be described more</div>
+        </section>		
       </section>
-
     </section>
 	
     <section id="search_mechanisms">
       <h2>Search mechanisms</h2>
       <p>There are two mechanisms available for a client to search for tree nodes of interest: wildcards and queries, which are explained in the chapters below.</p>
-      <section data-dfn-for="Foo">
+      <section data-dfn-for="wildcards">
         <h2>Wildcard</h2>
         <p>The rules for wildcard usage is described by the following rules.</p>
           <ul>  
@@ -282,45 +277,52 @@
             <li>The service discovery method, which implies a search for all nodes having the provided path as root node, shall not have a wildcard at the last segment in the path if the entire tree below the specified root node is what is requested.</li>
             <li>If the path in a service discovery request have one or more wildcards as the last segment(s), then only the subtree of the depth given by the number of wildcards is returned.</li>
           </ul>  
-        <section data-dfn-for="Foo">
+        <section id="wildcard-examples">
           <h2>Examples</h2>
-          <p>A client read request for the door lock status of all doors. There are two path segments specifying a particular door, the "RowX" and the "Left/Right" segments, so to cover all doors of the car both these segments must have a wildcard inserted.<br>
-          <blockquote>
-            "path": "Vehicle.Cabin.Door.*.*.IsLocked"<br>
-          </blockquote>
-The response would then contain the lock status of all doors like below.<br>
-          <blockquote>
-            "value": [ {" Vehicle.Cabin.Door.Row1.Right.IsLocked" : true },<br>
-            {" Vehicle.Cabin.Door.Row1.Left.IsLocked" : true },<br>
-            {" Vehicle.Cabin.Door.Row2.Right.IsLocked" : false },<br>
-	    {" Vehicle.Cabin.Door.Row2.Left.IsLocked" : true } ]<br>
-          </blockquote>
-A client service discovery request for all doors of the car. In this case it is implied that the response shall contain the nodes in any branches below the root node indicated by the path, so there is no need to add a wildcard as the last segment.<br>
-          <blockquote>
-            "path": "Vehicle.Cabin.Door"<br>
-          </blockquote>
-The response to the path above will include all nodes in any branches, to any deep, below the root node Door as denoted in the path.<br>
-If only the direct children of the Door node is of interest, the path then should have one wildcard appended after the Door path segment.<br>
-          <blockquote>
-            "path": "Vehicle.Cabin.Door.*"<br>
-          </blockquote>
-And for the case of getting two generations of children to the Door node, two wildcards needs to be appended.<br><br>However, for any other action than a service discovery, the path above, ending with a wildcard, would lead to the return of all leave nodes at any depth under the Door node.
-</p>
+          <p>
+            A client read request for the door lock status of all doors. There are two path segments specifying a particular door, the "RowX" and the "Left/Right" segments, so to cover all doors of the car both these segments must have a wildcard inserted.<br>
+            <blockquote>
+              "path": "Vehicle.Cabin.Door.*.*.IsLocked"<br>
+            </blockquote>
+  The response would then contain the lock status of all doors like below.<br>
+            <blockquote>
+              "value": [ {" Vehicle.Cabin.Door.Row1.Right.IsLocked" : true },<br>
+              {" Vehicle.Cabin.Door.Row1.Left.IsLocked" : true },<br>
+              {" Vehicle.Cabin.Door.Row2.Right.IsLocked" : false },<br>
+              {" Vehicle.Cabin.Door.Row2.Left.IsLocked" : true } ]<br>
+            </blockquote>
+            A client service discovery request for all doors of the car. In this case it is implied that the response shall contain the nodes in any branches below the root node indicated by the path, so there is no need to add a wildcard as the last segment.<br>
+            <blockquote>
+              "path": "Vehicle.Cabin.Door"<br>
+            </blockquote>
+            The response to the path above will include all nodes in any branches, to any deep, below the root node Door as denoted in the path.<br>
+            If only the direct children of the Door node is of interest, the path then should have one wildcard appended after the Door path segment.<br>
+            <blockquote>
+              "path": "Vehicle.Cabin.Door.*"<br>
+            </blockquote>
+            And for the case of getting two generations of children to the Door node, two wildcards needs to be appended.<br><br>However, for any other action than a service discovery, the path above, ending with a wildcard, would lead to the return of all leave nodes at any depth under the Door node.
+          </p>
         </section>
       </section>
-      <section data-dfn-for="Foo">
+      <section data-dfn-for="query">
         <h2>Query</h2>
         <p>Queries are appended to the path, starting with a question mark. TBC...</p>
       </section>
     </section>
-    <section data-dfn-for="Foo">
+    <section id="security">
       <h2>Security</h2>
+    <div class="issue" title="describe security section">
+      The security section has to be described.
+      Helpful discussion might be:<br>
+      Authentication: <a href="http://www.w3.org/2018/04/19-auto-minutes.html#item03">http://www.w3.org/2018/04/19-auto-minutes.html#item03</a><br>
+      Volvo assesment: <a href="https://lists.w3.org/Archives/Public/public-automotive/2018Aug/0002.html">https://lists.w3.org/Archives/Public/public-automotive/2018Aug/0002.html</a>, <a href="https://www.w3.org/2018/09/25-auto-minutes.html#item01">https://www.w3.org/2018/09/25-auto-minutes.html#item01</a>
+    </div>
     </section>
-    <section data-dfn-for="Foo">
+    <section data-dfn-for="interface">
       <h2>Interface</h2>
-      <section data-dfn-for="Foo">
+      <section data-dfn-for="interface-methods">
         <h2>Functional methods</h2>
-        <section data-dfn-for="Foo">
+        <section data-dfn-for="read">
           <h2>Read</h2>
           <p>The client MAY send a Read message to the server to get the value of one or more vehicle data sources. If the server is able to satisfy the Request it SHALL return a Response message. If the server is unable to fulfil the request, then the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
           <ul>  
@@ -340,7 +342,7 @@ And for the case of getting two generations of children to the Door node, two wi
             </ul>  
           </ul>  
         </section>
-        <section data-dfn-for="Foo">
+        <section data-dfn-for="update">
           <h2>Update</h2>
           <p>The client MAY request that the server sets the value of one or more data sources. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
           <ul>  
@@ -360,13 +362,13 @@ And for the case of getting two generations of children to the Door node, two wi
             </ul>  
           </ul>  
         </section>
-        <section data-dfn-for="Foo">
+        <section data-dfn-for="create">
           <h2>Create</h2>
         </section>
-        <section data-dfn-for="Foo">
+        <section data-dfn-for="delete">
           <h2>Delete</h2>
         </section>
-        <section data-dfn-for="Foo">
+        <section data-dfn-for="delete">
           <h2>Service discovery</h2>
           <p>The client MAY request that the server returns the VSS tree content. The client is able to request metadata from any point in the signal tree, such that only the metadata for the nodes within the given branch of the tree is returned. For example, only metadata for the chassis branch of the VSS tree is returned when the chassis path is specified. If the path is set to the VSS root, the response contains the metadata for the entire tree. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
           <ul>  
@@ -386,7 +388,7 @@ And for the case of getting two generations of children to the Door node, two wi
             </ul>  
           </ul>  
         </section>
-        <section data-dfn-for="Foo">
+        <section data-dfn-for="authorize">
           <h2>Authorize</h2>
           <p>To enable access to signals and data attributes that are under access control, the client MAY optionally pass a message with an authorize action to the server. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
           <ul>  
@@ -405,7 +407,7 @@ And for the case of getting two generations of children to the Door node, two wi
             </ul>  
           </ul>  
         </section>
-        <section data-dfn-for="Foo">
+        <section data-dfn-for="subscribe">
           <h2>Subscribe</h2>
           <p>Vehicle data subscriptions can provide data to the client whenever a signal changes on the server, unless otherwise specified using Server Side Filtering. The server MAY reduce the number of notifications sent to the client in order to reduce processing demands, particularly when the client has subscribed to continuously varying signals.<br>When the client makes a request to the server to create a new subscription, a JSON data object is returned. This object contains the attributes that were passed to the server to make the subscription and a subscriptionId integer handle value which is used to uniquely identify the subscription. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
           <ul>  
@@ -432,7 +434,7 @@ And for the case of getting two generations of children to the Door node, two wi
             </ul>  
           </ul>  
         </section>
-        <section data-dfn-for="Foo">
+        <section data-dfn-for="unsubscribe">
           <h2>Unsubscribe</h2>
           <p>To unsubscribe from a subscription, the client SHALL send an unsubscribe request message to the server, containing the subscriptionId. To unsubscribe to all subscriptions owned by the client, the subscriptionId is set to -1.<br>If the client has created more than one WebSocket instance, it MUST always unsubscribe using the same WebSocket instance that was originally used to create the subscription.<br>It is not possible to unsubscribe from a subset of signals within a subscription. The client must unsubscribe and set up a new subscription to receive notifications for the desired signals.<br>The client should always unsubscribe from receiving notifications when it is no longer using the data. Over a long vehicle journey, this significantly reduces the processing load on the server and allow the server to free memory. It therefore makes it more likely that the server will remain responsive to future requests from the client. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
           <ul>  
@@ -455,9 +457,8 @@ And for the case of getting two generations of children to the Door node, two wi
         </section>
       </section>
     </section>
-    <section id="appendix_a">
-      <h2>Appendix A: References</h2>
-      <p id=rfc2119>RFC2119: Key words for use in RFCs to Indicate Requirement Levels. S. Bradner. IETF. March 1997. Best Current Practice. URL: https://tools.ietf.org/html/rfc2119</p>
-    </section>
+
+  <section id="issue-summary" class="appendix"></section>
+  <section id="tof" class="appendix"></section>
   </body>
 </html>
