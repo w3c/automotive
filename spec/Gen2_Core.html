@@ -6,6 +6,9 @@
     <script 
       src='https://www.w3.org/Tools/respec/respec-w3c-common' 
       class='remove'></script>
+    <script type="text/javascript" src="plantuml/jquery.js"></script>
+    <script type="text/javascript" src="plantuml/jquery_plantuml.js"></script>
+    <script type="text/javascript" src="plantuml/rawdeflate.js"></script>	 
     <script class='remove'>
       var respecConfig = {
         specStatus: "ED",
@@ -57,7 +60,76 @@
     An example VSS tree is shown below, its contents are illustrative:         
     </p>
         <figure id="vsstree">
-          <img src="pics/VSS_tree.png" alt="">
+			<img uml='
+			@startuml 
+				skinparam component {
+					FontSize 16
+					BackgroundColor<<element>> Red
+					BorderColor<<element>> Black
+					
+					BackgroundColor<<rbranch>> Transparent
+					BorderColor<<rbranch>> Red
+					
+					BackgroundColor<<signal>> Green
+					BorderColor<<signal>> Black
+					FontColor<<signal>> White
+					
+					BackgroundColor<<branch>> White
+					BorderColor<<branch>> Green
+					FontColor<<branch>> Green
+					
+					BackgroundColor<<attribute>> White
+					BorderColor<<attribute>> Black
+				}
+				[VSS-Root] -- [Media]
+				[VSS-Root] -- [Car]
+				[VSS-Root] -- [Private]
+				[VSS-Root]<<branch>>
+				[Media]<<branch>>
+				[Private]<<branch>>
+				[Car]<<branch>>
+				
+				[Media] -- [Collections]
+				[Collections] .. [30321564123]
+				[Collections]<<rbranch>>
+				[30321564123]<<element>>
+				
+				[Car] -- [Engine]
+				[Car] -- [Body]
+				[Engine]<<branch>>
+				[Body]<<branch>>
+				
+				[Engine] -- [RPM]
+				[Engine] -- [Speed]
+				[Engine] -- [Fueltype]
+				[RPM]<<signal>>
+				[Speed]<<signal>>
+				[Fueltype]<<attribute>>
+				
+				[Body] -- [Mirror]
+				[Body] -- [Door]
+				[Body] -- [Weight]
+				[Mirror]<<branch>>
+				[Door]<<branch>>
+				[Weight]<<attribute>>
+				
+				[Door] -- [&nbsp;...&nbsp;]
+				[&nbsp;...&nbsp;]<<branch>>
+				
+				[Mirror] -- [Left]
+				[Left] -- [Heated]
+				[Left] -- [Dimmed]
+				[Left]<<branch>>
+				[Right]<<branch>>
+				[Heated]<<signal>>
+				[Dimmed]<<signal>>
+				
+				[Mirror] -- [Right]
+				[Right] -- [ ... ]
+				[ ... ]<<branch>>
+				
+			@enduml
+			'>
           <figcaption>Diagram showing an example Vehicle Signal tree.</figcaption>
         </figure>
     <section data-dfn-for="tree-elements">
