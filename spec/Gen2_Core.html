@@ -120,15 +120,28 @@
         </figure>
       <section data-dfn-for="tree-elements">
         <h2>Tree elements</h2>
+        <p>
+        Tree elements have <dfn>names</dfn>.
+        A <a>name</a> MUST be a string with at least 3 characters.
+        A <a>name</a> SHALL NOT be longer than 32 characters.
+        The string <a>name</a> MUST only consists out of [A-Z], [a-z] and [0-9].
+        The string <a>name</a> MUST start with a capital letter.
+        This RegEx expresses <a>name</a>: <code>^[A-Z][A-Za-z0-9]{2,31}$</code>
+        <div class="issue" title="properties of name">The properties of name must be defined. This is just expressing a gut feeling.</div>
         <section data-dfn-for="branch">
           <h3><dfn>branch</dfn></h3>
           <p>
-          A <a>branch</a> MUST have a schema attached that describes it sub-nodes. 
-          It MUST be marked for every sub-<a>branch</a> if only one instance is allowed or multiple instances are allowed.
-          A <a>branch</a> MUST have a <a>name</a> that makes the <a>branches</a> convention/type <span class="issue">not clear that it expresses the type</span> understandable.
-          The <a>name</a> is set by the schema. 
-          A <a>branch</a> MUST have an <a>id</a> that makes the identifiable and addressable.
-          The <a>id</a> is managed by the service implementation.
+            A <a>branch</a> MUST have a schema attached that describes it sub-nodes. 
+            It MUST be marked for every sub-<a>branch</a> if only one instance is allowed or multiple instances are allowed.
+            A <a>branch</a> MUST have a <a>name</a> that makes the <a>branches</a> convention/type understandable.
+            The <a>name</a> is set by the schema. 
+            <div class="issue" title="type of branch">not clear that this expresses the type of the branch.</div>
+          </p>
+          <p>
+            A <a>branch</a> MUST have an <dfn>id</dfn> that makes the identifiable and addressable.
+            An <a>id</a> MAY be a unique string within a parent <a>branch</a> with the same properties as <a>name</a>.
+            An <a>id</a> MAY be an UUID v5 as defined in [[RFC4122]].
+            The <a>id</a> is managed by the service implementation.
           </p>
         </section>
         <section data-dfn-for="value">
