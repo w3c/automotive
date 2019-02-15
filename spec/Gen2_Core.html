@@ -355,8 +355,9 @@
         </section>
       </section>				
 
-      <section data-dfn-for="Foo">
+      <section data-dfn-for="service-discovery">
         <h2>Service discovery</h2>
+        <div class="issue" title="service discovery">Is this an extra method or an intristic part of the tree?</div>
         <p>The client MAY request that the server returns the VSS tree content. The client is able to request metadata from any point in the signal tree, such that only the metadata for the nodes within the given branch of the tree is returned. For example, only metadata for the chassis branch of the VSS tree is returned when the chassis path is specified. If the path is set to the VSS root, the response contains the metadata for the entire tree. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
         <ul>  
           <li>Request message parameters:</li>
