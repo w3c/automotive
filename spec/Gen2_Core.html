@@ -62,6 +62,11 @@
       Leafs in the tree are <a>values</a>. 
       The path to a leaf is built by <a>branches</a>.
       </p>
+      <p>
+        A <dfn>schema</dfn> for a <a>branch</a> describes the structure of the <a>branch</a> itself 
+        and the available child <a>branches</a> 
+        and the optional and mandatory <a>values</a>.
+      </p>
       <figure id="tree-example" class="example">
         <img uml='
         @startuml 
@@ -155,7 +160,7 @@
           </p>
         </section>
       </section>
-  
+      
       <section data-dfn-for="address">
         <h2>Addressing</h2>
         <p>Addressing of elements is done using URIs as defined in [[RFC3986]].</p>
