@@ -2,362 +2,385 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>Vehicle Services Interface_Core</title>
+    <title>Gen2 - Core</title>
     <script 
-     src='https://www.w3.org/Tools/respec/respec-w3c-common' 
-     class='remove'></script>
-	<script type="text/javascript" src="plantuml/jquery.js"></script>
-	<script type="text/javascript" src="plantuml/jquery_plantuml.js"></script>
-	<script type="text/javascript" src="plantuml/rawdeflate.js"></script>	 
+      src='https://www.w3.org/Tools/respec/respec-w3c-common' 
+      class='remove'></script>
+    <script type="text/javascript" src="plantuml/jquery.js"></script>
+    <script type="text/javascript" src="plantuml/jquery_plantuml.js"></script>
+    <script type="text/javascript" src="plantuml/rawdeflate.js"></script>	 
     <script class='remove'>
       var respecConfig = {
         specStatus: "ED",
         editors: [{
-          name: "Ulf Bjorkengren, Volvo Cars",
-          url: "https://www.volvocars.com/intl",
+          name: "Ulf Bjorkengren",
+          company: "Volvo Cars",
+          companyURL: "https://www.volvocars.com/intl"
+        },
+        {
+          name: "Patrick Lünnemann",
+          company: "Volkswagen Group",
+          companyURL: "https://www.volkswagenag.com",
+          w3cid: 95844
         }],
-        edDraftURI: "https://some.github.repo",
-        shortName: "VSI-CORE"
+        edDraftURI: "https://github.com/w3c/automotive/blob/gh-pages/spec/Gen2_Core.html",
+        shortName: "Gen2-core"
       };
     </script>
   </head>
   <body>
     <section id='abstract'>
       <p>
-        This document, the VSI CORE specification, describes the VSI messaging layer. The companion specification VSI TRANSPORT details the mapping of the messaging layer to selected transports.
+        This document, the Gen2 core specification, describes the Gen2 messaging layer. The companion specification Gen2 transport details the mapping of the messaging layer to selected transports.
       </p>
     </section>
-    <section id='sotd'>
-      <p>
-        This is required.
-      </p>
-    </section>
-    <section data-dfn-for="Foo">
+    <section id='sotd'></section>
+    <section id="introduction">
       <h2>Introduction</h2>
-      <p>This document describes the messaging layer. The separation between transport and messaging layer improves readability and simplify extending VSI to further transports in the future. The VSI messaging layer uses a RESTful design with an interface and a data model.</p>
+      <p>This document describes the messaging layer. The separation between transport and messaging layer improves readability and simplify extending Gen2 to further transports in the future. The Gen2 messaging layer uses a RESTful design with an interface and a data model.</p>
     </section>
-    <section data-dfn-for="Foo">
-      <h2>Conformance</h2>
-      <p>As well as sections marked as non-normative, all authoring guidelines, diagrams, examples, and notes in this specification are non-normative. Everything else in this specification is normative.The key words MAY, MUST, and SHALL are to be interpreted as described in <a href='#rfc2119'>[RFC2119]</a>.</p>
-    </section>
-    <section data-dfn-for="Foo">
+    <section id="conformance"></section>
+    <section id="terms">
       <h2>Terminology</h2>
-      <p>The acronym 'VSI' is used to refer to this document, the 'Vehicle Service Interface' specification.The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance.The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.</p>
-    </section>
-    <section data-dfn-for="Foo">
-      <h2>Table of Figures</h2>
-      <p><a href="#vsstree"></a>. Diagram showing an example Vehicle Signal Tree.</p>
+      <p>The acronym 'Gen2' is used to refer to this document, the second generation specification. The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance. The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.</p>
     </section>
     <section data-dfn-for="data-model">
       <h2>Data model</h2>
-		<p>
-		The basic data model behind that can be accessed with this interface is a tree-like logical taxonomy of the whole vehicle.
-		It is represented by a directed acyclic graph.
-		</p>
-		<p>
-		It is derived from <a href="https://github.com/GENIVI/vehicle_signal_specification/blob/master/README.md">GENIVI's Vehicle Signal Specification</a> (VSS).
-		<span class="issue">is this the correct link?</span>
-		This <a href="#tree-example">example</a> shows that major vehicle structures (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as their child nodes.
-		Each of the child nodes in the tree is further decomposed into its logical constituents, 
-		and the process is repeated until leafs are reached.
-		</p>
-		<p>
-		A node in the tree can have one of two types.
-		Leafs in the tree are <a>values</a>. 
-		The path to a leaf is built by <a>branches</a>.
-		</p>
-        <figure id="tree-example" class="example">
-			<img uml='
-			@startuml 
-				skinparam usecase {
-					FontSize 16
-					BackgroundColor CornflowerBlue
-					FontColor Black
-					BorderColor Black
-				}
+      <p>
+      The basic data model behind that can be accessed with this interface is a tree-like logical taxonomy of the whole vehicle.
+      It is represented by a directed acyclic graph.
+      </p>
+      <p>
+      It is derived from <a href="https://github.com/GENIVI/vehicle_signal_specification/blob/master/README.md">GENIVI's Vehicle Signal Specification</a> (VSS).
+      <span class="issue">is this the correct link?</span>
+      This <a href="#tree-example">example</a> shows that major vehicle structures (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as their child nodes.
+      Each of the child nodes in the tree is further decomposed into its logical constituents, 
+      and the process is repeated until leafs are reached.
+      </p>
+      <p>
+      A node in the tree can have one of two types.
+      Leafs in the tree are <a>values</a>. 
+      The path to a leaf is built by <a>branches</a>.
+      </p>
+      <figure id="tree-example" class="example">
+        <img uml='
+        @startuml 
+          skinparam usecase {
+            FontSize 16
+            BackgroundColor CornflowerBlue
+            FontColor Black
+            BorderColor Black
+          }
 
-				skinparam component {
-					FontSize 16
-					BorderColor Black					
-					BackgroundColor MediumSeaGreen
-					FontColor Black
-				}
+          skinparam component {
+            FontSize 16
+            BorderColor Black					
+            BackgroundColor MediumSeaGreen
+            FontColor Black
+          }
 
-				[Root] -- [Media]
-				[Root] -- [Car]
-				[Root] -- [Private]
+          [Root] -- [Media]
+          [Root] -- [Car]
+          [Root] -- [Private]
 
-				[...] as more2
-				[Private] -- more2
-				[...] as more3
-				[Private] -- more3
-				
-				[Media] -- [Collections]
-				[Collections] -- [30321564123]
-				[30321564123] -- (name)
-				[30321564123] -- (rating)
-				
-				[Car] -- [Engine]
-				[Car] -- [Body]
-				
-				[Engine] -- (RPM)
-				[Engine] -- (Speed)
-				[Engine] -- (Fueltype)
+          [...] as more2
+          [Private] -- more2
+          [...] as more3
+          [Private] -- more3
+          
+          [Media] -- [Collections]
+          [Collections] -- [30321564123]
+          [30321564123] -- (name)
+          [30321564123] -- (rating)
+          
+          [Car] -- [Engine]
+          [Car] -- [Body]
+          
+          [Engine] -- (RPM)
+          [Engine] -- (Speed)
+          [Engine] -- (Fueltype)
 
-				[Body] -- [Mirror]
-				[Body] -- [Door]
-				[Body] -- (Weight)
-				
-				[...] as more1
-				[Door] -- more1
-				
-				[Mirror] -- [Left]
-				[Left] -- (Heated)
-				[Left] -- (Dimmed)
-				[Left] -- (Fold)
+          [Body] -- [Mirror]
+          [Body] -- [Door]
+          [Body] -- (Weight)
+          
+          [...] as more1
+          [Door] -- more1
+          
+          [Mirror] -- [Left]
+          [Left] -- (Heated)
+          [Left] -- (Dimmed)
+          [Left] -- (Fold)
 
-				[Mirror] -- [Right]
-				[Right] -- (...)
-			@enduml
-			'>
+          [Mirror] -- [Right]
+          [Right] -- (...)
+        @enduml
+        '>
           <figcaption>Diagram showing an example tree.</figcaption>
         </figure>
-	  <section data-dfn-for="tree-elements">
+      <section data-dfn-for="tree-elements">
         <h2>Tree elements</h2>
-		<section data-dfn-for="branch">
-			<h3><dfn>branch</dfn></h3>
-			<p>
-			A <a>branch</a> MUST have a schema attached that describes it sub-nodes. 
-			It MUST be marked for every sub-<a>branch</a> if only one instance is allowed or multiple instances are allowed.
-			A <a>branch</a> MUST have a <a>name</a> that makes the <a>branches</a> convention/type <span class="issue">not clear that it expresses the type</span> understandable.
-			The <a>name</a> is set by the schema. 
-			A <a>branch</a> MUST have an <a>id</a> that makes the identifiable and addressable.
-			The <a>id</a> is managed by the service implementation.
-			</p>
-		</section>
-		<section data-dfn-for="value">
-			<h3><dfn>value</dfn></h3>
-			<p>
-			A <a>value</a> MUST have an <a>name</a> that identifies the <a>value</a>.
-			The <a>name</a> of a <a>value</a> MUST be only present once within a <a>branch</a>-node.
-			The <a>name</a> is set via the schema and makes the <a>value</a> understandable.
-			A <a>value</a> MUST have a <a>schema</a> that describes the <a href="#value-data-types">data type</a> and restrictions of the value.
-			A <a>value</a> MUST have a data field that stores the data.
-			</p>
-		</section>
+        <section data-dfn-for="branch">
+          <h3><dfn>branch</dfn></h3>
+          <p>
+          A <a>branch</a> MUST have a schema attached that describes it sub-nodes. 
+          It MUST be marked for every sub-<a>branch</a> if only one instance is allowed or multiple instances are allowed.
+          A <a>branch</a> MUST have a <a>name</a> that makes the <a>branches</a> convention/type <span class="issue">not clear that it expresses the type</span> understandable.
+          The <a>name</a> is set by the schema. 
+          A <a>branch</a> MUST have an <a>id</a> that makes the identifiable and addressable.
+          The <a>id</a> is managed by the service implementation.
+          </p>
+        </section>
+        <section data-dfn-for="value">
+          <h3><dfn>value</dfn></h3>
+          <p>
+          A <a>value</a> MUST have an <a>name</a> that identifies the <a>value</a>.
+          The <a>name</a> of a <a>value</a> MUST be only present once within a <a>branch</a>-node.
+          The <a>name</a> is set via the schema and makes the <a>value</a> understandable.
+          A <a>value</a> MUST have a <a>schema</a> that describes the <a href="#value-data-types">data type</a> and restrictions of the value.
+          A <a>value</a> MUST have a data field that stores the data.
+          </p>
+        </section>
       </section>
-	  
-      <section data-dfn-for="Foo">
-        <h2>addressing</h2>
+  
+      <section data-dfn-for="address">
+        <h2>Addressing</h2>
+        <p>Addressing of elements is done using URIs as defined in [[RFC3986]].</p>
+        <blockquote><a>scheme</a>:<a>authority</a>/<a>path</a></blockquote>
+        <p>The <dfn>scheme</dfn> describes the protocol to use to reach the addressed element.
+          The <dfn>authority</dfn> describes where to reach the service holding and managing the data representation.
+          Scheme and authority are defined within the protocol adaptation.</p>
+        <p><dfn>Path</dfn> describes the location of a specific data representation within a service.
+          It is the path through the tree, the data representation, implemented by the service.</p>
       </section>
 
       <section data-dfn-for="value-data-types">
         <h2>Value Data Types</h2>
-		<section data-dfn-for="number">
-			<h3><dfn>Number</dfn></h3>
-			<p>
-			<a>Number</a> is used to represent numbers. 
-			This includes all signed and unsigned integer values and floats.
-			To allow for memory allocation restrictions MUST be given.
-			Restrictions MUST be expressed by using min, max and resolution.
-			Min MUST describe the lowest possible value.
-			Max MUST describe the highest possible value.
-			Resolution MUST <span class="issue">not a good description</span>.
-			A <a>schema</a> MAY define the restrictions by using predefined restrictions.
-			<table class="def">
-				<tr><th>name</th>
-					<th>description</th>
-					<th>min</th>
-					<th>max</th>
-					<th>resolution</th></tr>
-				<tr><th><dfn>UInt8</dfn></th>
-					<td>unsigned 8-bit integer</td>
-					<td>0</td>
-					<td>255</td>
-					<td></td></tr>
-				<tr><th><dfn>Int8</dfn></th>
-					<td>signed 8-bit integer</td>
-					<td>-128</td>
-					<td>127</td>
-					<td></td></tr>
-				<tr><th><dfn>UInt16</dfn></th>
-					<td>unsigned 16-bit integer</td>
-					<td>0</td>
-					<td>65535</td>
-					<td></td></tr>
-				<tr><th><dfn>Int16</dfn></th>
-					<td>signed 16-bit integer</td>
-					<td>-32768</td>
-					<td>32767</td>
-					<td></td></tr>
-				<tr><th><dfn>UInt32</dfn></th>
-					<td>unsigned 32-bit integer</td>
-					<td>0</td>
-					<td>4294967295</td>
-					<td></td></tr>
-				<tr><th><dfn>Int32</dfn></th>
-					<td>signed 32-bit integer</td>
-					<td>-2147483648</td>
-					<td>2147483647</td>
-					<td></td></tr>
-				<tr><th><dfn>UInt64</dfn></th>
-					<td>unsigned 64-bit integer</td>
-					<td>0</td>
-					<td>2^64-1</td>
-					<td></td></tr>
-				<tr><th><dfn>Int64</dfn></th>
-					<td>unsigned 32-bit integer</td>
-					<td>2^63</td>
-					<td>2^63-1</td>
-					<td></td></tr>
-				<tr><th><dfn>Float</dfn></th>
-					<td>floating point number</td>
-					<td>-3.4e -38</td>
-					<td>3.4e 38</td>
-					<td></td></tr>
-				<tr><th><dfn>Double</dfn></th>
-					<td>double precision floating point number</td>
-					<td>-1.7e -300</td>
-					<td>1.7e 300</td>
-					<td></td></tr>
-				<tr><th><dfn></dfn></th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td></tr>
-			</table>
-			</p>
-		</section>
-		<section data-dfn-for="Boolean">
-			<h3><dfn>Boolean</dfn></h3>
-			<p>Simple true or false</p>
-		</section>
-		<section data-dfn-for="String">
-			<h3><dfn>String</dfn></h3>
-			<p>
-			<a>String</a> is used to represent sequence of characters.
-			To allow for memory allocation restrictions MUST be given.
-			Restrictions MUST include a maximum string length.
-			Restrictions MAY include a character set.
-			If no character set is given the UTF-8 MUST be assumed.
-			Restrictions MAY include a regular expression.
-			<span class="issue">which regex style?</span>
-			A <a>schema</a> MAY define the restrictions by using predefined restrictions.
-			Protocol specific implementations MAY use optimized versions to transfer values with predefined restrictions.
-			<table class="def">
-				<tr><th>name</th>
-					<th>description</th>
-					<th>max</th>
-					<th>example</th>
-					<th>RegEx</th></tr>
-				<tr><th><dfn>date-time</dfn></th>
-					<td>date-time (based on RFC3339 5.6) detailed fraction</td>
-					<td>29</td>
-					<td class="example">2005-11-12T12:01:42.123+01:00</td>
-					<td><code>^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?((Z|(\+|\-)\d{2}:\d{2}))$</code></td></tr>
-				<tr><th><dfn>time</dfn></th>
-					<td>time (based on RFC3339 5.6) detailed fraction</td>
-					<td>18</td>
-					<td class="example">12:01:42.123+01:00</td>
-					<td><code>^\d{2}:\d{2}:\d{2}(\.\d{3})?((Z|(\+|\-)\d{2}:\d{2}))$</code></td></tr>
-				<tr><th><dfn>date</dfn></th>
-					<td>date (RFC3339 5.6)</td>
-					<td>10</td>
-					<td class="example">2005-11-12</td>
-					<td><code>^\d{4}-\d{2}-\d{2}$</code></td></tr>
-				<tr><th><dfn></dfn></th>
-					<td></td>
-					<td></td>
-					<td class="example"></td>
-					<td><code></code></td></tr>
-			</table>
-			</p>
-		</section>
-		<section data-dfn-for="ByteBuffer">
-			<h3><dfn>ByteBuffer</dfn></h3>
-			<p>
-			<a>ByteBuffer</a> also known as a blob is an byte array of not nearer specified data.
-			To allow for memory allocation restrictions MUST be given.
-			Restrictions MUST include a maximum number of bytes.
-			</p>
-		</section>
+        <section data-dfn-for="number">
+          <h3><dfn>Number</dfn></h3>
+          <p>
+          <a>Number</a> is used to represent numbers. 
+          This includes all signed and unsigned integer values and floats.
+          To allow for memory allocation restrictions MUST be given.
+          Restrictions MUST be expressed by using min, max and resolution.
+          Min MUST describe the lowest possible value.
+          Max MUST describe the highest possible value.
+          Resolution MUST <span class="issue">not a good description</span>.
+          A <a>schema</a> MAY define the restrictions by using predefined restrictions.
+          <table class="def">
+            <tr><th>name</th>
+              <th>description</th>
+              <th>min</th>
+              <th>max</th>
+              <th>resolution</th></tr>
+            <tr><th><dfn>UInt8</dfn></th>
+              <td>unsigned 8-bit integer</td>
+              <td>0</td>
+              <td>255</td>
+              <td></td></tr>
+            <tr><th><dfn>Int8</dfn></th>
+              <td>signed 8-bit integer</td>
+              <td>-128</td>
+              <td>127</td>
+              <td></td></tr>
+            <tr><th><dfn>UInt16</dfn></th>
+              <td>unsigned 16-bit integer</td>
+              <td>0</td>
+              <td>65535</td>
+              <td></td></tr>
+            <tr><th><dfn>Int16</dfn></th>
+              <td>signed 16-bit integer</td>
+              <td>-32768</td>
+              <td>32767</td>
+              <td></td></tr>
+            <tr><th><dfn>UInt32</dfn></th>
+              <td>unsigned 32-bit integer</td>
+              <td>0</td>
+              <td>4294967295</td>
+              <td></td></tr>
+            <tr><th><dfn>Int32</dfn></th>
+              <td>signed 32-bit integer</td>
+              <td>-2147483648</td>
+              <td>2147483647</td>
+              <td></td></tr>
+            <tr><th><dfn>UInt64</dfn></th>
+              <td>unsigned 64-bit integer</td>
+              <td>0</td>
+              <td>2^64-1</td>
+              <td></td></tr>
+            <tr><th><dfn>Int64</dfn></th>
+              <td>unsigned 32-bit integer</td>
+              <td>2^63</td>
+              <td>2^63-1</td>
+              <td></td></tr>
+            <tr><th><dfn>Float</dfn></th>
+              <td>floating point number</td>
+              <td>-3.4e -38</td>
+              <td>3.4e 38</td>
+              <td></td></tr>
+            <tr><th><dfn>Double</dfn></th>
+              <td>double precision floating point number</td>
+              <td>-1.7e -300</td>
+              <td>1.7e 300</td>
+              <td></td></tr>
+            <tr><th><dfn></dfn></th>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td></tr>
+          </table>
+          </p>
+        </section>
+        <section data-dfn-for="Boolean">
+          <h3><dfn>Boolean</dfn></h3>
+          <p>Simple true or false</p>
+        </section>
+        <section data-dfn-for="String">
+          <h3><dfn>String</dfn></h3>
+          <p>
+          <a>String</a> is used to represent sequence of characters.
+          To allow for memory allocation restrictions MUST be given.
+          Restrictions MUST include a maximum string length.
+          Restrictions MAY include a character set.
+          If no character set is given the UTF-8 MUST be assumed.
+          Restrictions MAY include a regular expression.
+          <span class="issue">which regex style?</span>
+          A <a>schema</a> MAY define the restrictions by using predefined restrictions.
+          Protocol specific implementations MAY use optimized versions to transfer values with predefined restrictions.
+          <table class="def">
+            <tr><th>name</th>
+              <th>description</th>
+              <th>max</th>
+              <th>example</th>
+              <th>RegEx</th></tr>
+            <tr><th><dfn>date-time</dfn></th>
+              <td>date-time (based on RFC3339 5.6) detailed fraction</td>
+              <td>29</td>
+              <td class="example">2005-11-12T12:01:42.123+01:00</td>
+              <td><code>^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?((Z|(\+|\-)\d{2}:\d{2}))$</code></td></tr>
+            <tr><th><dfn>time</dfn></th>
+              <td>time (based on RFC3339 5.6) detailed fraction</td>
+              <td>18</td>
+              <td class="example">12:01:42.123+01:00</td>
+              <td><code>^\d{2}:\d{2}:\d{2}(\.\d{3})?((Z|(\+|\-)\d{2}:\d{2}))$</code></td></tr>
+            <tr><th><dfn>date</dfn></th>
+              <td>date (RFC3339 5.6)</td>
+              <td>10</td>
+              <td class="example">2005-11-12</td>
+              <td><code>^\d{4}-\d{2}-\d{2}$</code></td></tr>
+            <tr><th><dfn></dfn></th>
+              <td></td>
+              <td></td>
+              <td class="example"></td>
+              <td><code></code></td></tr>
+          </table>
+          </p>
+        </section>
+        <section data-dfn-for="ByteBuffer">
+          <h3><dfn>ByteBuffer</dfn></h3>
+          <p>
+          <a>ByteBuffer</a> also known as a blob is an byte array of not nearer specified data.
+          To allow for memory allocation restrictions MUST be given.
+          Restrictions MUST include a maximum number of bytes.
+          </p>
+        </section>
       </section>
 
       <section data-dfn-for="branch-types">
         <h2>Default Branch Types</h2>
-		<p>
-		A set of default <a>branch</a> types is defined. 
-		These types help to have a common understanding how a branch can be understood 
-		and allows for easy reuse of code throught several schemas.
-		These types MUST be implemented.
-		</p>
-		<section data-dfn-for="remote-branch">
-			<h3><dfn>remote branch</dfn></h3>
-			<p>
-			A <a>remote branch</a> is <a>branch</a> that MUST point to another <a>service</a> that implements a <a>tree</a>.
-			The other <a>services</a> are called remotes. At least one remote MUST be defined. A <a>remote</a> must contain a <a>schema</a> and a <a>authority</a>.
-			
-			It MAY point to a sub-part of the <a>tree</a> by setting a <a>path</a>. If no <a>path</a> is given <code>/</code> is assumed.
-			
-			</p>
-        <figure id="remote-branch-example" class="example">
-			<img uml='
-			@startuml 
-				skinparam usecase {
-					FontSize 16
-					BackgroundColor CornflowerBlue
-					FontColor Black
-					BorderColor Black
-				}
+        <p>
+        A set of default <a>branch</a> types is defined. 
+        These types help to have a common understanding how a branch can be understood 
+        and allows for easy reuse of code throught several schemas.
+        These types MUST be implemented.
+        </p>
+        <section data-dfn-for="remote-branch">
+          <h3><dfn>remote branch</dfn></h3>
+          <p>
+          A <a>remote branch</a> is <a>branch</a> that MUST point to another <a>service</a> that implements a <a>tree</a>.
+          The other <a>services</a> are called remotes. At least one remote MUST be defined. A <a>remote</a> must contain a <a>schema</a> and a <a>authority</a>.
+          
+          It MAY point to a sub-part of the <a>tree</a> by setting a <a>path</a>. If no <a>path</a> is given <code>/</code> is assumed.
+          
+          </p>
+            <figure id="remote-branch-example" class="example">
+          <img uml='
+          @startuml 
+            skinparam usecase {
+              FontSize 16
+              BackgroundColor CornflowerBlue
+              FontColor Black
+              BorderColor Black
+            }
 
-				skinparam component {
-					FontSize 16
-					BorderColor Black					
-					BackgroundColor MediumSeaGreen
-					FontColor Black
-				}
+            skinparam component {
+              FontSize 16
+              BorderColor Black					
+              BackgroundColor MediumSeaGreen
+              FontColor Black
+            }
 
-				[Root] -- [Media]
-				[Root] -- [Car]
+            [Root] -- [Media]
+            [Root] -- [Car]
 
-				note left of Media: remote branch
-				[Media] -- [Collections]
-				[Collections] -- [Remotes]
-				[Collections] -- (path\n"/collections")
-				[Collections] .. [remote]
-				
-				note left of Remotes: list of remotes
-				
-				[Remotes] -- (Scheme\n"http")
-				[Remotes] -- (Authority\n"127.0.0.1:1337")
-				
-				
-				package "Remote http://127.0.0.1:1337/Collections" as remote {
-					[30321564123] -- (name)
-					[30321564123] -- (rating)
-				}
-				
-				note bottom of remote: Remote representation of a part of a tree
-				
-				[Car] -- [Engine]
-				[Car] -- [...]
-				
-				[Engine] -- (RPM)
-				[Engine] -- (Speed)
-			@enduml
-			'>
-          <figcaption>Example of a remote branch</figcaption>
-        </figure>
-			
-		</section>				
+            note left of Media: remote branch
+            [Media] -- [Collections]
+            [Collections] -- [Remotes]
+            [Collections] -- (path\n"/collections")
+            [Collections] .. [remote]
+            
+            note left of Remotes: list of remotes
+            
+            [Remotes] -- (Scheme\n"http")
+            [Remotes] -- (Authority\n"127.0.0.1:1337")
+            
+            
+            package "Remote http://127.0.0.1:1337/Collections" as remote {
+              [30321564123] -- (name)
+              [30321564123] -- (rating)
+            }
+            
+            note bottom of remote: Remote representation of a part of a tree
+            
+            [Car] -- [Engine]
+            [Car] -- [...]
+            
+            [Engine] -- (RPM)
+            [Engine] -- (Speed)
+          @enduml
+          '>
+              <figcaption>Example of a remote branch</figcaption>
+            </figure>
+      
+        </section>
+      </section>				
+
+      <section data-dfn-for="Foo">
+        <h2>Service discovery</h2>
+        <p>The client MAY request that the server returns the VSS tree content. The client is able to request metadata from any point in the signal tree, such that only the metadata for the nodes within the given branch of the tree is returned. For example, only metadata for the chassis branch of the VSS tree is returned when the chassis path is specified. If the path is set to the VSS root, the response contains the metadata for the entire tree. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
+        <ul>  
+          <li>Request message parameters:</li>
+          <ul>  
+            <li>Path: The address to one or more nodes in the VSS tree, followed by the path segment "$spec".</li>
+          </ul>  
+          <li>Response message parameters:</li>
+          <ul>  
+            <li>Metadata: The content of the VSS tree where the root is specified by the path.</li>
+            <li>Timestamp: A timestamp associated with the request.</li>
+          </ul>  
+          <li>ErrorResponse message parameters: </li>
+          <ul>  
+            <li>Error: Information describing the error reason.</li>
+            <li>Timestamp: A timestamp associated with the failed request.</li>
+          </ul>  
+        </ul>  
       </section>
-
     </section>
 	
     <section id="search_mechanisms">
       <h2>Search mechanisms</h2>
       <p>There are two mechanisms available for a client to search for tree nodes of interest: wildcards and queries, which are explained in the chapters below.</p>
-      <section data-dfn-for="Foo">
+      <section data-dfn-for="wildcards">
         <h2>Wildcard</h2>
         <p>The rules for wildcard usage is described by the following rules.</p>
           <ul>  
@@ -368,182 +391,240 @@
             <li>The service discovery method, which implies a search for all nodes having the provided path as root node, shall not have a wildcard at the last segment in the path if the entire tree below the specified root node is what is requested.</li>
             <li>If the path in a service discovery request have one or more wildcards as the last segment(s), then only the subtree of the depth given by the number of wildcards is returned.</li>
           </ul>  
-        <section data-dfn-for="Foo">
+        <section id="wildcard-examples">
           <h2>Examples</h2>
           <p>A client read request for the door lock status of all doors. There are two path segments specifying a particular door, the "RowX" and the "Left/Right" segments, so to cover all doors of the car both these segments must have a wildcard inserted.<br>
           <blockquote>
-            "path": "Vehicle.Cabin.Door.*.*.IsLocked"<br>
+            "path": "/Vehicle/Cabin/Door/*/*/IsLocked"<br>
           </blockquote>
-The response would then contain the lock status of all doors like below.<br>
+          The response would then contain the lock status of all doors like below.<br>
           <blockquote>
-            "value": [ {" Vehicle.Cabin.Door.Row1.Right.IsLocked" : true },<br>
-            {" Vehicle.Cabin.Door.Row1.Left.IsLocked" : true },<br>
-            {" Vehicle.Cabin.Door.Row2.Right.IsLocked" : false },<br>
-	    {" Vehicle.Cabin.Door.Row2.Left.IsLocked" : true } ]<br>
+            "value": [ {" /Vehicle/Cabin/Door/Row1/Right/IsLocked" : true },<br>
+            {" /Vehicle/Cabin/Door/Row1/Left/IsLocked" : true },<br>
+            {" /Vehicle/Cabin/Door/Row2/Right/IsLocked" : false },<br>
+            {" /Vehicle/Cabin/Door/Row2/Left/IsLocked" : true } ]<br>
           </blockquote>
-A client service discovery request for all doors of the car. In this case it is implied that the response shall contain the nodes in any branches below the root node indicated by the path, so there is no need to add a wildcard as the last segment.<br>
+          A client service discovery request for all doors of the car. In this case it is implied that the response shall contain the nodes in any branches below the root node indicated by the path, so there is no need to add a wildcard as the last segment.<br>
           <blockquote>
-            "path": "Vehicle.Cabin.Door"<br>
+            "path": "/Vehicle/Cabin/Door"<br>
           </blockquote>
-The response to the path above will include all nodes in any branches, to any deep, below the root node Door as denoted in the path.<br>
-If only the direct children of the Door node is of interest, the path then should have one wildcard appended after the Door path segment.<br>
+          The response to the path above will include all nodes in any branches, to any deep, below the root node Door as denoted in the path.<br>
+          If only the direct children of the Door node is of interest, the path then should have one wildcard appended after the Door path segment.<br>
           <blockquote>
-            "path": "Vehicle.Cabin.Door.*"<br>
+            "path": "/Vehicle/Cabin/Door/*"<br>
           </blockquote>
-And for the case of getting two generations of children to the Door node, two wildcards needs to be appended.<br><br>However, for any other action than a service discovery, the path above, ending with a wildcard, would lead to the return of all leave nodes at any depth under the Door node.
-</p>
+          And for the case of getting two generations of children to the Door node, two wildcards needs to be appended.<br><br>However, for any other action than a service discovery, the path above, ending with a wildcard, would lead to the return of all leave nodes at any depth under the Door node.
+          </p>
         </section>
       </section>
-      <section data-dfn-for="Foo">
+      <section data-dfn-for="query">
         <h2>Query</h2>
         <p>Queries are appended to the path, starting with a question mark. TBC...</p>
       </section>
     </section>
-    <section data-dfn-for="Foo">
+    <section id="security">
       <h2>Security</h2>
-    </section>
-    <section data-dfn-for="Foo">
-      <h2>Interface</h2>
-      <section data-dfn-for="Foo">
-        <h2>Functional methods</h2>
-        <section data-dfn-for="Foo">
-          <h2>Read</h2>
-          <p>The client MAY send a Read message to the server to get the value of one or more vehicle data sources. If the server is able to satisfy the Request it SHALL return a Response message. If the server is unable to fulfil the request, then the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
-          <ul>  
-            <li>Request message parameters:</li>
-            <ul>  
-              <li>Path: The address to one or more leave nodes in the VSS tree.</li>
-            </ul>  
-            <li>Response message parameters:</li>
-            <ul>  
-              <li>Value: One or more values associated with the addressed VSS leaves.</li>
-              <li>Timestamp: A timestamp associated with the request.</li>
-            </ul>  
-            <li>ErrorResponse message parameters: </li>
-            <ul>  
-              <li>Error: Information describing the error reason.</li>
-              <li>Timestamp: A timestamp associated with the failed request.</li>
-            </ul>  
-          </ul>  
-        </section>
-        <section data-dfn-for="Foo">
-          <h2>Update</h2>
-          <p>The client MAY request that the server sets the value of one or more data sources. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
-          <ul>  
-            <li>Request message parameters:</li>
-            <ul>  
-              <li>Path: The address to one or more leave nodes in the VSS tree.</li>
-              <li>Value: The value to set the data source to.</li>
-            </ul>  
-            <li>Response message parameters:</li>
-            <ul>  
-              <li>Timestamp: A timestamp associated with the request.</li>
-            </ul>  
-            <li>ErrorResponse message parameters: </li>
-            <ul>  
-              <li>Error: Information describing the error reason.</li>
-              <li>Timestamp: A timestamp associated with the failed request.</li>
-            </ul>  
-          </ul>  
-        </section>
-        <section data-dfn-for="Foo">
-          <h2>Create</h2>
-        </section>
-        <section data-dfn-for="Foo">
-          <h2>Delete</h2>
-        </section>
-        <section data-dfn-for="Foo">
-          <h2>Service discovery</h2>
-          <p>The client MAY request that the server returns the VSS tree content. The client is able to request metadata from any point in the signal tree, such that only the metadata for the nodes within the given branch of the tree is returned. For example, only metadata for the chassis branch of the VSS tree is returned when the chassis path is specified. If the path is set to the VSS root, the response contains the metadata for the entire tree. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
-          <ul>  
-            <li>Request message parameters:</li>
-            <ul>  
-              <li>Path: The address to one or more nodes in the VSS tree, followed by the path segment "$spec".</li>
-            </ul>  
-            <li>Response message parameters:</li>
-            <ul>  
-              <li>Metadata: The content of the VSS tree where the root is specified by the path.</li>
-              <li>Timestamp: A timestamp associated with the request.</li>
-            </ul>  
-            <li>ErrorResponse message parameters: </li>
-            <ul>  
-              <li>Error: Information describing the error reason.</li>
-              <li>Timestamp: A timestamp associated with the failed request.</li>
-            </ul>  
-          </ul>  
-        </section>
-        <section data-dfn-for="Foo">
-          <h2>Authorize</h2>
-          <p>To enable access to signals and data attributes that are under access control, the client MAY optionally pass a message with an authorize action to the server. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
-          <ul>  
-            <li>Request message parameters:</li>
-            <ul>  
-              <li>Path: The address to one or more nodes in the VSS tree, followed by the path segment "$token".</li>
-              <li>Tokens: An object containing the token(s) required for obtaining access.</li>
-            </ul>  
-            <li>Response message parameters:</li>
-            <ul>  
-              <li>TTL: The time to live for the token.</li>
-            </ul>  
-            <li>ErrorResponse message parameters: </li>
-            <ul>  
-              <li>Error: Information describing the error reason.</li>
-            </ul>  
-          </ul>  
-        </section>
-        <section data-dfn-for="Foo">
-          <h2>Subscribe</h2>
-          <p>Vehicle data subscriptions can provide data to the client whenever a signal changes on the server, unless otherwise specified using Server Side Filtering. The server MAY reduce the number of notifications sent to the client in order to reduce processing demands, particularly when the client has subscribed to continuously varying signals.<br>When the client makes a request to the server to create a new subscription, a JSON data object is returned. This object contains the attributes that were passed to the server to make the subscription and a subscriptionId integer handle value which is used to uniquely identify the subscription. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
-          <ul>  
-            <li>Request message parameters:</li>
-            <ul>  
-              <li>Path: The address to one or more nodes in the VSS tree.</li>
-              <li>Filters: An object containing the filter rule(s) for data dispatch.</li>
-            </ul>  
-            <li>Response message parameters:</li>
-            <ul>  
-              <li>SubscriptionId: An Id associated with the subscription request.</li>
-              <li>Timestamp: A timestamp associated with the request execution.</li>
-            </ul>
-            <li>ErrorResponse message parameters: </li>
-            <ul>  
-              <li>Error: Information describing the error reason.</li>
-              <li>Timestamp: A timestamp associated with the failed request execution.</li>
-            </ul>  
-            <li>Notification message parameters: </li>
-            <ul>  
-              <li>SubscriptionId: The Id associated with the subscription request.</li>
-              <li>Value: The data to be passed back to the client according to the filter rules.</li>
-              <li>Timestamp: A timestamp associated with the failed request execution.</li>
-            </ul>  
-          </ul>  
-        </section>
-        <section data-dfn-for="Foo">
-          <h2>Unsubscribe</h2>
-          <p>To unsubscribe from a subscription, the client SHALL send an unsubscribe request message to the server, containing the subscriptionId. To unsubscribe to all subscriptions owned by the client, the subscriptionId is set to -1.<br>If the client has created more than one WebSocket instance, it MUST always unsubscribe using the same WebSocket instance that was originally used to create the subscription.<br>It is not possible to unsubscribe from a subset of signals within a subscription. The client must unsubscribe and set up a new subscription to receive notifications for the desired signals.<br>The client should always unsubscribe from receiving notifications when it is no longer using the data. Over a long vehicle journey, this significantly reduces the processing load on the server and allow the server to free memory. It therefore makes it more likely that the server will remain responsive to future requests from the client. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
-          <ul>  
-            <li>Request message parameters:</li>
-            <ul>  
-              <li>SubscriptionId: The Id associated with the subscription.</li>
-            </ul>  
-            <li>Response message parameters:</li>
-            <ul>  
-              <li>SubscriptionId: The subscriptionId(s) that are unsubscribed to.</li>
-              <li>Timestamp: A timestamp associated with the request execution.</li>
-            </ul>  
-            <li>ErrorResponse message parameters: </li>
-            <ul>  
-              <li>SubscriptionId: A copy of the SubscriptionId in the request message.</li>
-              <li>Error: Information describing the error reason.</li>
-              <li>Timestamp: A timestamp associated with the failed request execution.</li>
-            </ul>  
-          </ul>  
-        </section>
+      <div class="issue" title="describe security section">
+        The security section has to be described.
+        Helpful discussion might be:<br>
+        Authentication: <a href="http://www.w3.org/2018/04/19-auto-minutes.html#item03">http://www.w3.org/2018/04/19-auto-minutes.html#item03</a><br>
+        Volvo assesment: <a href="https://lists.w3.org/Archives/Public/public-automotive/2018Aug/0002.html">https://lists.w3.org/Archives/Public/public-automotive/2018Aug/0002.html</a>, <a href="https://www.w3.org/2018/09/25-auto-minutes.html#item01">https://www.w3.org/2018/09/25-auto-minutes.html#item01</a>
+      </div>
+      <section data-dfn-for="Authorize">
+        <h2>Authorize</h2>
+        <p>To enable access to signals and data attributes that are under access control, the client MAY optionally pass a message with an authorize action to the server. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
       </section>
     </section>
-    <section id="appendix_a">
-      <h2>Appendix A: References</h2>
-      <p id=rfc2119>RFC2119: Key words for use in RFCs to Indicate Requirement Levels. S. Bradner. IETF. March 1997. Best Current Practice. URL: https://tools.ietf.org/html/rfc2119</p>
+
+    <section data-dfn-for="interface">
+      <h2>Interface</h2>
+      <section data-dfn-for="methods">
+        <h2>Methods</h2>
+        <section data-dfn-for="read">
+          <h2><dfn>read</dfn></h2>
+          <p>Purpose: obtain a representation of the value addressed by the given path</p>
+          <p>The service MUST expose a <a>read</a> method.
+             The client MAY use the <a>read</a> method of the service to retrieve values managed by the service. 
+             If the service is able to satisfy the request it MUST return a <a>content</a> response.
+             If the service is unable to fulfil the request, then the service MUST return an <a>error</a> response.
+             The client MAY have to authenticate via the <a>authenticate</a> method before being able to access the values.</p>
+          <p>arguments: 
+          <ul>
+            <li><a>path</a> fully qualified path to a base node</li>
+            <li><a>filter</a> selection criterias for specific values under the given <a>path</a></li>
+          </ul>
+          </p>
+          <p>responses:
+            <ul>  
+              <li><a>content</a> response fulfilling the request</li>
+              <li><a>error</a> response describing what went wrong</li>
+            </ul>
+          </p>
+        </section>
+        <section data-dfn-for="update">
+          <h2><dfn>update</dfn></h2>
+          <p>Purpose: providing altered values to the service for a specified <a>path</a></p>
+          <p>The service MAY expose an <a>update</a> method.
+             The client MAY use the <a>update</a> method of the service to request a change to values managed by the service. 
+             If the service is able to satisfy the request it MUST return a <a>change</a> response. 
+             If an error occurs the service MUST return an <a>error</a> response.</p>
+          <p>arguments: 
+            <ul>
+              <li><a>path</a> fully qualified path to a base node</li>
+              <li><a>filter</a> selection criterias for specific values under the given <a>path</a></li>
+              <li><a>change</a> new value that shall be applied</li>
+            </ul>
+          </p>
+          <p>responses:
+            <ul>  
+              <li><a>change</a> response describing what went well</li>
+              <li><a>error</a> response describing what went wrong</li>
+            </ul>
+          </p>
+        </section>
+        <section data-dfn-for="create">
+          <h2><dfn>create</dfn></h2>
+          <p>Purpose: providing new values to the service under a specified <a>path</a></p>
+          <p>The service MAY expose a <a>create</a> method.
+             The client MAY use the <a>create</a> method of the service to request new values to be managed by the service. 
+             If the service is able to satisfy the request it MUST return a <a>change</a> response. 
+             If an error occurs the service MUST return an <a>error</a> response.</p>
+          <p>arguments: 
+            <ul>
+              <li><a>path</a> fully qualified path to a base node</li>
+              <li><a>change</a> new value that shall be added</li>
+            </ul>
+          </p>
+          <p>responses:
+            <ul>  
+              <li><a>change</a> response describing what went well</li>
+              <li><a>error</a> response describing what went wrong</li>
+            </ul>
+          </p>
+        </section>
+        <section data-dfn-for="delete">
+          <h2><dfn>delete</dfn></h2>
+          <p>Purpose: removing all selected values under a specified <a>path</a></p>
+          <p>The service MAY expose a <a>delete</a> method.
+             The client MAY use the <a>delete</a> method of the service to request the deletion of existing values managed by the service.
+             If the service is able to satisfy the request it MUST return a <a>change</a> response. 
+             If an error occurs the service MUST return an <a>error</a> response.</p>
+          <p>arguments: 
+            <ul>
+              <li><a>path</a> fully qualified path to a base node</li>
+              <li><a>filter</a> selection criterias for specific values under the given <a>path</a></li>
+            </ul>
+          </p>
+          <p>responses:
+            <ul>  
+              <li><a>change</a> response describing what went well</li>
+              <li><a>error</a> response describing what went wrong</li>
+            </ul>
+          </p>
+        </section>
+        <section data-dfn-for="subscribe">
+          <h2><dfn>subscribe</dfn></h2>
+          <p>Purpose: monitor changes made to values under a specified <a>path</a></p>
+          <p>The service MAY expose a <a>subscribe</a> method.
+             The client MAY use the <a>subscribe</a> method of the service to request being informed of changes made to values managed by the service.
+             The service MUST issue a notification if the equivalent <a>read</a> <a>content</a> response would change.
+             If the service is able to satisfy the request it MUST return a <a>subscription</a> and <a>contract</a> response.
+             If an error occurs the service MUST return an <a>error</a> response.</p>
+          <p>arguments: 
+            <ul>
+              <li><a>path</a> fully qualified path to a base node</li>
+              <li><a>filter</a> selection criterias for specific values under the given <a>path</a></li>
+              <li><a>contract</a> describing the expectations for the client receiving notifications</li>
+            </ul>
+          </p>
+          <p>responses:
+            <ul>  
+              <li><a>subscription</a> response describing the status of the subscription</li>
+              <li><a>contract</a> describing the rules for the service sending notifications to the client</li>
+              <li><a>error</a> response describing what went wrong</li>
+            </ul>
+          </p>
+        </section>
+        <section data-dfn-for="notify">
+          <h2><dfn>notify</dfn></h2>
+          <p>Purpose: informs of changes made to values under a <a>subscription</a></p>
+          <p>The client MUST expose a <a>notify</a> method if it uses the <a>subscribe</a> method of a service.
+             The service MUST use the <a>notify</a> method of the client to inform of changes made to values managed by the service under the given <a>subscription</a> by sending a <a>content</a> response.
+             The service MUST ignore any response from the client. 
+          </p>
+          <p>arguments: 
+            <ul>
+              <li><a>subscription</a> identifying the subscription</li>
+              <li><a>content</a> response fulfilling the request</li>
+            </ul>
+          </p>
+          <p>responses: none</p>
+        </section>
+        <section data-dfn-for="unsubscribe">
+          <h2><dfn>unsubscribe</dfn></h2>
+          <p>Purpose: stop monitoring the changes made to values under a <a>subscription</a></p>
+          <p>The service MUST expose a <a>unsubscribe</a> method if an <a>subscribe</a> method is exposed.
+             The client MAY use the <a>unsubscribe</a> method of the service to cancel being informed of changes made to values managed by the service under the given <a>subscription</a>.
+             The service MUST stop issuing notifications.
+             If the service is able to satisfy the request it MUST return a <a>subscription</a> response.
+             If an error occurs the service MUST return an <a>error</a> response.</p>
+          <p>arguments: 
+            <ul>
+              <li><a>subscription</a> identifying the subscription</li>
+            </ul>
+          </p>
+          <p>responses:
+            <ul>  
+              <li><a>subscription</a> response describing the status of the subscription</li>
+              <li><a>error</a> response describing what went wrong</li>
+            </ul>
+          </p>
+        </section>
+      </section>
+	  </section>
+    <section data-dfn-for="arguments-and-responses">
+      <h2>Arguments and Responses</h2>
+      <section data-dfn-for="content-response">
+        <h2><dfn>content</dfn></h2>
+        <ul>  
+          <li>Value: One or more values associated with the addressed VSS leaves.</li>
+          <li>Timestamp: A timestamp associated with the request.</li>
+        </ul>  
+      </section>
+      <section data-dfn-for="filter">
+        <h2><dfn>filter</dfn></h2>
+        criterias to filter according to a query
+      </section>
+      <section data-dfn-for="path">
+        <h2><dfn>path</dfn></h2>
+        see addressing
+      </section>
+      <section data-dfn-for="change">
+        <h2><dfn>change</dfn></h2>
+        <ul>
+          <li>changed applied immediately or later</li>
+          <li>list changed paths</li>
+        </ul>  
+      </section>
+      <section data-dfn-for="subscription">
+        <h2><dfn>subscription</dfn></h2>
+        status of the subscription
+      </section>
+      <section data-dfn-for="contract">
+        <h2><dfn>contract</dfn></h2>
+        describing the rules for subscriptions/notifications
+      </section>
+      <section data-dfn-for="error">
+      <h2><dfn>error</dfn></h2>
+      <ul>  
+        <li>Error: Information describing the error reason.</li>
+        <li>Timestamp: A timestamp associated with the failed request.</li>
+      </ul>
+      </section>
     </section>
+  </section>
+
+  <section id="issue-summary" class="appendix"></section>
+  <section id="tof" class="appendix"></section>
   </body>
 </html>
