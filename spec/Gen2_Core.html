@@ -546,6 +546,30 @@
           For the communication between service and client several key/value pairs can be given to describe the environment in what the methods (<a href="#methods"></a>) are called.
           The string describing the key MUST be the same structure as <a>name</a>.
         </p>
+        
+        <section data-dfn-for="authentication">
+          <h4><dfn>authentication</dfn></h4>
+          <p>Purpose: <a>authentication</a> makes it possible for a client to authenticate itself towards a service.</p>
+          <p>
+            The <a>authentication</a> key/value pairs consists out of a <a>AuthType</a> and a <a>AuthToken</a> key/value pair.
+            The client MAY use the <a>authentication</a> key/value pairs to transfer an authentication token to the service.
+            The client MUST use either both key/value pairs or none of the two.
+            The service MAY use the token transfered by the <a>AuthToken</a> key/value pair to authenticate the client.
+            The client MUST set the type of the token with the <a>AuthType</a> key/value pair if <a>AuthToken</a> is set.
+            This concept MAY be used for access control.
+            A rejected authentication token MUST result in an <a>error</a> response.
+            <table class="def">
+              <tr><th>key</th>    <td><dfn>AuthToken</dfn></td></tr>
+              <tr><th>value</th>  <td><code>^\w{1,1024}$</code></td></tr>
+            </table>
+            <div class="issue" title="max length AuthToken">How long should the maximum length of a token be to be easily implemented by most protocols.</div>
+            <table class="def">
+              <tr><th>key</th>    <td><dfn>AuthType</dfn></td></tr>
+              <tr><th>value</th>  <td><a>name</a> compliant</td></tr>
+            </table>
+          </p>
+        </section>
+        
       </section>
     </section>
 
