@@ -37,10 +37,22 @@
     <section id='sotd'></section>
     <section id="introduction">
       <h2>Introduction</h2>
-      <p>This document describes the messaging layer. The separation between transport and messaging layer improves readability and simplify extending Gen2 to further transports in the future. The Gen2 messaging layer uses a RESTful design with an interface and a data model.</p>
       <p>
-        The messages are exchanged between a <dfn>service</dfn> implementation holding the representation of data 
-        and a <dfn>client</dfn> manipulating the data.
+        This document describes the messaging layer of the Gen2 protocol. 
+        The separation between transport and messaging layer improves readability. Extending and describing multiple transport protocols becomes possible. 
+      </p>     
+      <p>
+        The messages are exchanged between a <a>service</a> implementation holding the representation of data 
+        and a <a>client</a> manipulating the data.
+        A <dfn>service</dfn> is an entity that manages and offers access to data.
+        A <dfn>client</dfn> is an entity that works with data managed by a service.
+      </p>
+      <p>
+        The Gen2 messaging layer uses a RESTful design for all methods exchanged via the interface (<a href="#interface"></a>).
+      </p>
+      <p>
+        Then Gen2 data model (<a href="#data-model"></a>) is the same through all transport protocols.
+        The data model hold by a <a>service</a> is described in a tree like form.
       </p>
     </section>
     <section id="conformance"></section>
