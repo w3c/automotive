@@ -362,8 +362,7 @@
         <h2>Methods</h2>
         <p>
           A timeout for the response of all methods with responses MUST be defined.
-          This timeout is transport protocol specific to reflect the normal behaviour of the transport portocol.
-          Every <a>error</a> response MUST be actionable.
+          This timeout is transport protocol specific to reflect the normal behaviour of the transport protocol.
         </p>
         <div class="issue" title="error types for methods">All methods should list the possible error types returned.</div>
         <section data-dfn-for="read">
@@ -546,6 +545,7 @@
             An <a>error</a> response MAY include a textual form of the error type. 
             An <a>error</a> response MUST include an error value if obligatory for the error type.
             An <a>error</a> response MUST include a timestamp.
+            An <a>error</a> response MUST be actionable.
             <table class="def">
               <tr>
                 <th>field</th><th>obligation</th><th>description</th><th>format</th><th>example</th></tr>
