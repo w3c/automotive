@@ -360,9 +360,12 @@
       </p>
       <section data-dfn-for="methods">
         <h2>Methods</h2>
-        A timeout for the response of all methods with responses MUST be defined.
-        This timeout is transport protocol specific to reflect the normal behaviour of the transport portocol.
-        Every <a>error</a> response MUST be actionable.
+        <p>
+          A timeout for the response of all methods with responses MUST be defined.
+          This timeout is transport protocol specific to reflect the normal behaviour of the transport portocol.
+          Every <a>error</a> response MUST be actionable.
+        </p>
+        <div class="issue" title="error types for methods">All methods should list the possible error types returned.</div>
         <section data-dfn-for="read">
           <h2><dfn>read</dfn></h2>
           <p>Purpose: obtain a representation of the value addressed by the given path</p>
@@ -539,52 +542,120 @@
         <section data-dfn-for="error">
         <h2><dfn>error</dfn></h2>
           <p>
-          An <a>error</a> response MUST include the formal error type.
-          An <a>error</a> response MAY include a textual form of the error type. 
-          An <a>error</a> response MUST include an error value if obligatory for the error type.
-          An <a>error</a> response MUST include a timestamp.
-          <table class="def">
-            <tr>
-              <th>field</th><th>obligation</th><th>description</th><th>format</th><th>example</th></tr>
-            <tr>
-              <th>error type</th>
-              <td>mandatory</td>
-              <td>short handle describing the error.</td>
-              <td>protocol specifc</td>
-              <td>AuthorizationFailed</td>
-            </tr>
-            <tr>
-              <th>error description</th>
-              <td>optional</td>
-              <td>Information describing the error reason.</td>
-              <td><code>^[\w ]{5,255}$</code></td>
-              <td>
-                Authorization failed for the method. 
-                Please set a valid AuthToken and AuthType.
-              </td>
-            </tr>
-            <tr>
-              <th>error value</th>
-              <td>conditional</td>
-              <td>
-                Send if set as mandatory for the error type. 
-                Describing more details to understand the error type.
-              </td>
-              <td>string, error type specific</td>
-              <td>AuthToken valid; Access Level not sufficient.</td>
-            </tr>
-            <tr>
-              <th>timestamp</th>
-              <td>mandatory</td>
-              <td>The time when the error occured.</td>
-              <td><a>date-time</a> compliant</td>
-              <td>2005-11-12T12:01:42.123+01:00</td>
-            </tr>
-          </table>
+            An <a>error</a> response MUST include the formal error type.
+            An <a>error</a> response MAY include a textual form of the error type. 
+            An <a>error</a> response MUST include an error value if obligatory for the error type.
+            An <a>error</a> response MUST include a timestamp.
+            <table class="def">
+              <tr>
+                <th>field</th><th>obligation</th><th>description</th><th>format</th><th>example</th></tr>
+              <tr>
+                <th>error type</th>
+                <td>mandatory</td>
+                <td>short handle describing the error.</td>
+                <td>protocol specifc</td>
+                <td>AuthorizationFailed</td>
+              </tr>
+              <tr>
+                <th>error description</th>
+                <td>optional</td>
+                <td>Information describing the error reason.</td>
+                <td><code>^[\w ]{5,255}$</code></td>
+                <td>
+                  Authorization failed for the method. 
+                  Please set a valid AuthToken and AuthType.
+                </td>
+              </tr>
+              <tr>
+                <th>error value</th>
+                <td>conditional</td>
+                <td>
+                  Send if set as mandatory for the error type. 
+                  Describing more details to understand the error type.
+                </td>
+                <td>string, error type specific</td>
+                <td>AuthToken valid; Access Level not sufficient.</td>
+              </tr>
+              <tr>
+                <th>timestamp</th>
+                <td>mandatory</td>
+                <td>The time when the error occured.</td>
+                <td><a>date-time</a> compliant</td>
+                <td>2005-11-12T12:01:42.123+01:00</td>
+              </tr>
+            </table>
+            <div class="issue" title="error value">Do we really need an error value as all method calls are directly mapped to error response.</div>
+            <div class="issue" title="timestamps">How do we want to handle timestamps? Is this something that is signaled through the meta-data for the call of the method? Is this something every method must have?</div>
           </p>
+          <section data-dfn-for="error-types">
+            <h3>Error Types</h3>
+            <p>
+              These error types MUST be implemented by a <a>service</a>.
+              A transport protocol MAY define additional error types.
+              A transport protocol MUST not alter these error types.
+            </p>
+            <table class="def">
+              <tr><th>error type</th><th>Textual description</th><th>values</th><th>Solution/Action</th></tr>
+              <tr>
+                <th>InvalidToken</th>
+                <td>The AuthToken is not recognized as valid.</td>
+                <td>none</td>
+                <td>Check if AuthType is set correctly. Get a new AuthToken.</td>
+              </tr>
+              <tr>
+                <th>AccessLevelNotSufficient</th>
+                <td>The AuthToken is recognized but does not allow the execution of the requested method.</td>
+                <td>none</td>
+                <td>Get a token with a different access level.</td>
+              </tr>
+              <tr>
+                <th>InvalidPath</th>
+                <td>The given path is not valid.</td>
+                <td>none</td>
+                <td>Check the path given in the arguments.</td>
+              </tr>
+              <tr>
+                <th>MissingArgument</th>
+                <td>An mandatory argument is missing from the method execution.</td>
+                <td>Missing Argument</td>
+                <td>Add missing argument.</td>
+              </tr>
+              <tr>
+                <th>InvalidFilter</th>
+                <td>Filter could not be parsed.</td>
+                <td>Error Position</td>
+                <td>Fix filter.</td>
+              </tr>
+              <tr>
+                <th>ValueNotPermited</th>
+                <td>A value set by the client is not permited.</td>
+                <td>value</td>
+                <td>Set the value to a value permited by the service implementation.</td>
+              </tr>
+              <tr>
+                <th>ContractInvalid</th>
+                <td>The contract submitted is not valid.</td>
+                <td>Invalid contract statement</td>
+                <td>Recall method with a valid contract.</td>
+              </tr>
+              <tr>
+                <th>SubscriptionUnknown</th>
+                <td>The subscription is not known by the service.</td>
+                <td>none</td>
+                <td>Check subscription.</td>
+              </tr>
+              <tr>
+                <th></th>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </table>
+            <div class="issue" title="error type examples">Would examples for the error types be helpful?</div>
+            <div class="issue" title="error type location">Where best to describe error types?</div>
+          </section>
         </section>
         
-        <div class="issue" title="timestamps">How do we want to handle timestamps? Is this something that is signaled through the meta-data for the call of the method? Is this something every method must have?</div>
       </section>
       <section data-dfn-for="headers">
         <h3>Meta-Data</h3>
