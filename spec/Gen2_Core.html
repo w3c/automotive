@@ -24,7 +24,15 @@
           w3cid: 95844
         }],
         edDraftURI: "https://github.com/w3c/automotive/blob/gh-pages/spec/Gen2_Core.html",
-        shortName: "Gen2-core"
+        shortName: "Gen2-core",
+        localBiblio: {
+          "SemVer": {
+            title: "Semantic Versioning 2.0.0",
+            href: "https://semver.org/spec/v2.0.0.html",
+            status: "published",
+            publisher: "Tom Preston-Werner"
+          }
+        }
       };
     </script>
   </head>
@@ -562,6 +570,26 @@
             <table class="def">
               <tr><th>key</th>    <td><dfn>AuthType</dfn></td></tr>
               <tr><th>value</th>  <td><a>name</a> compliant</td></tr>
+            </table>
+          </p>
+        </section>
+        
+        <section id="variant-selection">
+          <h4>variant selection</h4>
+          <p>
+            Purpose: 
+            A client can express which schema variants it can support when executing a method.
+            A service can express which schema variant it uses when communicating with the client.
+          </p>
+          <p>
+            The client MAY set multiple key/value pairs to describe all variants it supports.
+            The client MAY not set any key/value pair.
+            The service MUST set exactly one schema key/value pair to describe the used variant.
+            The client MAY use the [[SemVer]] style to describe degrees of freedom in the version of the schema.
+            <table class="def">
+              <tr><th>key</th>    <td>Schema</td></tr>
+              <tr><th>value</th>  <td><a>schema</a> compliant</td></tr>
+              <tr><th>example</th><td>w3c.vehicle.v1.5.3</td></tr>
             </table>
           </p>
         </section>
