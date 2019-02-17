@@ -538,11 +538,53 @@
         </section>
         <section data-dfn-for="error">
         <h2><dfn>error</dfn></h2>
-        <ul>  
-          <li>Error: Information describing the error reason.</li>
-          <li>Timestamp: A timestamp associated with the failed request.</li>
-        </ul>
+          <p>
+          An <a>error</a> response MUST include the formal error type.
+          An <a>error</a> response MAY include a textual form of the error type. 
+          An <a>error</a> response MUST include an error value if obligatory for the error type.
+          An <a>error</a> response MUST include a timestamp.
+          <table class="def">
+            <tr>
+              <th>field</th><th>obligation</th><th>description</th><th>format</th><th>example</th></tr>
+            <tr>
+              <th>error type</th>
+              <td>mandatory</td>
+              <td>short handle describing the error.</td>
+              <td>protocol specifc</td>
+              <td>AuthorizationFailed</td>
+            </tr>
+            <tr>
+              <th>error description</th>
+              <td>optional</td>
+              <td>Information describing the error reason.</td>
+              <td><code>^[\w ]{5,255}$</code></td>
+              <td>
+                Authorization failed for the method. 
+                Please set a valid AuthToken and AuthType.
+              </td>
+            </tr>
+            <tr>
+              <th>error value</th>
+              <td>conditional</td>
+              <td>
+                Send if set as mandatory for the error type. 
+                Describing more details to understand the error type.
+              </td>
+              <td>string, error type specific</td>
+              <td>AuthToken valid; Access Level not sufficient.</td>
+            </tr>
+            <tr>
+              <th>timestamp</th>
+              <td>mandatory</td>
+              <td>The time when the error occured.</td>
+              <td><a>date-time</a> compliant</td>
+              <td>2005-11-12T12:01:42.123+01:00</td>
+            </tr>
+          </table>
+          </p>
         </section>
+        
+        <div class="issue" title="timestamps">How do we want to handle timestamps? Is this something that is signaled through the meta-data for the call of the method? Is this something every method must have?</div>
       </section>
       <section data-dfn-for="headers">
         <h3>Meta-Data</h3>
