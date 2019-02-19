@@ -24,7 +24,15 @@
           w3cid: 95844
         }],
         edDraftURI: "https://github.com/w3c/automotive/blob/gh-pages/spec/Gen2_Core.html",
-        shortName: "Gen2-core"
+        shortName: "Gen2-core",
+        localBiblio: {
+          "SemVer": {
+            title: "Semantic Versioning 2.0.0",
+            href: "https://semver.org/spec/v2.0.0.html",
+            status: "published",
+            publisher: "Tom Preston-Werner"
+          }
+        }
       };
     </script>
   </head>
@@ -343,16 +351,20 @@
         Authentication: <a href="http://www.w3.org/2018/04/19-auto-minutes.html#item03">http://www.w3.org/2018/04/19-auto-minutes.html#item03</a><br>
         Volvo assesment: <a href="https://lists.w3.org/Archives/Public/public-automotive/2018Aug/0002.html">https://lists.w3.org/Archives/Public/public-automotive/2018Aug/0002.html</a>, <a href="https://www.w3.org/2018/09/25-auto-minutes.html#item01">https://www.w3.org/2018/09/25-auto-minutes.html#item01</a>
       </div>
-      <section data-dfn-for="Authorize">
-        <h2>Authorize</h2>
-        <p>To enable access to signals and data attributes that are under access control, the client MAY optionally pass a message with an authorize action to the server. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
-      </section>
     </section>
 
     <section data-dfn-for="interface">
       <h2>Interface</h2>
+      <p>
+        This chapter describes the different methods and its arguments that govern the communication between a <a>service</a> and a <a>client</a>.
+      </p>
       <section data-dfn-for="methods">
         <h2>Methods</h2>
+        <p>
+          A timeout for the response of all methods with responses MUST be defined.
+          This timeout is transport protocol specific to reflect the normal behaviour of the transport protocol.
+        </p>
+        <div class="issue" title="error types for methods">All methods should list the possible error types returned.</div>
         <section data-dfn-for="read">
           <h2><dfn>read</dfn></h2>
           <p>Purpose: obtain a representation of the value addressed by the given path</p>
@@ -528,11 +540,177 @@
         </section>
         <section data-dfn-for="error">
         <h2><dfn>error</dfn></h2>
-        <ul>  
-          <li>Error: Information describing the error reason.</li>
-          <li>Timestamp: A timestamp associated with the failed request.</li>
-        </ul>
+          <p>
+            An <a>error</a> response MUST include the formal error type.
+            An <a>error</a> response MAY include a textual form of the error type. 
+            An <a>error</a> response MUST include an error value if obligatory for the error type.
+            An <a>error</a> response MUST include a timestamp.
+            An <a>error</a> response MUST be actionable.
+            <table class="def">
+              <tr>
+                <th>field</th><th>obligation</th><th>description</th><th>format</th><th>example</th></tr>
+              <tr>
+                <th>error type</th>
+                <td>mandatory</td>
+                <td>short handle describing the error.</td>
+                <td>protocol specifc</td>
+                <td>AuthorizationFailed</td>
+              </tr>
+              <tr>
+                <th>error description</th>
+                <td>optional</td>
+                <td>Information describing the error reason.</td>
+                <td><code>^[\w ]{5,255}$</code></td>
+                <td>
+                  Authorization failed for the method. 
+                  Please set a valid AuthToken and AuthType.
+                </td>
+              </tr>
+              <tr>
+                <th>error value</th>
+                <td>conditional</td>
+                <td>
+                  Send if set as mandatory for the error type. 
+                  Describing more details to understand the error type.
+                </td>
+                <td>string, error type specific</td>
+                <td>AuthToken valid; Access Level not sufficient.</td>
+              </tr>
+              <tr>
+                <th>timestamp</th>
+                <td>mandatory</td>
+                <td>The time when the error occured.</td>
+                <td><a>date-time</a> compliant</td>
+                <td>2005-11-12T12:01:42.123+01:00</td>
+              </tr>
+            </table>
+            <div class="issue" title="error value">Do we really need an error value as all method calls are directly mapped to error response.</div>
+            <div class="issue" title="timestamps">How do we want to handle timestamps? Is this something that is signaled through the meta-data for the call of the method? Is this something every method must have?</div>
+          </p>
+          <section data-dfn-for="error-types">
+            <h3>Error Types</h3>
+            <p>
+              These error types MUST be implemented by a <a>service</a>.
+              A transport protocol MAY define additional error types.
+              A transport protocol MUST not alter these error types.
+            </p>
+            <table class="def">
+              <tr><th>error type</th><th>Textual description</th><th>values</th><th>Solution/Action</th></tr>
+              <tr>
+                <th>InvalidToken</th>
+                <td>The AuthToken is not recognized as valid.</td>
+                <td>none</td>
+                <td>Check if AuthType is set correctly. Get a new AuthToken.</td>
+              </tr>
+              <tr>
+                <th>AccessLevelNotSufficient</th>
+                <td>The AuthToken is recognized but does not allow the execution of the requested method.</td>
+                <td>none</td>
+                <td>Get a token with a different access level.</td>
+              </tr>
+              <tr>
+                <th>InvalidPath</th>
+                <td>The given path is not valid.</td>
+                <td>none</td>
+                <td>Check the path given in the arguments.</td>
+              </tr>
+              <tr>
+                <th>MissingArgument</th>
+                <td>An mandatory argument is missing from the method execution.</td>
+                <td>Missing Argument</td>
+                <td>Add missing argument.</td>
+              </tr>
+              <tr>
+                <th>InvalidFilter</th>
+                <td>Filter could not be parsed.</td>
+                <td>Error Position</td>
+                <td>Fix filter.</td>
+              </tr>
+              <tr>
+                <th>ValueNotPermited</th>
+                <td>A value set by the client is not permited.</td>
+                <td>value</td>
+                <td>Set the value to a value permited by the service implementation.</td>
+              </tr>
+              <tr>
+                <th>ContractInvalid</th>
+                <td>The contract submitted is not valid.</td>
+                <td>Invalid contract statement</td>
+                <td>Recall method with a valid contract.</td>
+              </tr>
+              <tr>
+                <th>SubscriptionUnknown</th>
+                <td>The subscription is not known by the service.</td>
+                <td>none</td>
+                <td>Check subscription.</td>
+              </tr>
+              <tr>
+                <th></th>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </table>
+            <div class="issue" title="error type examples">Would examples for the error types be helpful?</div>
+            <div class="issue" title="error type location">Where best to describe error types?</div>
+          </section>
         </section>
+        
+      </section>
+      <section data-dfn-for="headers">
+        <h3>Meta-Data</h3>
+        <div class="issue" title="naming: headers/meta-data">
+          The title for this chapter is not good.
+        </div>
+        <p>
+          For the communication between service and client several key/value pairs can be given to describe the environment in what the methods (<a href="#methods"></a>) are called.
+          The string describing the key MUST be the same structure as <a>name</a>.
+        </p>
+        
+        <section data-dfn-for="authorization">
+          <h4><dfn>authorization</dfn></h4>
+          <p>Purpose: <a>authorization</a> makes it possible for a client to authorize itself towards a service.</p>
+          <p>
+            The <a>authorization</a> key/value pairs consists out of a <a>AuthType</a> and a <a>AuthToken</a> key/value pair.
+            The client MAY use the <a>authorization</a> key/value pairs to transfer an authorization token to the service.
+            The client MUST use either both key/value pairs or none of the two.
+            The service MAY use the token transfered by the <a>AuthToken</a> key/value pair to authenticate the client.
+            The client MUST set the type of the token with the <a>AuthType</a> key/value pair if <a>AuthToken</a> is set.
+            This concept MAY be used for access control.
+            A rejected authorization token MUST result in an <a>error</a> response.
+            If the execution of a method on a service needs authorization the service MUST use the authorization key/value pair.
+            <table class="def">
+              <tr><th>key</th>    <td><dfn>AuthToken</dfn></td></tr>
+              <tr><th>value</th>  <td><code>^\w{1,1024}$</code></td></tr>
+            </table>
+            <div class="issue" title="max length AuthToken">How long should the maximum length of a token be to be easily implemented by most protocols.</div>
+            <table class="def">
+              <tr><th>key</th>    <td><dfn>AuthType</dfn></td></tr>
+              <tr><th>value</th>  <td><a>name</a> compliant</td></tr>
+            </table>
+          </p>
+        </section>
+        
+        <section id="variant-selection">
+          <h4>variant selection</h4>
+          <p>
+            Purpose: 
+            A client can express which schema variants it can support when executing a method.
+            A service can express which schema variant it uses when communicating with the client.
+          </p>
+          <p>
+            The client MAY set multiple key/value pairs to describe all variants it supports.
+            The client MAY not set any key/value pair.
+            The service MUST set exactly one schema key/value pair to describe the used variant.
+            The client MAY use the [[SemVer]] style to describe degrees of freedom in the version of the schema.
+            <table class="def">
+              <tr><th>key</th>    <td>Schema</td></tr>
+              <tr><th>value</th>  <td><a>schema</a> compliant</td></tr>
+              <tr><th>example</th><td>w3c.vehicle.v1.5.3</td></tr>
+            </table>
+          </p>
+        </section>
+        
       </section>
     </section>
 
