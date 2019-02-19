@@ -678,6 +678,7 @@
             The client MUST set the type of the token with the <a>AuthType</a> key/value pair if <a>AuthToken</a> is set.
             This concept MAY be used for access control.
             A rejected authorization token MUST result in an <a>error</a> response.
+            If the execution of a method on a service needs authorization the service MUST use the authorization key/value pair.
             <table class="def">
               <tr><th>key</th>    <td><dfn>AuthToken</dfn></td></tr>
               <tr><th>value</th>  <td><code>^\w{1,1024}$</code></td></tr>
