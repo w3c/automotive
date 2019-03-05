@@ -51,7 +51,7 @@
         The Gen2 messaging layer uses a RESTful design for all methods exchanged via the interface (<a href="#interface"></a>).
       </p>
       <p>
-        Then Gen2 data model (<a href="#data-model"></a>) is the same through all transport protocols.
+        Then Gen2 data model (<a href="#generic-data-model"></a>) is the same through all transport protocols.
         The data model hold by a <a>service</a> is described in a tree like form.
       </p>
     </section>
@@ -60,27 +60,30 @@
       <h2>Terminology</h2>
       <p>The acronym 'Gen2' is used to refer to this document, the second generation specification. The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance. The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.</p>
     </section>
-    <section data-dfn-for="data-model">
-      <h2>Data model</h2>
+    <section data-dfn-for="generic-data-model">
+      <h2>Generic Data model</h2>
       <p>
-      The basic data model behind that can be accessed with this interface is a tree-like logical taxonomy of the whole vehicle.
-      It is represented by a directed acyclic graph.
+        The basic data model that can be accessed with this interface is a tree-like logical taxonomy.
+        It is represented by a directed acyclic graph.
+        It is influenced by <a href="https://github.com/GENIVI/vehicle_signal_specification">GENIVI's Vehicle Signal Specification</a> (VSS) 
+        which is recommended by the W3C [[vehicle-information-service]].
+        This description gives the template, the rough outlines, out of which parts a data model can be build.
       </p>
       <p>
-      It is influenced by <a href="https://github.com/GENIVI/vehicle_signal_specification">GENIVI's Vehicle Signal Specification</a> (VSS).
-      This <a href="#tree-example">example</a> shows that major vehicle structures (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as their child nodes.
-      Each of the child nodes in the tree is further decomposed into its logical constituents, 
-      and the process is repeated until leafs are reached.
+        This <a href="#tree-example">example</a> shows that major vehicle structures (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as their child nodes.
+        Each of the child nodes in the tree is further decomposed into its logical constituents, 
+        and the process is repeated until leafs are reached.
       </p>
       <p>
-      A node in the tree can have one of two types.
-      Leafs in the tree are <a>values</a>. 
-      The path to a leaf is built by <a>branches</a>.
+        A node in the tree can have one of two types.
+        Leafs in the tree are <a>values</a>. 
+        The path to a leaf is built by <a>branches</a>.
       </p>
       <p>
         A <dfn>schema</dfn> for a <a>branch</a> describes the structure of the <a>branch</a> itself 
         and the available child <a>branches</a> 
         and the optional and mandatory <a>values</a>.
+        <div class="issue" title="schema definition">How should a schema look like? More information needed (YAML?, JSON?)</div>
       </p>
       <figure id="tree-example" class="example">
         <img uml='
