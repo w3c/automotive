@@ -190,71 +190,90 @@
       
       <section data-dfn-for="data-types">
         <h2>Data Types</h2>
-        <section data-dfn-for="UInt8">
-          <h3><dfn>UInt8</dfn></h3>
-          <p>Type: unsigned 8-bit integer<br>
-          Min: 0 | Max: 255</p>
-          <div class="issue">really going to use several number types?</div>
+
+        <section data-dfn-for="number">
+          <h3><dfn>Number</dfn></h3>
+          <p>
+          <a>Number</a> is used to represent numbers. 
+          This includes all signed and unsigned integer values and floats.
+          To allow for memory allocation restrictions MUST be given.
+          Restrictions MUST be expressed by using min, max and resolution.
+          Min MUST describe the lowest possible value.
+          Max MUST describe the highest possible value.
+          Resolution MUST .
+          <div class="issue" title="number resolution description">not a good description</div>
+          A <a>schema</a> MAY define the restrictions by using predefined restrictions.
+          <table class="def">
+            <tr><th>name</th>
+              <th>description</th>
+              <th>min</th>
+              <th>max</th>
+              <th>resolution</th></tr>
+            <tr><th><dfn>UInt8</dfn></th>
+              <td>unsigned 8-bit integer</td>
+              <td>0</td>
+              <td>255</td>
+              <td></td></tr>
+            <tr><th><dfn>Int8</dfn></th>
+              <td>signed 8-bit integer</td>
+              <td>-128</td>
+              <td>127</td>
+              <td></td></tr>
+            <tr><th><dfn>UInt16</dfn></th>
+              <td>unsigned 16-bit integer</td>
+              <td>0</td>
+              <td>65535</td>
+              <td></td></tr>
+            <tr><th><dfn>Int16</dfn></th>
+              <td>signed 16-bit integer</td>
+              <td>-32768</td>
+              <td>32767</td>
+              <td></td></tr>
+            <tr><th><dfn>UInt32</dfn></th>
+              <td>unsigned 32-bit integer</td>
+              <td>0</td>
+              <td>4294967295</td>
+              <td></td></tr>
+            <tr><th><dfn>Int32</dfn></th>
+              <td>signed 32-bit integer</td>
+              <td>-2147483648</td>
+              <td>2147483647</td>
+              <td></td></tr>
+            <tr><th><dfn>UInt64</dfn></th>
+              <td>unsigned 64-bit integer</td>
+              <td>0</td>
+              <td>2^64-1</td>
+              <td></td></tr>
+            <tr><th><dfn>Int64</dfn></th>
+              <td>unsigned 32-bit integer</td>
+              <td>2^63</td>
+              <td>2^63-1</td>
+              <td></td></tr>
+            <tr><th><dfn>Float</dfn></th>
+              <td>floating point number</td>
+              <td>-3.4e -38</td>
+              <td>3.4e 38</td>
+              <td></td></tr>
+            <tr><th><dfn>Double</dfn></th>
+              <td>double precision floating point number</td>
+              <td>-1.7e -300</td>
+              <td>1.7e 300</td>
+              <td></td></tr>
+            <tr><th><dfn></dfn></th>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td></tr>
+          </table>
+          </p>
         </section>
-        <section data-dfn-for="Int8">
-          <h3><dfn>Int8</dfn></h3>
-          <p>Type: signed 8-bit integer<br>
-          Min: -128 | Max: 127</p>
-          <div class="issue">really going to use several number types?</div>
-        </section>
-        <section data-dfn-for="UInt16">
-          <h3><dfn>UInt16</dfn></h3>
-          <p>Type: unsigned 16-bit integer	<br>
-          Min: 0 | Max: 65535</p>
-          <div class="issue">really going to use several number types?</div>
-        </section>
-        <section data-dfn-for="Int16">
-          <h3><dfn>Int16</dfn></h3>
-          <p>Type: signed 16-bit integer<br>
-          Min: -32768	 | Max: 32767</p>
-          <div class="issue">really going to use several number types?</div>
-        </section>
-        <section data-dfn-for="UInt32">
-          <h3><dfn>UInt32</dfn></h3>
-          <p>Type: unsigned 32-bit integer<br>
-          Min: 0 | Max: 4294967295</p>
-          <div class="issue">really going to use several number types?</div>
-        </section>
-        <section data-dfn-for="Int32">
-          <h3><dfn>Int32</dfn></h3>
-          <p>Type: signed 32-bit integer<br>
-          Min: -2147483648 | Max: 2147483647</p>
-          <div class="issue">really going to use several number types?</div>
-        </section>
-        <section data-dfn-for="UInt64">
-          <h3><dfn>UInt64</dfn></h3>
-          <p>Type: unsigned 64-bit integer<br>
-          Min: 0 | Max: 2^64</p>
-          <div class="issue">really going to use several number types?</div>
-        </section>
-        <section data-dfn-for="Int64">
-          <h3><dfn>Int64</dfn></h3>
-          <p>Type: signed 64-bit integer<br>
-          Min: -2^63 | Max: 2^63-1</p>
-          <div class="issue">really going to use several number types?</div>
-        </section>
+        
         <section data-dfn-for="Boolean">
           <h3><dfn>Boolean</dfn></h3>
           <p>Type: boolean value<br>
           false / true</p>
         </section>
-        <section data-dfn-for="Float">
-          <h3><dfn>Float</dfn></h3>
-          <p>Type: floating point number<br>
-          Min: -3.4e -38 | Max: 3.4e 38</p>
-          <div class="issue">really going to use several number types?</div>
-        </section>
-        <section data-dfn-for="Double">
-          <h3><dfn>Double</dfn></h3>
-          <p>Type: double precision floating point number<br>
-          Min: -1.7e -300 | Max: 1.7e 300</p>
-          <div class="issue">really going to use several number types?</div>
-        </section>
+        
         <section data-dfn-for="String">
           <h3><dfn>String</dfn></h3>
           <p>Type: character string</p>
