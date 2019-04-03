@@ -275,8 +275,46 @@
         
         <section data-dfn-for="String">
           <h3><dfn>String</dfn></h3>
-          <p>Type: character string</p>
+          <p>
+          <a>String</a> is used to represent sequence of characters.
+          To allow for memory allocation restrictions MUST be given.
+          Restrictions MUST include a maximum string length.
+          Restrictions MAY include a character set.
+          If no character set is given unicode MUST be assumed.
+          Restrictions MAY include a regular expression.
+          <span class="issue">which regex style?</span>
+          A <a>schema</a> MAY define the restrictions by using predefined restrictions.
+          Protocol specific implementations MAY use optimized versions to transfer values with predefined restrictions.
+          <table class="def">
+            <tr><th>name</th>
+              <th>description</th>
+              <th>max</th>
+              <th>example</th>
+              <th>RegEx</th></tr>
+            <tr><th><dfn>date-time</dfn></th>
+              <td>date-time (based on RFC3339 5.6) detailed fraction</td>
+              <td>29</td>
+              <td class="example">2005-11-12T12:01:42.123+01:00</td>
+              <td><code>^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?((Z|(\+|\-)\d{2}:\d{2}))$</code></td></tr>
+            <tr><th><dfn>time</dfn></th>
+              <td>time (based on RFC3339 5.6) detailed fraction</td>
+              <td>18</td>
+              <td class="example">12:01:42.123+01:00</td>
+              <td><code>^\d{2}:\d{2}:\d{2}(\.\d{3})?((Z|(\+|\-)\d{2}:\d{2}))$</code></td></tr>
+            <tr><th><dfn>date</dfn></th>
+              <td>date (RFC3339 5.6)</td>
+              <td>10</td>
+              <td class="example">2005-11-12</td>
+              <td><code>^\d{4}-\d{2}-\d{2}$</code></td></tr>
+            <tr><th><dfn></dfn></th>
+              <td></td>
+              <td></td>
+              <td class="example"></td>
+              <td><code></code></td></tr>
+          </table>
+          </p>
         </section>
+
         <section data-dfn-for="ByteBuffer">
           <h3><dfn>ByteBuffer</dfn></h3>
           <p>Type: buffer of bytes (aka BLOB)</p>
