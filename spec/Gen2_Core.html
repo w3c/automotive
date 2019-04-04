@@ -276,6 +276,92 @@
           <div class="issue">to be described more</div>
         </section>		
       </section>
+
+      <section data-dfn-for="branch-types">
+        <h2>Default Branch Types</h2>
+        <div class="issue" title="branch types">
+          This is an example on how branches could be used. The idea is very much the same as with the predefined restrictions for data-types. 
+        </div>
+        <p>
+        A set of default <a>branch</a> types is defined. 
+        These types help to have a common understanding how a branch can be understood 
+        and allows for easy reuse of code throught several schemas.
+        These types MUST be implemented.
+        </p>
+        <section data-dfn-for="remote-branch">
+          <h3><dfn>remote branch</dfn></h3>
+          <p>
+          A <a>remote branch</a> is <a>branch</a> that MUST point to another <a>service</a> that implements <a>branches</a> to represent data.
+          The other <a>services</a> are called remotes. At least one <a>remote</a> MUST be defined. A <a>remote</a> must contain a <a>schema</a> and a <a>authority</a>.
+          
+          It MAY point to a sub-<a>branch</a> by setting a <a>path</a>. If no <a>path</a> is given <code>/</code> is assumed.
+          
+          </p>
+            <figure id="remote-branch-example" class="example">
+          <img uml='
+          @startuml 
+            skinparam usecase {
+              FontSize 16
+              BackgroundColor CornflowerBlue
+              FontColor Black
+              BorderColor Black
+            }
+
+            skinparam component {
+              FontSize 16
+              BorderColor Black					
+              BackgroundColor MediumSeaGreen
+              FontColor Black
+            }
+
+            [Root] -- [Media]
+            [Root] -- [Car]
+
+            note left of Media: remote branch
+            [Media] -- [Collections]
+            [Collections] -- [Remotes]
+            [Collections] -- (path\n"/collections")
+            [Collections] .. [remote]
+            
+            note left of Remotes: list of remotes
+            
+            [Remotes] -- (Scheme\n"http")
+            [Remotes] -- (Authority\n"127.0.0.1:1337")
+            
+            
+            package "Remote http://127.0.0.1:1337/Collections" as remote {
+              [30321564123] -- (name)
+              [30321564123] -- (rating)
+            }
+            
+            note bottom of remote: Remote representation of a part of a tree
+            
+            [Car] -- [Engine]
+            [Car] -- [...]
+            
+            [Engine] -- (RPM)
+            [Engine] -- (Speed)
+          @enduml
+          '>
+              <figcaption>Example of a remote branch</figcaption>
+            </figure>
+      
+        </section>
+        <section data-dfn-for="remote">
+          <h3><dfn>remote</dfn></h3>
+          <p>
+            A <a>branch</a> of the type <a>remote</a> contains two <a>values</a>.
+            It describes the <a>authority</a> and <a>scheme</a> part of an <a>address</a>.
+            <table class="def">
+              <tr><th><a>name</a></th><th><a href="#value-data-types">value data type</a></th></tr>
+              <tr><th>scheme</th><td><a>string</a>; RegEx: <code>ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )</code></td></tr>
+              <tr><th>authority</th><td><a>string</a>; RegEx: [[RFC3986]] section-3.1</td></tr>
+            </table>
+            <div class="issue" title="creating more value types?">Should we create more value types or describe agruments within default branch types?</div>
+          </p>
+        </section>
+      </section>				
+      
         <section data-dfn-for="Foo">
           <h2>Service discovery</h2>
           <p>The client MAY request that the server returns the VSS tree content. The client is able to request metadata from any point in the signal tree, such that only the metadata for the nodes within the given branch of the tree is returned. For example, only metadata for the chassis branch of the VSS tree is returned when the chassis path is specified. If the path is set to the VSS root, the response contains the metadata for the entire tree. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
