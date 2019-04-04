@@ -69,10 +69,10 @@
 		and the process is repeated until leafs are reached.
       </p>
       <p>
-		A composable node MUST be either a <a>branch</a> or an <a>rbranch</a>.
-		A leaf at the end of a <a>branch</a> cannot be decomposed because and will have an information stored in e.g. a <a>sensor</a>, <a>actuator</a>, <a>stream</a> or <a>attribute</a>.
-		A leaf under an <a>rbranch</a> MUST be an <a>element</a>.
-		</p>
+        A node in the tree can have one of two types.
+        Leafs in the tree are <a>values</a>. 
+        The path to a leaf is built by <a>branches</a>.
+      </p>
     <figure id="tree-example" class="example">
 			<img uml='
 			@startuml 
