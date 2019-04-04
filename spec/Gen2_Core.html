@@ -199,7 +199,9 @@
           To allow for memory allocation restrictions MUST be given.
           Restrictions MUST be expressed by using min, max and precision.
           Min MUST describe the lowest possible value.
+          Min MUST be defined as base to the power of min (i.e. b^min).
           Max MUST describe the highest possible value.
+          Min MUST be defined as base to the power of max with an optional -1 (i.e. b^max - 1).
           Precision MUST describes the smallest changeable amount in the value.
           Precision MUST be defined as base to the power of precision (i.e. b^n). 
           A <a>schema</a> MAY define the restrictions by using predefined restrictions.
