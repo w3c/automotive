@@ -1,3 +1,4 @@
 
 spec/plantuml/example.html
 spec/*.png
+spec/Gen2_Core.html.bak
