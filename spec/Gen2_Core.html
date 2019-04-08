@@ -50,8 +50,10 @@
     <section id="introduction">
       <h2>Introduction</h2>
       <p>
-        This document describes the messaging layer of the Gen2 protocol. 
-        The separation between transport and messaging layer improves readability. Extending and describing multiple transport protocols becomes possible. 
+        This document describes the messaging API for Gen2 protocol. 
+        This includes the messaging layer and set of rules for structuring data.
+        The separation between payload encoding (transport) and messaging API (core) improves adaptability. 
+        Extending and describing multiple transport protocols becomes possible.
       </p>     
       <p>
         The messages are exchanged between a <a>service</a> implementation holding the representation of data 
@@ -63,8 +65,8 @@
         The Gen2 messaging layer uses a RESTful design for all methods exchanged via the interface (<a href="#interface"></a>).
       </p>
       <p>
-        Then Gen2 data model (<a href="#generic-data-model"></a>) is the same through all transport protocols.
-        The data model hold by a <a>service</a> is described in a tree like form.
+        The Gen2 data structuring rules (<a href="#generic-data-model"></a>) are the same through all transport protocols.
+        The basis for structuring data hold by a <a>service</a> is a tree.
       </p>
     </section>
 
