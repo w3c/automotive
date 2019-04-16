@@ -39,14 +39,37 @@
   <body>
     <section id='abstract'>
       <p>
-        This document, the Gen2 core specification, describes the Gen2 messaging layer. The companion specification Gen2 transport details the mapping of the messaging layer to selected transports.
+        This document, the Gen2 core specification, describes the Gen2 messaging layer. 
+        The companion specifications for the Gen2 transport protocols detail the mapping of the messaging layer to selected transports.
+        The ontologies based on the Gen2 core specification are defined in documents for each specific domain
+        (e.g. navigation, media, vehicle data). 
       </p>
     </section>
     <section id='sotd'></section>
+
     <section id="introduction">
       <h2>Introduction</h2>
-      <p>This document describes the messaging layer. The separation between transport and messaging layer improves readability and simplify extending Gen2 to further transports in the future. The Gen2 messaging layer uses a RESTful design with an interface and a data model.</p>
+      <p>
+        This document describes the messaging API for Gen2 protocol. 
+        This includes the messaging layer and set of rules for structuring data.
+        The separation between payload encoding (transport) and messaging API (core) improves adaptability. 
+        Extending and describing multiple transport protocols becomes possible.
+      </p>     
+      <p>
+        The messages are exchanged between a <a>service</a> implementation holding the representation of data 
+        and a <a>client</a> using the data.
+        A <dfn>service</dfn> is an entity that manages and offers access to data.
+        A <dfn>client</dfn> is an entity that works with data managed by a service.
+      </p>
+      <p>
+        The Gen2 messaging layer uses a RESTful design for all methods exchanged via the interface (<a href="#interface"></a>).
+      </p>
+      <p>
+        The Gen2 data structuring rules (<a href="#generic-data-model"></a>) are the same through all transport protocols.
+        The basis for structuring data hold by a <a>service</a> is a tree.
+      </p>
     </section>
+
     <section id="conformance"></section>
     <section id="terms">
       <h2>Terminology</h2>
