@@ -18,7 +18,7 @@
           companyURL: "https://www.volvocars.com/intl"
         },
         {
-          name: "Patrick LÃ¼nnemann",
+          name: "Patrick Lünnemann",
           company: "Volkswagen Group",
           companyURL: "https://www.volkswagenag.com",
           w3cid: 95844
@@ -384,51 +384,175 @@
         </section>
     </section>
 	
-    <section id="search_mechanisms">
-      <h2>Search mechanisms</h2>
-      <p>There are two mechanisms available for a client to search for tree nodes of interest: wildcards and queries, which are explained in the chapters below.</p>
-      <section data-dfn-for="wildcards">
-        <h2>Wildcard</h2>
-        <p>The rules for wildcard usage is described by the following rules.</p>
-          <ul>  
-            <li>A wildcard is represented by the asterix (*) sign, and can be inserted to replace a path segment name.</li>
-            <li>The wildcard must represent the complete path segment name, i. e. it cannot be combined with any other characters in bewtween two dot segment delimiters.</li>
-            <li>One or more segments in a path can be replaced by wildcards.</li>
-            <li>If the wildcard is inserted at the last segment in a path, then it represents not only this segment, but any number of following segments.</li>
-            <li>The service discovery method, which implies a search for all nodes having the provided path as root node, shall not have a wildcard at the last segment in the path if the entire tree below the specified root node is what is requested.</li>
-            <li>If the path in a service discovery request have one or more wildcards as the last segment(s), then only the subtree of the depth given by the number of wildcards is returned.</li>
-          </ul>  
-        <section id="wildcard-examples">
-          <h2>Examples</h2>
-          <p>A client read request for the door lock status of all doors. There are two path segments specifying a particular door, the "RowX" and the "Left/Right" segments, so to cover all doors of the car both these segments must have a wildcard inserted.<br>
-          <blockquote>
-            "path": "/Vehicle/Cabin/Door/*/*/IsLocked"<br>
-          </blockquote>
-          The response would then contain the lock status of all doors like below.<br>
-          <blockquote>
-            "value": [ {" /Vehicle/Cabin/Door/Row1/Right/IsLocked" : true },<br>
-            {" /Vehicle/Cabin/Door/Row1/Left/IsLocked" : true },<br>
-            {" /Vehicle/Cabin/Door/Row2/Right/IsLocked" : false },<br>
-            {" /Vehicle/Cabin/Door/Row2/Left/IsLocked" : true } ]<br>
-          </blockquote>
-          A client service discovery request for all doors of the car. In this case it is implied that the response shall contain the nodes in any branches below the root node indicated by the path, so there is no need to add a wildcard as the last segment.<br>
-          <blockquote>
-            "path": "/Vehicle/Cabin/Door"<br>
-          </blockquote>
-          The response to the path above will include all nodes in any branches, to any deep, below the root node Door as denoted in the path.<br>
-          If only the direct children of the Door node is of interest, the path then should have one wildcard appended after the Door path segment.<br>
-          <blockquote>
-            "path": "/Vehicle/Cabin/Door/*"<br>
-          </blockquote>
-          And for the case of getting two generations of children to the Door node, two wildcards needs to be appended.<br><br>However, for any other action than a service discovery, the path above, ending with a wildcard, would lead to the return of all leave nodes at any depth under the Door node.
-          </p>
-        </section>
-      </section>
-      <section data-dfn-for="query">
-        <h2>Query</h2>
-        <p>Queries are appended to the path, starting with a question mark. TBC...</p>
+    <section id="filter-mechanisms">
+      <h2>Filtering</h2>
+	  <p>
+	  This section describes how to build the queries to filter for specific parts of the data representation.
+	  </p> 
+	  <p>A <dfn>query</dfn> is a description to taylor and filter the data resulting of a <a>read</a>.</p>
+	  <p>The <a>query</a> can be given with the request from a client to a service additionally to the <a>path</a> to get a <a>content</a> response.
+	  The <a>query</a> describes certain rules that filter the <a>content</a> response. 
+	  <ul>
+			<li>path: describing the part of the tree that shall be filtered in</li>
+			<li>rules: these have to match in the nodes for the node to be part of the <a>content</a> response.</li>
+	  </ul>
+		</p>
+		<div class="example">
+		<h3>Example</h3>
+			<p>
+			All open doors shall be given. The tree looks as follows:
+			<blockquote>
+				<ul><li>/vehicle/cabin
+					<ul><li>/Row1
+						<ul><li>/Left
+							<ul><li>/Door
+								<ul>
+									<li>isLocked: true</li>
+									<li>open: false</li>
+								</ul>
+							</li></ul>
+						</li></ul>
+						<ul><li>/Right
+							<ul><li>/Door
+								<ul>
+									<li>isLocked: false</li>
+									<li>open: true</li>
+								</ul>
+							</li></ul>
+						</li></ul>
+					</li></ul>
+					<ul><li>/Row2
+						<ul><li>/Left
+							<ul><li>/Door
+								<ul>
+									<li>isLocked: false</li>
+									<li>open: false</li>
+								</ul>
+							</li></ul>
+						</li></ul>
+						<ul><li>/Right
+							<ul><li>/Door
+								<ul>
+									<li>isLocked: true</li>
+									<li>open: true</li>
+								</ul>
+							</li></ul>
+						</li></ul>
+					</li></ul>
+				</li></ul>
+			</blockquote>
+			</p>
+			<p>
+			The <a>path</a> that shall be inspected is "/vehicle/cabin". <br>
+			The <a>rule</a> is that "/vehicle/cabin/*/*/Door/isLocked" shall be "true".<br>
+			</p>
+			<p>
+			The list in the <a>content</a> response would look like this:
+			<blockquote>
+			<ul>
+			<li>/vehicle/cabin/Row1/Left/Door</li>
+				<ul>
+					<li>isLocked: true</li>
+					<li>open: false</li>
+				</ul>
+			<li>/vehicle/cabin/Row2/Right/Door</li>
+				<ul>
+					<li>isLocked: true</li>
+					<li>open: true</li>
+				</ul>
+			</ul>
+			</blockquote>
+			</p>
+		</div>
+     <section data-dfn-for="rules">
+        <h3>Rules</h2>
+		<p>
+		A <dfn>rule</dfn> is an expression that describes a characteristic of nodes that shall be returned by a <a>query</a>.
+		<a>Rules</a> are applied to a leaf and describe a desired attribute of a node.
+		All <a>rules</a> MUST return either FALSE or TRUE.
+		</p>
+		<p>
+		These are the <a>rules</a> that are known to check to be used in a <a>query</a> to filter <a>content</a> responses.
+		
+		<table border="1">
+			<tr><th>name</th><th><a>input type</a></th><th>Description</th><th>Example</th></tr>
+			<tr>
+				<th><dfn>true</dfn></th>
+				<td><a>boolean</a></td>
+				<td>matches if the data value is true</td>
+				<td>true(isLocked)</td>
+			</tr>
+			<tr>
+				<th><dfn>false</dfn></th>
+				<td><a>boolean</a></td>
+				<td>matches if the data value is false</td>
+				<td>false(isLocked)</td>
+			</tr>
+			<tr>
+				<th><dfn>contains</dfn></th>
+				<td><a>string</a></td>
+				<td>matches if a given string is contained in another one</td>
+				<td>contains(name, "blue")</td>
+			</tr>
+			<tr>
+				<th><dfn>equal</dfn></th>
+				<td>(<a>string</a>|<a>boolean</a>|<a>number</a>)</td>
+				<td>matches if a value is equal to a given value</td>
+				<td>equal(name, "Red Door")</td>
+			</tr>
+			<tr>
+				<th><dfn>greaterThan</dfn></th>
+				<td><a>number</a></td>
+				<td>matches if a given number is greater than the value</td>
+				<td>greaterThan(windowPosition, 0.2)</td>
+			</tr>
+			<tr>
+				<th><dfn>smallerThan</dfn></th>
+				<td><a>number</a></td>
+				<td>matches if a given number is smaller than the value</td>
+				<td>smallerThan(windowPosition, 0.2)</td>
+			</tr>
+			<tr>
+				<th><dfn>greaterThanEqual</dfn></th>
+				<td><a>number</a></td>
+				<td>matches if a given number is greater than the value or equal to the value</td>
+				<td>greaterThan(windowPosition, 0.2)</td>
+			</tr>
+			<tr>
+				<th><dfn>smallerThanEqual</dfn></th>
+				<td><a>number</a></td>
+				<td>matches if a given number is smaller than the value or equal to the value</td>
+				<td>smallerThan(windowPosition, 0.2)</td>
+			</tr>
+		</table>
+		</p>
+		<p>
+		It MUST be possible to combine several <a>rules</a> to one greater <a>rule</a>. This is possible with the following operators.
+		
+		<table border="1">
+			<tr>
+				<th><dfn>not</dfn></th>
+				<td><a>rule</a></td>
+				<td>negates the return of a rule</td>
+				<td>not(true(isLocked))</td>
+			</tr>
+			<tr>
+				<th><dfn>and</dfn></th>
+				<td><a>rule</a>,<a>rule</a></td>
+				<td>returns true if both of the <a>rules</a> evaluates true</td>
+				<td>and(ruleA,ruleB)</td>
+			</tr>
+			<tr>
+				<th><dfn>or</dfn></th>
+				<td><a>rule</a>,<a>rule</a></td>
+				<td>returns true if one of the <a>rules</a> evaluates true</td>
+				<td>or(ruleA,ruleB)</td>
+			</tr>
+		</table>
+		</p>
       </section>
     </section>
+ 
     <section id="security">
       <h2>Security</h2>
       <div class="issue" title="describe security section">
