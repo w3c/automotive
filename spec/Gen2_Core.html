@@ -65,7 +65,7 @@
         The Gen2 messaging layer uses a RESTful design for all methods exchanged via the interface (<a href="#interface"></a>).
       </p>
       <p>
-        The Gen2 data structuring rules (<a href="#generic-data-model"></a>) are the same through all transport protocols.
+        The Gen2 data structuring rules (<a href="#interface-grammatic"></a>) are the same through all transport protocols.
         The basis for structuring data hold by a <a>service</a> is a tree.
       </p>
     </section>
@@ -78,13 +78,14 @@
     <section data-dfn-for="interface-grammatic">
       <h2>Interface Grammatic</h2>
       <p>
-      The data models that can be accessed with this interface is a tree-like logical taxonomy.
+      The <a>data models</a> that can be accessed with this interface is a tree-like logical taxonomy.
       It is represented by a directed acyclic graph.
+      A <dfn>data model</dfn> is a description of a specific interface within a specific domain, e.g. vehicle data.
       </p>
       <p>
       This <a href="#tree-example">example</a> shows that major vehicle structures (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as their child nodes.
       Each of the child nodes in the tree is further decomposed into its logical constituents, 
-      and the process is repeated until leafs are reached.
+      and the process is repeated until leaves are reached.
       </p>
       <figure id="tree-example" class="example">
         <img uml='
@@ -139,12 +140,12 @@
         <h2>Tree elements</h2>
         <p>
           Tree elements are of one of two types.
-          Leafs in the tree are <a>values</a>. 
+          <a>Leaves</a> in the tree are values. 
           The path to a leaf is built by <a>branches</a>.
         </p>
         <p>
           All tree elements expressing an interface have to have a description of its grammar. 
-          A collection of grammars for tree elements is called schema.
+          A collection of grammars for tree elements is called <a>data model</a>.
         </p>
         <p>
           All tree elements have <dfn>names</dfn>. 
@@ -159,7 +160,7 @@
         <section data-dfn-for="branch">
           <h3><dfn>branch</dfn></h3>
           <p>
-            A <a>branch</a> have a description and all its sub-tree elements or has to have a reference to a schema describing the sub-tree elements. 
+            A <a>branch</a> have a description and all its sub-tree elements or has to have a reference to a <a>data model</a> describing the sub-tree elements. 
             It MUST be marked for every sub-<a>branch</a> 
             if only one instance is allowed 
             or multiple instances are allowed.
@@ -176,10 +177,10 @@
         <section data-dfn-for="leaf">
           <h3><dfn>leaf</dfn></h3>
           <p>
-            Leafs contain the data within the interface.
+            Leaves contain the data within the interface.
             A <a>leaf</a> MUST have an <a>name</a> that identifies it.
             The <a>name</a> of a <a>leaf</a> MUST be only present once within a <a>branch</a>-element.
-            The <a>name</a> is set via the schema and makes the <a>leaf</a> understandable.
+            The <a>name</a> is set via the <a>data model</a> and makes the <a>leaf</a> understandable.
             A <a>leaf</a> MUST have a data field that stores the data.
             A <a>leaf</a>'s data fields MUST have a <a href="#value-data-types">data type</a> and restrictions, depending on the data type, that describes the format of the data.
           </p>
@@ -213,7 +214,7 @@
           Min MUST be defined as base to the power of max with an optional -1 (i.e. b^max - 1).
           Precision MUST describes the smallest changeable amount in the value.
           Precision MUST be defined as base to the power of precision (i.e. b^n). 
-          A <a>schema</a> MAY define the restrictions by using predefined restrictions.
+          A <a>data model</a> MAY define the restrictions by using predefined restrictions.
           <table class="def">
             <tr><th>name</th>
               <th>description</th>
@@ -289,7 +290,7 @@
           If no character set is given unicode MUST be assumed.
           Restrictions MAY include a regular expression.
           <span class="issue">which regex style?</span>
-          A <a>schema</a> MAY define the restrictions by using predefined restrictions.
+          A <a>data model</a> MAY define the restrictions by using predefined restrictions.
           Protocol specific implementations MAY use optimized versions to transfer values with predefined restrictions.
           <table class="def">
             <tr><th>name</th>
@@ -443,7 +444,7 @@
 		These are the <a>rules</a> that are known to check to be used in a <a>query</a> to filter <a>content</a> responses.
 		
 		<table border="1">
-			<tr><th>name</th><th><a>input type</a></th><th>Description</th><th>Example</th></tr>
+			<tr><th>name</th><th><a href="#value-data-types">input type</a></th><th>Description</th><th>Example</th></tr>
 			<tr>
 				<th><dfn>true</dfn></th>
 				<td><a>boolean</a></td>
@@ -873,17 +874,17 @@
           <h4>variant selection</h4>
           <p>
             Purpose: 
-            A client can express which schema variants it can support when executing a method.
-            A service can express which schema variant it uses when communicating with the client.
+            A client can express which <a>data model</a> variants it can support when executing a method.
+            A service can express which <a>data model</a> variant it uses when communicating with the client.
           </p>
           <p>
             The client MAY set multiple key/value pairs to describe all variants it supports.
             The client MAY not set any key/value pair.
-            The service MUST set exactly one schema key/value pair to describe the used variant.
-            The client MAY use the [[SemVer]] style to describe degrees of freedom in the version of the schema.
+            The service MUST set exactly one <a>data model</a> key/value pair to describe the used variant.
+            The client MAY use the [[SemVer]] style to describe degrees of freedom in the version of the <a>data model</a>.
             <table class="def">
-              <tr><th>key</th>    <td>Schema</td></tr>
-              <tr><th>value</th>  <td><a>schema</a> compliant</td></tr>
+              <tr><th>key</th>    <td><a>data model</a></td></tr>
+              <tr><th>value</th>  <td><a><a>data model</a></a> compliant</td></tr>
               <tr><th>example</th><td>w3c.vehicle.v1.5.3</td></tr>
             </table>
           </p>
