@@ -77,96 +77,91 @@
     </section>
     <section data-dfn-for="interface-grammatic">
       <h2>Interface Grammatic</h2>
-		<p>
-		The basic data model behind that can be accessed with this interface is a tree-like logical taxonomy of the whole vehicle.
-		It is represented by a directed acyclic graph.
-		</p>
-		<p>
-		It is derived from <a href="https://github.com/GENIVI/vehicle_signal_specification/blob/master/README.md">GENIVI's Vehicle Signal Specification</a> (VSS).
-		<span class="issue">is this the correct link?</span>
-		This <a href="#tree-example">example</a> shows that major vehicle structures (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as their child nodes.
-		Each of the child nodes in the tree is further decomposed into its logical constituents, 
-		and the process is repeated until leafs are reached.
-		A composable node MUST be either a <a>branch</a> or an <a>rbranch</a>.
-		A leaf at the end of a <a>branch</a> cannot be decomposed because and will have an information stored in e.g. a <a>sensor</a>, <a>actuator</a>, <a>stream</a> or <a>attribute</a>.
-		A leaf under an <a>rbranch</a> MUST be an <a>element</a>.
-		</p>
-    <figure id="tree-example" class="example">
-			<img uml='
-			@startuml 
-				skinparam component {
-					BorderColor Black
-					FontSize 16
-					
-					BackgroundColor<<branch>> MediumSeaGreen
-					FontColor<<branch>> White
-					
-					BackgroundColor<<rbranch>> Red
-					FontColor<<rbranch>> White
-					
-					BackgroundColor<<attribute>> Yellow
-					FontColor<<attribute>> Black
-					
-					BackgroundColor<<sensor>> CornflowerBlue
-					FontColor<<sensor>> White
-					
-					BackgroundColor<<actuator>> DarkGrey
-					FontColor<<actuator>> White
-					
-					BackgroundColor<<element>> LightCoral
-					FontColor<<element>> White				
-				}
-				[VSS-Root] -- [Media]
-				[VSS-Root] -- [Car]
-				[VSS-Root] -- [Private]
-				[VSS-Root]<<branch>>
-				[Media]<<branch>>
-				[Private]<<branch>>
-				[Car]<<branch>>
-				
-				[Media] -- [Collections]
-				[Collections] .. [30321564123]
-				[Collections]<<rbranch>>
-				[30321564123]<<element>>
-				
-				[Car] -- [Engine]
-				[Car] -- [Body]
-				[Engine]<<branch>>
-				[Body]<<branch>>
-				
-				[Engine] -- [RPM]
-				[Engine] -- [Speed]
-				[Engine] -- [Fueltype]
-				[RPM]<<sensor>>
-				[Speed]<<sensor>>
-				[Fueltype]<<attribute>>
-				
-				[Body] -- [Mirror]
-				[Body] -- [Door]
-				[Body] -- [Weight]
-				[Mirror]<<branch>>
-				[Door]<<branch>>
-				[Weight]<<attribute>>
-				
-				[Door] -- [&nbsp;...&nbsp;]
-				[&nbsp;...&nbsp;]<<branch>>
-				
-				[Mirror] -- [Left]
-				[Left] -- [Heated]
-				[Left] -- [Dimmed]
-				[Left] -- [Fold]
-				[Left]<<branch>>
-				[Right]<<branch>>
-				[Heated]<<sensor>>
-				[Dimmed]<<sensor>>
-				[Fold]<<actuator>>
-				
-				[Mirror] -- [Right]
-				[Right] -- [ ... ]
-				[ ... ]<<branch>>
-				
-			@enduml
-			'>
+      <p>
+      The data models that can be accessed with this interface is a tree-like logical taxonomy.
+      It is represented by a directed acyclic graph.
+      </p>
+      <p>
+      This <a href="#tree-example">example</a> shows that major vehicle structures (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as their child nodes.
+      Each of the child nodes in the tree is further decomposed into its logical constituents, 
+      and the process is repeated until leafs are reached.
+      </p>
+      <figure id="tree-example" class="example">
+        <img uml='
+          @startuml 
+            skinparam component {
+              BorderColor Black
+              FontSize 16
+              
+              BackgroundColor<<branch>> MediumSeaGreen
+              FontColor<<branch>> White
+              
+              BackgroundColor<<rbranch>> Red
+              FontColor<<rbranch>> White
+              
+              BackgroundColor<<attribute>> Yellow
+              FontColor<<attribute>> Black
+              
+              BackgroundColor<<sensor>> CornflowerBlue
+              FontColor<<sensor>> White
+              
+              BackgroundColor<<actuator>> DarkGrey
+              FontColor<<actuator>> White
+              
+              BackgroundColor<<element>> LightCoral
+              FontColor<<element>> White				
+            }
+            [VSS-Root] -- [Media]
+            [VSS-Root] -- [Car]
+            [VSS-Root] -- [Private]
+            [VSS-Root]<<branch>>
+            [Media]<<branch>>
+            [Private]<<branch>>
+            [Car]<<branch>>
+            
+            [Media] -- [Collections]
+            [Collections] .. [30321564123]
+            [Collections]<<rbranch>>
+            [30321564123]<<element>>
+            
+            [Car] -- [Engine]
+            [Car] -- [Body]
+            [Engine]<<branch>>
+            [Body]<<branch>>
+            
+            [Engine] -- [RPM]
+            [Engine] -- [Speed]
+            [Engine] -- [Fueltype]
+            [RPM]<<sensor>>
+            [Speed]<<sensor>>
+            [Fueltype]<<attribute>>
+            
+            [Body] -- [Mirror]
+            [Body] -- [Door]
+            [Body] -- [Weight]
+            [Mirror]<<branch>>
+            [Door]<<branch>>
+            [Weight]<<attribute>>
+            
+            [Door] -- [&nbsp;...&nbsp;]
+            [&nbsp;...&nbsp;]<<branch>>
+            
+            [Mirror] -- [Left]
+            [Left] -- [Heated]
+            [Left] -- [Dimmed]
+            [Left] -- [Fold]
+            [Left]<<branch>>
+            [Right]<<branch>>
+            [Heated]<<sensor>>
+            [Dimmed]<<sensor>>
+            [Fold]<<actuator>>
+            
+            [Mirror] -- [Right]
+            [Right] -- [ ... ]
+            [ ... ]<<branch>>
+            
+          @enduml
+        '>
         <figcaption>Diagram showing an example tree.</figcaption>
       </figure>
 	    <section data-dfn-for="tree-elements">
