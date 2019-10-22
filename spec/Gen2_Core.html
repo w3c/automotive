@@ -83,18 +83,7 @@
     <section data-dfn-for="data-model">
       <h2>Data model</h2>
 		<p>
-		The basic data model behind that can be accessed with this interface is a tree-like logical taxonomy of the whole vehicle.
-		It is represented by a directed acyclic graph.
-		</p>
-		<p>
-		It is derived from <a href="https://github.com/GENIVI/vehicle_signal_specification/blob/master/README.md">GENIVI's Vehicle Signal Specification</a> (VSS).
-		<span class="issue">is this the correct link?</span>
-		This <a href="#tree-example">example</a> shows that major vehicle structures (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as their child nodes.
-		Each of the child nodes in the tree is further decomposed into its logical constituents, 
-		and the process is repeated until leafs are reached.
-		A composable node MUST be either a <a>branch</a> or an <a>rbranch</a>.
-		A leaf at the end of a <a>branch</a> cannot be decomposed because and will have an information stored in e.g. a <a>sensor</a>, <a>actuator</a>, <a>stream</a> or <a>attribute</a>.
-		A leaf under an <a>rbranch</a> MUST be an <a>element</a>.
+		The data model used in this specification is the <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a> (VSS). This data model uses a tree-like logical taxonomy to represent the vehicle data. An illustrative example of such a tree structure is shown in <a href="#tree-example">Figure 1</a>. For more details, see the <a href="http://genivi.github.io/vehicle_signal_specification/">VSS documentation</a>.
 		</p>
     <figure id="tree-example" class="example">
 			<img uml='
@@ -121,10 +110,10 @@
 					BackgroundColor<<element>> LightCoral
 					FontColor<<element>> White				
 				}
-				[VSS-Root] -- [Media]
-				[VSS-Root] -- [Car]
-				[VSS-Root] -- [Private]
-				[VSS-Root]<<branch>>
+				[Vehicle] -- [Media]
+				[Vehicle] -- [Car]
+				[Vehicle] -- [Private]
+				[Vehicle]<<branch>>
 				[Media]<<branch>>
 				[Private]<<branch>>
 				[Car]<<branch>>
@@ -174,43 +163,6 @@
 			'>
         <figcaption>Diagram showing an example tree.</figcaption>
       </figure>
-	    <section data-dfn-for="tree-elements">
-        <h2>Tree elements</h2>
-        <section data-dfn-for="sensor">
-          <h3><dfn>sensor</dfn></h3>
-          <p>A leaf that describes non-static read-only signal.</p>
-        </section>
-        <section data-dfn-for="attribute">
-          <h3><dfn>attribute</dfn></h3>
-          <p>A leaf that describes static read-only value.</p>
-        </section>
-        <section data-dfn-for="stream">
-          <h3><dfn>stream</dfn></h3>
-          <p>A leaf that references a data stream, e.g. a video stream.</p>
-        </section>		
-        <section data-dfn-for="actuator">
-          <h3><dfn>actuator</dfn></h3>
-          <p>A leaf the same as <a>sensor</a> which additionaly can be changed.</p>
-        </section>
-        <section data-dfn-for="branch">
-          <h3><dfn>branch</dfn></h3>
-          <p>
-          A <a>branch</a> MUST host one or more children of any node type except <a>element</a>. 
-          </p>
-          <div class="issue">to be described more</div>
-        </section>		
-        <section data-dfn-for="rbranch">
-          <h3><dfn>rbranch</dfn></h3>
-          <p>
-          A node under an <a>rbranch</a> MUST be an <a>element</a>.
-          </p>
-          <div class="issue">to be described more</div>
-        </section>
-        <section data-dfn-for="element">
-          <h3><dfn>element</dfn></h3>
-          <div class="issue">to be described</div>
-        </section>
-      </section>
 
       <section data-dfn-for="address">
         <h2>Addressing</h2>
@@ -222,153 +174,13 @@
         <p><dfn>Path</dfn> describes the location of a specific data representation within a service.
           It is the path through the tree, the data representation, implemented by the service.</p>
       </section>
-      
-      <section data-dfn-for="data-types">
-        <h2>Data Types</h2>
-
-        <section data-dfn-for="number">
-          <h3><dfn>Number</dfn></h3>
-          <p>
-          <a>Number</a> is used to represent numbers. 
-          This includes all signed and unsigned integer values and floats.
-          To allow for memory allocation restrictions MUST be given.
-          Restrictions MUST be expressed by using min, max and precision.
-          Min MUST describe the lowest possible value.
-          Min MUST be defined as base to the power of min (i.e. b^min).
-          Max MUST describe the highest possible value.
-          Min MUST be defined as base to the power of max with an optional -1 (i.e. b^max - 1).
-          Precision MUST describes the smallest changeable amount in the value.
-          Precision MUST be defined as base to the power of precision (i.e. b^n). 
-          A <a>schema</a> MAY define the restrictions by using predefined restrictions.
-          <table class="def">
-            <tr><th>name</th>
-              <th>description</th>
-              <th>min</th>
-              <th>max</th>
-              <th>resolution</th></tr>
-            <tr><th><dfn>UInt8</dfn></th>
-              <td>unsigned 8-bit integer</td>
-              <td>0</td>
-              <td>255</td>
-              <td></td></tr>
-            <tr><th><dfn>Int8</dfn></th>
-              <td>signed 8-bit integer</td>
-              <td>-128</td>
-              <td>127</td>
-              <td></td></tr>
-            <tr><th><dfn>UInt16</dfn></th>
-              <td>unsigned 16-bit integer</td>
-              <td>0</td>
-              <td>65535</td>
-              <td></td></tr>
-            <tr><th><dfn>Int16</dfn></th>
-              <td>signed 16-bit integer</td>
-              <td>-32768</td>
-              <td>32767</td>
-              <td></td></tr>
-            <tr><th><dfn>UInt32</dfn></th>
-              <td>unsigned 32-bit integer</td>
-              <td>0</td>
-              <td>4294967295</td>
-              <td></td></tr>
-            <tr><th><dfn>Int32</dfn></th>
-              <td>signed 32-bit integer</td>
-              <td>-2147483648</td>
-              <td>2147483647</td>
-              <td></td></tr>
-            <tr><th><dfn>UInt64</dfn></th>
-              <td>unsigned 64-bit integer</td>
-              <td>0</td>
-              <td>2^64-1</td>
-              <td></td></tr>
-            <tr><th><dfn>Int64</dfn></th>
-              <td>signed 64-bit integer</td>
-              <td>2^63</td>
-              <td>2^63-1</td>
-              <td></td></tr>
-            <tr><th><dfn>Float</dfn></th>
-              <td>floating point number</td>
-              <td>-3.4e -38</td>
-              <td>3.4e 38</td>
-              <td></td></tr>
-            <tr><th><dfn>Double</dfn></th>
-              <td>double precision floating point number</td>
-              <td>-1.7e -300</td>
-              <td>1.7e 300</td>
-              <td></td></tr>
-            <tr><th><dfn></dfn></th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td></tr>
-          </table>
-          </p>
-        </section>
-        
-        <section data-dfn-for="Boolean">
-          <h3><dfn>Boolean</dfn></h3>
-          <p>Simple true or false</p>
-        </section>
-        
-        <section data-dfn-for="String">
-          <h3><dfn>String</dfn></h3>
-          <p>
-          <a>String</a> is used to represent sequence of characters.
-          To allow for memory allocation restrictions MUST be given.
-          Restrictions MUST include a maximum string length.
-          Restrictions MAY include a character set.
-          If no character set is given unicode MUST be assumed.
-          Restrictions MAY include a regular expression.
-          <span class="issue">which regex style?</span>
-          A <a>schema</a> MAY define the restrictions by using predefined restrictions.
-          Protocol specific implementations MAY use optimized versions to transfer values with predefined restrictions.
-          <table class="def">
-            <tr><th>name</th>
-              <th>description</th>
-              <th>max</th>
-              <th>example</th>
-              <th>RegEx</th></tr>
-            <tr><th><dfn>date-time</dfn></th>
-              <td>date-time (based on RFC3339 5.6) detailed fraction</td>
-              <td>29</td>
-              <td class="example">2005-11-12T12:01:42.123+01:00</td>
-              <td><code>^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?((Z|(\+|\-)\d{2}:\d{2}))$</code></td></tr>
-            <tr><th><dfn>time</dfn></th>
-              <td>time (based on RFC3339 5.6) detailed fraction</td>
-              <td>18</td>
-              <td class="example">12:01:42.123+01:00</td>
-              <td><code>^\d{2}:\d{2}:\d{2}(\.\d{3})?((Z|(\+|\-)\d{2}:\d{2}))$</code></td></tr>
-            <tr><th><dfn>date</dfn></th>
-              <td>date (RFC3339 5.6)</td>
-              <td>10</td>
-              <td class="example">2005-11-12</td>
-              <td><code>^\d{4}-\d{2}-\d{2}$</code></td></tr>
-            <tr><th><dfn></dfn></th>
-              <td></td>
-              <td></td>
-              <td class="example"></td>
-              <td><code></code></td></tr>
-          </table>
-          </p>
-        </section>
-
-        <section data-dfn-for="ByteArray">
-          <h3><dfn>ByteArray</dfn></h3>
-          <p>
-            <a>ByteArray</a>, also known as a blob, is an array of bytes of not nearer specified data.
-            To allow for memory allocation restrictions MUST be given.
-            Restrictions MUST include a maximum number of bytes.
-          </p>
-        </section>
-
-      </section>
-        <section data-dfn-for="Foo">
+        <section id="service-discovery">
           <h2>Service discovery</h2>
-          <p>The client MAY request that the server returns the VSS tree content. The client is able to request metadata from any point in the signal tree, such that only the metadata for the nodes within the given branch of the tree is returned. For example, only metadata for the chassis branch of the VSS tree is returned when the chassis path is specified. If the path is set to the VSS root, the response contains the metadata for the entire tree. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
+          <p>The purpose of the data model is to provide a client with a description of the data that enables the client to make a request for this vehicle data. In order to obtain that description, the client MAY request that the server returns the VSS tree content, i. e. the metadata describing the accessible vehicle data. The client is able to request metadata from any point in the signal tree, such that only the metadata for the nodes within the given branch of the tree is returned. For example, only metadata for the chassis branch of the VSS tree is returned when the chassis path is specified. If the path is set to the VSS root, the response contains the metadata for the entire tree. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message.<br>A service discovery request has the format of a read, where the path is appended with a query component, see the chapter Filtering for the details.<br>The key data components of these messagess are defined below:</p>
           <ul>  
             <li>Request message parameters:</li>
             <ul>  
-              <li>Path: The address to one or more nodes in the VSS tree, followed by the path segment "$spec".</li>
+              <li>Path: The address to one or more nodes in the VSS tree, followed by the query component specifying the service discovery.</li>
             </ul>  
             <li>Response message parameters:</li>
             <ul>  
@@ -381,6 +193,10 @@
               <li>Timestamp: A timestamp associated with the failed request.</li>
             </ul>  
           </ul>  
+        <section id="dynamic-registry">
+          <h2>Dynamic registry</h2>
+          <p>To enable e. g. after-market services it SHALL be possible to dynamically add new branches to the VSS tree, and if requested also to delete them at a later point.<br>Requests of this type are not expected to be frequent for the type of data that is represented in the "vehicle signal domain", which is the current scope of VSS. These requests are therefore partitioned in a separate API, which is described in "Appendix: Dynamic registry API". </p>
+        </section>
         </section>
     </section>
 	
@@ -1200,6 +1016,11 @@ All necessary measures to allow TLS must be implemented, such as reliable time a
         
       </section>
     </section>
+    <section id="Appendix-b-dynamic-registry-api">
+      <h4>Appendix:Dynamic registry API</h4>
+      <p>The dynamic reqistry API provides the functionality to dynamically add or delete branches of the VSS tree. A branch can only be deleted if it has been dynamically added. In the following an entity requesting dynamic registry services is called a "service manager", and the entity performing these requests is called the "core server", see the figure "Gen2 server reference architecure".</p>
+    </section>
+
 
     <section id="issue-summary" class="appendix"></section>
     <section id="tof" class="appendix"></section>
