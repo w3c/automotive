@@ -83,7 +83,8 @@
     <section data-dfn-for="data-model">
       <h2>Data model</h2>
 		<p>
-		The data model used in this specification is the <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a> (VSS). This data model uses a tree-like logical taxonomy to represent the vehicle data. An illustrative example of such a tree structure is shown in <a href="#tree-example">Figure 1</a>. For more details, see the <a href="http://genivi.github.io/vehicle_signal_specification/">VSS documentation</a>.
+		The data model used in this specification is the <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a>, version 2.0 (VSS 2.0). This data model uses a tree-like logical taxonomy to represent the vehicle data. An illustrative example of such a tree structure is shown in <a href="#tree-example">Figure 1</a>. For more details, see the <a href="http://genivi.github.io/vehicle_signal_specification/">VSS 2.0 documentation</a>.
+<div class="issue">Reference should be to VSS 2.0. Does VSS have a 2.0 entry point?</div>
 		</p>
     <figure id="tree-example" class="example">
 			<img uml='
@@ -161,8 +162,9 @@
 				
 			@enduml
 			'>
-        <figcaption>Diagram showing an example tree.</figcaption>
+        <figcaption>Diagram showing an example VSS 2.0 tree.</figcaption>
       </figure>
+<div class="issue">VSS does not have a "domain root node" for the vehicle signal domain, like the Car node in Fig 1. To be introduced in VSS, or removed from here?</div>
 
       <section data-dfn-for="address">
         <h2>Addressing</h2>
@@ -172,6 +174,7 @@
         <p>The <dfn>authority</dfn> describes where to reach the service holding and managing the data representation.
           Scheme and authority are defined within the protocol adaptation.</p>
         <p>The <dfn>path</dfn> consists of the slash delimited node names of the nodes traversed from the tree root to the tree leaf representing the service. E. g. the path expression from traversing the nodes Vehicle, Car, Engine, RPM would be "Vehicle/Car/Engine/RPM".</p>
+<div class="issue">VSS 2.0 should use slash as delimiter. If not, this difference should be pointed out here.</div>
       </section>
         <section id="service-discovery">
           <h2>Service discovery</h2>
