@@ -2,28 +2,19 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>Gen2-Transport</title>
+    <title>Vehicle Services Interface_Transport</title>
     <script 
      src='https://www.w3.org/Tools/respec/respec-w3c-common' 
      class='remove'></script>
-    <script type="text/javascript" src="plantuml/jquery.js"></script>
-    <script type="text/javascript" src="plantuml/jquery_plantuml.js"></script>
-    <script type="text/javascript" src="plantuml/rawdeflate.js"></script>	 
     <script class='remove'>
       var respecConfig = {
         specStatus: "ED",
         editors: [{
-          name: "Ulf Bjorkengren",
-          company: "Geotab",
-          companyURL: "https://www.geotab.com"
-        },
-        {
-          name: "Ulf Bjorkengren",
-          company: "Volvo Cars",
-          companyURL: "https://www.volvocars.com/intl"
+          name: "Ulf Bjorkengren, Volvo Cars",
+          url: "http://www.volvocars.com/intl",
         }],
         edDraftURI: "http://some.github.repo",
-        shortName: "Gen2-TRANSPORT"
+        shortName: "VSI-TRANSPORT"
       };
     </script>
   </head>
@@ -127,7 +118,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
           <tr>
             <td>403</td>
             <td>Forbidden</td>
-            <td>The client has insufficient rights to obtain the requested information or has submitted an HTTP request with POST method to a property, which is <code>read-only</code> or not allowed to be set by the client(e.g. <code>POST</code> on <code>/info</code> property <code>vehicleIdentication</code>).</td>
+            <td>The client has insufficient rights to obtain the requested information or has submitted an HTTP request with POST method to a property, which is <code>read-only</code> or not allowed to be set by the client(e.g. <code>POST</code> on <code>/car/info</code> property <code>vehicleIdentication</code>).</td>
             <td>If client do not have access rights, client has to acquire access rights.</td>
           </tr>
           <tr>
@@ -185,17 +176,13 @@ extending VSI to further transports in the future. The VSI supports multiple tra
         <h2>Transport payload</h2>
         <p>The payload SHALL have JSON format. See <a href='#appendix_b'></a> for the payload format of the messages for the different transport protocols.</p>
       </section>
-      <section data-dfn-for="Foo">
-        <h2>Authorization</h2>
-          <p>Clients must provide a token to the server in order to verify that it is correctly authorized for the service it requests (c.f. CORE document).Tokens are integrated in HTTP requests in the <code>Authorization</code> header. For WebSockets requests an optional <code>authorization</code> property in the payload can be used.</p>
-      </section>
     </section>
     <section data-dfn-for="Foo">
       <h2>Transport protocols</h2>
       <p>The transport protocols supported are the secure versions of HTTP and WebSockets. Further transport protocols may be supported in future versions of this specification.</p>
       <section data-dfn-for="Foo">
         <h2>HTTPS</h2>
-        <p>The message data components described in the CORE document are in the first hand mapped to required HTTP parameters, and only when there is no appropriate mapping it is mapped to the payload. The subscribe/unsubscribe messages are not supported by this transport protocol.</p>
+        <p>The message data components described in the CORE document are in the first hand mapped to required HTTP parameters, and only when there is no appropriate mapping it is mapped to the payload.</p>
         <section data-dfn-for="Foo">
           <h2>Session life time management</h2>
           <section data-dfn-for="Foo">
@@ -212,7 +199,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
             <p>
               <b>Example:</b><br>
               Request:<br>
-              GET Vehicle/Drivetrain/InternalCombustionEngine/RPM HTTP/1.1<br>
+              GET VSS-Root/Car/Drivetrain/InternalCombustionEngine/RPM HTTP/1.1<br>
               Host: 127.0.0.1:1337<br>
               Connection: keep-alive<br>
               Accept: application/json<br>
@@ -236,21 +223,13 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               </blockquote>
               }<br>
             </p>
-          <section data-dfn-for="Foo">
-            <h2>Authorized read</h2>
-<p>JWT tokens will be sent in the <code>Authorization</code> header, following with term <code>Bearer</code> and a space character.</p>
-<p>The following example assumes <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds</code> is the actual token:</p>
-<pre><code>  GET /<span class="hljs-params">Vehicle</span>/<span class="hljs-params">Drivetrain</span>/<span class="hljs-params">InternalCombustionEngine</span>/<span class="hljs-params">RPM</span>/ HTTP/<span class="hljs-number">1.1</span>
-<span class="hljs-symbol">  Host:</span> <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>:<span class="hljs-number">1337</span>
-<span class="hljs-symbol">  Authorization:</span> Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds
-</code></pre>
-          </section>
           </section>
           <section data-dfn-for="Foo">
             <h2>Update</h2>
             <p>
               <b>Example:</b><br>
-              POST /Vehicle/Drivetrain/Transmission/PerformanceMode HTTP/1.1<br>
+              Request:??how represent wildcard path with URL??<br>
+              POST /VSS-Root/Cabin/Door/*/*/IsLocked HTTP/1.1<br>
               Host: 127.0.0.1:9000<br>
               Connection: keep-alive<br>
               Accept: application/json<br>
@@ -259,7 +238,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               Accept-Language: en-US,en;q=0.8,de;q=0.6<br><br>
               {<br>
               <blockquote>
-                "value": "sport",<br>
+                "value": true,<br>
               </blockquote>
               }<br><br>
               Response:<br>
@@ -277,25 +256,19 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               </blockquote>
               }<br>
             </p>
-          <section data-dfn-for="Foo">
-            <h2>Authorized update</h2>
-<p>JWT tokens will be sent in the <code>Authorization</code> header, following with term <code>Bearer</code> and a space character.</p>
-<p>The following example assumes <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds</code> is the actual token:</p>
-<pre><code>  POST /<span class="hljs-params">Vehicle</span>/<span class="hljs-params">Drivetrain</span>/<span class="hljs-params">Transmission</span>/<span class="hljs-params">PerformanceMode</span>/ HTTP/<span class="hljs-number">1.1</span>
-<span class="hljs-symbol">  Host:</span> <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>:<span class="hljs-number">1337</span>
-<span class="hljs-symbol">  Authorization:</span> Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds
-  {
-    "value": "sport",
-  }
-</code></pre>
           </section>
+          <section data-dfn-for="Foo">
+            <h2>Create</h2>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Delete</h2>
           </section>
           <section data-dfn-for="Foo">
             <h2>Service discovery</h2>
             <p>
               <b>Example:</b><br>
               Request:<br>
-              GET Vehicle/Drivetrain/FuelSystem?$spec HTTP/1.1<br>
+              GET VSS-Root/Car/Drivetrain?$spec HTTP/1.1<br>
               Host: 127.0.0.1:1337<br>
               Connection: keep-alive<br>
               Accept: application/json<br>
@@ -314,11 +287,49 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               Transfer-Encoding: chunked<br><br>
               {<br>
               <blockquote>
-                "metadata": {"FuelSystem":{"type":"branch","description":"Fuel system data.","children":{"HybridType, ... }}}<br>
+                "metadata": 'object',<br>
                 "timestamp": 1489985044000<br>
               </blockquote>
               }<br>
             </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Authorize</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br>
+              POST VSS-Root/Car/Drivetrain?$token HTTP/1.1<br>
+              Host: 127.0.0.1:1337<br>
+              Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds<br>
+              Connection: keep-alive<br>
+              Accept: application/json<br>
+              User-Agent: Chrome/34.0.1847.137 Safari/537.36<br>
+              Accept-Encoding: gzip,deflate<br>
+              Accept-Language: en-US,en;q=0.8,de;q=0.6<br><br>
+              Response:<br>
+              HTTP/1.1 200 OK<br>
+              X-Powered-By: Express<br>
+              Vary: Accept-Encoding<br>
+              Content-Type: application/json; charset=utf-8<br>
+              ETag: "-32550834"<br>
+              Content-Encoding: gzip<br>
+              Date: Tue, 13 Jun 2014 19:47:27 GMT<br>
+              Connection: keep-alive<br>
+              Transfer-Encoding: chunked<br><br>
+              {<br>
+              <blockquote>
+                "TTL": "3600",<br>
+              </blockquote>
+              }<br>
+            </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Subscribe</h2>
+            <p>The subscribe method is not supported over HTTPS.</p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Unsubscribe</h2>
+            <p>The unsubscribe method is not supported over HTTPS.</p>
           </section>
         </section>
       </section>
@@ -344,7 +355,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               {<br>
               <blockquote>
                 "action": "getRequest",<br>
-                "path": "Vehicle/Drivetrain/InternalCombustionEngine/RPM",<br>
+                "path": "VSS-Root.Car.Drivetrain.InternalCombustionEngine.RPM",<br>
                 "requestId": "8756"<br>
               </blockquote>
               }<br><br>
@@ -358,30 +369,6 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               </blockquote>
               }<br>
             </p>
-          <section data-dfn-for="read-token">
-            <h2>Authorized read</h2>
-            <p>
-              <b>Example:</b><br>
-              Request:<br> 
-              {<br>
-              <blockquote>
-                "action": "getRequest",<br>
-                "path": "Vehicle/Drivetrain/InternalCombustionEngine/RPM",<br>
-                "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds"<br>
-                "requestId": "8657"<br>
-              </blockquote>
-              }<br><br>
-              Response:<br>
-              {<br>
-              <blockquote>
-                "action": "getSuccessResponse",<br>
-                "requestId": "8657",<br>
-                "value": 2372,<br>
-                "timestamp": 1489985044000<br>
-              </blockquote>
-              }<br>
-            </p>
-          </section>
           </section>
           <section data-dfn-for="Foo">
             <h2>Update</h2>
@@ -391,31 +378,8 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               {<br>
               <blockquote>
                 "action": "setRequest",<br>
-                "path": "Vehicle/Drivetrain/Transmission/PerformanceMode",<br>
-                "value": "sport",<br>
-                "requestId": "5687"<br>
-              </blockquote>
-              }<br><br>
-              Response:<br>
-              {<br>
-              <blockquote>
-                "action": "setSuccessResponse",<br>
-                "requestId": "5687",<br>
-                "timestamp": 1489985044000<br>
-              </blockquote>
-              }<br>
-            </p>
-          <section data-dfn-for="Foo">
-            <h2>Authorized update</h2>
-            <p>
-              <b>Example:</b><br>
-              Request:<br> 
-              {<br>
-              <blockquote>
-                "action": "setRequest",<br>
-                "path": "Vehicle/Drivetrain/Transmission/PerformanceMode",<br>
-                "value": "sport",<br>
-                "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds"<br>
+                "path": "VSS-Root.Cabin.Door.*.*.IsLocked",<br>
+                "value": true,<br>
                 "requestId": "5687"<br>
               </blockquote>
               }<br><br>
@@ -429,6 +393,11 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               }<br>
             </p>
           </section>
+          <section data-dfn-for="Foo">
+            <h2>Create</h2>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Delete</h2>
           </section>
           <section data-dfn-for="Foo">
             <h2>Service discovery</h2>
@@ -438,7 +407,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               {<br>
               <blockquote>
                 "action": "metadataRequest",<br>
-                "path": "Vehicle/Drivetrain/FuelSystem",<br>
+                "path": "VSS-Root.Car.Drivetrain",<br>
                 "requestId": "5687"<br>
               </blockquote>
               }<br><br>
@@ -447,8 +416,31 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               <blockquote>
                 "action": "metadataSuccessResponse",<br>
                 "requestId": "5687",<br>
-                "metadata": {"FuelSystem":{"type":"branch","description":"Fuel system data.","children":{"HybridType, ... }}}<br>
+                "metadata": 'object',<br>
                 "timestamp": 1489985044000<br>
+              </blockquote>
+              }<br>
+            </p>
+          </section>
+          <section data-dfn-for="Foo">
+            <h2>Authorize</h2>
+            <p>
+              <b>Example:</b><br>
+              Request:<br> 
+              {<br>
+              <blockquote>
+                "action": "authorizeRequest",<br>
+                "path": "VSS-Root.Car.Drivetrain",<br>
+                "tokens": { "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds" }<br>
+                "requestId": "8657"<br>
+              </blockquote>
+              }<br><br>
+              Response:<br>
+              {<br>
+              <blockquote>
+                "action": "authorizeSuccessResponse",<br>
+                "TTL": "3600",<br>
+                "requestId": "8657",<br>
               </blockquote>
               }<br>
             </p>
@@ -461,7 +453,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               {<br>
               <blockquote>
                 "action": "subscribeRequest",<br>
-                "path": "Vehicle/Drivetrain/FuelSystem/Level",<br>
+                "path": "VSS-Root.Car.Drivetrain",<br>
                 "filters": { "interval": 100 }<br>
                 "requestId": "6578"<br>
               </blockquote>
@@ -480,7 +472,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               <blockquote>
                 "action": "subscriptionNotification",<br>
                 "subscriptionId": "12345",<br>
-                "value": 50,<br>
+                "value": 'a value',<br>
                 "timestamp": 1489985044000<br>
               </blockquote
               }<br>
@@ -494,7 +486,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               {<br>
               <blockquote>
                 "action": "unsubscribeRequest",<br>
-                "subscriptionId": "12345",<br>
+                "subscriptionId": "-1",<br>
                 "requestId": "5786"<br>
               </blockquote>
               }<br><br>
@@ -502,7 +494,7 @@ extending VSI to further transports in the future. The VSI supports multiple tra
               {<br>
               <blockquote>
                 "action": "unsubscribeSuccessResponse",<br>
-                "subscriptionId": "12345",<br>
+                "subscriptionId": [ "12345", "23451" ],<br>
                 "requestId": "5786",<br>
                 "timestamp": 1489985044000<br>
               </blockquote>
