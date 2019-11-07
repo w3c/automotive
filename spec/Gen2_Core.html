@@ -110,7 +110,7 @@
             the actual data.
             
             <section id="ruleset_basic">
-            <h4>Basic Rules</h4>
+            <h4>Schema Files</h4>
                 <p>
                     A domain specification MUST be written as a flat YAML list, where each signal 
                     and branch is a self-contained YAML list element. 
@@ -307,7 +307,7 @@
         
         <section id="datadefinition">
             <h3>Data Definition</h3>
-            The Data Definition is the representation of the specific domain under using the Rule Set described before.
+            The Data Definition is the representation of a specific domain under using the Rule Set described before.
             
             <section id="vehicledomain">
                 <h4>Vehicle Domain Taxonomy</h4>
@@ -346,21 +346,21 @@
                             BackgroundColor<<element>> LightCoral
                             FontColor<<element>> White				
                         }
-                        [VSS-Root] -- [Media]
-                        [VSS-Root] -- [Car]
-                        [VSS-Root] -- [Private]
-                        [VSS-Root]<<branch>>
+                        [Vehicle] -- [Media]
+                        [Vehicle] -- [Drivetrain]
+                        [Vehicle] -- [Private]
+                        [Vehicle]<<branch>>
                         [Media]<<branch>>
                         [Private]<<branch>>
-                        [Car]<<branch>>
+                        [Drivetrain]<<branch>>
 
                         [Media] -- [Collections]
                         [Collections] .. [30321564123]
                         [Collections]<<rbranch>>
                         [30321564123]<<element>>
 
-                        [Car] -- [Engine]
-                        [Car] -- [Body]
+                        [Drivetrain] -- [Engine]
+                        [Drivetrain] -- [Body]
                         [Engine]<<branch>>
                         [Body]<<branch>>
 
