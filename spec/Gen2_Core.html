@@ -22,6 +22,11 @@
           company: "Volkswagen Group",
           companyURL: "https://www.volkswagenag.com",
           w3cid: 95844
+        },
+        {
+          name: "Daniel Wilms",
+          company: "Bayerische Motoren Werke Aktiengesellschaft (BMW AG)",
+          companyURL: "https://www.bmwgroup.com/"
         }],
         edDraftURI: "https://github.com/w3c/automotive/blob/gh-pages/spec/Gen2_Core.html",
         shortName: "Gen2-core",
@@ -39,7 +44,7 @@
   <body>
     <section id='abstract'>
       <p>
-        This document, the Gen2 core specification, describes the Gen2 messaging layer. 
+        This document, the Gen2 core specification, describes the Gen2 messaging layer.
         The companion specifications for the Gen2 transport protocols detail the mapping of the messaging layer to selected transports.
         The ontologies based on the Gen2 core specification are defined in documents for each specific domain
         (e.g. navigation, media, vehicle data). 
@@ -75,130 +80,333 @@
       <h2>Terminology</h2>
       <p>The acronym 'Gen2' is used to refer to this document, the second generation specification. The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance. The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.</p>
     </section>
-    <section data-dfn-for="data-model">
-      <h2>Data model</h2>
-		<p>
-		The basic data model behind that can be accessed with this interface is a tree-like logical taxonomy of the whole vehicle.
-		It is represented by a directed acyclic graph.
-		</p>
-		<p>
-		It is derived from <a href="https://github.com/GENIVI/vehicle_signal_specification/blob/master/README.md">GENIVI's Vehicle Signal Specification</a> (VSS).
-		<span class="issue">is this the correct link?</span>
-		This <a href="#tree-example">example</a> shows that major vehicle structures (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as their child nodes.
-		Each of the child nodes in the tree is further decomposed into its logical constituents, 
-		and the process is repeated until leafs are reached.
-		A composable node MUST be either a <a>branch</a> or an <a>rbranch</a>.
-		A leaf at the end of a <a>branch</a> cannot be decomposed because and will have an information stored in e.g. a <a>sensor</a>, <a>actuator</a>, <a>stream</a> or <a>attribute</a>.
-		A leaf under an <a>rbranch</a> MUST be an <a>element</a>.
-		</p>
-    <figure id="tree-example" class="example">
-			<img uml='
-			@startuml 
-				skinparam component {
-					BorderColor Black
-					FontSize 16
-					
-					BackgroundColor<<branch>> MediumSeaGreen
-					FontColor<<branch>> White
-					
-					BackgroundColor<<rbranch>> Red
-					FontColor<<rbranch>> White
-					
-					BackgroundColor<<attribute>> Yellow
-					FontColor<<attribute>> Black
-					
-					BackgroundColor<<sensor>> CornflowerBlue
-					FontColor<<sensor>> White
-					
-					BackgroundColor<<actuator>> DarkGrey
-					FontColor<<actuator>> White
-					
-					BackgroundColor<<element>> LightCoral
-					FontColor<<element>> White				
-				}
-				[VSS-Root] -- [Media]
-				[VSS-Root] -- [Car]
-				[VSS-Root] -- [Private]
-				[VSS-Root]<<branch>>
-				[Media]<<branch>>
-				[Private]<<branch>>
-				[Car]<<branch>>
-				
-				[Media] -- [Collections]
-				[Collections] .. [30321564123]
-				[Collections]<<rbranch>>
-				[30321564123]<<element>>
-				
-				[Car] -- [Engine]
-				[Car] -- [Body]
-				[Engine]<<branch>>
-				[Body]<<branch>>
-				
-				[Engine] -- [RPM]
-				[Engine] -- [Speed]
-				[Engine] -- [Fueltype]
-				[RPM]<<sensor>>
-				[Speed]<<sensor>>
-				[Fueltype]<<attribute>>
-				
-				[Body] -- [Mirror]
-				[Body] -- [Door]
-				[Body] -- [Weight]
-				[Mirror]<<branch>>
-				[Door]<<branch>>
-				[Weight]<<attribute>>
-				
-				[Door] -- [&nbsp;...&nbsp;]
-				[&nbsp;...&nbsp;]<<branch>>
-				
-				[Mirror] -- [Left]
-				[Left] -- [Heated]
-				[Left] -- [Dimmed]
-				[Left] -- [Fold]
-				[Left]<<branch>>
-				[Right]<<branch>>
-				[Heated]<<sensor>>
-				[Dimmed]<<sensor>>
-				[Fold]<<actuator>>
-				
-				[Mirror] -- [Right]
-				[Right] -- [ ... ]
-				[ ... ]<<branch>>
-				
-			@enduml
-			'>
-        <figcaption>Diagram showing an example tree.</figcaption>
-      </figure>
-	    <section data-dfn-for="tree-elements">
-        <h2>Tree elements</h2>
-        <section data-dfn-for="rbranch">
-          <h3><dfn>rbranch</dfn></h3>
-          <p>
-          A node under an <a>rbranch</a> MUST be an <a>element</a>.
-          </p>
-          <div class="issue">to be described more</div>
+      
+    <section id="data-model">
+        <h2>Gen2 Multi Domain Vehicle Taxonomy</h2>
+        <p>
+            The Taxonomy wich is served through this interface is the Gen2 Multi Domain Taxonomy.
+            It is an aggregation of different <a href="#domaintaxonomy">Domain Taxonomies</a>. 
+            The single entry point and master of the Gen2 Multi Domain Taxonomy SHALL be the 
+            <a href="#vehicledomain">Vehicle Domain Taxonomy</a>.
+        </p>
+        
+        <section id="domaintaxonomy">
+            <h3>Domain Taxonomies</h3>
+            <p>
+                The basic structure of the taxonomy is a tree. Its goal is to formalize the 
+                description of a specific domain. It consists of the <a href="#ruleset">Rule 
+                Set</a>, <a href="#datadefinition">Data Definition</a> and 
+                <a href="#tools">Tools</a>. 
+            </p>
         </section>
-        <section data-dfn-for="sensor">
-          <h3><dfn>sensor</dfn></h3>
-          <p>A leaf that describes non-static read-only signal.</p>
+        
+        <section id="ruleset">
+            <h3>Rule Set</h3>
+            
+            The Rule Set defines how to syntactically describe the taxonomy. The data structure is 
+            a tree, where a leaf is understood as a nodes without children. All other nodes are 
+            called branches. <a href="ruleset_branch">Branch Entries</a> represent the logical 
+            structure of the domain, where <a href="rukeset_data">Data Entries</a> as leafs define 
+            the actual data.
+            
+            <section id="ruleset_basic">
+            <h4>Basic Rules</h4>
+                <p>
+                    A domain specification MUST be written as a flat YAML list, where each signal 
+                    and branch is a self-contained YAML list element. 
+                </p>
+                <p>
+                    The YAML list is a single file, called a vspec file. A vspec can, in addition 
+                    to a YAML list, also contain include directives.
+                    An include directive refers to another vspec file that is to replace the 
+                    directive, much like #include in C/C++. 
+                </p>
+                    Please note that, from a YAML perspective, the include directive is just 
+                another comment.
+            </section> 
+            
+            <section id="ruleset_branch">
+                <h4>Branch Entry</h4>
+                
+                <div class="issue">to be described more (see 
+                    <a href="http://genivi.github.io/vehicle_signal_specification/rule_set/branches/"> 
+                        here</a>)</div>
+                
+            </section> 
+            
+            <section id="ruleset_data">
+            <h4>Data Entry</h4>
+                
+                <div class="issue">to be described more (see 
+                    <a href="http://genivi.github.io/vehicle_signal_specification/rule_set/data_entry/"> 
+                        here</a>)</div>
+                
+                <section id="tree-elements">
+                    <h2>Types</h2>
+                    <section data-dfn-for="sensor">
+                      <h3><dfn>sensor</dfn></h3>
+                      <p>A leaf that describes non-static read-only signal.</p>
+                    </section>
+                    <section data-dfn-for="attribute">
+                      <h3><dfn>attribute</dfn></h3>
+                      <p>A leaf that describes static read-only value.</p>
+                    </section>
+                    <section data-dfn-for="stream">
+                      <h3><dfn>stream</dfn></h3>
+                      <p>A leaf that references a data stream, e.g. a video stream.</p>
+                    </section>		
+                    <section data-dfn-for="actuator">
+                      <h3><dfn>actuator</dfn></h3>
+                      <p>A leaf the same as <a>sensor</a> which additionaly can be changed.</p>
+                    </section>
+                    <section data-dfn-for="element">
+                      <h3><dfn>element</dfn></h3>
+                      <div class="issue">to be described</div>
+                    </section>
+              </section>
+                
+                <section id="data-types">
+                    <h4>Data Types</h4>
+
+                    <section id="number">
+                      <h5><dfn>Number</dfn></h5>
+                      <p>
+                      <a>Number</a> is used to represent numbers. 
+                      This includes all signed and unsigned integer values and floats.
+                      To allow for memory allocation restrictions MUST be given.
+                      Restrictions MUST be expressed by using min, max and precision.
+                      Min MUST describe the lowest possible value.
+                      Min MUST be defined as base to the power of min (i.e. b^min).
+                      Max MUST describe the highest possible value.
+                      Min MUST be defined as base to the power of max with an optional -1 (i.e. b^max - 1).
+                      Precision MUST describes the smallest changeable amount in the value.
+                      Precision MUST be defined as base to the power of precision (i.e. b^n). 
+                      A <a>schema</a> MAY define the restrictions by using predefined restrictions.
+                      <table class="def">
+                        <tr><th>name</th>
+                          <th>description</th>
+                          <th>min</th>
+                          <th>max</th>
+                          <th>resolution</th></tr>
+                        <tr><th><dfn>UInt8</dfn></th>
+                          <td>unsigned 8-bit integer</td>
+                          <td>0</td>
+                          <td>255</td>
+                          <td></td></tr>
+                        <tr><th><dfn>Int8</dfn></th>
+                          <td>signed 8-bit integer</td>
+                          <td>-128</td>
+                          <td>127</td>
+                          <td></td></tr>
+                        <tr><th><dfn>UInt16</dfn></th>
+                          <td>unsigned 16-bit integer</td>
+                          <td>0</td>
+                          <td>65535</td>
+                          <td></td></tr>
+                        <tr><th><dfn>Int16</dfn></th>
+                          <td>signed 16-bit integer</td>
+                          <td>-32768</td>
+                          <td>32767</td>
+                          <td></td></tr>
+                        <tr><th><dfn>UInt32</dfn></th>
+                          <td>unsigned 32-bit integer</td>
+                          <td>0</td>
+                          <td>4294967295</td>
+                          <td></td></tr>
+                        <tr><th><dfn>Int32</dfn></th>
+                          <td>signed 32-bit integer</td>
+                          <td>-2147483648</td>
+                          <td>2147483647</td>
+                          <td></td></tr>
+                        <tr><th><dfn>UInt64</dfn></th>
+                          <td>unsigned 64-bit integer</td>
+                          <td>0</td>
+                          <td>2^64-1</td>
+                          <td></td></tr>
+                        <tr><th><dfn>Int64</dfn></th>
+                          <td>signed 64-bit integer</td>
+                          <td>2^63</td>
+                          <td>2^63-1</td>
+                          <td></td></tr>
+                        <tr><th><dfn>Float</dfn></th>
+                          <td>floating point number</td>
+                          <td>-3.4e -38</td>
+                          <td>3.4e 38</td>
+                          <td></td></tr>
+                        <tr><th><dfn>Double</dfn></th>
+                          <td>double precision floating point number</td>
+                          <td>-1.7e -300</td>
+                          <td>1.7e 300</td>
+                          <td></td></tr>
+                        <tr><th><dfn></dfn></th>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td></tr>
+                      </table>
+                    </section>
+
+                    <section id="Boolean">
+                      <h3><dfn>Boolean</dfn></h3>
+                      <p>Simple true or false</p>
+                    </section>
+
+                    <section data-dfn-for="String">
+                        <h3><dfn>String</dfn></h3>
+                        <p>
+                          <a>String</a> is used to represent sequence of characters.
+                          To allow for memory allocation restrictions MUST be given.
+                          Restrictions MUST include a maximum string length.
+                          Restrictions MAY include a character set.
+                          If no character set is given unicode MUST be assumed.
+                          Restrictions MAY include a regular expression.
+                          <span class="issue">which regex style?</span>
+                          A <a>schema</a> MAY define the restrictions by using predefined restrictions.
+                          Protocol specific implementations MAY use optimized versions to transfer values with predefined restrictions. 
+                        </p>
+                          <table class="def">
+                            <tr><th>name</th>
+                              <th>description</th>
+                              <th>max</th>
+                              <th>example</th>
+                              <th>RegEx</th></tr>
+                            <tr><th><dfn>date-time</dfn></th>
+                              <td>date-time (based on RFC3339 5.6) detailed fraction</td>
+                              <td>29</td>
+                              <td class="example">2005-11-12T12:01:42.123+01:00</td>
+                              <td><code>^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?((Z|(\+|\-)\d{2}:\d{2}))$</code></td></tr>
+                            <tr><th><dfn>time</dfn></th>
+                              <td>time (based on RFC3339 5.6) detailed fraction</td>
+                              <td>18</td>
+                              <td class="example">12:01:42.123+01:00</td>
+                              <td><code>^\d{2}:\d{2}:\d{2}(\.\d{3})?((Z|(\+|\-)\d{2}:\d{2}))$</code></td></tr>
+                            <tr><th><dfn>date</dfn></th>
+                              <td>date (RFC3339 5.6)</td>
+                              <td>10</td>
+                              <td class="example">2005-11-12</td>
+                              <td><code>^\d{4}-\d{2}-\d{2}$</code></td></tr>
+                            <tr><th><dfn></dfn></th>
+                              <td></td>
+                              <td></td>
+                              <td class="example"></td>
+                              <td><code></code></td></tr>
+                          </table>
+                    </section>
+
+                    <section data-dfn-for="ByteArray">
+                      <h3><dfn>ByteArray</dfn></h3>
+                      <p>
+                        <a>ByteArray</a>, also known as a blob, is an array of bytes of not nearer specified data.
+                        To allow for memory allocation restrictions MUST be given.
+                        Restrictions MUST include a maximum number of bytes.
+                      </p>
+                    </section>
+                </section> 
+            </section>
         </section>
-        <section data-dfn-for="attribute">
-          <h3><dfn>attribute</dfn></h3>
-          <p>A leaf that describes static read-only value.</p>
+        
+        <section id="datadefinition">
+            <h3>Data Definition</h3>
+            The Data Definition is the representation of the specific domain under using the Rule Set described before.
+            
+            <section id="vehicledomain">
+                <h4>Vehicle Domain Taxonomy</h4>
+                It is derived from <a href="https://github.com/GENIVI/vehicle_signal_specification/blob/master/README.md">
+                GENIVI's Vehicle Signal Specification</a> (VSS). It resembles the physical 
+                structure of the vehicle, as shown in the
+                This <a href="#tree-example">example</a>. Major vehicle structures (e.g. body, 
+                engine) are near the top of the tree and the logical assemblies and components that 
+                comprise them, are defined as their child nodes.
+                Each of the child nodes in the tree is further decomposed into its logical 
+                constituents, 
+                and the process is repeated until leafs are reached.
+                
+                <figure id="tree-example" class="example">
+                    <img uml='
+                    @startuml 
+                        skinparam component {
+                            BorderColor Black
+                            FontSize 16
+
+                            BackgroundColor<<branch>> MediumSeaGreen
+                            FontColor<<branch>> White
+
+                            BackgroundColor<<rbranch>> Red
+                            FontColor<<rbranch>> White
+
+                            BackgroundColor<<attribute>> Yellow
+                            FontColor<<attribute>> Black
+
+                            BackgroundColor<<sensor>> CornflowerBlue
+                            FontColor<<sensor>> White
+
+                            BackgroundColor<<actuator>> DarkGrey
+                            FontColor<<actuator>> White
+
+                            BackgroundColor<<element>> LightCoral
+                            FontColor<<element>> White				
+                        }
+                        [VSS-Root] -- [Media]
+                        [VSS-Root] -- [Car]
+                        [VSS-Root] -- [Private]
+                        [VSS-Root]<<branch>>
+                        [Media]<<branch>>
+                        [Private]<<branch>>
+                        [Car]<<branch>>
+
+                        [Media] -- [Collections]
+                        [Collections] .. [30321564123]
+                        [Collections]<<rbranch>>
+                        [30321564123]<<element>>
+
+                        [Car] -- [Engine]
+                        [Car] -- [Body]
+                        [Engine]<<branch>>
+                        [Body]<<branch>>
+
+                        [Engine] -- [RPM]
+                        [Engine] -- [Speed]
+                        [Engine] -- [Fueltype]
+                        [RPM]<<sensor>>
+                        [Speed]<<sensor>>
+                        [Fueltype]<<attribute>>
+
+                        [Body] -- [Mirror]
+                        [Body] -- [Door]
+                        [Body] -- [Weight]
+                        [Mirror]<<branch>>
+                        [Door]<<branch>>
+                        [Weight]<<attribute>>
+
+                        [Door] -- [&nbsp;...&nbsp;]
+                        [&nbsp;...&nbsp;]<<branch>>
+
+                        [Mirror] -- [Left]
+                        [Left] -- [Heated]
+                        [Left] -- [Dimmed]
+                        [Left] -- [Fold]
+                        [Left]<<branch>>
+                        [Right]<<branch>>
+                        [Heated]<<sensor>>
+                        [Dimmed]<<sensor>>
+                        [Fold]<<actuator>>
+
+                        [Mirror] -- [Right]
+                        [Right] -- [ ... ]
+                        [ ... ]<<branch>>
+
+                    @enduml
+                    '>
+                    <figcaption>Diagram showing an example tree.</figcaption>
+                </figure>
+            </section>
         </section>
-        <section data-dfn-for="stream">
-          <h3><dfn>stream</dfn></h3>
-          <p>A leaf that references a data stream, e.g. a video stream.</p>
-        </section>		
-        <section data-dfn-for="actuator">
-          <h3><dfn>actuator</dfn></h3>
-          <p>A leaf the same as <a>sensor</a> which additionaly can be changed.</p>
-        </section>
-        <section data-dfn-for="element">
-          <h3><dfn>element</dfn></h3>
-          <div class="issue">to be described</div>
+        <section id="tools">
+            <h2>Tools</h2>
+            <div class="issue">to be described more</div>
         </section>
       </section>
+      
 
       <section data-dfn-for="address">
         <h2>Addressing</h2>
@@ -211,157 +419,7 @@
           It is the path through the tree, the data representation, implemented by the service.</p>
       </section>
       
-      <section data-dfn-for="data-types">
-        <h2>Data Types</h2>
-
-        <section data-dfn-for="number">
-          <h3><dfn>Number</dfn></h3>
-          <p>
-          <a>Number</a> is used to represent numbers. 
-          This includes all signed and unsigned integer values and floats.
-          To allow for memory allocation restrictions MUST be given.
-          Restrictions MUST be expressed by using min, max and precision.
-          Min MUST describe the lowest possible value.
-          Min MUST be defined as base to the power of min (i.e. b^min).
-          Max MUST describe the highest possible value.
-          Min MUST be defined as base to the power of max with an optional -1 (i.e. b^max - 1).
-          Precision MUST describes the smallest changeable amount in the value.
-          Precision MUST be defined as base to the power of precision (i.e. b^n). 
-          A <a>schema</a> MAY define the restrictions by using predefined restrictions.
-          <table class="def">
-            <tr><th>name</th>
-              <th>description</th>
-              <th>min</th>
-              <th>max</th>
-              <th>resolution</th></tr>
-            <tr><th><dfn>UInt8</dfn></th>
-              <td>unsigned 8-bit integer</td>
-              <td>0</td>
-              <td>255</td>
-              <td></td></tr>
-            <tr><th><dfn>Int8</dfn></th>
-              <td>signed 8-bit integer</td>
-              <td>-128</td>
-              <td>127</td>
-              <td></td></tr>
-            <tr><th><dfn>UInt16</dfn></th>
-              <td>unsigned 16-bit integer</td>
-              <td>0</td>
-              <td>65535</td>
-              <td></td></tr>
-            <tr><th><dfn>Int16</dfn></th>
-              <td>signed 16-bit integer</td>
-              <td>-32768</td>
-              <td>32767</td>
-              <td></td></tr>
-            <tr><th><dfn>UInt32</dfn></th>
-              <td>unsigned 32-bit integer</td>
-              <td>0</td>
-              <td>4294967295</td>
-              <td></td></tr>
-            <tr><th><dfn>Int32</dfn></th>
-              <td>signed 32-bit integer</td>
-              <td>-2147483648</td>
-              <td>2147483647</td>
-              <td></td></tr>
-            <tr><th><dfn>UInt64</dfn></th>
-              <td>unsigned 64-bit integer</td>
-              <td>0</td>
-              <td>2^64-1</td>
-              <td></td></tr>
-            <tr><th><dfn>Int64</dfn></th>
-              <td>signed 64-bit integer</td>
-              <td>2^63</td>
-              <td>2^63-1</td>
-              <td></td></tr>
-            <tr><th><dfn>Float</dfn></th>
-              <td>floating point number</td>
-              <td>-3.4e -38</td>
-              <td>3.4e 38</td>
-              <td></td></tr>
-            <tr><th><dfn>Double</dfn></th>
-              <td>double precision floating point number</td>
-              <td>-1.7e -300</td>
-              <td>1.7e 300</td>
-              <td></td></tr>
-            <tr><th><dfn></dfn></th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td></tr>
-          </table>
-          </p>
-        </section>
-        
-        <section data-dfn-for="Boolean">
-          <h3><dfn>Boolean</dfn></h3>
-          <p>Simple true or false</p>
-        </section>
-        
-        <section data-dfn-for="String">
-          <h3><dfn>String</dfn></h3>
-          <p>
-          <a>String</a> is used to represent sequence of characters.
-          To allow for memory allocation restrictions MUST be given.
-          Restrictions MUST include a maximum string length.
-          Restrictions MAY include a character set.
-          If no character set is given unicode MUST be assumed.
-          Restrictions MAY include a regular expression.
-          <span class="issue">which regex style?</span>
-          A <a>schema</a> MAY define the restrictions by using predefined restrictions.
-          Protocol specific implementations MAY use optimized versions to transfer values with predefined restrictions.
-          <table class="def">
-            <tr><th>name</th>
-              <th>description</th>
-              <th>max</th>
-              <th>example</th>
-              <th>RegEx</th></tr>
-            <tr><th><dfn>date-time</dfn></th>
-              <td>date-time (based on RFC3339 5.6) detailed fraction</td>
-              <td>29</td>
-              <td class="example">2005-11-12T12:01:42.123+01:00</td>
-              <td><code>^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?((Z|(\+|\-)\d{2}:\d{2}))$</code></td></tr>
-            <tr><th><dfn>time</dfn></th>
-              <td>time (based on RFC3339 5.6) detailed fraction</td>
-              <td>18</td>
-              <td class="example">12:01:42.123+01:00</td>
-              <td><code>^\d{2}:\d{2}:\d{2}(\.\d{3})?((Z|(\+|\-)\d{2}:\d{2}))$</code></td></tr>
-            <tr><th><dfn>date</dfn></th>
-              <td>date (RFC3339 5.6)</td>
-              <td>10</td>
-              <td class="example">2005-11-12</td>
-              <td><code>^\d{4}-\d{2}-\d{2}$</code></td></tr>
-            <tr><th><dfn></dfn></th>
-              <td></td>
-              <td></td>
-              <td class="example"></td>
-              <td><code></code></td></tr>
-          </table>
-          </p>
-        </section>
-
-        <section data-dfn-for="ByteArray">
-          <h3><dfn>ByteArray</dfn></h3>
-          <p>
-            <a>ByteArray</a>, also known as a blob, is an array of bytes of not nearer specified data.
-            To allow for memory allocation restrictions MUST be given.
-            Restrictions MUST include a maximum number of bytes.
-          </p>
-        </section>
-
-        <section data-dfn-for="branch">
-          <h3><dfn>branch</dfn></h3>
-          <p>
-          A <a>branch</a> is an entity that MUST host one of the following node types: 
-          <a>branch</a>, 
-          <a>rbranch</a>, 
-          <a>sensor</a>, 
-          <a>attribute</a>, 
-          <a>stream</a>
-          </p>
-          <div class="issue">to be described more</div>
-        </section>		
-      </section>
+     
         <section data-dfn-for="Foo">
           <h2>Service discovery</h2>
           <p>The client MAY request that the server returns the VSS tree content. The client is able to request metadata from any point in the signal tree, such that only the metadata for the nodes within the given branch of the tree is returned. For example, only metadata for the chassis branch of the VSS tree is returned when the chassis path is specified. If the path is set to the VSS root, the response contains the metadata for the entire tree. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message. The key data components of these messagess are defined below:</p>
