@@ -83,18 +83,16 @@
     <section data-dfn-for="data-model">
       <h2>Data model</h2>
 		<p>
-		The basic data model behind that can be accessed with this interface is a tree-like logical taxonomy of the whole vehicle.
-		It is represented by a directed acyclic graph.
-		</p>
-		<p>
-		It is derived from <a href="https://github.com/GENIVI/vehicle_signal_specification/blob/master/README.md">GENIVI's Vehicle Signal Specification</a> (VSS).
-		<span class="issue">is this the correct link?</span>
-		This <a href="#tree-example">example</a> shows that major vehicle structures (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as their child nodes.
-		Each of the child nodes in the tree is further decomposed into its logical constituents, 
-		and the process is repeated until leafs are reached.
-		A composable node MUST be either a <a>branch</a> or an <a>rbranch</a>.
-		A leaf at the end of a <a>branch</a> cannot be decomposed because and will have an information stored in e.g. a <a>sensor</a>, <a>actuator</a>, <a>stream</a> or <a>attribute</a>.
-		A leaf under an <a>rbranch</a> MUST be an <a>element</a>.
+The service is intended for use with a tree-like logical taxonomy to
+represent the vehicle data. An illustrative example of such a tree
+structure is shown in <a href="#tree-example">Figure 1</a>. While it
+is meant to support conforming taxonomies it was created principally
+with the <a
+href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle
+Signal Specification</a> (VSS) in mind. For more
+details, see the <a
+href="http://genivi.github.io/vehicle_signal_specification/">VSS
+documentation</a> .
 		</p>
     <figure id="tree-example" class="example">
 			<img uml='
