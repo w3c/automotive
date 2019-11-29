@@ -215,7 +215,7 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
 where<br>
   - the question mark is the delimiter between the request path and the query.<br>
   - reserved-word must have the dollar-sign as the first character ($). The availabe reserved words are described in the chapters below.<br>
-  - logical-operator is one of either the equal sign (=), the larger than sign (>), or the smaller than sign (<).<br>
+  - logical-operator is one of either the equal sign (EQ), the greater than sign (GT), or the less than sign (LT).<br>
   - expression is a character string with its interpretation given by the preceeding reserved-word and logical operator.<br><br>
 Filtering can be applied to <a>read</a> requests, or <a>subscribe</a> requests, as described in the following chapters.<br><br>
 As filtering is implemented on the server side, in vehicles, the filtering complexity is intentionally kept to a low level in order to not load the processing resources too much.
@@ -227,10 +227,10 @@ As filtering is implemented on the server side, in vehicles, the filtering compl
        <section data-dfn-for="service-discovery-filter">
           <h3>Service discovery filter</h2>
 		<p>The service discovery query has the structure<br>
-  <dfn>$spec = depth</dfn><br>
+  <dfn>$spec EQ depth</dfn><br>
 where<br>
   - $spec is the reserved word for service discovery filtering.<br>
-  - the equal sign (=) is the only allowed logical operator for service discovery filtering.<br>
+  - the equal sign (EQ) is the only allowed logical operator for service discovery filtering.<br>
   - depth sets the maximum branch depth that is returned in the response, counted from the root node given by the path component in the request.
 Depth MUST be a positive integer. If set to zero, it is replaced by the max depth of the subtree.
 		</p>
@@ -238,10 +238,10 @@ Depth MUST be a positive integer. If set to zero, it is replaced by the max dept
        <section data-dfn-for="search-filter">
           <h3>Search filter</h2>
 		<p>If the path in a read request does not terminate in a leaf node, then the response will contain values from all leaf nodes in the subtree given by the path. The search filter makes it possible to taylor a subset of this response. The search query has the structure<br>
-  <dfn>$path = search-expression</dfn><br>
+  <dfn>$path EQ search-expression</dfn><br>
 where<br>
   - $path is the reserved word for search filtering.<br>
-  - the equal sign (=) is the only allowed logical operator for search filtering.<br>
+  - the equal sign (EQ) is the only allowed logical operator for search filtering.<br>
   - search-expression is a path expression that may contain the wildcard character (*) for representation of an unknown node name.<br><br>
 The search-expression is relative to the root node given by the path component in the request. An example could be "*/*/isOpen", which, preceeded with a slash, and concatenated with the request root-path "Vehicle/Cabin/Door" would generate the absolute search expression "Vehicle/Cabin/Door/*/*/isOpen", in which case the response would contain all values from the isOpen nodes in that subtree, but not from the other possible leaf nodes in it.<br><br>
 The search filter can be used also in subscribe requests, see chapter Filter combinations.
@@ -255,7 +255,7 @@ The data value query has the structure<br>
   <dfn>$data logical-operator value</dfn><br>
 where<br>
   - $data is the reserved word for data value filtering.<br>
-  - logical-operator is one of either the equal sign (=), the larger than sign (>), or the smaller than sign (<).<br>
+  - logical-operator is one of either the equal sign (EQ), the greater than sign (GT), or the less than sign (LT).<br>
   - value is any of the supported number data types, or the boolean data type.<br><br>
 If the data type of the value-expression is different from the data type of the node matching the path, then an error response is returned.
 		</p>
@@ -269,10 +269,10 @@ If the data type of the value-expression is different from the data type of the 
           <h3>Interval filter</h2>
 		<p>An interval filter is used in a subscribe request when the client wants subscription notifications to be issued by the server at a regular time interval. 
 The interval query has the structure<br>
-  <dfn>$interval = value</dfn><br>
+  <dfn>$interval EQ value</dfn><br>
 where<br>
   - $interval is the reserved word for interval filtering.<br>
-  - the equal sign (=) is the only allowed logical operator for search filtering.<br>
+  - the equal sign (EQ) is the only allowed logical operator for search filtering.<br>
   - value is an integer value in milliseconds representing the interval between issued notifications.<br>
 		</p>
         </section>
@@ -283,7 +283,7 @@ The range query has the structure<br>
   <dfn>$range logical-operator value</dfn><br>
 where<br>
   - $range is the reserved word for range filtering.<br>
-  - logical-operator is one of either the larger than sign (>), or the smaller than sign (<).<br>
+  - logical-operator is one of either the greater than sign (GT), or the less than sign (LT).<br>
   - value is any of the supported number data types.<br>
 		</p>
         </section>
@@ -291,10 +291,10 @@ where<br>
           <h3>Change filter</h2>
 		<p>A change filter is used when the client wants subscription notifications to be issued by the server when a value has changed more than a defined value since last notification.
 The change query has the structure<br>
-  <dfn>$change > value</dfn><br>
+  <dfn>$change GT value</dfn><br>
 where<br>
   - $change is the reserved word for change filtering.<br>
-  - the larger than sign (>) is the only allowed logical operator for change filtering.<br>
+  - the larger than sign (GT) is the only allowed logical operator for change filtering.<br>
   - value is any of the supported number data types.<br>
 		</p>
         </section>
@@ -302,11 +302,11 @@ where<br>
       <section data-dfn-for="filter-combinations">
         <h3>Filter combinations</h2>
 		<p>Queries of the types descibed below can be aggregated to form more complex queries. The format for this is then<br>
-  <dfn>?query1 && query2 && .. queryN</dfn><br>
+  <dfn>?query1 AND query2 AND .. queryN</dfn><br>
 where<br>
   - queryN is any of the query types, following the allowed combinations shown in Table 1.<br>
   - N is maximum four.<br>
-  - && is the logical AND operator.<br>
+  - AND is the logical AND operator.<br>
 		</p>
 		<p>
 		<table border="1">
@@ -344,7 +344,7 @@ where<br>
 		</table>
 		</p>
               <p>An example of a read request URI containing an aggregated query is<br> 
-<dfn>Vehicle/Cabin/Door?$path=*/*/isOpen&&$data=false</dfn><br> 
+<dfn>Vehicle/Cabin/Door?$pathEQ*/*/isOpenAND$dataEQfalse</dfn><br> 
 which would return data for all locked doors.</p>
       </section>
 <div class="issue">Other data models may want further query support.Should there be some text about that?</div>
