@@ -70,7 +70,7 @@
         The Gen2 messaging layer uses a RESTful design for all methods exchanged via the interface (<a href="#interface"></a>).
       </p>
       <p>
-        The Gen2 data structuring rules (<a href="#generic-data-model"></a>) are the same through all transport protocols.
+        The Gen2 data structuring rules (<a href="#taxonomy"></a>) are the same through all transport protocols.
         The basis for structuring data hold by a <a>service</a> is a tree.
       </p>
     </section>
@@ -81,7 +81,7 @@
       <p>The acronym 'Gen2' is used to refer to this document, the second generation specification. The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance. The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.</p>
     </section>
       
-    <section id="data-model">
+    <section id="taxonomy">
         <h2>Gen2 Multi Domain Vehicle Taxonomy</h2>
         <p>
             The Taxonomy wich is served through this interface is the Gen2 Multi Domain Taxonomy.
@@ -311,7 +311,7 @@
                 The Data Definition is the representation of a specific domain under using the <a href="#ruleset">Rule Set</a>.
             </p>
             <p>
-                The Vehicle Domain Taxonomy SHALL be the base, however it MAY be extended by taxonomies outside the vehicle signals domain. Added taxonomies MUST follow the <a href="#ruleset">defined</a> rules.
+                The Vehicle Domain Taxonomy SHOULD be the base, however it MAY be extended by taxonomies outside the vehicle signals domain. Added taxonomies MUST follow the <a href="#ruleset">defined</a> rules.
             </p>
             <section id="vehicledomain">
                 <h4>Vehicle Domain Taxonomy</h4>
