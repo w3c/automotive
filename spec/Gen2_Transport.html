@@ -458,7 +458,7 @@ extending Gen2 to further transports in the future. The Gen2 supports multiple t
               <blockquote>
                 "action": "subscribeRequest",<br>
                 "path": "Vehicle/Drivetrain/FuelSystem/Level",<br>
-                "filters": { "interval": 100 }<br>
+                "filter": "$intervalEQ2"<br>
                 "requestId": "6578"<br>
               </blockquote>
               }<br><br>
@@ -490,7 +490,7 @@ extending Gen2 to further transports in the future. The Gen2 supports multiple t
               <blockquote>
                 "action": "subscribeRequest",<br>
                 "path": "Vehicle/Drivetrain/FuelSystem/Level",<br>
-                "filters": { "interval": 100 }<br>
+                "filter": "$rangeGT5AND$rangeLT10"<br>
                 "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds"<br>
                 "requestId": "6578"<br>
               </blockquote>

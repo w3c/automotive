@@ -70,7 +70,7 @@
         The Gen2 messaging layer uses a RESTful design for all methods exchanged via the interface (<a href="#interface"></a>).
       </p>
       <p>
-        The Gen2 data structuring rules (<a href="#generic-data-model"></a>) are the same through all transport protocols.
+        The Gen2 data structuring rules (<a href="http://genivi.github.io/vehicle_signal_specification/">VSS Rule set</a>) are the same through all transport protocols.
         The basis for structuring data hold by a <a>service</a> is a tree.
       </p>
     </section>
@@ -88,12 +88,8 @@ The service is intended for use with a tree-like logical taxonomy to
 represent the vehicle data. An illustrative example of such a tree
 structure is shown in <a href="#tree-example">Figure 1</a>. While it
 is meant to support conforming taxonomies it was created principally
-with the <a
-href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle
-Signal Specification</a> (VSS) in mind. For more
-details, see the <a
-href="http://genivi.github.io/vehicle_signal_specification/">VSS
-documentation</a> .
+with the <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a> (VSS) in mind. For more
+details, see the <a href="http://genivi.github.io/vehicle_signal_specification/">VSS documentation</a>.
 		</p>
     <figure id="tree-example" class="example">
 			<img uml='
@@ -178,16 +174,17 @@ documentation</a> .
       <section data-dfn-for="address">
         <h2>Addressing</h2>
         <p>Addressing of elements is done using URIs as defined in [[RFC3986]].</p>
-        <blockquote><a>scheme</a>:<a>authority</a>/<a>path</a></blockquote>
+        <blockquote><a>scheme</a>:<a>authority</a>/<a>path</a>?<a>query</a></blockquote>
         <p>The <dfn>scheme</dfn> describes the protocol to use to reach the addressed element.</p>
         <p>The <dfn>authority</dfn> describes where to reach the service holding and managing the data representation.
           Scheme and authority are defined within the protocol adaptation.</p>
         <p>The <dfn>path</dfn> consists of the slash delimited node names of the nodes traversed from the tree root to the tree leaf representing the service. E. g. the path expression from traversing the nodes Vehicle, Car, Engine, RPM would be "Vehicle/Car/Engine/RPM".</p>
+        <p>The <dfn>query</dfn> contains further information related to the request, see <a href="#filtering"></a>.
 <div class="issue">VSS 2.0 should use slash as delimiter. If not, this difference should be pointed out here.</div>
       </section>
         <section id="service-discovery">
           <h2>Service discovery</h2>
-          <p>The purpose of the data model is to provide a client with a description of the data that enables the client to make a request for desired vehicle data, and interpret the response. In order to obtain that description, the client MAY request that the server returns the VSS tree content, i. e. the metadata describing the accessible vehicle data. The client is able to request metadata from any point in the signal tree, such that only the metadata for the nodes within the given branch of the tree is returned. For example, only metadata for the chassis branch of the VSS tree is returned when the chassis path is specified. If the path is set to the VSS root, the response contains the metadata for the entire tree. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message.<br>A service discovery request has the format of a read, where the path is appended with a query component, see the chapter Filtering for the details.<br>The key data components of these messagess are defined below:</p>
+          <p>The purpose of the data model is to provide a client with a description of the data that enables the client to make a request for desired vehicle data, and interpret the response. In order to obtain that description, the client MAY request that the server returns the VSS tree content, i. e. the metadata describing the accessible vehicle data. The client is able to request metadata from any point in the signal tree, such that only the metadata for the nodes within the given branch of the tree is returned. For example, only metadata for the chassis branch of the VSS tree is returned when the chassis path is specified. If the path is set to the VSS root, the response contains the metadata for the entire tree. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message.<br>A service discovery request has the format of a read, where the path is appended with a query component, see <a href="#service-discovery-filter"></a> for the details.<br>The key data components of these messagess are defined below:</p>
           <ul>  
             <li>Request message parameters:</li>
             <ul>  
@@ -211,178 +208,153 @@ documentation</a> .
         </section>
     </section>
 	
-    <section id="filter-mechanisms">
+    <section id="filtering">
       <h2>Filtering</h2>
-	  <p>
-	  This section describes how to build the queries to filter for specific parts of the data representation.
+	  <p>Filtering is a mechanism to refine a client request, in order to more precisely control the data in a response. Filtering can be applied in read requests and in subscribe requests.For read requests the filter expression MUST be appended to the request path in the form of a <dfn>query</dfn> component following the description in [[RFC3986]]. For subscribe requests the filter expression MUST be carried in the request payload. The filter expression follows the same general rules in both request cases. The query component must have the following structure<br>
+  <dfn>reserved-word comparison-operator expression</dfn><br>
+where<br>
+  - reserved-word must have the dollar-sign as the first character ($). The availabe reserved words are described in the chapters below.<br>
+  - comparison-operator is one of either the equal sign (EQ), the greater than sign (GT), or the less than sign (LT).<br>
+  - expression is a character string with its interpretation given by the preceeding reserved-word and comparison operator.<br><br>
+Filter expressions can consist of multiple query expressions, as described in <a href="#filter-combinations"></a>.<br><br>
+As filtering is implemented on the server side, in vehicles, the filtering complexity is intentionally kept to a low level in order to not load the processing resources too much.
 	  </p> 
-	  <p>A <dfn>query</dfn> is a description to taylor and filter the data resulting of a <a>read</a>.</p>
-	  <p>The <a>query</a> can be given with the request from a client to a service additionally to the <a>path</a> to get a <a>content</a> response.
-	  The <a>query</a> describes certain rules that filter the <a>content</a> response. 
-	  <ul>
-			<li>path: describing the part of the tree that shall be filtered in</li>
-			<li>rules: these have to match in the nodes for the node to be part of the <a>content</a> response.</li>
-	  </ul>
+     <section data-dfn-for="read-filter">
+        <h3>Read filtering</h2>
+		<p>The available read filtering options are presented in the following chapters, and are only applicable to read requests. As described in [[RFC3986]], a question mark must be inserted as a delimiter between the path and the query components.
 		</p>
-		<div class="example">
-		<h3>Example</h3>
-			<p>
-			All open doors shall be given. The tree looks as follows:
-			<blockquote>
-				<ul><li>/vehicle/cabin
-					<ul><li>/Row1
-						<ul><li>/Left
-							<ul><li>/Door
-								<ul>
-									<li>isLocked: true</li>
-									<li>open: false</li>
-								</ul>
-							</li></ul>
-						</li></ul>
-						<ul><li>/Right
-							<ul><li>/Door
-								<ul>
-									<li>isLocked: false</li>
-									<li>open: true</li>
-								</ul>
-							</li></ul>
-						</li></ul>
-					</li></ul>
-					<ul><li>/Row2
-						<ul><li>/Left
-							<ul><li>/Door
-								<ul>
-									<li>isLocked: false</li>
-									<li>open: false</li>
-								</ul>
-							</li></ul>
-						</li></ul>
-						<ul><li>/Right
-							<ul><li>/Door
-								<ul>
-									<li>isLocked: true</li>
-									<li>open: true</li>
-								</ul>
-							</li></ul>
-						</li></ul>
-					</li></ul>
-				</li></ul>
-			</blockquote>
-			</p>
-			<p>
-			The <a>path</a> that shall be inspected is "/vehicle/cabin". <br>
-			The <a>rule</a> is that "/vehicle/cabin/*/*/Door/isLocked" shall be "true".<br>
-			</p>
-			<p>
-			The list in the <a>content</a> response would look like this:
-			<blockquote>
-			<ul>
-			<li>/vehicle/cabin/Row1/Left/Door</li>
-				<ul>
-					<li>isLocked: true</li>
-					<li>open: false</li>
-				</ul>
-			<li>/vehicle/cabin/Row2/Right/Door</li>
-				<ul>
-					<li>isLocked: true</li>
-					<li>open: true</li>
-				</ul>
-			</ul>
-			</blockquote>
-			</p>
-		</div>
-     <section data-dfn-for="rules">
-        <h3>Rules</h2>
-		<p>
-		A <dfn>rule</dfn> is an expression that describes a characteristic of nodes that shall be returned by a <a>query</a>.
-		<a>Rules</a> are applied to a leaf and describe a desired attribute of a node.
-		All <a>rules</a> MUST return either FALSE or TRUE.
+       <section data-dfn-for="service-discovery-filter">
+          <h3>Service discovery filter</h2>
+		<p>The service discovery query has the structure<br>
+  <dfn>$spec EQ depth</dfn><br>
+where<br>
+  - $spec is the reserved word for service discovery filtering.<br>
+  - the equal sign (EQ) is the only allowed comparison operator for service discovery filtering.<br>
+  - depth sets the maximum branch depth that is returned in the response, counted from the root node given by the path component in the request.
+Depth MUST be a positive integer. If set to zero, it is replaced by the max depth of the subtree.
 		</p>
-		<p>
-		These are the <a>rules</a> that are known to check to be used in a <a>query</a> to filter <a>content</a> responses.
-		
-		<table border="1">
-			<tr><th>name</th><th><a>input type</a></th><th>Description</th><th>Example</th></tr>
-			<tr>
-				<th><dfn>true</dfn></th>
-				<td><a>boolean</a></td>
-				<td>matches if the data value is true</td>
-				<td>true(isLocked)</td>
-			</tr>
-			<tr>
-				<th><dfn>false</dfn></th>
-				<td><a>boolean</a></td>
-				<td>matches if the data value is false</td>
-				<td>false(isLocked)</td>
-			</tr>
-			<tr>
-				<th><dfn>contains</dfn></th>
-				<td><a>string</a></td>
-				<td>matches if a given string is contained in another one</td>
-				<td>contains(name, "blue")</td>
-			</tr>
-			<tr>
-				<th><dfn>equal</dfn></th>
-				<td>(<a>string</a>|<a>boolean</a>|<a>number</a>)</td>
-				<td>matches if a value is equal to a given value</td>
-				<td>equal(name, "Red Door")</td>
-			</tr>
-			<tr>
-				<th><dfn>greaterThan</dfn></th>
-				<td><a>number</a></td>
-				<td>matches if a given number is greater than the value</td>
-				<td>greaterThan(windowPosition, 0.2)</td>
-			</tr>
-			<tr>
-				<th><dfn>smallerThan</dfn></th>
-				<td><a>number</a></td>
-				<td>matches if a given number is smaller than the value</td>
-				<td>smallerThan(windowPosition, 0.2)</td>
-			</tr>
-			<tr>
-				<th><dfn>greaterThanEqual</dfn></th>
-				<td><a>number</a></td>
-				<td>matches if a given number is greater than the value or equal to the value</td>
-				<td>greaterThan(windowPosition, 0.2)</td>
-			</tr>
-			<tr>
-				<th><dfn>smallerThanEqual</dfn></th>
-				<td><a>number</a></td>
-				<td>matches if a given number is smaller than the value or equal to the value</td>
-				<td>smallerThan(windowPosition, 0.2)</td>
-			</tr>
-		</table>
+        </section>
+       <section data-dfn-for="search-filter">
+          <h3>Search filter</h2>
+		<p>If the path in a read request does not terminate in a leaf node, then the response will contain values from all leaf nodes in the subtree given by the path. The search filter makes it possible to tailor a subset of this response. The search query has the structure<br>
+  <dfn>$path EQ search-expression</dfn><br>
+where<br>
+  - $path is the reserved word for search filtering.<br>
+  - the equal sign (EQ) is the only allowed comparison operator for search filtering.<br>
+  - search-expression is a path expression that may contain the wildcard character (*) for representation of an unknown node name.<br><br>
+The search-expression is relative to the root node given by the path component in the request. An example could be "*/*/isOpen", which, preceeded with a slash, and concatenated with the request root-path "Vehicle/Cabin/Door" would generate the absolute search expression "Vehicle/Cabin/Door/*/*/isOpen", in which case the response would contain all values from the isOpen nodes in that subtree, but not from the other possible leaf nodes in it.<br><br>
+The search filter can be used also in subscribe requests, see chapter Filter combinations.
+
 		</p>
-		<p>
-		It MUST be possible to combine several <a>rules</a> to one greater <a>rule</a>. This is possible with the following operators.
-		
-		<table border="1">
-			<tr>
-				<th><dfn>not</dfn></th>
-				<td><a>rule</a></td>
-				<td>negates the return of a rule</td>
-				<td>not(true(isLocked))</td>
-			</tr>
-			<tr>
-				<th><dfn>and</dfn></th>
-				<td><a>rule</a>,<a>rule</a></td>
-				<td>returns true if both of the <a>rules</a> evaluates true</td>
-				<td>and(ruleA,ruleB)</td>
-			</tr>
-			<tr>
-				<th><dfn>or</dfn></th>
-				<td><a>rule</a>,<a>rule</a></td>
-				<td>returns true if one of the <a>rules</a> evaluates true</td>
-				<td>or(ruleA,ruleB)</td>
-			</tr>
-		</table>
+        </section>
+       <section data-dfn-for="data-value-filter">
+          <h3>Data value filter</h2>
+		<p>If a request, typically when it is addressing a subtree, is only interested in response data with a specific value, then a data value filter can be used. 
+The data value query has the structure<br>
+  <dfn>$data comparison-operator value</dfn><br>
+where<br>
+  - $data is the reserved word for data value filtering.<br>
+  - comparison-operator is one of either the equal sign (EQ), the greater than sign (GT), or the less than sign (LT).<br>
+  - value is a number following Javascript syntax rules, or a boolean value.<br><br>
+If the data type of the value-expression is different from the data type of the node matching the path, then an error response is returned.
 		</p>
+        </section>
       </section>
-    </section>
+     <section data-dfn-for="subscribe-filter">
+        <h3>Subscribe filtering</h2>
+		<p>The available subscribe filtering options are presented in the following chapters, and is only applicable to subscribe requests. The filter expression is carried in the request payload in the form of a key-value pair "filter": "filter expression", where "filter" is the key name, and "filter expression" is replaced by the actual expression. 
+		</p>
+       <section data-dfn-for="interval-filter">
+          <h3>Interval filter</h2>
+		<p>An interval filter is used in a subscribe request when the client wants subscription notifications to be issued by the server at a regular time interval. 
+The interval query has the structure<br>
+  <dfn>$interval EQ value</dfn><br>
+where<br>
+  - $interval is the reserved word for interval filtering.<br>
+  - the equal sign (EQ) is the only allowed comparison operator for interval filtering.<br>
+  - value is an integer value in milliseconds representing the interval between issued notifications.<br>
+		</p>
+        </section>
+       <section data-dfn-for="range-filter">
+          <h3>Range filter</h2>
+		<p>A range filter is used when the client wants subscription notifications to be issued by the server when a value enters/exits the defined range.
+The range query has the structure<br>
+  <dfn>$range comparison-operator value</dfn><br>
+where<br>
+  - $range is the reserved word for range filtering.<br>
+  - comparison-operator is one of either the greater than sign (GT), or the less than sign (LT).<br>
+  - value is a number following Javascript syntax rules.<br>
+		</p>
+        </section>
+       <section data-dfn-for="change-filter">
+          <h3>Change filter</h2>
+		<p>A change filter is used when the client wants subscription notifications to be issued by the server when a value has changed more than a defined value since last notification.
+The change query has the structure<br>
+  <dfn>$change comparison-operator value</dfn><br>
+where<br>
+  - $change is the reserved word for change filtering.<br>
+  - comparison-operator is one of either the greater than sign (GT), or the not equal sign (NEQ).<br>
+  - value is a number following Javascript syntax rules.<br><br>
+When using the not equal comparison operator it MUST have the value zero, all other values lead to an error response. The usage is interpreted as "for any change", and also supports boolean changes.
+		</p>
+        </section>
+      </section>
+      <section data-dfn-for="filter-combinations">
+        <h3>Filter combinations</h2>
+		<p>Queries of the types descibed below can be aggregated to form more complex queries. The format for this is then<br>
+  <dfn>query1 AND query2 AND .. queryN</dfn><br>
+where<br>
+  - queryN is any of the query types, following the allowed combinations shown in Table 1.<br>
+  - N is maximum four.<br>
+  - AND is the logical AND operator.<br>
+		</p>
+		<p>
+		<table border="1">
+			<tr><th>Index</th><th>Filter name</th><th>Allowed combinations</th></tr>
+			<tr>
+				<th>1.</th>
+				<td><dfn>Service discovery</dfn></td>
+				<td>None</td>
+			</tr>
+			<tr>
+				<th>2.</th>
+				<td><dfn>Search</dfn></td>
+				<td>3+4+5+6</td>
+			</tr>
+			<tr>
+				<th>3.</th>
+				<td><dfn>Data value</dfn></td>
+				<td>2</td>
+			</tr>
+			<tr>
+				<th>4.</th>
+				<td><dfn>Interval</dfn></td>
+				<td>2</td>
+			</tr>
+			<tr>
+				<th>5.</th>
+				<td><dfn>Range</dfn></td>
+				<td>2+5+6</td>
+			</tr>
+			<tr>
+				<th>6.</th>
+				<td><dfn>Change</dfn></td>
+				<td>2+5</td>
+			</tr>
+		</table>
+		</p>
+              <p>An example of a read request URI containing an aggregated query is<br> 
+<dfn>Vehicle/Cabin/Door?$pathEQ*/*/isOpenAND$dataEQfalse</dfn><br> 
+which would return data for all locked doors.<br>
+In filter combinations where a search expression in the URI is combined with a subscribe filter expression in the payload, the logical AND operator combines them.</p>
+<div class="issue">Shall it be possible to use search filtering in subscribe requests?</div>
+      </section>
+<div class="issue">Other data models may want further query support.Should there be some text about that?</div>
+     </section>
  
     <section id="authorization">
 <h2 id="-a-name-userauth-a-user-authentication-and-authorization"><a id="userauth"></a>Authentication and Authorization</h2>
-<p>In order to secure API access and to guarantee delivery of authorized content only, a token-based mechanism (cmp. <a href="https://tools.ietf.org/html/rfc6749">OAuth 2.0 - RFC6749</a>, <a href="https://tools.ietf.org/html/rfc7519">JWT - RFC7519</a>, <a href="https://tools.ietf.org/html/rfc7523">JWT OAuth Profile - RFC7523</a>) is used. OAuth grants an application access to protected data only for specific use cases (scopes) and often for a limited amount of time.</p>
+<p>In order to secure API access and to guarantee delivery of authorized content only, a token-based mechanism (cmp. <a href="https://tools.ietf.org/html/rfc6749">OAuth 2.0 - RFC6749</a>, <a href="https://tools.ietf.org/html/rfc7519">JWT - RFC7519</a>, <a href="https://tools.ietf.org/html/rfc7523">JWT OAuth Profile - RFC7523</a>) is used. OAuth grants an application access to protected data only for specific use cases (scopes) and often for a limited amount of time.filter</p>
 <p>Details on how the JWT tokens will be sent by the clients are described in the TRANSPORT specification.</p>
     <section id="jwt">
 <h3 id="-a-name-auth_jwt-a-jwt-based-access-token"><a id="auth_JWT"></a> JWT-based access token</h3>
