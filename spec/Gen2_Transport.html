@@ -197,7 +197,7 @@ extending Gen2 to further transports in the future. The Gen2 supports multiple t
       </section>
       <section data-dfn-for="authorization">
         <h2>Authorization</h2>
-          <p>Clients must provide a token to the server in order to verify that it is correctly authorized for the service it requests (c.f. CORE document).Tokens are integrated in HTTP requests in the <code>Authorization</code> header. For WebSockets requests an optional <code>authorization</code> property in the payload can be used.</p>
+          <p>Clients must provide a token to the server in order to verify that it is correctly authorized for the service it requests (see CORE document).Tokens are integrated in HTTP requests in the <code>Authorization</code> header. For WebSockets requests an optional <code>authorization</code> property in the payload can be used.</p>
       </section>
     </section>
     <section data-dfn-for="transport-protocols">
@@ -400,7 +400,7 @@ The client may request that the server sets the value of one or more signals e.g
 	WebSocket connection is opened on the server.</p>
 
 	<p>Implementations that support additional devices or multiple Gen2 services
-        should provide discovery. Alternatively, the location of a particular VIS
+        should provide discovery. Alternatively, the location of a particular Gen2
         Server instance on the local vehicle network may be handled by
         configuration, either as part of a package manifest or by consulting a
         registry on application install. The 'wwwgen2' hostname in this
@@ -413,7 +413,7 @@ The client may request that the server sets the value of one or more signals e.g
 	IP address 127.0.0.1 e.g. by adding an entry to the /etc/hosts file.</p>
 
 	<p>The sub-protocol name <em class="rfc2119" title="SHALL">SHALL</em> be 'wvss' with a version number suffix, e.g. wvss2.0. The sub-protocol version will
-	be associated with exactly one Vehicle Server Specification (VSS) version so that the client and server can 
+	be associated with exactly one Gen2 Server Specification version so that the client and server can 
 	correctly validate and parse request and response message packets.</p>
 	<pre class="highlight hljs javascript" aria-busy="false">	  <span class="hljs-keyword">var</span> vehicle  = <span class="hljs-keyword">new</span> WebSocket(<span class="hljs-string">"wss://wwwgen2"</span>, <span class="hljs-string">"wvss2.0"</span>);
 	</pre>
@@ -423,8 +423,8 @@ The client may request that the server sets the value of one or more signals e.g
 	is not supported, hence the server <em class="rfc2119" title="MUST">MUST</em> refuse ‘ws’ connection requests.</p>
 	      
         <p>This specification assumes that a single WebSocket is used to enable communication between a client application
-        and the server. It is not explicitly prohibited for the client to request that the server opens more than one WebSocket,
-        however, the server <em class="rfc2119" title="MAY">MAY</em> refuse to open a subsequent WebSocket connection and the client is responsible for handling this
+        and the server. The client MAY open more than one websocket.
+        However, the server <em class="rfc2119" title="MAY">MAY</em> refuse to open a subsequent WebSocket connection and the client is responsible for handling this
         gracefully.</p>
 
         <p>If more than one WebSocket connection is established between a client application and the server then each connection
@@ -502,7 +502,7 @@ vehicle.close();</pre></div>
   
 </tbody>
 </table>
-<p>In the table above the value attribute has the type object as it may contain multiple values, each associated to other attributes. However, an atomic value representation MUST be of type string. </p>
+<p>In the table above the "value" attribute has the type object. The reason for this is that it may contain multiple values, each associated to other attributes, which in JSON is represented as an object. However, in the case of a single value, it MUST be of type string. </p>
 <table class="simple">
 <thead>
   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
@@ -548,7 +548,7 @@ vehicle.close();</pre></div>
             </p>
           <section data-dfn-for="wss-authorized-read">
             <h2>Authorized read</h2>
-            <p>In the case a VSS node that is addressed by the path contains access control metadata, 
+            <p> If the operation on the VSS node that is addressed requires authorization, 
                then the request must contain the field "authorization" with its value being a JWT token.
                The token validation must be successful for a GetSuccessResponse to be returned, else a GetErrorResponse is returned.
             </p>
@@ -578,7 +578,7 @@ vehicle.close();</pre></div>
             <h2>Service discovery read</h2>
             <p>A client may issue a service discovery read request to access the metadata defining the nodes in the VSS tree. 
                A successful response will contain the metadata from all nodes of the subtree defined by the subtree root node that is addressed by the path.
-               The service discovery read request MUST contain a query component with the reserved word "$spec", and an associated integer value (c.f. CORE spec, "Filtering" chapter).
+               The service discovery read request MUST contain a query component with the reserved word "$spec", and an associated integer value (see CORE spec, "Filtering" chapter).
             </p>
             <p>
               <b>Example:</b><br>
@@ -605,7 +605,7 @@ vehicle.close();</pre></div>
             <h2>Search read</h2>
             <p>A client may issue a search read request to access multiple values in one request message. 
                A successful response will contain the values from all nodes matching the path concatenated with $path value (a delimiter is automatically inserted). 
-               The search read request MUST contain a query component with the reserved word "$path", and an associated extension to the path (c.f. CORE spec, "Filtering" chapter).
+               The search read request MUST contain a query component with the reserved word "$path", and an associated extension to the path (see CORE spec, "Filtering" chapter).
             </p>
             <p>
               <b>Example:</b><br>
@@ -708,7 +708,7 @@ vehicle.close();</pre></div>
               }<br>
           <section data-dfn-for="wss-authorized-update">
             <h2>Authorized update</h2>
-            <p>In the case a VSS node that is addressed by the path contains access control metadata, 
+            <p>If the operation on the VSS node that is addressed requires authorization, 
                then the request must contain the field "authorization" with its value being a JWT token.
                The token validation must be successful for a setSuccessResponse to be returned, else a setErrorResponse is returned.
             </p>
@@ -737,7 +737,7 @@ vehicle.close();</pre></div>
           </section>
           <section id="subscribe">
             <h2>Subscribe</h2>
-            <p>The client may send a <a href="#dfn-subscriberequest" class="internalDFN" data-link-type="dfn">subscribeRequest</a> message to request a subscription to one or more signals, thereby requesting the server to repeatedly return subscription notification messages, as specified by the "filter" query (c.f. CORE, "Filtering" chapter). The server <em class="rfc2119" title="MAY">MAY</em> reduce the number of <a href="#dfn-subscriptionnotification" class="internalDFN" data-link-type="dfn">subcriptionNotification</a> messages sent to the client in order to reduce processing demands, particularly when the client has subscribed to continuously varying signals. If the server is able to satisfy the request it SHALL return a <a href="#dfn-subscribesuccessresponse" class="internalDFN" data-link-type="dfn">subscribeSuccessResponse</a> message. If an error occurs e.g. because the client is not authorized to set the requested value, the server SHALL return a <a href="#dfn-subscribeerrorresponse" class="internalDFN" data-link-type="dfn">subscribeErrorResponse</a> message.
+            <p>The client may send a <a href="#dfn-subscriberequest" class="internalDFN" data-link-type="dfn">subscribeRequest</a> message to request a subscription to one or more signals, thereby requesting the server to repeatedly return subscription notification messages, as specified by the "filter" query (see CORE, "Filtering" chapter). The server <em class="rfc2119" title="MAY">MAY</em> reduce the number of <a href="#dfn-subscriptionnotification" class="internalDFN" data-link-type="dfn">subcriptionNotification</a> messages sent to the client in order to reduce processing demands, particularly when the client has subscribed to continuously varying signals. If the server is able to satisfy the request it SHALL return a <a href="#dfn-subscribesuccessresponse" class="internalDFN" data-link-type="dfn">subscribeSuccessResponse</a> message. If an error occurs e.g. because the client is not authorized to set the requested value, the server SHALL return a <a href="#dfn-subscribeerrorresponse" class="internalDFN" data-link-type="dfn">subscribeErrorResponse</a> message.
             </p>
 <table class="simple">
  <thead>
@@ -840,7 +840,7 @@ vehicle.close();</pre></div>
             </p>
           <section id="subscribe">
             <h2>Authorized subscribe</h2>
-            <p>In the case a VSS node that is addressed by the path contains access control metadata, 
+            <p>If the operation on the VSS node that is addressed requires authorization, 
                then the request must contain the field "authorization" with its value being a JWT token.
                The token validation must be successful for a subscribeSuccessResponse to be returned, else a subscribeErrorResponse is returned.
             </p>
@@ -1054,7 +1054,7 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
             <span class="hljs-attr">"type"</span>: <span class="hljs-string">"integer"</span>
         },
         <span class="hljs-attr">"filter"</span>: {
-            <span class="hljs-attr">"description"</span>: <span class="hljs-string">"May be specified in order to throttle the demands of subscriptions on the server. C.f. CORE:Filtering chapter"</span>,
+            <span class="hljs-attr">"description"</span>: <span class="hljs-string">"May be specified in order to throttle the demands of subscriptions on the server. See CORE:Filtering chapter"</span>,
             <span class="hljs-attr">"type"</span>: <span class="hljs-string">"string"</span>
         },
         <span class="hljs-attr">"subscriptionId"</span>:{
@@ -1110,6 +1110,8 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
         </section>
         <section id="error-def">
           <h2>Error definitions</h2>
+          <p>The error number SHOULD be a status code defined in RFC2616, c. f. chapter "Status codes". The error reason SHOULD be the corresponding reason-phrase from RFC2616. The error message is meant to give a more precise description of the error.
+          </p>
 <table class="simple">
   <thead>
     <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
