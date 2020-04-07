@@ -91,33 +91,18 @@ extending Gen2 to further transports in the future. The Gen2 supports multiple t
 	  </tr>
 	  <tr>
 	    <td>401 (Unauthorized)</td>
-	    <td>user_token_expired</td>
-	    <td>User token has expired.</td>
+	    <td>token_expired</td>
+	    <td>Access token has expired.</td>
 	  </tr>
 	  <tr>
 	    <td>401 (Unauthorized)</td>
-	    <td>user_token_invalid</td>
-	    <td>User token is invalid.</td>
+	    <td>token_invalid</td>
+	    <td>Access token is invalid.</td>
 	  </tr>
 	  <tr>
 	    <td>401 (Unauthorized)</td>
-	    <td>user_token_missing</td>
-	    <td>User token is missing.</td>
-	  </tr>
-	  <tr>
-	    <td>401 (Unauthorized)</td>
-	    <td>device_token_expired</td>
-	    <td>Device token has expired.</td>
-	  </tr>
-	  <tr>
-	    <td>401 (Unauthorized)</td>
-	    <td>device_token_invalid</td>
-	    <td>Device token is invalid.</td>
-	  </tr>
-	  <tr>
-	    <td>401 (Unauthorized)</td>
-	    <td>device_token_missing</td>
-	    <td>Device token is missing.</td>
+	    <td>token_missing</td>
+	    <td>Access token is missing.</td>
 	  </tr>
 	  <tr>
 	    <td>401 (Unauthorized)</td>
@@ -799,6 +784,21 @@ vehicle.close();</pre></div>
   
 </tbody>
 </table>
+<br>
+<table class="simple">
+<thead>
+  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-subscriptionerrornotification">subscriptionErrorNotification</dfn></th>
+    </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+  
+</tbody>
+</table>
             <p>
               <b>Example:</b><br>
               Request:<br> 
@@ -834,6 +834,15 @@ vehicle.close();</pre></div>
                 "action": "subscription",<br>
                 "subscriptionId": "12345",<br>
                 "value": "50",<br>
+                "timestamp": 1489985044000<br>
+              </blockquote
+              }<br><br>
+              Error notification:<br>
+              {<br>
+              <blockquote>
+                "action": "subscription",<br>
+                "subscriptionId": "12345",<br>
+                "error": {"number": 401, "reason": "token_expired", "message": "Access token has expired."},<br>
                 "timestamp": 1489985044000<br>
               </blockquote
               }<br>

@@ -122,10 +122,8 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
 				[Private]<<branch>>
 				[Car]<<branch>>
 				
-				[Media] -- [Collections]
-				[Collections] .. [30321564123]
-				[Collections]<<rbranch>>
-				[30321564123]<<element>>
+				[Media] -- [...]
+				[...]<<branch>>
 				
 				[Car] -- [Engine]
 				[Car] -- [Body]
@@ -703,7 +701,7 @@ All necessary measures to allow TLS must be implemented, such as reliable time a
           </p>
           <p>Success response:
             <ul>  
-              <li><a>subscriptionid</a> A handle identifying notification messages associated with the subscription.</li>
+              <li><a>subscriptionId</a> A handle identifying notification messages associated with the subscription.</li>
               <li><a>timestamp</a> The start time for the subscription period.</li>
             </ul>
           </p>
@@ -715,12 +713,12 @@ All necessary measures to allow TLS must be implemented, such as reliable time a
              If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.</p>
           <p>Arguments: 
             <ul>
-              <li><a>Subscriptionid</a> Handle identifying the subscription.</li>
+              <li><a>subscriptionId</a> Handle identifying the subscription.</li>
             </ul>
           </p>
           <p>Success response:
             <ul>  
-              <li><a>Subscriptionid</a> Handle identifying the subscription.</li>
+              <li><a>subscriptionId</a> Handle identifying the subscription.</li>
               <li><a>timestamp</a> The stop time for the subscription period.</li>
             </ul>
           </p>
@@ -733,7 +731,7 @@ All necessary measures to allow TLS must be implemented, such as reliable time a
           </p>
           <p>Arguments: 
             <ul>
-              <li><a>subscriptionid</a> Handle identifying the subscription.</li>
+              <li><a>subscriptionId</a> Handle identifying the subscription.</li>
               <li><a>value</a> The value(s) associated with the node(s) being addressed in the subscribe request.</li>
               <li><a>timestamp</a> The time for the trigger activation.</li>
             </ul>
@@ -787,7 +785,7 @@ All necessary measures to allow TLS must be implemented, such as reliable time a
 	  <dd>A filter may consist of multiple query expressions.</dd>
 	  <dt><dfn data-dfn-type="dfn" id="dfn-authorization">authorization</dfn></dt>
 	  <dd>A token providing a verifiable proof that the client may be authorized access to the requested value(s).</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-subscription-id">subscriptionid</dfn></dt>
+	  <dt><dfn data-dfn-type="dfn" id="dfn-subscription-id">subscriptionId</dfn></dt>
 	  <dd>A handle identifying a subscription session.</dd>
 	</dl>
       </section>
