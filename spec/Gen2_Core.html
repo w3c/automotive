@@ -114,15 +114,15 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
 					BackgroundColor<<element>> LightCoral
 					FontColor<<element>> White				
 				}
-				[Vehicle] -- [Media]
+				[Vehicle] -- [Navigation]
 				[Vehicle] -- [Car]
 				[Vehicle] -- [Private]
 				[Vehicle]<<branch>>
-				[Media]<<branch>>
+				[Navigation]<<branch>>
 				[Private]<<branch>>
 				[Car]<<branch>>
 				
-				[Media] -- [...]
+				[Navigation] -- [...]
 				[...]<<branch>>
 				
 				[Car] -- [Engine]
@@ -348,293 +348,86 @@ In filter combinations where a search expression in the URI is combined with a s
 <div class="issue">Other data models may want further query support.Should there be some text about that?</div>
      </section>
  
-    <section id="authorization">
-<h2 id="-a-name-userauth-a-user-authentication-and-authorization"><a id="userauth"></a>Authentication and Authorization</h2>
-<p>In order to secure API access and to guarantee delivery of authorized content only, a token-based mechanism (cmp. <a href="https://tools.ietf.org/html/rfc6749">OAuth 2.0 - RFC6749</a>, <a href="https://tools.ietf.org/html/rfc7519">JWT - RFC7519</a>, <a href="https://tools.ietf.org/html/rfc7523">JWT OAuth Profile - RFC7523</a>) is used. OAuth grants an application access to protected data only for specific use cases (scopes) and often for a limited amount of time.filter</p>
-<p>Details on how the JWT tokens will be sent by the clients are described in the TRANSPORT specification.</p>
-    <section id="jwt">
-<h3 id="-a-name-auth_jwt-a-jwt-based-access-token"><a id="auth_JWT"></a> JWT-based access token</h3>
-<p>JSON Web Token (JWT) is an open standard <a href="https://tools.ietf.org/html/rfc7519">RFC 7519</a> that defines a compact and <strong>self-contained</strong> way for transmitting authenticated information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can generally be signed using a public/private key pair using RSA or ECC.</p>
-<p>For the application to the protocol, the token issuer (<code>iss</code> claim) has to provide access to its public key (<code>sigurl</code> claim) for token verification. At the same time, the public key references in the sigurl claim must be authenticated using appropriate PKI mechanisms. Alternatively, the public key used for verifying tokens may be exchanged (and updated) via a separate, authenticated channel.</p>
-<p>The payload of a JWT-based access token contains all the required information like the scope (<code>scp</code> claim), avoiding the need to query the auth server more than once, thus they are called <strong>self-contained</strong>.</p>
-<p>Token verification is crucial and MUST be implemented by all services handling sensitive information.</p>
-<h5 id="expiry">Expiry</h5>
-<p>JWT-based access tokens are stateless keys to information that needs to be protected. Therefore a token has to be <em>revokable</em>. As the underlying concept of self-containing tokens does not allow revocation by a central component on a request by request basis, JWT-based access tokens shall generally expire quickly. This narrows down the possible time window for using a token without permission. After a token expires, the client is forced to obtain a fresh access token and can be denied access to the service at this point in time. Additionally, if narrow time constraints must be met, the authorization server must offer a token whitelist - listing only token meta information - every service can subscribe to based on the JWT access token&#39;s identifier (<code>jti</code> claim).</p>
-<h5 id="identification">Identification</h5>
-<p>Every JWT shall contain a <code>jti</code> claim in its header to allow for blacklisting, revocation notification and one time use.</p>
-<h5 id="trust-decisions">Trust decisions</h5>
-<p>The contents of a JWT cannot be relied upon in a trust decision unless its contents have been cryptographically secured and bound to the context necessary for the trust decision. In particular, the key(s) used to sign and/or encrypt the JWT will typically be under the control of the party identified as the issuer of the JWT. Unsigned JWT-based access tokens MUST fail in their verification.</p>
-<p>Every JWT shall contain an <code>iss</code> (issuer) claim in its header to identify the principal that issued the token by an identifier known to the party attempting to verify the token.</p>          </section>
-
-
-
-    <section data-dfn-for="authorization-process">
-<h3 id="authorization-process-security-recommendation-">Authorization Process &amp; Security (recommendation)</h3>
-<p>Applying the token mechanisms discussed earlier in this chapter allows authorization based on these tokens. This allows a central token service to enforce a policy based on flexible scopes that may or may not group several services into logical groups. In the following, we describe a reference authorization architecture based on JWTs. Using JWTs allows a server to evaluate a request in isolation, without having to query a central component repeatedly. However, to achieve timely revocation of service access without having the client obtain new tokens frequently, we propose to implement a revocation notification mechanism (see below).</p>
-<div class="issue">We probably should present a figure defining the entities in this ecosystem - the server(s) managing the services, the token provisioning server, and the token validation server. This chapter does currently not describe this partitioning.</div>
-<h4 id="security-by-osi-level">Security by OSI Level</h4>
-<p>On a basic level, the system has to implement specific security related mechanisms on different layers of the network stack:</p>
-<table>
-<thead>
-<tr>
-<th>OSI</th>
-<th></th>
-<th>Mechanism</th>
-<th>Protocol(s)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>7</td>
-<td>Application</td>
-<td>Token-based Authorization</td>
-<td>JWT/OAuth2</td>
-</tr>
-<tr>
-<td>6</td>
-<td>Presentation</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>5</td>
-<td>Session</td>
-<td>Authentication + Encryption</td>
-<td>TLS</td>
-</tr>
-<tr>
-<td>4</td>
-<td>Transport</td>
-<td>Firewall</td>
-<td>TCP</td>
-</tr>
-<tr>
-<td>3</td>
-<td>Network</td>
-<td>Firewall</td>
-<td>IP</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Data-Link</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>1</td>
-<td>Physical</td>
-<td></td><td></td>
-</tr>
-</tbody>
-</table>
-<h4 id="firewall">Firewall</h4>
-<p>A firewall shall ONLY let the traffic pass it is configured for. All other ports shall be blocked by default.</p>
-<h4 id="transport-layer-security">Transport Layer Security</h4>
-<p>To secure the transfer of messages and tokens, transport layer security shall be established through the TLS protocol. For more detailed requirements on the required TLS version and cipher suites see Section #ref. Whether a concrete interface needs to be encrypted is subject of the security specification. However, all requests that include tokens MUST be made through an encrypted TLS channel.
-All necessary measures to allow TLS must be implemented, such as reliable time and secure certificate storage on the device using the certificate to authenticate. In case of mutual authentication, the client also needs to have appropriate key material.</p>
-<h5 id="communication-types">Communication types</h5>
-<p>There are two different types of communication – <code>public</code> and <code>confidential</code>. The differentiation between these two types of communication is rather a project oriented than a security oriented. Communication is considered <code>confidential</code> when two trusted devices communicate with each other, e.g., the communication between two ECUs that are under full control (quality, security, testing etc.) of the vendor is considered <code>confidential</code> while the communication with at least one 3rd party client is considered <code>public</code> (e.g. cloud based client, smartphone client,…).</p>
-<p>An internal communication is between a service/server and a - in an OAuth sense - <strong>confidential</strong> <code>confidential</code> client (i.e., one that can be securely provisioned with cryptographic key material). Internal communication will usually rely on a mutually authenticated TLS channel to establish a client identity for issuing tokens. See <a href="https://tools.ietf.org/html/rfc6749#section-2.1">OAuth 2.0 - RFC6749 Section 2.1</a> for details.</p>
-<p>Conversely, <code>public</code> communication occurs between a service/server and a - in the OAuth sense - <strong>public</strong> client. A <code>public</code> client cannot have reliable key material and can therefore not be authenticated directly. Instead, the protocol relies on a trusted system to attest the authenticity of a user identity on that client. The client then forwards a proof of authentication (e.g. an Authorization Grant Token cf. <a href="https://tools.ietf.org/html/rfc7523">RFC7523</a>) from the trusted system to the in-vehicle authorization server to attest the clients identity.</p>
-<h6 id="use-cases">Use Cases</h6>
-<p>For the different use case for API usage, different cipher suites are recommended:</p>
-<table>
-<thead>
-<tr>
-<th>Communication between</th>
-<th>Cipher Suite</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>vehicle internal clients with encryption, with token-based authentication (default - internal)</td>
-<td>TLS_PSK_WITH_AES_128_CBC_SHA256</td>
-</tr>
-<tr>
-<td>vehicle internal clients with encryption, with TLS-based authentication (e.g. certificate) (mutual auth with certificate pinning)</td>
-<td>TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 with ECC: secp256r1 (prime256v1)</td>
-</tr>
-<tr>
-<td>vehicle internal clients without encryption, with authentication (might be decided to be used on per-service basis)</td>
-<td>TLS_PSK_WITH_NULL_SHA256</td>
-</tr>
-<tr>
-<td>vehicle and vehicle external clients with encryption, with token based authentication (e.g. certificate) (default - external)</td>
-<td>TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 with ECC: secp256r1 (prime256v1)</td>
-</tr>
-<tr>
-<td>vehicle and vehicle external clients without encryption or without authentication</td>
-<td>-</td>
-</tr>
-</tbody>
-</table>
-<h5 id="authorization-grant-token-agt-">Authorization Grant Token (AGT)</h5>
-<p>The <code>AGT</code> is a JWT (<a href="https://jwt.io">https://jwt.io</a>, <a href="https://tools.ietf.org/html/rfc7519">https://tools.ietf.org/html/rfc7519</a>) Token, profiled according to RFC7523 (JWT OAuth 2.0 Client Authorization Grant profile). The token MUST be signed by a trusted entity. The auth server uses the AGT to establish a client user identity (if any). An AGT shall only be valid for presentation at a particular vehicle&#39;s authorization server and shall thus contain a vehicle identifier (e.g., the VIN). The auth server must have access to an authentic public key to verify the AGT signature. The auth server must also be able to obtain updated public key material from the backend for AGT validation.</p>
-<p>AGTs shall only be valid for a limited amount of time (several days). Checking revocation is impractical for the auth server as limited connectivity would negatively impact the user experience when attempting to access services in a vehicle. Instead, the client shall fetch new AGTs when the existing copies are about to expire. Under adversarial conditions, this would mean that an attacker can abuse e. g. a stolen portable device to access services in the name of the original user. This issue could however be mitigated by the portable device locking mechanisms as well as the ability to remove a user identity from a vehicle remotely using other frontends. Exfiltrating an AGT from a device or the communication channel would require a much higher effort, if platform and transport security are intact.</p>
-<p>The AGT shall contain at least the following claims:</p>
-<ul>
-<li>Issuer (iss)</li>
-<li>Issuing date (iat)</li>
-<li>Expiration time (exp)</li>
-<li>JWT identifier (jti)</li>
-<li>Client User ID being attested (uid)</li>
-<li>Audience (aud)</li>
-</ul>
-<h6 id="creating-the-token">Creating the token</h6>
-<p>The client requests the AGT from the backend, specifying a target audience (a VIN), alongside backend authentication information (e.g., a backend access token). The backend system shall create and sign the desired AGT only if the user authentication is or was previously successful. Additional authorization checks MAY occur in the backend system. The signature MUST only be applied when all checks are positive. After this step a signed AGT is available for presentation to the auth server.</p>
-<h6 id="token-header">Token Header</h6>
-<p>Claims in the AGT header are – find the claim key for JSON in parentheses:</p>
-<p><strong>Issuer (iss)</strong></p>
-<p>The <code>iss</code> (issuer) claim identifies the principal that issued the JWT. The processing of this claim is generally application specific. The &quot;iss&quot; value is a case-sensitive string containing a String or URI value. This claim is MANDATORY and allows the token consumer to select appropriate key material for validation.</p>
-<p><strong>Link to public key used for signature (sigurl)</strong></p>
-<p>The <code>sigurl</code> claim (signature url) contains an url pointing to the public key to be applied for token signature verification. This public key has to be assigned to and issued by a trusted source (i.e., the consumer of the token must be able to authenticate the public key obtained from the <code>sigurl</code>, for example by pinning a specific root or intermediate certificate for a certificate in the sigurl). This claim is OPTIONAL, as the auth server may obtain the necessary public key through another suitable (authenticated, updatable) channel.</p>
-<p><strong>Issuing date (iat)</strong></p>
-<p>The <code>iat</code> (issued at) claim identifies the time at which the JWT was issued. This claim can be used to determine the age of the JWT. Its value MUST be a unix timestamp and MUST be validated to be in the past. This claim is MANDATORY.</p>
-<p><strong>Expiration time (exp)</strong></p>
-<p>The <code>exp</code> (expiration time) claim identifies the expiration time on or after which the JWT MUST NOT be accepted for processing. The processing of the <code>exp</code> claim requires that a reliable time source is available and that the current date/time MUST be before the expiration date/time listed in the <code>exp</code> claim. Implementers MAY provide for some small leeway, usually no more than a few minutes, to account for clock skew. Its value MUST be a unix timestamp. This claim is MANDATORY.</p>
-<p><strong>JWT identifier (jti)</strong></p>
-<p>The <code>jti</code> (JWT ID) claim provides a unique identifier for the JWT. The identifier value MUST be assigned in a manner that ensures that there is a negligible probability that the same value will be accidentally assigned to a different data object. The <code>jti</code> claim can be used to prevent the JWT from being replayed. The <code>jti</code> value is a case-sensitive string, it SHALL be used to revoke a token. This claim is MANDATORY.</p>
-<h6 id="token-payload">Token payload</h6>
-<p>Mandatory claims in the <code>AGT</code> payload – find the claim key for JSON in parentheses:</p>
-<p><strong>Username/Userid (uid)</strong></p>
-<p>The <code>uid</code> (User Id) claim provides a unique identifier for the user the client is requesting authorization for. Usually the <code>uid</code> claim will hold a system-wide user identifier. The <code>uid</code> claim is used by the auth server to inform authorization decisions (e.g., whether an additional permission popup is necessary). The <code>uid</code> value is a case-sensitive string. The <code>uid</code> will be compared to the user logged in on the main unit. This claim is MANDATORY.</p>
-<p><strong>Audience (aud)</strong></p>
-<p>The <code>aud</code> (Audience) claim shall indicate which vehicle this AGT was issued for. Usually, the aud claim will contain a VIN. The token consumer MUST ensure that the audience string matches the expected value, i.e. that the token was issued for this vehicle.</p>
-<div class="issue">The aud claim is MANDATORY??</div>
-<h5 id="auth-server">Auth Server</h5>
-<p>The Access-Token issuer Service (auth server) is in charge of deciding over access requests submitted by a client. The client will request access to a given scope. A scope usually comprises access to one or more services. The server will validate an access token issued by the auth server, checking - among other things - that the token carries the expected scope. Below, relevant identities, scopes, policies and how tokens are issued are described.</p>
-<p>The client request for an access token shall include the following information:</p>
-<ul>
-<li>client ID</li>
-<li>client user ID attestation (AGT), if available</li>
-<li>TLS client identity, if mutual TLS was used</li>
-<li>desired scope</li>
-<li>human-readable identifier</li>
-</ul>
-<p>The auth server shall then decide whether or not to issue an access token based on this information, obtaining consent from the current vehicle user, if necessary. This process will be detailed in the following.</p>
-<h6 id="types-of-identities-for-authorization-decisions">Types of Identities for Authorization decisions</h6>
-<p>Several identities need to be considered for authorization decisions and therefore be used by the authorization server. These identities are listed in the following.</p>
-<h6 id="client-identity">Client Identity</h6>
-<p>The client requesting a service may have an identity itself. In this context, the term client usually refers to the device a piece of software is running on. The identity of this client (device) is generally only ascertainable if cryptographic key material is securely available on the device. Hence, the OAuth 2.0 standard distinguishes <strong>confidential</strong> and <strong>public</strong> clients. A confidential client is more tightly controlled in terms of software as well as hardware and can thus be securely provisioned with key material, which can be used to run cryptographic authentication protocols. In turn, a public client (e.g., a smartphone app on a smartphone without a trust store for secure certificate storage) comes with no such guarantees and is assumed to be more easily compromised by an adversary.</p>
-<p>A confidential client shall be able to establish a mutually authenticated TLS channel with the auth server and the service server, providing a trusted identity, usually in the form of a certificate signed by a trusted authority. A confidential client can thus provide a proof of possession for a certain client identifier (client ID). After establishing a mutually authenticated channel with such a client, the server can be reasonably sure to be communicating with the same client as before. Confidential clients are therefore extended a client-level trust.</p>
-<p>In contrast, a public client cannot provide any reliable identification information. Instead, public clients shall generate a unique identifier (UUID, client ID), for which it is very unlikely that another client chooses the same value.  The client ID is thus only a weak identifier, which shall be used with care. In most cases, public clients shall provide a user identity that is asserted by a trusted backend on top of the client ID. It is this client user identity (that must have been previously authenticated between client, user and backend) which shall be the main source of a trust decision.</p>
-<p><strong>Client User Identity</strong></p>
-<p>The client user identity is a user identity that has been authenticated by a trusted backend systems towards the client. The auth server may choose to make authorization decisions based on this identity, for example comparing the client user identity with the system user identity (see below). If these two identities match, the auth server might conclude that the user in the vehicle is the same as the user that is logged in on the client and therefore grant a request. For the purposes of this protocol, the client user identity shall be communicated using JWT authorization grant tokens (AGT, see above).</p>
-<p><strong>System User Identity</strong></p>
-<p>The system user identity corresponds to the identity of the user currently active inside the vehicle. It is assumed that this identity belongs to the user currently in charge of operating the vehicle (i.e., the driver). The system will usually have credentials to act as this user with respect to other backend systems (e.g., to access personalized navigation functionality). The system user identity shall be available to the auth server from the environment (i.e., the platform the auth server is running on, e.g., the main unit).</p>
-<p>In the future, there may be situations where more than one user identity is considered active on the system (i.e., the vehicle is personalized for multiple users, including potential passengers). In this case, additional metadata about the system users (e.g., which screen belongs to their seat) may be required for making authorization decisions. This use case, however, is not covered by the current version of this specification.</p>
-<div class="issue">The client/system user Id descriptions above should be extended with a cloud based client.</div>
-<h6 id="scopes">Scopes</h6>
-<p>When requesting access to services, the client must specify a scope it wants to get access to. A scope describes a logical set of services. This facilitates the specification of policies as well as describing the current state of authorization to users, if need be. Clients request access to a certain scope and a service expects an access token for a certain scope. Similarly, the authorization server is not concerned with particular services but just with more abstract scopes. Using scopes allows the reuse of an access token for multiple services, which reduces the burden on client-side token management as well as requests against the auth server. Additionally, scopes also allow more fine-grained access control, where one service might expect different scopes for operations of different sensitivity (e.g., read vs. write).</p>
-<p>There shall be two types of scopes: <code>internal</code> scopes are granted based on client properties (e.g. client identity or client type) without user interaction; conversely, <code>user</code> scopes may be granted through user interaction, i.e. a popup asking the user to decide whether or not a certain client should be able to use certain functionality. These user-scopes shall be defined in a way that facilitates understanding of a grant decision when being presented to a user, i.e., so that the set of services grouped into the scope carries meaning to a user. Otherwise, users are not able to effectively exercise the control that is expected by the system to protect them from unwanted accesses.</p>
-<p>Every client has to know which scopes to request access á priori, i.e. the scope usually are to be known at implementation time.</p>
-<p><strong>User Scopes</strong></p>
-<p>As a reference, the following set of scopes shall be used to govern access:</p>
-<table>
-<thead>
-<tr>
-<th>Scope Label</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>hvacRead</td>
-<td>Read heating, ventilation and AC information</td>
-</tr>
-<tr>
-<td>hvacControl</td>
-<td>Change HVAC state (e.g. set temperature, enable seat heating, etc. )</td>
-</tr>
-<tr>
-<td>carStatusRead</td>
-<td>Read state of vehicle (doors/windows open, oil temperature, etc.)</td>
-</tr>
-<tr>
-<td>carConfigrurationRead</td>
-<td>Read car-related settings (i.e. read settings found in car menu)</td>
-</tr>
-<tr>
-<td>carConfigrurationControl</td>
-<td>Modify car-related settings (i.e. modify settings found in car menu)</td>
-</tr>
-<tr>
-<td>audioRead</td>
-<td>Read audio/sound management (sources, volume, balance, etc.)</td>
-</tr>
-<tr>
-<td>audioControl</td>
-<td>Modify audio/sound settings (sources, volume, balance, etc.)</td>
-</tr>
-</tbody>
-</table>
-<div class="issue">The scope definitions needs more work.</div>
-<p>New services may require the definition of additional scopes. However, the list of scopes that can be presented to the user for grating authorization must remain as low as possible to avoid user confusion.</p>
-<p><strong>Internal Scopes</strong></p>
-<p>Internal scopes are scopes that can only be granted to clients based on their properties (client type, client id, client user type, etc.) and <em>not</em> by user interaction. The granularity of such scopes shall be flexible and up to the implementer as well as the desired control over internal service access. They can range from one single scope for all internal services to one scope per service operation.</p>
-<h6 id="policies">Policies</h6>
-<p>Based on the requested scope, the client type, the client user identity, the current system user identity as well as previously granted permissions, the authorization server will search for a policy match. If a match is found, an access token matching the requested scope is issued.</p>
-<p>A policy may additionally specify that user interaction is necessary to grant a certain scope. An example policy may state: &quot;If the client user identity does not match the current system user identity, display a popup asking for permission to access scope X&quot;. This decision shall be remembered, in the context of the current system user identity, by the authorization server. It is important to note that each system user identity shall be able to grant or deny permissions individually. This means that a system user A may grant permission P to client user Z, while system user B denies P to Z. Implementations must choose to grant (or deny) requested scopes indefinitely (until revocation) or for a certain (potentially user-chosen) amount of time. This choice may be made on a scope-by-scope basis.</p>
-<p>On the other hand, the authorization server shall be able to deny access to certain (more sensitive) services under certain conditions. For example, only a client in the body control ECU shall be able to update the status of the vehicle&#39;s doors and windows or all write access shall be denied to public clients.</p>
-<p><strong>Requesting Permission from the User</strong></p>
-<p>A policy may defer an authorization decision to the current system user, as only the user currently in control of the vehicle shall be able to decide whether or not a certain client shall be able to access certain functionality.</p>
-<p>There shall only be a small number of scopes (likely less than 10) that a user can ever be asked to grant for a given client. The interface presented to the user for making the authorization decision shall be presented when the client in question is making the request to access a service associated to the scope in question. The interface shall present a meaningful description of the extent of the scope to be granted. It shall also present a meaningful identifier for the client to be authorized. Lacking a reliable identifier, clients shall be allowed to provide a human-readable name when requesting access at the auth server.</p>
-<p>It may be beneficial to allow the user making the authorization decision to specify additional constraints. The interface may choose to offer options to grant the permission until a certain time or event. Examples include until the permission is explicitly revoked, until the end of the current drive, for the next month, etc. Useful options should be determined from user research and must be enforced by the auth server.</p>
-<p>All permission decisions shall be stored on a per-system-user basis in a consent service within the auth server. This only concerns permission decisions made by the user. Decisions made by the auth server by policy only shall not be documented in this table (as they should be stateless). The consent service shall store decisions as follows:</p>
-<ul>
-<li>System User ID</li>
-<li>Client ID (+ human-readable name)</li>
-<li>Client User ID</li>
-<li>Scope</li>
-<li>Decision (access/deny)</li>
-<li>Expiry (e.g. driving cycle, timestamp, never)</li>
-<li>JWT-ID: The ID of the token issued based on this consent</li>
-</ul>
-<p>This information shall also be available to the system user in order to manage permissions.</p>
-<h6 id="access-token">Access token</h6>
-<p>An access token is needed to access the APIs of services. These tokens are issued as JWT based on <a href="https://tools.ietf.org/html/rfc7523">RFC7523</a> (OAuth 2.0 profile for client authorization grants). The <code>accessToken</code> is issued to the client by the auth server after the policy checks described above have been successfully passed. The client then sends the token with each request where it is required. The recipient/service MUST deny any API access without a valid token being provided. The token&#39;s validity MUST be checked for each request. Additionally, after receiving a token for the first time, the service must subscribe to notifications of revocation for this token&#39;s identifier. The <code>accessToken</code> is a JWT-type token with a signature provided by the issuer. The token SHALL be as small as possible to avoid excessive communication overhead.</p>
-<p><code>accessToken</code>s are strictly bound to the system user identity who granted access (if any). This means that in a single user system they are only valid for the services of the currently active system user identity.</p>
-<p>AccessToken validity must begin with issuance. AccessTokens shall be issued for a certain vehicle (VIN) and system user identity (uid). Expiration may be indefinite (until revocation) or shorter, based on the configured policy or user decision. It is important to note that meaningful expiration requires a reliable source of date and time information (authenticated time).</p>
-<p>If an <code>accessToken</code> is not valid anymore, all API access MUST be prohibited. On expiration or revocation, the client MUST request a new <code>accessToken</code> and satisfy the corresponding auth server policy. An appropriate status code MUST be sent as a response.</p>
-<p><strong>Revocation</strong></p>
-<p>The vehicle token server shall maintain a list of access token identifiers issued based on a certain user decision (see [Requesting Permission from the User] above). Once an access decision is revoked, the vehicle token server must notifiy all services consuming these access tokens of the revocation. It is the responsibility of the service to register for revocation notification of known token identifiers.</p>
-<h6 id="access-token-content">Access Token Content</h6>
-<ul>
-<li>expiry (exp): timestamp after which this token shall be considered invalid</li>
-<li>audience (aud): The type of service/protocol this token was issued for.</li>
-<li>scopes (scp): the scope(s) requested by the client. It shall be possible to issue one token for multiple scopes</li>
-<li>token id (jti)</li>
-<li>system user ID (uid): the system user ID in which context this token should be considered valid.</li>
-<li>issuer (iss): the identity of the vehicle this token was issued for (e.g. the VIN). Services must be able to check that the token was issued for this vehicle to prevent attackers from reusing tokens across vehicles.</li>
-<li>public key (sigurl): the url to access the public key used to sign the access token</li>
-</ul>
-<p><strong>Note</strong> It is left to the client application to decide whether to request a single <code>accessToken</code> with multiple <code>scopes</code> multiple access <code>accessTokens</code> with just a single <code>scope</code> or anything in between, dependeing on client needs. Client developers need to be aware that each <code>accessToken</code> request might throw a dedicated popup.</p>
-<h6 id="access-token-signature">Access Token Signature</h6>
-<p>The <code>accessToken</code> will be signed with the issuers public certificate. Therefore, the public key of the issuer needs to be accessible by any client during runtime.</p>
-<h5 id="api-access">API access</h5>
-<p>The client MUST send the <code>accessToken</code> with each request. API access MUST be denied if no token is given or it is found to be invalid for any reason.</p>
-<h6 id="access-token-validation">Access Token Validation</h6>
-<p>Services MUST be able to perform validation steps for access tokens in isolation, i.e. without having to contact the auth server on every presentation of an access token. Therefore, services shall be able to parse and validate JWT-based access tokens.</p>
-<p>The following properties of an access token shall be verified in the following order:</p>
-<ul>
-<li>Token expiry: A reliable time MUST be available to the service server to check validity/expiration.</li>
-<li>Token signature: Services MUST have authenticated access to a public key that can be used to validate token signatures. It must also be possible to update this public key periodically.</li>
-<li>Token scope: Services MUST know which scope to expect for a given client request.</li>
-<li>Token audience: Services MUST check that the token was issued for the purposes of this protocol.</li>
-<li>Token system user ID: The system user ID provided in the token MUST match the current system user known to the service. Services MUST be able to have authenticated access to the current system user ID.</li>
-<li>Token issuer: Services MUST be able to check that the token was issued by the auth server in the same vehicle as this service. For one, the issuer identifier MUST match a previously obtained value for this system. Second, the key material used to sign the token must of course also match this vehicle identity.</li>
-</ul>
-<p>Once these validation steps are completed successfully, the service shall use the token identifier to subscribe to a revocation status for this identifier at the auth server. As long as local validation is successful and no revocation notification is sent by the auth server, the service shall assume that the token is valid. Once a revocation notification is sent, the service shall cache this information for an appropriate amount of time.</p>
-<h5 id="token-sequence-overview">Token sequence overview</h5>
-<p>The following diagram shows a brief overview of the authorization flow, omitting details like the actual HTTPS calls and WebSocket message syntax.</p>
-<p><img src="img/auth.png" alt="Authorization workflow"></p>
-<div class="issue">A diagram would be great, if someone wants to draw one.</div>
+    <section data-dfn-for="access-control-model">
+      <h2>Access control model</h2>
+      <p>
+      </p>
+      <section data-dfn-for="oauth2-compatible-architecture">
+        <h2>Oauth2.0 compatible architecture</h2>
+        <p> (shows a generic OAuth2 arch and the AGT/AT/Gen2 arch)
+        </p>
+      </section>
+      <section data-dfn-for="access-control-flows"">
+        <h2>Access control flows</h2>
+        <p>
+        </p>
+        <section data-dfn-for="pki-based-flow">
+          <h2>PKI based flow</h2>
+          <p>
+          <figure id="fig-sequence-diagram-pki-based flow">
+            <img src="images/pki-based-flow.png" alt="Sequence diagram showing a PKI based flow">
+            <figcaption>Figure <span class="figno">1</span> <span class="fig-title">Sequence diagram showing a PKI based flow</span></figcaption>
+          </figure>
+          </p>
+        </section>
+        <section data-dfn-for="token-based-flow">
+          <h2>Token based flow</h2>
+          <p>
+          <figure id="fig-sequence-diagram-token-based flow">
+            <img src="images/token-based-flow.jpg" alt="Sequence diagram showing a token based flow">
+            <figcaption>Figure <span class="figno">2</span> <span class="fig-title">Sequence diagram showing a token based flow</span></figcaption>
+          </figure>
+          </p>
+        </section>
+        <section data-dfn-for="flow-negotiation">
+          <h2>Flow negotiation</h2>
+          <p>
+          </p>
+        </section>
+      </section>
+      <section data-dfn-for="access-grant-server">
+        <h2>Access Grant server</h2>
+        <p>
+        </p>
+        <section data-dfn-for="pki-based-request">
+          <h2>PKI based request</h2>
+          <p>
+          </p>
+        </section>
+        <section data-dfn-for="token-based-request">
+          <h2>Token based request</h2>
+          <p>
+          </p>
+        </section>
+      </section>
+      <section data-dfn-for="access-token-server"">
+        <h2>Access Token server</h2>
+        <p>
+        </p>
+      </section>
+      <section data-dfn-for="gen2-access-control-gatekeeper">
+        <h2>Gen2 access control gate keeper</h2>
+        <p>
+        </p>
+      </section>
+      <section data-dfn-for="access-control-selection">
+        <h2>Access control selection</h2>
+        <p>(describes the mechanism for applying it to the complete, or parts of the VSS tree)
+        </p>
+      </section>
     </section>
-    </section>
-
-
-
-
+Access control model
+  - OAuth2 compatible architecture (shows a generic OAuth2 arch and the AGT/AT/Gen2 arch)
+  - Supported access control flows
+    * PKI based flow(seq diagram + descriptive text)
+    * Token based flow (seq diagram + descriptive text)
+    * Flow negotiation
+  - AGT - authentication and authorization server
+    * PKI based flow (describes client-server interaction, input and output)
+    * Token based flow (describes client-server interaction, input and output)
+  - AT - authorization server
+  - Gen2 access control gate keeper
+  - Access control selection (describes the mechanism for applying it to the complete, or parts of the VSS tree)
     <section data-dfn-for="interface">
       <h2>Interface</h2>
       <p>
@@ -757,7 +550,6 @@ All necessary measures to allow TLS must be implemented, such as reliable time a
       <section data-dfn-for="security">
         <h2>Security</h2>
         <p>
-           <div class="issue">If selective access control is to be used, it is described here. For other security, ref to Auth and Auth chapter.</div>
         </p>
       </section>
       <section data-dfn-for="timestamp">
