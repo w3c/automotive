@@ -91,33 +91,18 @@ extending Gen2 to further transports in the future. The Gen2 supports multiple t
 	  </tr>
 	  <tr>
 	    <td>401 (Unauthorized)</td>
-	    <td>user_token_expired</td>
-	    <td>User token has expired.</td>
+	    <td>token_expired</td>
+	    <td>Access token has expired.</td>
 	  </tr>
 	  <tr>
 	    <td>401 (Unauthorized)</td>
-	    <td>user_token_invalid</td>
-	    <td>User token is invalid.</td>
+	    <td>token_invalid</td>
+	    <td>Access token is invalid.</td>
 	  </tr>
 	  <tr>
 	    <td>401 (Unauthorized)</td>
-	    <td>user_token_missing</td>
-	    <td>User token is missing.</td>
-	  </tr>
-	  <tr>
-	    <td>401 (Unauthorized)</td>
-	    <td>device_token_expired</td>
-	    <td>Device token has expired.</td>
-	  </tr>
-	  <tr>
-	    <td>401 (Unauthorized)</td>
-	    <td>device_token_invalid</td>
-	    <td>Device token is invalid.</td>
-	  </tr>
-	  <tr>
-	    <td>401 (Unauthorized)</td>
-	    <td>device_token_missing</td>
-	    <td>Device token is missing.</td>
+	    <td>token_missing</td>
+	    <td>Access token is missing.</td>
 	  </tr>
 	  <tr>
 	    <td>401 (Unauthorized)</td>
@@ -163,6 +148,21 @@ extending Gen2 to further transports in the future. The Gen2 supports multiple t
 	    <td>404 (Not Found)</td>
 	    <td>invalid_subscriptionId</td>
 	    <td>The specified subscription was not found.</td>
+	  </tr>
+	  <tr>
+	    <td>404 (Not Found)</td>
+	    <td>missing_token</td>
+	    <td>The addressed node is access controlled, a token must be included in the request.</td>
+	  </tr>
+	  <tr>
+	    <td>406 (Not Acceptable)</td>
+	    <td>invalid_token</td>
+	    <td>A new, valid access token must be obtained.</td>
+	  </tr>
+	  <tr>
+	    <td>406 (Not Acceptable)</td>
+	    <td>insufficient_priviledges</td>
+	    <td>The priviledges represented by the access token are not sufficient.</td>
 	  </tr>
 	  <tr>
 	    <td>406 (Not Acceptable)</td>
@@ -247,7 +247,7 @@ The client MAY send a HTTPS GET request message to the server to get the value o
               {<br>
               <blockquote>
                 "value": "2372",<br>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br><br>
               Error response:<br>
@@ -296,7 +296,7 @@ The client MAY send a HTTPS GET request message to the server to get the value o
               {<br>
               <blockquote>
                 "metadata": {"FuelSystem":{"type":"branch","description":"Fuel system data.","children":{"HybridType, ... }}}<br>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
             </p>
@@ -326,7 +326,7 @@ The client MAY send a HTTPS GET request message to the server to get the value o
               {<br>
               <blockquote>
                 "value": {{"path":"Vehicle.Cabin.Door.Row1.Left.IsOpen", "value":"false"},..., {"path":"Vehicle.Cabin.Door.Row4.Right.IsOpen","value":"true"}}<br>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
             </p>
@@ -362,7 +362,7 @@ The client may request that the server sets the value of one or more signals e.g
               Transfer-Encoding: chunked<br><br>
               {<br>
               <blockquote>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
             </p>
@@ -498,7 +498,7 @@ vehicle.close();</pre></div>
     </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
     <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-value">value</a></td><td>object</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -513,7 +513,7 @@ vehicle.close();</pre></div>
     </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
     <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -533,7 +533,7 @@ vehicle.close();</pre></div>
                 "action": "get",<br>
                 "requestId": "8756",<br>
                 "value": "2372",<br>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br><br>
               Error response:<br>
@@ -542,7 +542,7 @@ vehicle.close();</pre></div>
                 "action": "get",<br>
                 "requestId": "8756",<br>
                 "error": {"number": 404, "reason": "Not found", "message": "No match for path in tree."},<br>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
             </p>
@@ -569,7 +569,7 @@ vehicle.close();</pre></div>
                 "action": "get",<br>
                 "requestId": "8657",<br>
                 "value": "2372",<br>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
             </p>
@@ -596,7 +596,7 @@ vehicle.close();</pre></div>
                 "action": "get",<br>
                 "requestId": "5687",<br>
                 "metadata": {"FuelSystem":{"type":"branch","description":"Fuel system data.","children":{"HybridType, ... }}}<br>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
             </p>
@@ -623,7 +623,7 @@ vehicle.close();</pre></div>
                 "action": "get",<br>
                 "value": {{"path":"Vehicle.Cabin.Door.Row1.Left.IsOpen", "value":"false"},..., {"path":"Vehicle.Cabin.Door.Row4.Right.IsOpen","value":"true"}},<br>
                 "requestId": "5688",<br>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
             </p>
@@ -659,7 +659,7 @@ vehicle.close();</pre></div>
     <th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-setsuccessresponse">setSuccessResponse</dfn></th>
     </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
     <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -674,7 +674,7 @@ vehicle.close();</pre></div>
     </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
     <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -694,7 +694,7 @@ vehicle.close();</pre></div>
               <blockquote>
                 "action": "set",<br>
                 "requestId": "5687",<br>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br><br>
               Error response:<br>
@@ -703,7 +703,7 @@ vehicle.close();</pre></div>
                 "action": "set",<br>
                 "requestId": "5687",<br>
                 "error": {"number": 404, "reason": "Not found", "message": "No match for path in tree."},<br>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
           <section data-dfn-for="wss-authorized-update">
@@ -729,7 +729,7 @@ vehicle.close();</pre></div>
               <blockquote>
                 "action": "set",<br>
                 "requestId": "5687",<br>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
             </p>
@@ -765,7 +765,7 @@ vehicle.close();</pre></div>
     </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
     <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -780,7 +780,7 @@ vehicle.close();</pre></div>
     </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
     <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -795,7 +795,22 @@ vehicle.close();</pre></div>
     </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
     <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-value">value</a></td><td>any</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
+  
+</tbody>
+</table>
+<br>
+<table class="simple">
+<thead>
+  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-subscriptionerrornotification">subscriptionErrorNotification</dfn></th>
+    </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -816,7 +831,7 @@ vehicle.close();</pre></div>
                 "action": "subscribe",<br>
                 "subscriptionId": "12345",<br>
                 "requestId": "6578",<br>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote
               }<br><br>
               Error response:<br>
@@ -825,7 +840,7 @@ vehicle.close();</pre></div>
                 "action": "subscribe",<br>
                 "requestId": "6578",<br>
                 "error": {"number": 404, "reason": "Not found", "message": "No match for path in tree."},<br>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br><br>
               Notification:<br>
@@ -834,7 +849,16 @@ vehicle.close();</pre></div>
                 "action": "subscription",<br>
                 "subscriptionId": "12345",<br>
                 "value": "50",<br>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
+              </blockquote
+              }<br><br>
+              Error notification:<br>
+              {<br>
+              <blockquote>
+                "action": "subscription",<br>
+                "subscriptionId": "12345",<br>
+                "error": {"number": 401, "reason": "token_expired", "message": "Access token has expired."},<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote
               }<br>
             </p>
@@ -862,7 +886,7 @@ vehicle.close();</pre></div>
                 "action": "subscribe",<br>
                 "subscriptionId": "12345",<br>
                 "requestId": "6578",<br>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote
               }<br><br>
               Notification:<br>
@@ -871,7 +895,7 @@ vehicle.close();</pre></div>
                 "action": "subscription",<br>
                 "subscriptionId": "12345",<br>
                 "value": "50",<br>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote
               }<br>
             </p>
@@ -907,7 +931,7 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
     </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
     <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -923,7 +947,7 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
     <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>integer</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -943,7 +967,7 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
                 "action": "unsubscribe",<br>
                 "subscriptionId": "12345",<br>
                 "requestId": "5786",<br>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br><br>
               Error response:<br>
@@ -952,7 +976,7 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
                 "action": "unsubscribe",<br>
                 "requestId": "6578",<br>
                 "error": {"number": 404, "reason": "Not found", "message": "No matching subscription Id."},<br>
-                "timestamp": 1489985044000<br>
+                "timestamp": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
             </p>
@@ -1001,8 +1025,8 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
 	  </tr>
 	  <tr>
 	    <td><dfn data-dfn-type="dfn" id="dfn-timestamp">timestamp</dfn> </td>
-	    <td>integer</td>
-	    <td>The Coordinated Universal Time (UTC) time that the server returned the response (expressed as number of milliseconds).</td>
+	    <td>string</td>
+	    <td>The Coordinated Universal Time (UTC) time that represents the capture of the data (see chapter Timestamps in CORE).</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn data-dfn-type="dfn" id="dfn-value">value</dfn> </td>
@@ -1050,8 +1074,8 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
             <span class="hljs-attr">"type"</span>: <span class="hljs-string">"string"</span>
         },
         <span class="hljs-attr">"timestamp"</span>: {
-            <span class="hljs-attr">"description"</span>: <span class="hljs-string">"The Coordinated Universal Time (UTC) time that the server returned the response (expressed as number of milliseconds)."</span>,
-            <span class="hljs-attr">"type"</span>: <span class="hljs-string">"integer"</span>
+            <span class="hljs-attr">"description"</span>: <span class="hljs-string">"The Coordinated Universal Time (UTC) time that represents the capture of the data (see chapter Timestamps in CORE)."</span>,
+            <span class="hljs-attr">"type"</span>: <span class="hljs-string">"string"</span>
         },
         <span class="hljs-attr">"filter"</span>: {
             <span class="hljs-attr">"description"</span>: <span class="hljs-string">"May be specified in order to throttle the demands of subscriptions on the server. See CORE:Filtering chapter"</span>,
