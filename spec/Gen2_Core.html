@@ -364,24 +364,30 @@ In filter combinations where a search expression in the URI is combined with a s
         <section data-dfn-for="pki-based-flow">
           <h2>PKI based flow</h2>
           <p>
-          <figure id="fig-sequence-diagram-pki-based flow">
+          <figure id="fig-sequence-diagram-pki-based-flow">
             <img src="images/pki-based-flow.png" alt="Sequence diagram showing a PKI based flow">
-            <figcaption>Figure <span class="figno">1</span> <span class="fig-title">Sequence diagram showing a PKI based flow</span></figcaption>
+            <figcaption> <span class="fig-title">Sequence diagram showing a PKI based flow</span></figcaption>
           </figure>
           </p>
         </section>
         <section data-dfn-for="token-based-flow">
           <h2>Token based flow</h2>
           <p>
-          <figure id="fig-sequence-diagram-token-based flow">
+          <figure id="fig-sequence-diagram-token-based-flow">
             <img src="images/token-based-flow.jpg" alt="Sequence diagram showing a token based flow">
-            <figcaption>Figure <span class="figno">2</span> <span class="fig-title">Sequence diagram showing a token based flow</span></figcaption>
+            <figcaption> <span class="fig-title">Sequence diagram showing a token based flow</span></figcaption>
           </figure>
           </p>
         </section>
         <section data-dfn-for="flow-negotiation">
           <h2>Flow negotiation</h2>
           <p>
+          (A solution could be as described. 
+          A client can in its request to the AG server either provide a public key, or not.
+          If it does, then that signals that the client requests a PKI based flow.
+          If it is missing then that signals that the client requests a token based flow.
+          The AG server may return an error code if a PKI based flow is requested, but it does not have sufficient trust in the client.
+          The AG server may return an error code if a token based flow is requested, but the server requires a PKI based flow.)
           </p>
         </section>
       </section>
@@ -408,27 +414,97 @@ In filter combinations where a search expression in the URI is combined with a s
       <section data-dfn-for="gen2-access-control-gatekeeper">
         <h2>Gen2 access control gate keeper</h2>
         <p>
+        If the Gen2 server implements access control, then it MUST support validation of Access tokens.
+        This includes validation of at least the following:
+          <ul>
+            <li>Token signature.</li>
+            <li>Token expiry time.</li>
+            <li>Token scope.</li>
+            <li>Token access mode.</li>
+          </ul>
+          If any of the mentioned validations above fail, the server MUST reject the access request.<br>
+          Token signature validation may be delegated to the AT server, if a secure communication link can be established.
+          If not delegated, then a preprovisioned common secret may be shared with the AT server, or other PKI based solutions may be used.<br>
+          The Gen2 server SHALL have access to a secure system time, that cannot be modified by actors withtout system acknowledged credentials. 
+          Time validation may allow for a time synchronization error in the range of tens of seconds.<br>
+          A successful scope validation requires that all the nodes addressed by the path in the request MUST be matched by the paths in the scope field of the Access token.<br>
+          The access mode validation MUST have the outcome shown in the table below, which compares the type of request with the access control mode field in the Access token.
+<table class="simple">
+<thead>
+  <tr><th>Validation</th><th>Read-only</th><th>Read-write</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-getrequest">get<br>set<br>subscribe</dfn></th>
+  </tr>
+  <tr><td>Ok</td><td>Ok</td></tr>
+  <tr><td>Nok</td><td>Ok</td></tr>  
+  <tr><td>Ok</td><td>Ok</td></tr>  
+</tbody>
+</table>
         </p>
       </section>
       <section data-dfn-for="access-control-selection">
         <h2>Access control selection</h2>
-        <p>(describes the mechanism for applying it to the complete, or parts of the VSS tree)
+        <p>This chapter describes a complementary functionality to the access control model, the ability to apply it selectively to parts of the tree. 
+        It can be used in cases where not all nodes of the tree are believed to require access control, 
+        or read-only is sufficient instead of read-write access control for certain nodes.<br>
+        This functionality requires that the Access token contains access permission data specifying whether the access to a node is read-only, or read-write.
+        It also requires that the metadata for the node in the VSS tree contains data specifying whether the access control verification should be carried out only for write request, 
+        or for both read and write requests.<br>
+        The former requirement is realized by having a field in the Access token named "acm" specifying the access control mode. 
+        This field can either contain the string "read-only", or "read-write". 
+        The client request to the Access token server MUST contain either of these string values for every node in the request.<br>
+        The latter requirement is realized by adding to nodes in the VSS tree the key-value pair "validate":'access-control-mode', 
+        where 'access-control-mode' is either the string "write-only", or "read-write".<br>
+        <figure id="fig-access-control-selection">
+          <img src="images/access-control-selection.jpg" alt="Access control selection tagging.">
+          <figcaption> <span class="fig-title">Access control selection tagging.</span></figcaption>
+        </figure>
+        The figure above shows an example where both read and write requests to the three leftmost leaf nodes will be access controlled, 
+        while the two rightmost leaf nodes only will be access controlled for write requests.<br>
+        This metadata is not likely to be applied to the standardised VSS tree, as different users of this standard may have different views on which nodes to apply it to. 
+        Instead it is anticipated that it is applied at a "deployment" stage, possibly using the VSS layering concept. 
+        To make possible a reduction of the number of nodes this metadata have to be added to, an inheritance model is used. 
+        If access-control-mode data is added to a node, then all nodes in the subtree for which this node is the root inherits the setting, 
+        unless there is access-control-mode data added to any node in this subtree. 
+        In such cases this new access-control-mode setting is inherited by the subtree of this node. 
+        This allows for example an entire VSS tree to be assigned an access-control-mode by merely applying it in the root of the tree.<br>
+        The figure below shows an overview of the access control selection model, 
+        and a table showing the required access control tagging of a node for the Gen2 server to grant the requested access. 
+        <figure id="fig-access-control-selection-model">
+          <img src="images/access-control-selection-model.jpg" alt="Access control selection model.">
+          <figcaption> <span class="fig-title">Access control selection model.</span></figcaption>
+        </figure>
+        If the VSS tree used by a Gen2 server contains access control selection tags, then the server MUST support their usage as described in this chapter.<br>
+        If it is not used, then a server MAY implement access control for the entire tree.<br>
+        If access control is implemented, the server MUST support the error codes shown in the table below.<br>
+        <table id="errorDefs" class="parameters">
+	  <tbody><tr>
+	    <th>Error&nbsp;Number&nbsp;(Code)</th>
+	    <th>Error Reason</th>
+	    <th>Error Message</th>
+	  </tr>
+	  <tr>
+	    <td>404 (Not Found)</td>
+	    <td>missing_token</td>
+	    <td>The addressed node is access controlled, a token must be included in the request.</td>
+	  </tr>
+	  <tr>
+	    <td>406 (Not Acceptable)</td>
+	    <td>invalid_token</td>
+	    <td>A new, valid access token must be obtained.</td>
+	  </tr>
+	  <tr>
+	    <td>406 (Not Acceptable)</td>
+	    <td>insufficient_priviledges</td>
+	    <td>The priviledges represented by the access token are not sufficient.</td>
+	  </tr>
+	  </tbody>
+	</table>
         </p>
       </section>
     </section>
-Access control model
-  - OAuth2 compatible architecture (shows a generic OAuth2 arch and the AGT/AT/Gen2 arch)
-  - Supported access control flows
-    * PKI based flow(seq diagram + descriptive text)
-    * Token based flow (seq diagram + descriptive text)
-    * Flow negotiation
-  - AGT - authentication and authorization server
-    * PKI based flow (describes client-server interaction, input and output)
-    * Token based flow (describes client-server interaction, input and output)
-  - AT - authorization server
-  - Gen2 access control gate keeper
-  - Access control selection (describes the mechanism for applying it to the complete, or parts of the VSS tree)
-    <section data-dfn-for="interface">
       <h2>Interface</h2>
       <p>
         This chapter describes the different methods and its arguments that govern the communication between a <a>client</a> and the <a>server</a>.
