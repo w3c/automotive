@@ -632,7 +632,7 @@ In filter combinations where a search expression in the URI is combined with a s
         <h2>Timestamps</h2>
         <p>
            Timestamps in transport payloads MUST conform to the ISO8601 standard, using the UTC format with a trailing Z. 
-           Time resolution SHALL at least be seconds, with subsecond resolution as an acceptable alternative.
+           Time resolution SHALL at least be seconds, with subsecond resolution as an optional degree of precision when desired.
            The time and date format shall be as shown below, where the sub-second data and delimiter is optional.<br>
            YYYY-MM-DDTHH:MM:SS.ssssssZ<br>
            The exception to this is timestamps within tokens, which MUST conform to Unix time. 
