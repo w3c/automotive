@@ -359,14 +359,42 @@ In filter combinations where a search expression in the URI is combined with a s
       </p>
       <section data-dfn-for="gen2-oauth-architecture">
         <h2>Gen2 OAuth 2.0 architecture</h2>
-        <div class="issue">We should include a brief introducction to OAuth2.</div>
-        <div class="issue">We should describe here the actors in the Gen2 domain and their mapping to OAuth2.</div>
         <p>
+        The Gen2 access control model builds on the concepts of OAuth2.0 [[RFC6749]].<br>
+        OAuth2.0 introduces an authorization layer to separate the role of the client from that of the resource owner. The client requests access to resources controlled by the resource owner and hosted by the resource server, and is issued a set of credentials.<br>
+        To access protected resources, the client obtains an access token -- a string denoting a specific scope, lifetime, and other access attributes.  Access tokens are issued to clients by an authorization server with the approval of the resource owner. The client uses the access token to access the protected resources hosted by the resource server.<br>
+        The abstract OAuth 2.0 flow illustrated in the figure below describes the interaction between the four actors.<br>
+        <figure id="fig-oauth2.0-flow">
+          <img src="images/oauth2-protocol-flow.jpg" alt="OAuth2.0 abstract protocol flow.">
+          <figcaption> <span class="fig-title">OAuth2.0 abstract protocol flow.</span></figcaption>
+        </figure>
+        Two different flows are supported in Gen2, which both follow the OAuth2.0 abstract flow, as will be described in the chapters below.<br>
+        The actor names are however changed as shown in the table below.<br><br>
+		<table border="1">
+			<tr><th>OAuth2.0 name</th><th>Gen2 name</th></tr>
+			<tr>
+				<td>Client</td>
+				<td>Client</td>
+			</tr>
+			<tr>
+				<td>Resource Owner</td>
+				<td>Access Grant server</td>
+			</tr>
+			<tr>
+				<td>Authorization server</td>
+				<td>Access Token server</td>
+			</tr>
+			<tr>
+				<td>Resource server</td>
+				<td>Gen2 access control server</td>
+			</tr>
+		</table><br>
+	A detailed description of each actor is found in following chapters.
         </p>
       </section>
       <section data-dfn-for="access-control-flows">
         <h2>Access control flows</h2>
-        <p>Depending on the capabilities of the client accessing VSS data, we define two different access control flows. The first protocol flow requires the client to run public key cryptographic primitives, i.e. key pair generation and signatures, and is recomended for clients with access to some kind of trusted exectution environment where private keys are protected from the regular execution environment. The second protocol flow requires no extra capabilities in the client as is based in OAuth 2.0 Beared token authentication (RFC6750).
+        <p>Depending on the capabilities of the client accessing VSS data, two different access control flows are defined. The first protocol flow requires the client to run public key cryptographic primitives, i.e. key pair generation and signatures, and is recommended for clients with access to some kind of trusted exectution environment where private keys are protected from the regular execution environment. The second protocol flow requires no extra capabilities in the client as it is based on OAuth 2.0 Bearer token authentication [[RFC6750]].
         </p>
         <section data-dfn-for="pki-based-flow">
           <h2>PKI based flow</h2>
@@ -399,7 +427,7 @@ In filter combinations where a search expression in the URI is combined with a s
 
           After successful validation, the APPs recives an Access Token that can be used later on to when querying the VSS Server. 
           <div class="issue">This Access Token can be opaque or in the form of an JWT signed by the Access Token Server that includes access rights granted. Should we recomend one of the two options or leave it open?</div>
-          The last phase of the flow is the actual fetching of the signals values. In order to get the signals from the VSS server the APP includes the Access Token in the request headers. The Gate Keeper will incercept the request and check the Access Token before passing it to the VSS server. If there is not Access Token and security is enable the request is rejected. If the token issued by the Access Token Server was opaque, the gate keeper would need to contact it in each request, in order to obtain the access rights granted. If the token was a JWT, the gate keeper will have all the information required to grant or deny the request. In any case, if the access rights granted match the requested path the request will be send to the VSS server that will send a response to the APP, otherwise the request will be rejected.
+          The last phase of the flow is the actual fetching of the signals values. In order to get the signals from the VSS server the APP includes the Access Token in the request headers. The Gen2 access control server will incercept the request and check the Access Token before passing it to the VSS server. If there is not Access Token and security is enable the request is rejected. If the token issued by the Access Token Server was opaque, the Gen2 access control server would need to contact it in each request, in order to obtain the access rights granted. If the token was a JWT, the Gen2 access control server will have all the information required to grant or deny the request. In any case, if the access rights granted match the requested path the request will be send to the VSS server that will send a response to the APP, otherwise the request will be rejected.
 
           <p>
           <figure id="fig-sequence-diagram-pki-based-flow">
@@ -430,6 +458,12 @@ In filter combinations where a search expression in the URI is combined with a s
         </section>
       </section>
       <section data-dfn-for="access-grant-server">
+        <h2>Client</h2>
+        <p>
+<div class="issue">Describe the combi-role model</div>
+        </p>
+      </section>
+      <section data-dfn-for="access-grant-server">
         <h2>Access Grant server</h2>
         <p>
         </p>
@@ -449,8 +483,8 @@ In filter combinations where a search expression in the URI is combined with a s
         <p>
         </p>
       </section>
-      <section data-dfn-for="gen2-access-control-gatekeeper">
-        <h2>Gen2 access control gate keeper</h2>
+      <section data-dfn-for="gen2-access-control-server">
+        <h2>Gen2 access control server</h2>
         <p>
         If the Gen2 server implements access control, then it MUST support validation of Access tokens.
         This includes validation of at least the following:
@@ -466,7 +500,7 @@ In filter combinations where a search expression in the URI is combined with a s
           The Gen2 server SHALL have access to a secure system time, that cannot be modified by actors withtout system acknowledged credentials. 
           Time validation may allow for a time synchronization error in the range of tens of seconds.<br>
           A successful scope validation requires that all the nodes addressed by the path in the request MUST be matched by the paths in the scope field of the Access token.<br>
-          The access mode validation MUST have the outcome shown in the table below, which compares the type of request with the access control mode field in the Access token.
+          The access mode validation MUST have the outcome shown in the table below, which compares the type of request with the access control mode field in the Access token.<br><br>
 <table class="simple">
 <thead>
   <tr><th>Validation</th><th>Read-only</th><th>Read-write</th></tr>
@@ -670,7 +704,7 @@ In filter combinations where a search expression in the URI is combined with a s
         <h2>Timestamps</h2>
         <p>
            Timestamps in transport payloads MUST conform to the ISO8601 standard, using the UTC format with a trailing Z. 
-           Time resolution SHALL at least be seconds, with subsecond resolution as an acceptable alternative.
+           Time resolution SHALL at least be seconds, with subsecond resolution as an optional degree of precision when desired.
            The time and date format shall be as shown below, where the sub-second data and delimiter is optional.<br>
            YYYY-MM-DDTHH:MM:SS.ssssssZ<br>
            The exception to this is timestamps within tokens, which MUST conform to Unix time. 
@@ -706,8 +740,8 @@ In filter combinations where a search expression in the URI is combined with a s
 	</dl>
       </section>
     </section>
-    <section id="Appendix-b-dynamic-registry-api">
-      <h4>Appendix:Dynamic registry API</h4>
+    <section id="dynamic-registry-api" class="appendix">
+      <h4>Dynamic registry API</h4>
       <p>The dynamic reqistry API provides the functionality to dynamically add or delete branches of the VSS tree. A branch can only be deleted if it has been dynamically added. In the following an entity requesting dynamic registry services is called a "service manager", and the entity performing these requests is called the "core server", see the figure "Gen2 server reference architecure".</p>
     </section>
 
