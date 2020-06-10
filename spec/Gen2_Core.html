@@ -27,6 +27,10 @@
           company: "Volkswagen Group",
           companyURL: "https://www.volkswagenag.com",
           w3cid: 95844
+        },{
+          name: "Isaac Agudo",
+          company: "NICS Lab / University of Malaga",
+          companyURL: "https://www.nics.uma.es"
         }],
         edDraftURI: "https://github.com/w3c/automotive/blob/gh-pages/spec/Gen2_Core.html",
         shortName: "Gen2-CORE",
@@ -350,19 +354,53 @@ In filter combinations where a search expression in the URI is combined with a s
  
     <section data-dfn-for="access-control-model">
       <h2>Access control model</h2>
+      <div class="issue">We should include some motivation text and maybe reference to Extended Vehicule and other standars where vehicle data is exposed to third parties so justify the need for a solid access control model.</div>
       <p>
       </p>
-      <section data-dfn-for="oauth2-compatible-architecture">
-        <h2>Oauth2.0 compatible architecture</h2>
-        <p> (shows a generic OAuth2 arch and the AGT/AT/Gen2 arch)
+      <section data-dfn-for="gen2-oauth-architecture">
+        <h2>Gen2 OAuth 2.0 architecture</h2>
+        <div class="issue">We should include a brief introducction to OAuth2.</div>
+        <div class="issue">We should describe here the actors in the Gen2 domain and their mapping to OAuth2.</div>
+        <p>
         </p>
       </section>
-      <section data-dfn-for="access-control-flows"">
+      <section data-dfn-for="access-control-flows">
         <h2>Access control flows</h2>
-        <p>
+        <p>Depending on the capabilities of the client accessing VSS data, we define two different access control flows. The first protocol flow requires the client to run public key cryptographic primitives, i.e. key pair generation and signatures, and is recomended for clients with access to some kind of trusted exectution environment where private keys are protected from the regular execution environment. The second protocol flow requires no extra capabilities in the client as is based in OAuth 2.0 Beared token authentication (RFC6750).
         </p>
         <section data-dfn-for="pki-based-flow">
           <h2>PKI based flow</h2>
+          <div class="issue">Client needs to include in the JWT a some kind of Proof-of-Possession (RFC7800).</div>
+          <div class="issue">The public key became the client identity, we need a mechanisms to register it to the ATG.</div>
+          <p>
+            Before any interaction with the VSS server, the client needs to be registered in the system. This can be done in several ways, but for this particular flow the process involves three actors: The client device, the client application and the user behind it.
+            All of them need to cooperate for a suscesfull client registration. The registration process for the client would be as follows:
+          </p>
+          <ul>
+            <li>The USER installs the APP in the device. User could the OEM if we consider an APP that is preinstalled in the car. It could a third party adding services to the car or it could be the owner/driver itself.</li> 
+            <li>The APP generates a key pair. In this step the APP needs to generate a key pair. The private key would be used to authenticate request comming from this APP/Client. In order to very the requests, the public key should be uploaded to the system. If we have a device that support key attestation, the key could be accompanied by a key attestation certificate that would help the system identify the device.</li>
+            <li>The USER register the APP to the system. This is the final step for registration. The user needs to confirm to the Authorization Server the public key of the APP and, optionally, restric the permisions granted to the APP. This step can be perfomed in a web interface, where the user authenticates using any standard mechanism. The user will enter a Key ID or the full Key if requested, and the server will match that with the registered APP. If there is a matching, the system will prompt the user for confirmation of the access rights granted to the APP.</li>
+          </ul>
+          After the registration, USER and APP are bonded, and in case the device suppports some kind of key attestation, the DEVICE can also be bonded to them. The USER can decide to revoke that bond at any time. After revokation the APP is still registered to the system and can be bond to a diferrent user.
+          <div class="issue">Does it makes sense to bond an APP to more than one USER at the same time?</div>
+          <div class="issue">Who should be in charge of de-registering APPs? Should be set an expiration time for registration? That would for the APP to re-register after some inactivity, limiting grown of inactive registered APPs</div>
+
+          Registered APPs can request access to any signal they were granted access to by the USER at the registration phase. In order to do so, the APP needs to request an Access Token to the Access Token Server indicating the particular target signal or path. In this request, the APPs needs to include also an identifier of is public key and a Proof-of-Possesion of the private key. A JWT signed by the private key of the APP, including the current unix time will serve that purpose.
+          <div class="issue">Should we also include purpose here?</div>
+          The Access Token Server will first validate the request:
+          <ul>
+            <li>It needs to check that the Key ID corresponds to a registered APP and recover the correspoding Public Key. If there is not APP registered with this key ID the request will be rejected.</li>
+            <li>It will check the JWT digital signature using the public key of the APP. If the digital signature verification fail the request will be rejected.</li>
+            <li>It will check the timestamp included in the JWT, in case the timestamp is too old, the request will be denied.</li>
+            <div class="issue">Should we define a recomended maximum accepted delay?</div>
+            <li>Finally, it will check that the signal/path requested is included in the access rights granted at registration time.</li>
+            <div class="issue">That final steps is the most complex, as it has to deal with the access control policy, i.e. RBAC or similar proposals. The other steps are very straightforward. We might need a separate section just for that and omit this in the flows to avoid unnecesary complexity when following them.</div>
+          </ul> 
+
+          After successful validation, the APPs recives an Access Token that can be used later on to when querying the VSS Server. 
+          <div class="issue">This Access Token can be opaque or in the form of an JWT signed by the Access Token Server that includes access rights granted. Should we recomend one of the two options or leave it open?</div>
+          The last phase of the flow is the actual fetching of the signals values. In order to get the signals from the VSS server the APP includes the Access Token in the request headers. The Gate Keeper will incercept the request and check the Access Token before passing it to the VSS server. If there is not Access Token and security is enable the request is rejected. If the token issued by the Access Token Server was opaque, the gate keeper would need to contact it in each request, in order to obtain the access rights granted. If the token was a JWT, the gate keeper will have all the information required to grant or deny the request. In any case, if the access rights granted match the requested path the request will be send to the VSS server that will send a response to the APP, otherwise the request will be rejected.
+
           <p>
           <figure id="fig-sequence-diagram-pki-based-flow">
             <img src="images/pki-based-flow.png" alt="Sequence diagram showing a PKI based flow">
