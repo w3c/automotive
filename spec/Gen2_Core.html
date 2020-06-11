@@ -362,7 +362,16 @@ In filter combinations where a search expression in the URI is combined with a s
         <p>
         The Gen2 access control model builds on the concepts of OAuth2.0 [[RFC6749]].<br>
         OAuth2.0 introduces an authorization layer to separate the role of the client from that of the resource owner. The client requests access to resources controlled by the resource owner and hosted by the resource server, and is issued a set of credentials.<br>
-        To access protected resources, the client obtains an access token -- a string denoting a specific scope, lifetime, and other access attributes.  Access tokens are issued to clients by an authorization server with the approval of the resource owner. The client uses the access token to access the protected resources hosted by the resource server.<br>
+        To access protected resources, the client obtains an access token -- a string denoting a specific scope, lifetime, and other access attributes.  Access tokens are issued to clients by an authorization server with the approval of the resource owner. The client uses the access token to access the protected resources hosted by the resource server.<br><br>
+        OAuth2.0 defines four actors:<br>
+        <b>Resource owner</b><br>
+        An entity capable of granting access to a protected resource.<br>
+        <b>Resource server</b><br>
+        The server hosting the protected resources, capable of accepting and responding to protected resource requests using access tokens.<br>
+        <b>Client</b><br>
+        An application making protected resource requests on behalf of the resource owner and with its authorization.<br>
+        <b>Authorization server</b><br>
+        The server issuing access tokens to the client after successfully authenticating the resource owner and obtaining authorization.<br><br>
         The abstract OAuth 2.0 flow illustrated in the figure below describes the interaction between the four actors.<br>
         <figure id="fig-oauth2.0-flow">
           <img src="images/oauth2-protocol-flow.jpg" alt="OAuth2.0 abstract protocol flow.">
