@@ -362,7 +362,16 @@ In filter combinations where a search expression in the URI is combined with a s
         <p>
         The Gen2 access control model builds on the concepts of OAuth2.0 [[RFC6749]].<br>
         OAuth2.0 introduces an authorization layer to separate the role of the client from that of the resource owner. The client requests access to resources controlled by the resource owner and hosted by the resource server, and is issued a set of credentials.<br>
-        To access protected resources, the client obtains an access token -- a string denoting a specific scope, lifetime, and other access attributes.  Access tokens are issued to clients by an authorization server with the approval of the resource owner. The client uses the access token to access the protected resources hosted by the resource server.<br>
+        To access protected resources, the client obtains an access token -- a string denoting a specific scope, lifetime, and other access attributes.  Access tokens are issued to clients by an authorization server with the approval of the resource owner. The client uses the access token to access the protected resources hosted by the resource server.<br><br>
+        OAuth2.0 defines four actors:<br>
+        <b>Resource owner</b><br>
+        An entity capable of granting access to a protected resource.<br>
+        <b>Resource server</b><br>
+        The server hosting the protected resources, capable of accepting and responding to protected resource requests using access tokens.<br>
+        <b>Client</b><br>
+        An application making protected resource requests on behalf of the resource owner and with its authorization.<br>
+        <b>Authorization server</b><br>
+        The server issuing access tokens to the client after successfully authenticating the resource owner and obtaining authorization.<br><br>
         The abstract OAuth 2.0 flow illustrated in the figure below describes the interaction between the four actors.<br>
         <figure id="fig-oauth2.0-flow">
           <img src="images/oauth2-protocol-flow.jpg" alt="OAuth2.0 abstract protocol flow.">
@@ -398,36 +407,38 @@ In filter combinations where a search expression in the URI is combined with a s
         </p>
         <section data-dfn-for="pki-based-flow">
           <h2>PKI based flow</h2>
-          <div class="issue">Client needs to include in the JWT a some kind of Proof-of-Possession (RFC7800).</div>
-          <div class="issue">The public key became the client identity, we need a mechanisms to register it to the ATG.</div>
+          <div class="issue">Client needs to include in the JWT a some kind of Proof-of-Possession (RFC7800).Ulf:I have no good idea. If you have, please suggest.</div>
+          <div class="issue">The public key became the client identity, we need a mechanisms to register it to the AT server.Ulf:I think it sufficient to say that the key must be securely provisioned by the AG server to the AT server. Then it is up to implementers how to do that.</div>
           <p>
-            Before any interaction with the VSS server, the client needs to be registered in the system. This can be done in several ways, but for this particular flow the process involves three actors: The client device, the client application and the user behind it.
-            All of them need to cooperate for a suscesfull client registration. The registration process for the client would be as follows:
+            As a first step before any interaction with the Gen2 server, the client needs to be registered in the system. This process involves three subactors that together represent the Client actor:<br>
+            The client device, the client application and the user behind it.<br>
+            All of them need to cooperate for a succesful client registration. The registration process for the client would be as follows:
           </p>
           <ul>
-            <li>The USER installs the APP in the device. User could the OEM if we consider an APP that is preinstalled in the car. It could a third party adding services to the car or it could be the owner/driver itself.</li> 
-            <li>The APP generates a key pair. In this step the APP needs to generate a key pair. The private key would be used to authenticate request comming from this APP/Client. In order to very the requests, the public key should be uploaded to the system. If we have a device that support key attestation, the key could be accompanied by a key attestation certificate that would help the system identify the device.</li>
-            <li>The USER register the APP to the system. This is the final step for registration. The user needs to confirm to the Authorization Server the public key of the APP and, optionally, restric the permisions granted to the APP. This step can be perfomed in a web interface, where the user authenticates using any standard mechanism. The user will enter a Key ID or the full Key if requested, and the server will match that with the registered APP. If there is a matching, the system will prompt the user for confirmation of the access rights granted to the APP.</li>
+            <li>The USER installs the APP in the device. USER could be the OEM if we consider an APP that is preinstalled in the car. It could also be a third party adding services to the car, or it could be the owner/driver itself.</li> 
+            <li>The APP generates a key pair. In this step the APP needs to generate a key pair. The private key would be used to authenticate request coming from this APP/Client. In order to verify the requests, the public key should be uploaded to the system. If we have a device that support key attestation, then the key could be accompanied by a key attestation certificate that would help the system identify the device.</li>
+            <li>The USER register the APP to the system. This is the final step for registration. The user needs to confirm to the Access Grant server the public key of the APP and, optionally, restrict the permissions granted to the APP. This step can be performed in a web interface, where the user authenticates using any standard mechanism. The user will enter a Key ID or the full Key if requested, and the server will match that with the registered APP. If there is a matching, the system will prompt the USER for confirmation of the access rights granted to the APP.</li>
           </ul>
-          After the registration, USER and APP are bonded, and in case the device suppports some kind of key attestation, the DEVICE can also be bonded to them. The USER can decide to revoke that bond at any time. After revokation the APP is still registered to the system and can be bond to a diferrent user.
-          <div class="issue">Does it makes sense to bond an APP to more than one USER at the same time?</div>
-          <div class="issue">Who should be in charge of de-registering APPs? Should be set an expiration time for registration? That would for the APP to re-register after some inactivity, limiting grown of inactive registered APPs</div>
+          <div class="issue">Should we include role assignment here? Ulf: I think we should</div>
+          After the registration, USER and APP are bonded, and in case the device suppports some kind of key attestation, the DEVICE can also be bonded to them. The USER can decide to revoke that bond at any time. After revokation the APP is still registered to the system and can be bonded to a different user.
+          <div class="issue">Does it makes sense to bond an APP to more than one USER at the same time?Ulf: I do not think so.</div>
+          <div class="issue">Who should be in charge of de-registering APPs? Should be set an expiration time for registration? That would for the APP to re-register after some inactivity, limiting growth of inactive registered APPsUlf:I think we should use an expiration time. We can leave to WG discussion what is a suitable recommendation for this expiry.</div>
 
-          Registered APPs can request access to any signal they were granted access to by the USER at the registration phase. In order to do so, the APP needs to request an Access Token to the Access Token Server indicating the particular target signal or path. In this request, the APPs needs to include also an identifier of is public key and a Proof-of-Possesion of the private key. A JWT signed by the private key of the APP, including the current unix time will serve that purpose.
-          <div class="issue">Should we also include purpose here?</div>
+          Registered APPs can request access to any signal they were granted access to by the USER at the registration phase. In order to do so, the APP needs to request an Access Token to the Access Token server indicating the particular target signal path. In this request, the APPs needs to include also an identifier of is public key and a Proof-of-Possesion of the private key. A JWT signed by the private key of the APP, including the current unix time will serve that purpose.
+          <div class="issue">Should we also include purpose here?Ulf: I think we should.</div>
           The Access Token Server will first validate the request:
           <ul>
             <li>It needs to check that the Key ID corresponds to a registered APP and recover the correspoding Public Key. If there is not APP registered with this key ID the request will be rejected.</li>
             <li>It will check the JWT digital signature using the public key of the APP. If the digital signature verification fail the request will be rejected.</li>
             <li>It will check the timestamp included in the JWT, in case the timestamp is too old, the request will be denied.</li>
-            <div class="issue">Should we define a recomended maximum accepted delay?</div>
-            <li>Finally, it will check that the signal/path requested is included in the access rights granted at registration time.</li>
-            <div class="issue">That final steps is the most complex, as it has to deal with the access control policy, i.e. RBAC or similar proposals. The other steps are very straightforward. We might need a separate section just for that and omit this in the flows to avoid unnecesary complexity when following them.</div>
+            <div class="issue">Should we define a recomended maximum accepted delay?Ulf:We can leave that to WG discussion.</div>
+            <li>Finally, it will check that the signal path requested is included in the access rights granted at registration time.</li>
+            <div class="issue">That final steps is the most complex, as it has to deal with the access control policy, i.e. RBAC or similar proposals. The other steps are very straightforward. We might need a separate section just for that and omit this in the flows to avoid unnecessary complexity when following them.Ulf:I think we should base it on RBAC. I agree that it should probably be in its own chapter, referred to here</div>
           </ul> 
 
-          After successful validation, the APPs recives an Access Token that can be used later on to when querying the VSS Server. 
-          <div class="issue">This Access Token can be opaque or in the form of an JWT signed by the Access Token Server that includes access rights granted. Should we recomend one of the two options or leave it open?</div>
-          The last phase of the flow is the actual fetching of the signals values. In order to get the signals from the VSS server the APP includes the Access Token in the request headers. The Gen2 access control server will incercept the request and check the Access Token before passing it to the VSS server. If there is not Access Token and security is enable the request is rejected. If the token issued by the Access Token Server was opaque, the Gen2 access control server would need to contact it in each request, in order to obtain the access rights granted. If the token was a JWT, the Gen2 access control server will have all the information required to grant or deny the request. In any case, if the access rights granted match the requested path the request will be send to the VSS server that will send a response to the APP, otherwise the request will be rejected.
+          After successful validation, the APPs receives an Access Token that can be used later on to when querying the Gen2 Server. 
+          <div class="issue">This Access Token can be opaque or in the form of an JWT signed by the Access Token Server that includes access rights granted. Should we recomend one of the two options or leave it open? Ulf:I definitively think it should be the latter.</div>
+          The last phase of the flow is the actual fetching of the signals values. In order to get the signals from the Gen2 server the APP includes the Access Token in the request headers. The Gen2 server decides whether the request requires access control and if so involves the Gen2 access control  server to validate the request. If there is not Access Token and security is enable the request is rejected. If the token issued by the Access Token Server was opaque, the Gen2 access control server would need to contact it in each request, in order to obtain the access rights granted. If the token was a JWT, the Gen2 access control server will have all the information required to grant or deny the request. In any case, if the access rights granted match the requested path the request will be send to the Gen2 server that will send a response to the APP, otherwise the request will be rejected.
 
           <p>
           <figure id="fig-sequence-diagram-pki-based-flow">
@@ -516,8 +527,79 @@ In filter combinations where a search expression in the URI is combined with a s
 </table>
         </p>
       </section>
-      <section data-dfn-for="access-control-selection">
-        <h2>Access control selection</h2>
+      <section data-dfn-for="role-based-access-control-model">
+        <h2>Role based access control model</h2>
+        <p>
+        The Client actor described in the Client chapter is characterized by three subactors:
+          <ul>
+            <li>The device.</li>
+            <li>The application.</li>
+            <li>The user of the application.</li>
+          </ul>
+          Each of these subactors is in turn characterized by a role, building on the concept of a <a href="https://en.wikipedia.org/wiki/Role-based_access_control">Role Based Access Control (RBAC) model</a>. Gen2 specifies a rudimentary list of roles for each subactor, it is expected that these lists are augmented by the Resource owners, hopefully in a cooperative effort.<br>
+        Using an RBAC model provides the following main purposes in the Gen2 access control model:
+          <ul>
+            <li>Provide input to the AG server for decision on which authentication methods to apply.</li>
+            <li>Provide input to the AG server for decision on restriction of the permissions granted.</li>
+          </ul>
+        The AG server must in the authentication process of the client possibly separately authenticate each of the three subactors. 
+        For the AG server to decide on which authentication method to use per subactor can be quite complex, but will be at least somewhat eased if the Client request a role for each subactor. 
+        As an example, a request for a Vehicle device role may be verified by the device MAC address, while a request for a Nomadic device role may be verified by a message round-trip time measurement. <br>
+        From a security point of view a Client should not have access to more vehicle signals than are necessary, following the principle of least priviledge. A first restriction of this can be achieved by the AG server assigning a scope of access from the roles requested by the Client.
+        In the appendix Role to access scope mapping a possible solution is presented.
+        </p>
+        <section data-dfn-for="device-roles">
+          <h2>Device roles</h2>
+          <p>
+          Gen2 specifies the following minimum set of roles for devices:
+          <ul>
+            <li>Vehicle</li>
+            <li>Nomadic</li>
+            <li>Cloud</li>
+            <li>Undefined</li>
+          </ul>
+          A Vehicle device is used for applications that are deployed in-vehicle, in e. g. the center stack ECU.<br>
+          A Nomadic device is used for applications that are deployed in a User's mobile phone, laptop, etc.<br>
+          A Cloud device is used for applications that are deployed in any other off-vehicle device.<br>
+          </p>
+        </section>
+        <section data-dfn-for="application-roles">
+          <h2>Application roles</h2>
+          <p>
+          Gen2 specifies the following minimum set of roles for applications:
+          <ul>
+            <li>OEM</li>
+            <li>Third party</li>
+            <li>Undefined</li>
+          </ul>
+          An OEM application is used for applications that are pre-installed in the vehicle by the OEM, or later OEM-provisioned to the vehicle.<br>
+          A Third party application is used for applications that are "certified" for vehicle deployment, but developed by a third party.<br>
+          </p>
+        </section>
+        <section data-dfn-for="user-roles">
+          <h2>User roles</h2>
+          <p>
+          Gen2 specifies the following minimum set of roles for users:
+          <ul>
+            <li>OEM</li>
+            <li>Dealer</li>
+            <li>Independent</li>
+            <li>Owner</li>
+            <li>Driver</li>
+            <li>Passenger</li>
+            <li>Undefined</li>
+          </ul>
+          An OEM user is anyone representing the vehicle brand.<br>
+          A Dealer user is anyone representing a normally OEM affiliated organisation that provice sale and workshop services for the vehicle.<br>
+          An Independent user is anyone representing a normally OEM independent organisation that provide after-market services for the vehicle.<br>
+          An Owner user is anyone representing the organisation owning the vehicle.<br>
+          A Driver user is anyone driving the vehicle.<br>
+          A Passenger user is anyone travelling in the vehicle, but not being the Driver.<br>
+          </p>
+        </section>
+      </section>
+      <section data-dfn-for="access-control-selection-model">
+        <h2>Access control selection model</h2>
         <p>This chapter describes a complementary functionality to the access control model, the ability to apply it selectively to parts of the tree. 
         It can be used in cases where not all nodes of the tree are believed to require access control, 
         or read-only is sufficient instead of read-write access control for certain nodes.<br>
@@ -744,8 +826,18 @@ In filter combinations where a search expression in the URI is combined with a s
       <h4>Dynamic registry API</h4>
       <p>The dynamic reqistry API provides the functionality to dynamically add or delete branches of the VSS tree. A branch can only be deleted if it has been dynamically added. In the following an entity requesting dynamic registry services is called a "service manager", and the entity performing these requests is called the "core server", see the figure "Gen2 server reference architecure".</p>
     </section>
-
-
+    <section id="role-to-access-scope-mapping" class="appendix">
+      <h2>Role to access scope mapping</h2>
+      <p>
+      For the AG server to be able to assign a signal access scope to a Client according to the three roles that the Client requests, a table containing entries for all combinations of the possible values of the three roles is needed. For each entry an access scope is defined by using VSS path expressions, including the usage of wildcards. Each path expression must be associated with an access mode, which sets whether the permission is "read-only", or read-write for that path expression. The table is expressed in JSON format as exemplified below.<br>
+      {"roles":["OEM", "Third party", "Cloud"], "scope":[{"path":"Vehicle.Body.*", "mode":"read-write"}, {"path":"Vehicle.ADAS.*", "mode":"read-only"}]}<br>
+      This mapping document is typically created and owned by the Resource owner and securely provisioned to the AG server.<br>
+      The restriction is access scope can also be reflected in what parts of the VSS tree that the Gen2 server returns to a client that issues a service discovery request. 
+      If such a request contains an Access Grant token, then the access scope it contains would set the boundaries for the nodes for which metadata is returned to the Client. 
+<div class="issue">How are the minimum boundary defined for the case when the Client does not include an AG token?</div>
+<div class="issue">How is access scope data provided for the PKi based flow?</div>
+      </p>
+    </section>
     <section id="issue-summary" class="appendix"></section>
     <section id="tof" class="appendix"></section>
   </body>
