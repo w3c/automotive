@@ -354,7 +354,7 @@ In filter combinations where a search expression in the URI is combined with a s
  
     <section data-dfn-for="access-control-model">
       <h2>Access control model</h2>
-      <div class="issue">We should include some motivation text and maybe reference to Extended Vehicule and other standars where vehicle data is exposed to third parties so justify the need for a solid access control model.</div>
+      <div class="issue">We should include some motivation text and maybe reference to Extended Vehicle and other standards where vehicle data is exposed to third parties so justify the need for a solid access control model.</div>
       <p>
       </p>
       <section data-dfn-for="gen2-oauth-architecture">
@@ -379,31 +379,110 @@ In filter combinations where a search expression in the URI is combined with a s
         </figure>
         Two different flows are supported in Gen2, which both follow the OAuth2.0 abstract flow, as will be described in the chapters below.<br>
         The actor names are however changed as shown in the table below.<br><br>
-		<table border="1">
-			<tr><th>OAuth2.0 name</th><th>Gen2 name</th></tr>
-			<tr>
-				<td>Client</td>
-				<td>Client</td>
-			</tr>
-			<tr>
-				<td>Resource Owner</td>
-				<td>Access Grant server</td>
-			</tr>
-			<tr>
-				<td>Authorization server</td>
-				<td>Access Token server</td>
-			</tr>
-			<tr>
-				<td>Resource server</td>
-				<td>Gen2 access control server</td>
-			</tr>
-		</table><br>
-	A detailed description of each actor is found in following chapters.
+		    <table border="1">
+    			<tr><th>OAuth2.0 name</th><th>Gen2 name</th></tr>
+    			<tr>
+    				<td>Client</td>
+    				<td>Client</td>
+    			</tr>
+    			<tr>
+    				<td>Resource Owner</td>
+    				<td>Access Grant server</td>
+    			</tr>
+    			<tr>
+    				<td>Authorization server</td>
+    				<td>Access Token server</td>
+    			</tr>
+    			<tr>
+    				<td>Resource server</td>
+    				<td>Gen2 access control server</td>
+    			</tr>
+		    </table><br>
+	     A detailed description of each actor is found in following chapters.
         </p>
       </section>
+
+      <section data-dfn-for="client">
+        <h2>Client</h2>
+        <p>
+          <div class="issue">Describe the combi-role model. Isaac: I tried to include the concept when defining the subactors without actually naming it.</div>
+        </p>
+        <p>
+          In our architecture there are three subactors that together represent the Client actor: The client DEVICE, the client APP and the USER behind it. All of them need to cooperate for a successful request. Depending on the kind of DEVICE, the APP permissions and the USER roles, different access control decision will be made.
+        </p>
+        <div class="issue">We need to align this with the roles ...</div>
+        <p>
+          The DEVICE is in charge of running the APPs that make requests to the VSS server. In general terms it could be the in-vehicle system, an user device or an Internet server. Presumably, APPs running in the vehicle will be intrinsically trusted, but for APPs running in the USER's device or in a Third-party server we might need to check the DEVICE capabilities.
+          OAuth makes a distinction between public client and confidential client, being the later able to securely authenticate with the authorization server. For that purpose, it would be interesting check whether the DEVICE has some kind of Trusted Execution support that enables cryptographically assured DEVICE attestation. 
+          Also, location of the DEVICE could be relevant for access control decisions. If the server is in a different country data regulation might impose restrictions. Also, if the DEVICE is a smart-phone it might be relevant whether the request was performed inside the car or from home.
+        </p>
+        <p>
+          The APP runs requests on behalf of the USER. During development and APP building some restriction could be imposed on the kind of information the APP can fetch from the VSS server. The developer might need provide the source code before the APP is assigned certain permissions. Permissions are assigned at building time and stay the same during the whole APP life cycle, so no new permissions can be assign after that. However the USER might have the option to deactivate some of the permissions depending on the platform running the APP.
+        </p>
+        <div class="issue">I think USER needs a separate section, we need to show the distinction between client and USER because in OAuth, the USER delegates in the client, the user is not part of the client, although client requests have USER attributes attached somehow ...</div>
+        <p>
+          The USER refers to the entity delegating access rights to the APP. Different users might be involved in a single use case. The OEM might delegate access to some piece of information under its control, e.g. some data about the engine, but for driving data the driver's permission might be needed. Also, is the APP requires to access some vehicle identity the owners consent might be required.
+        </p>   
+        <div class="issue">I intentionally used delegation, permission and consent as synonyms in this last paragraph, we need to agree on the most precise and clear term for the reader.</div>
+
+      </section>
+      <section data-dfn-for="access-grant-server">
+        <h2>Access Grant server</h2>
+        <p>
+        </p>
+        <section data-dfn-for="pki-based-request">
+          <h2>PKI based request</h2>
+          <p>
+          </p>
+        </section>
+        <section data-dfn-for="token-based-request">
+          <h2>Token based request</h2>
+          <p>
+          </p>
+        </section>
+      </section>
+      <section data-dfn-for="access-token-server">
+        <h2>Access Token server</h2>
+        <p>
+        </p>
+      </section>
+      <section data-dfn-for="gen2-access-control-server">
+        <h2>Gen2 access control server</h2>
+        <p>
+        If the Gen2 server implements access control, then it MUST support validation of Access tokens.
+        This includes validation of at least the following:
+          <ul>
+            <li>Token signature.</li>
+            <li>Token expiry time.</li>
+            <li>Token scope.</li>
+            <li>Token access mode.</li>
+          </ul>
+          If any of the mentioned validations above fail, the server MUST reject the access request.<br>
+          Token signature validation may be delegated to the AT server, if a secure communication link can be established.
+          If not delegated, then a preprovisioned common secret may be shared with the AT server, or other PKI based solutions may be used.<br>
+          The Gen2 server SHALL have access to a secure system time, that cannot be modified by actors without system acknowledged credentials. 
+          Time validation may allow for a time synchronization error in the range of tens of seconds.<br>
+          A successful scope validation requires that all the nodes addressed by the path in the request MUST be matched by the paths in the scope field of the Access token.<br>
+          The access mode validation MUST have the outcome shown in the table below, which compares the type of request with the access control mode field in the Access token.<br><br>
+          <table class="simple">
+          <thead>
+            <tr><th>Validation</th><th>Read-only</th><th>Read-write</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-getrequest">get<br>set<br>subscribe</dfn></th>
+            </tr>
+            <tr><td>Ok</td><td>Ok</td></tr>
+            <tr><td>Nok</td><td>Ok</td></tr>  
+            <tr><td>Ok</td><td>Ok</td></tr>  
+          </tbody>
+          </table>
+        </p>
+      </section>
+
       <section data-dfn-for="access-control-flows">
         <h2>Access control flows</h2>
-        <p>Depending on the capabilities of the client accessing VSS data, two different access control flows are defined. The first protocol flow requires the client to run public key cryptographic primitives, i.e. key pair generation and signatures, and is recommended for clients with access to some kind of trusted exectution environment where private keys are protected from the regular execution environment. The second protocol flow requires no extra capabilities in the client as it is based on OAuth 2.0 Bearer token authentication [[RFC6750]].
+        <p>Depending on the capabilities of the client accessing VSS data, two different access control flows are defined. The first protocol flow requires the client to run public key cryptographic primitives, i.e. key pair generation and signatures, and is recommended for clients with access to some kind of trusted execution environment where private keys are protected from the regular execution environment. The second protocol flow requires no extra capabilities in the client as it is based on OAuth 2.0 Bearer token authentication [[RFC6750]].
         </p>
         <section data-dfn-for="pki-based-flow">
           <h2>PKI based flow</h2>
@@ -412,15 +491,15 @@ In filter combinations where a search expression in the URI is combined with a s
           <p>
             As a first step before any interaction with the Gen2 server, the client needs to be registered in the system. This process involves three subactors that together represent the Client actor:<br>
             The client device, the client application and the user behind it.<br>
-            All of them need to cooperate for a succesful client registration. The registration process for the client would be as follows:
+            All of them need to cooperate for a successful client registration. The registration process for the client would be as follows:
           </p>
           <ul>
             <li>The USER installs the APP in the device. USER could be the OEM if we consider an APP that is preinstalled in the car. It could also be a third party adding services to the car, or it could be the owner/driver itself.</li> 
-            <li>The APP generates a key pair. In this step the APP needs to generate a key pair. The private key would be used to authenticate request coming from this APP/Client. In order to verify the requests, the public key should be uploaded to the system. If we have a device that support key attestation, then the key could be accompanied by a key attestation certificate that would help the system identify the device.</li>
+            <li>The APP generates a key pair. In this step the APP needs to generate a key pair. The private key would be used to authenticate request coming from this APP/Client. In order to verify the requests, the public key should be uploaded to the system. If we have a device that support key attestation, then the key could be accompanied by a key attestation certificate that would help the system identify the DEVICE.</li>
             <li>The USER register the APP to the system. This is the final step for registration. The user needs to confirm to the Access Grant server the public key of the APP and, optionally, restrict the permissions granted to the APP. This step can be performed in a web interface, where the user authenticates using any standard mechanism. The user will enter a Key ID or the full Key if requested, and the server will match that with the registered APP. If there is a matching, the system will prompt the USER for confirmation of the access rights granted to the APP.</li>
           </ul>
           <div class="issue">Should we include role assignment here? Ulf: I think we should</div>
-          After the registration, USER and APP are bonded, and in case the device suppports some kind of key attestation, the DEVICE can also be bonded to them. The USER can decide to revoke that bond at any time. After revokation the APP is still registered to the system and can be bonded to a different user.
+          After the registration, USER and APP are bonded, and in case the device supports some kind of key attestation, the DEVICE can also be bonded to them. The USER can decide to revoke that bond at any time. After revocation the APP is still registered to the system and can be bonded to a different user.
           <div class="issue">Does it makes sense to bond an APP to more than one USER at the same time?Ulf: I do not think so.</div>
           <div class="issue">Who should be in charge of de-registering APPs? Should be set an expiration time for registration? That would for the APP to re-register after some inactivity, limiting growth of inactive registered APPsUlf:I think we should use an expiration time. We can leave to WG discussion what is a suitable recommendation for this expiry.</div>
 
@@ -428,16 +507,16 @@ In filter combinations where a search expression in the URI is combined with a s
           <div class="issue">Should we also include purpose here?Ulf: I think we should.</div>
           The Access Token Server will first validate the request:
           <ul>
-            <li>It needs to check that the Key ID corresponds to a registered APP and recover the correspoding Public Key. If there is not APP registered with this key ID the request will be rejected.</li>
+            <li>It needs to check that the Key ID corresponds to a registered APP and recover the corresponding Public Key. If there is not APP registered with this key ID the request will be rejected.</li>
             <li>It will check the JWT digital signature using the public key of the APP. If the digital signature verification fail the request will be rejected.</li>
             <li>It will check the timestamp included in the JWT, in case the timestamp is too old, the request will be denied.</li>
-            <div class="issue">Should we define a recomended maximum accepted delay?Ulf:We can leave that to WG discussion.</div>
+            <div class="issue">Should we define a recommended maximum accepted delay?Ulf:We can leave that to WG discussion.</div>
             <li>Finally, it will check that the signal path requested is included in the access rights granted at registration time.</li>
             <div class="issue">That final steps is the most complex, as it has to deal with the access control policy, i.e. RBAC or similar proposals. The other steps are very straightforward. We might need a separate section just for that and omit this in the flows to avoid unnecessary complexity when following them.Ulf:I think we should base it on RBAC. I agree that it should probably be in its own chapter, referred to here</div>
           </ul> 
 
           After successful validation, the APPs receives an Access Token that can be used later on to when querying the Gen2 Server. 
-          <div class="issue">This Access Token can be opaque or in the form of an JWT signed by the Access Token Server that includes access rights granted. Should we recomend one of the two options or leave it open? Ulf:I definitively think it should be the latter.</div>
+          <div class="issue">This Access Token can be opaque or in the form of an JWT signed by the Access Token Server that includes access rights granted. Should we recommend one of the two options or leave it open? Ulf:I definitively think it should be the latter.</div>
           The last phase of the flow is the actual fetching of the signals values. In order to get the signals from the Gen2 server the APP includes the Access Token in the request headers. The Gen2 server decides whether the request requires access control and if so involves the Gen2 access control  server to validate the request. If there is not Access Token and security is enable the request is rejected. If the token issued by the Access Token Server was opaque, the Gen2 access control server would need to contact it in each request, in order to obtain the access rights granted. If the token was a JWT, the Gen2 access control server will have all the information required to grant or deny the request. In any case, if the access rights granted match the requested path the request will be send to the Gen2 server that will send a response to the APP, otherwise the request will be rejected.
 
           <p>
@@ -468,65 +547,7 @@ In filter combinations where a search expression in the URI is combined with a s
           </p>
         </section>
       </section>
-      <section data-dfn-for="access-grant-server">
-        <h2>Client</h2>
-        <p>
-<div class="issue">Describe the combi-role model</div>
-        </p>
-      </section>
-      <section data-dfn-for="access-grant-server">
-        <h2>Access Grant server</h2>
-        <p>
-        </p>
-        <section data-dfn-for="pki-based-request">
-          <h2>PKI based request</h2>
-          <p>
-          </p>
-        </section>
-        <section data-dfn-for="token-based-request">
-          <h2>Token based request</h2>
-          <p>
-          </p>
-        </section>
-      </section>
-      <section data-dfn-for="access-token-server"">
-        <h2>Access Token server</h2>
-        <p>
-        </p>
-      </section>
-      <section data-dfn-for="gen2-access-control-server">
-        <h2>Gen2 access control server</h2>
-        <p>
-        If the Gen2 server implements access control, then it MUST support validation of Access tokens.
-        This includes validation of at least the following:
-          <ul>
-            <li>Token signature.</li>
-            <li>Token expiry time.</li>
-            <li>Token scope.</li>
-            <li>Token access mode.</li>
-          </ul>
-          If any of the mentioned validations above fail, the server MUST reject the access request.<br>
-          Token signature validation may be delegated to the AT server, if a secure communication link can be established.
-          If not delegated, then a preprovisioned common secret may be shared with the AT server, or other PKI based solutions may be used.<br>
-          The Gen2 server SHALL have access to a secure system time, that cannot be modified by actors withtout system acknowledged credentials. 
-          Time validation may allow for a time synchronization error in the range of tens of seconds.<br>
-          A successful scope validation requires that all the nodes addressed by the path in the request MUST be matched by the paths in the scope field of the Access token.<br>
-          The access mode validation MUST have the outcome shown in the table below, which compares the type of request with the access control mode field in the Access token.<br><br>
-<table class="simple">
-<thead>
-  <tr><th>Validation</th><th>Read-only</th><th>Read-write</th></tr>
-</thead>
-<tbody>
-  <tr>
-    <th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-getrequest">get<br>set<br>subscribe</dfn></th>
-  </tr>
-  <tr><td>Ok</td><td>Ok</td></tr>
-  <tr><td>Nok</td><td>Ok</td></tr>  
-  <tr><td>Ok</td><td>Ok</td></tr>  
-</tbody>
-</table>
-        </p>
-      </section>
+
       <section data-dfn-for="role-based-access-control-model">
         <h2>Role based access control model</h2>
         <p>
