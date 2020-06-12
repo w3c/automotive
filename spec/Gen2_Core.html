@@ -680,6 +680,19 @@ In filter combinations where a search expression in the URI is combined with a s
         </p>
       </section>
     </section>
+    <section data-dfn-for="privacy-data-protection">
+      <h2>Privacy and data protection</h2>
+      <p>
+      </p>
+      <section data-dfn-for="purpose">
+        <h2>Purpose</h2>
+        <p>
+        A Client MUST provide a Purpose as input to a request for an Access token. A list of supported purposes needs to exist for a client to select from, this list is typically created and owned by the Resource owner. Each entry in the list contains a short description of the purpose, which is what the Client shall provide as input to its request for an Access token. There is also a long description, which may be used in the dialogue for consent, if needed. Then there is a list of the signals that the client is given access to for this purpose, and last there is a list of the roles, per sub-actor, that can be granted this access. The list SHALL use a JSON format as shown in the example below.<br>
+        {"purposes": [{"short": "Pay as you drive", "long": "Insurance cost based on drive data.", "signals": ["Vehicle.Drivetrain.Transmission.Speed", "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Longitude"], "roles":{"user": ["OEM", "Owner"], "app": ["OEM", "Third party"], "device": ["Vehicle", "Cloud"] }] }
+        </p>
+      </section>
+    </section>
+    <section data-dfn-for="interface">
       <h2>Interface</h2>
       <p>
         This chapter describes the different methods and its arguments that govern the communication between a <a>client</a> and the <a>server</a>.
@@ -850,13 +863,13 @@ In filter combinations where a search expression in the URI is combined with a s
     <section id="role-to-access-scope-mapping" class="appendix">
       <h2>Role to access scope mapping</h2>
       <p>
-      For the AG server to be able to assign a signal access scope to a Client according to the three roles that the Client requests, a table containing entries for all combinations of the possible values of the three roles is needed. For each entry an access scope is defined by using VSS path expressions, including the usage of wildcards. Each path expression must be associated with an access mode, which sets whether the permission is "read-only", or read-write for that path expression. The table is expressed in JSON format as exemplified below.<br>
-      {"roles":["OEM", "Third party", "Cloud"], "scope":[{"path":"Vehicle.Body.*", "mode":"read-write"}, {"path":"Vehicle.ADAS.*", "mode":"read-only"}]}<br>
-      This mapping document is typically created and owned by the Resource owner and securely provisioned to the AG server.<br>
-      The restriction is access scope can also be reflected in what parts of the VSS tree that the Gen2 server returns to a client that issues a service discovery request. 
-      If such a request contains an Access Grant token, then the access scope it contains would set the boundaries for the nodes for which metadata is returned to the Client. 
-<div class="issue">How are the minimum boundary defined for the case when the Client does not include an AG token?</div>
-<div class="issue">How is access scope data provided for the PKi based flow?</div>
+      For the AT server to be able to validate the Client request for an access scope as associated with the requested Purpose (see Purpose chapter), a list of combinations of the possible values of the three roles is needed. For each entry a "negative" access scope is defined by using VSS path expressions, including the usage of wildcards. This means that the nodes addressed by the expressions shall not be accessible by a client with these roles, and the metadata describing these nodes shall not be returned in a service discovery request. The table is expressed in JSON format as exemplified below.<br>
+      {"non-scope": [{"roles": ["Independent", "Third party", "Cloud"], "paths": ["Vehicle.Private.*", "Vehicle.ADAS.*"}, {} ]}<br>
+      This mapping document is typically created and owned by the Resource owner and securely provisioned to the AT server.<br>
+      The list is also used to control what parts of the VSS tree that the Gen2 server returns to a client that issues a service discovery request. 
+      If such a request contains an Access Grant token, then the Client roles it contains maps into this list to set the boundaries for the nodes for which metadata is returned to the Client. 
+<div class="issue">How is the scope boundary defined for the case when the Client service discovery request does not include an AG token?</div>
+<div class="issue">The PKi based flow also needs to have a credential containing the roles.</div>
       </p>
     </section>
     <section id="issue-summary" class="appendix"></section>
