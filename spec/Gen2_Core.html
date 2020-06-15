@@ -444,6 +444,27 @@ In filter combinations where a search expression in the URI is combined with a s
       <section data-dfn-for="access-token-server">
         <h2>Access Token server</h2>
         <p>
+        The main responsibilities of the Access Token server are:
+          <ul>
+            <li>To validate the Access Grant token.</li>
+            <li>To map the Purpose to access of relevant signals.</li>
+            <li>To create an Access Token.</li>
+          </ul>
+        The validation of the AG token consists of at least the following:
+          <ul>
+            <li>Signature validation.</li>
+            <li>Expiry time check.</li>
+          </ul>
+        The signature validation requires that the Access Grant server and the Access Token server previously have set up a trust relationship by e. g.  sharing a common secret or the like. 
+        The details of such a relationship is out-of-scope.<br>
+        The expiry time MUST be later than the current system time of the AT server run-time. To allow for some time synchronization inaccuracy an error of tens of seconds may be allowed.<br>
+        The mapping of Purpose to the set of signals relevant for the purpose is done by using the document described in the chapter "Purpose". 
+        If the Client role as declared in the AG token is not found in the set of allowed roles in the Purpose mapping document then the client request for an Access token MUST be denied. 
+        The Access token MUST contain the following fields:
+          <ul>
+            <li>The set of signals associated to the purpose.</li>
+            <li>Expiry time.</li>
+          </ul>
         </p>
       </section>
       <section data-dfn-for="gen2-access-control-server">
@@ -461,7 +482,7 @@ In filter combinations where a search expression in the URI is combined with a s
           Token signature validation may be delegated to the AT server, if a secure communication link can be established.
           If not delegated, then a preprovisioned common secret may be shared with the AT server, or other PKI based solutions may be used.<br>
           The Gen2 server SHALL have access to a secure system time, that cannot be modified by actors without system acknowledged credentials. 
-          Time validation may allow for a time synchronization error in the range of tens of seconds.<br>
+          Time validation may allow for a time synchronization inaccuracy in the range of tens of seconds.<br>
           A successful scope validation requires that all the nodes addressed by the path in the request MUST be matched by the paths in the scope field of the Access token.<br>
           The access mode validation MUST have the outcome shown in the table below, which compares the type of request with the access control mode field in the Access token.<br><br>
           <table class="simple">
@@ -566,8 +587,7 @@ In filter combinations where a search expression in the URI is combined with a s
         The AG server must in the authentication process of the client possibly separately authenticate each of the three subactors. 
         For the AG server to decide on which authentication method to use per subactor can be quite complex, but will be at least somewhat eased if the Client request a role for each subactor. 
         As an example, a request for a Vehicle device role may be verified by the device MAC address, while a request for a Nomadic device role may be verified by a message round-trip time measurement. <br>
-        From a security point of view a Client should not have access to more vehicle signals than are necessary, following the principle of least priviledge. A first restriction of this can be achieved by the AG server assigning a scope of access from the roles requested by the Client.
-        In the appendix Role to access scope mapping a possible solution is presented.
+        From a security point of view a Client should not have access to more vehicle signals than are necessary, following the principle of least priviledge. This is achieved by the Purpose document described in the Purpose chapter, that assigns only the for the Purpose relevant signals to the Client. 
         </p>
         <section data-dfn-for="device-roles">
           <h2>Device roles</h2>
@@ -687,8 +707,8 @@ In filter combinations where a search expression in the URI is combined with a s
       <section data-dfn-for="purpose">
         <h2>Purpose</h2>
         <p>
-        A Client MUST provide a Purpose as input to a request for an Access token. A list of supported purposes needs to exist for a client to select from, this list is typically created and owned by the Resource owner. Each entry in the list contains a short description of the purpose, which is what the Client shall provide as input to its request for an Access token. There is also a long description, which may be used in the dialogue for consent, if needed. Then there is a list of the signals that the client is given access to for this purpose, and last there is a list of the roles, per sub-actor, that can be granted this access. The list SHALL use a JSON format as shown in the example below.<br>
-        {"purposes": [{"short": "Pay as you drive", "long": "Insurance cost based on drive data.", "signals": ["Vehicle.Drivetrain.Transmission.Speed", "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Longitude"], "roles":{"user": ["OEM", "Owner"], "app": ["OEM", "Third party"], "device": ["Vehicle", "Cloud"] }] }
+        A Client MUST provide a Purpose as input to a request for an Access token. A list of supported purposes needs to exist for a client to select from, this list is typically created and owned by the Resource owner. Each entry in the list contains a short description of the purpose, which is what the Client shall provide as input to its request for an Access token. There is also a long description, which may be used in the dialogue for consent, if needed. Then there is a list of the roles, per sub-actor, that can be granted this access, and last there is a list of  the signals that the client is given access to for this purpose, with the allowed access mode. The list SHALL use a JSON format as shown in the example below.<br>
+        {"purposes": [{"short": "Pay as you drive", "long": "Insurance cost based on drive data.", "roles":{"user": ["OEM", "Owner"], "app": ["OEM", "Third party"], "device": ["Vehicle", "Cloud"], "signal_access": [{"path": "Vehicle.Drivetrain.Transmission.Speed", "access_mode": "read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", "access_mode":"read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Longitude", "access_mode": "read-only"}] }] }
         </p>
       </section>
     </section>
@@ -860,15 +880,15 @@ In filter combinations where a search expression in the URI is combined with a s
       <h4>Dynamic registry API</h4>
       <p>The dynamic reqistry API provides the functionality to dynamically add or delete branches of the VSS tree. A branch can only be deleted if it has been dynamically added. In the following an entity requesting dynamic registry services is called a "service manager", and the entity performing these requests is called the "core server", see the figure "Gen2 server reference architecure".</p>
     </section>
-    <section id="role-to-access-scope-mapping" class="appendix">
-      <h2>Role to access scope mapping</h2>
+    <section id="role-to-tree-presentation" class="appendix">
+      <h2>Role to tree presentation</h2>
       <p>
-      For the AT server to be able to validate the Client request for an access scope as associated with the requested Purpose (see Purpose chapter), a list of combinations of the possible values of the three roles is needed. For each entry a "negative" access scope is defined by using VSS path expressions, including the usage of wildcards. This means that the nodes addressed by the expressions shall not be accessible by a client with these roles, and the metadata describing these nodes shall not be returned in a service discovery request. The table is expressed in JSON format as exemplified below.<br>
+      If a document with "non-scope" information as shown below is provisioned to the AT server, then this document MUST be used to "prune" the subtree to be returned on a service discovery request from the nodes defined in the document, associated with the Client role. 
+      For each role declared in the document a "negative" access scope is defined by using VSS path expressions, including the usage of wildcards. This means that the nodes addressed by the expressions shall not be accessible by a client with these roles, and the metadata describing these nodes shall not be returned in a service discovery request. The table is expressed in JSON format as exemplified below.<br>
       {"non-scope": [{"roles": ["Independent", "Third party", "Cloud"], "paths": ["Vehicle.Private.*", "Vehicle.ADAS.*"}, {} ]}<br>
       This mapping document is typically created and owned by the Resource owner and securely provisioned to the AT server.<br>
-      The list is also used to control what parts of the VSS tree that the Gen2 server returns to a client that issues a service discovery request. 
-      If such a request contains an Access Grant token, then the Client roles it contains maps into this list to set the boundaries for the nodes for which metadata is returned to the Client. 
-<div class="issue">How is the scope boundary defined for the case when the Client service discovery request does not include an AG token?</div>
+      If a service discovery request does not contain an Access Grant token, then the list entry with the "roles" set to "Undefined","Undefined","Undefined" shall be used.<br>
+      If there is no match for theClient role in the document, then the complete subtree shall be returned to the Client.
 <div class="issue">The PKi based flow also needs to have a credential containing the roles.</div>
       </p>
     </section>
