@@ -359,10 +359,13 @@ In filter combinations where a search expression in the URI is combined with a s
       </p>
       <section data-dfn-for="gen2-oauth-architecture">
         <h2>Gen2 OAuth 2.0 architecture</h2>
+        <div class="issue">We might need a different name, as it is inspired on OAuth2 but uses a different transport mechanisms. We are not using HTTP redirects or headers, everything is a JWT.</div>
         <p>
         The Gen2 access control model builds on the concepts of OAuth2.0 [[RFC6749]].<br>
         OAuth2.0 introduces an authorization layer to separate the role of the client from that of the resource owner. The client requests access to resources controlled by the resource owner and hosted by the resource server, and is issued a set of credentials.<br>
-        To access protected resources, the client obtains an access token -- a string denoting a specific scope, lifetime, and other access attributes.  Access tokens are issued to clients by an authorization server with the approval of the resource owner. The client uses the access token to access the protected resources hosted by the resource server.<br><br>
+        To access protected resources, the client obtains an access token -- a string denoting a specific scope, lifetime, and other access attributes.  Access tokens are issued to clients by an authorization server with the approval of the resource owner, provided in the form of a Grant. OAuth 2.0 support different Grant Types.
+
+        The client uses the access token to access the protected resources hosted by the resource server.<br><br>
         OAuth2.0 defines four actors:<br>
         <b>Resource owner</b><br>
         An entity capable of granting access to a protected resource.<br>
@@ -377,7 +380,9 @@ In filter combinations where a search expression in the URI is combined with a s
           <img src="images/oauth2-protocol-flow.jpg" alt="OAuth2.0 abstract protocol flow.">
           <figcaption> <span class="fig-title">OAuth2.0 abstract protocol flow.</span></figcaption>
         </figure>
-        Two different flows are supported in Gen2, which both follow the OAuth2.0 abstract flow, as will be described in the chapters below.<br>
+
+        Two different flows are supported in Gen2, which both follow the OAuth2.0 abstract flow, as will be described in the chapters below are based on OAuth 2.0 Bearer token authentication [[RFC6750]]. The main difference between them is how the Grant, in our case the Grant Token, is obtained.
+
         The actor names are however changed as shown in the table below.<br><br>
 		    <table border="1">
     			<tr><th>OAuth2.0 name</th><th>Gen2 name</th></tr>
@@ -404,6 +409,8 @@ In filter combinations where a search expression in the URI is combined with a s
 
       <section data-dfn-for="client">
         <h2>Client</h2>
+
+        <div class="issue">I think USER needs a separate section, we need to show the distinction between client and USER because in OAuth, the USER delegates in the client, the user is not part of the client, although client requests have USER attributes attached somehow ...</div>
         <p>
           <div class="issue">Describe the combi-role model. Isaac: I tried to include the concept when defining the subactors without actually naming it.</div>
         </p>
@@ -412,14 +419,14 @@ In filter combinations where a search expression in the URI is combined with a s
         </p>
         <div class="issue">We need to align this with the roles ...</div>
         <p>
-          The DEVICE is in charge of running the APPs that make requests to the VSS server. In general terms it could be the in-vehicle system, an user device or an Internet server. Presumably, APPs running in the vehicle will be intrinsically trusted, but for APPs running in the USER's device or in a Third-party server we might need to check the DEVICE capabilities.
+          The DEVICE is in charge of running the APPs that make requests to the VSS server. In general terms it could be the in-vehicle system, an user device or an Internet server. Presumably, APPs running in the vehicle will be intrinsically trusted, but for APPs running in the USER's device or in a Third-party server there might be a need to check the DEVICE capabilities.
           OAuth makes a distinction between public client and confidential client, being the later able to securely authenticate with the authorization server. For that purpose, it would be interesting check whether the DEVICE has some kind of Trusted Execution support that enables cryptographically assured DEVICE attestation. 
           Also, location of the DEVICE could be relevant for access control decisions. If the server is in a different country data regulation might impose restrictions. Also, if the DEVICE is a smart-phone it might be relevant whether the request was performed inside the car or from home.
         </p>
         <p>
           The APP runs requests on behalf of the USER. During development and APP building some restriction could be imposed on the kind of information the APP can fetch from the VSS server. The developer might need provide the source code before the APP is assigned certain permissions. Permissions are assigned at building time and stay the same during the whole APP life cycle, so no new permissions can be assign after that. However the USER might have the option to deactivate some of the permissions depending on the platform running the APP.
         </p>
-        <div class="issue">I think USER needs a separate section, we need to show the distinction between client and USER because in OAuth, the USER delegates in the client, the user is not part of the client, although client requests have USER attributes attached somehow ...</div>
+        
         <p>
           The USER refers to the entity delegating access rights to the APP. Different users might be involved in a single use case. The OEM might delegate access to some piece of information under its control, e.g. some data about the engine, but for driving data the driver's permission might be needed. Also, is the APP requires to access some vehicle identity the owners consent might be required.
         </p>   
@@ -428,22 +435,63 @@ In filter combinations where a search expression in the URI is combined with a s
       </section>
       <section data-dfn-for="access-grant-server">
         <h2>Access Grant server</h2>
+        <div class="issue">Who runs the Access Grant server??Ulf:Typically the OEM. Referring to OAuth2.0 abstract I would say the Resource Owner, but in the automotive ecosystem that is not pointing to one entity, but rather two: Vehicle Owner and OEM.</div>
         <p>
-        (Client input: VIN, Role, Public key (optional), Credentials)<br>
+          The Access Grant Server (AGS) is in charge of producing Grants, in the form of JWT Tokens to Clients, called Grant Tokens. Users need to register to the AGS in order to approve clients. Clients also need to be registered to the AGS before requesting a GT from the AGS on behalf on an user. In every request, clients need to securely authenticate themselves and user approval needs to be checked, taking into account different information involving for example purpose. 
+        <div class="issue">Purpose is not presented to the AGS but to the ATS. The clause above talk about both registration and authentication. This needs to be described in more detail.</div>
+        </p>
+        <p>
+          Depending on the capabilities of the client, the specification support two types of Grant Tokens. On the one hand, self issued Grant Tokens are supported for those clients able to run public key cryptographic primitives, i.e. key pair generation and signatures, and is the recommended choice for clients with access to some kind of trusted execution environment where private keys are protected from the regular execution environment. On the other hand, the specification supports Grant Tokens issued by the Access Grant Server. This choice requires no extra capabilities in the client, but forces the client to contact the AGS in every request for a new Grant token.<br><br>
+        Specify input/output in Client/AGS interaction:<br>
+        Client input: VIN, Role, Public key (optional), Credentials)<br>
         Server output: PKI based - <br>
         Server output: Token based - AG token containing fields for: Role, Expiry time, Issuer, 
         </p>
-        <section data-dfn-for="pki-based-request">
-          <h2>PKI based request</h2>
+
+          <section data-dfn-for="pki-based-grant-request">
+          <h2>PKI based Grant Token request</h2>
           <p>
+            As a first step before any interaction with the Gen2 server, the client needs to be registered in the system. This process involves three actors: The client device (DEVICE), the client application (APP) and the user that installs the application (ADMIN). All of them need to cooperate for a successful client registration. The registration and approval process for the client would be as follows:
           </p>
+          <ul>
+            <li>The ADMIN installs the APP in the device. ADMIN could be the OEM in the case of an APP that is installed in the car, it be a third party adding services to the car, or deploying an application in the cloud, or it could be the owner/driver itself installing an application in its personal device.</li> 
+            <li>The APP generates a key pair. In this step the APP needs to generate a key pair. The private key would be used to authenticate request coming from this APP/Client. In order to verify the requests, the public key should be uploaded to the system. If a device supports key attestation, then the key could be accompanied by a key attestation certificate that would help the system identify the DEVICE.</li>
+            <li>The ADMIN register the APP by confirming to the AGS its public key. In this step no permissions are assigned to the APP, the ADMIN registering the APP should only check that the public key is properly registered in the AGS. Also, the APP needs to provide some kind of Proof-of-Possession, e.g. [[RFC7800]]
+            </li>
+            <li>After successful registration the ADMIN can define some acceptable permissions with associated purposes to the APP. The permission definition process is completely decoupled from the access control decisions, as the user installing the application could be different than the user on behalf of which the APP is requesting the signals.</li>
+          </ul>
+
+          After APP registration, USERs can delegate access to them in the AGS. The process of delegating access involves confirming whether all permissions assigned by the ADMIN are accept or just a subset of them. Access can also be revoked to all or just a subset of permissions. USERs can only delegate access to those signals they have been granted access to.
+          <div class="issue">Who grants access to users? Who issues and manages roles? Is the AGS in charge of that?<br>Ulf: I think we should keep the ADMIN out of scope here. The APP installment as such do not have to lead to any interaction with this access control system. The permissions/purpose setup should also be kept out-of-scope in this context. In the Purpose chapter I describe a document, the Purpose list that the ATS is provisioned by the "Resource owner" (typically OEM), which links purposes to both permissions and roles. In my view a Client is an abstract representation of the three subactors USER, APP, DEVICE, and a Client is "created" at the point when these three subactors authenticate/register with the AGS. The "credentials" that the AGS returns to the APP is the "proof" of the Client's existence. The Client shall in its request to the AGS include which role (User/App/Device) it desires. It is up to the AGS, through authentication and other means to decide whether the role request shall be granted. The exact details of how that decision is taken is out-of-scope.</div>
+
+          Registered APPs can request access to any signal they were delegated access to. In order to do so, the APP needs to request an Access Token to the Access Token Server, indicating the particular target signal path. In this request, the APPs needs to include also an identifier of is public key and a Proof-of-Possesion of the private key. A JWT signed by the private key of the APP, including the current unix time will serve that purpose.
+
+          The Access Token Server will validate the request as following:
+          <ul>
+            <li>It needs to check that the Key ID corresponds to a registered APP and recover the corresponding Public Key. If there is not APP registered with this key ID the request will be rejected.</li>
+            <li>It will check the JWT digital signature using the public key of the APP. If the digital signature verification fail the request will be rejected.</li>
+            <li>It will check the timestamp included in the JWT, in case the timestamp is too old, the request will be denied.</li>
+            <li>Finally, it will check that the signal path requested is included both in the permissions assigned at registration time by the ADMIN and the access rights of the USER behind the request.</li>
+            <div class="issue">That final steps is the most complex, as it has to deal with the access control policy, i.e. RBAC or similar proposals. The other steps are very straightforward. We might need a separate section just for that and omit this in the flows to avoid unnecessary complexity when following them.Ulf:I think we should base it on RBAC. I agree that it should probably be in its own chapter, referred to here</div>
+          </ul> 
+
+          <p>
+          <figure id="fig-sequence-diagram-pki-based-flow">
+            <img src="images/grant-token-request-pki.svg" alt="Sequence diagram showing a PKI based flow">
+            <figcaption> <span class="fig-title">Sequence diagram showing a PKI based flow</span></figcaption>
+          </figure>
+          </p>
+
         </section>
+
+
         <section data-dfn-for="token-based-request">
           <h2>Token based request</h2>
           <p>
           </p>
         </section>
       </section>
+
       <section data-dfn-for="access-token-server">
         <h2>Access Token server</h2>
         <p>
@@ -482,9 +530,12 @@ In filter combinations where a search expression in the URI is combined with a s
           </ul>
         </p>
       </section>
-      <section data-dfn-for="gen2-access-control-server">
-        <h2>Gen2 access control server</h2>
+
+
+      <section data-dfn-for="gen2-secure-signal-request">
+        <h2>Gen2 secure signal request</h2>
         <p>
+
         If the Gen2 server implements access control, then it MUST support validation of Access tokens.
         This includes validation of at least the following:
           <ul>
@@ -514,54 +565,28 @@ In filter combinations where a search expression in the URI is combined with a s
           </tbody>
           </table>
         </p>
+        <p>
+          Access Token need to be refreshed periodically. In order to obtain an Access Token, the client needs to contact the Access Grant Server and provide a Grant Token in the form of a JWT with all the information required to validate access rights for this request.
+        </p>
+        <p>
+          After successful validation, the APPs receives an Access Token that can be used later on to when querying the Gen2 Server. 
+          <div class="issue">This Access Token can be opaque or in the form of an JWT signed by the Access Token Server that includes access rights granted. Should we recommend one of the two options or leave it open? Ulf:I definitively think it should be the latter.</div>
+          The last phase of the flow is the actual fetching of the signals values. In order to get the signals from the Gen2 server the APP includes the Access Token in the request headers. The Gen2 server decides whether the request requires access control and if so involves the Gen2 access control  server to validate the request. If there is not Access Token and security is enable the request is rejected. If the token issued by the Access Token Server was opaque, the Gen2 access control server would need to contact it in each request, in order to obtain the access rights granted. If the token was a JWT, the Gen2 access control server will have all the information required to grant or deny the request. In any case, if the access rights granted match the requested path the request will be send to the Gen2 server that will send a response to the APP, otherwise the request will be rejected.
+          <div class="issue">The Client request to the ATS for an Access token should contain the Purpose. The ATS then uses the Purpose list document to assign the access scope, and verifies that the Role of this Client shall be allowed this access scope.</div>
+        </p>
+        <p>
+          <figure id="fig-secure-signal-request">
+            <img src="images/signal-request.svg" alt="Secure signal request sequence diagram">
+            <figcaption> <span class="fig-title">Sequence diagram showing a secure signal request</span></figcaption>
+          </figure>
+          </p>
+
       </section>
 
       <section data-dfn-for="access-control-flows">
         <h2>Access control flows</h2>
-        <p>Depending on the capabilities of the client accessing VSS data, two different access control flows are defined. The first protocol flow requires the client to run public key cryptographic primitives, i.e. key pair generation and signatures, and is recommended for clients with access to some kind of trusted execution environment where private keys are protected from the regular execution environment. The second protocol flow requires no extra capabilities in the client as it is based on OAuth 2.0 Bearer token authentication [[RFC6750]].
-        </p>
-        <section data-dfn-for="pki-based-flow">
-          <h2>PKI based flow</h2>
-          <div class="issue">Client needs to include in the JWT a some kind of Proof-of-Possession (RFC7800).Ulf:I have no good idea. If you have, please suggest.</div>
-          <div class="issue">The public key became the client identity, we need a mechanisms to register it to the AT server.Ulf:I think it sufficient to say that the key must be securely provisioned by the AG server to the AT server. Then it is up to implementers how to do that.</div>
-          <p>
-            As a first step before any interaction with the Gen2 server, the client needs to be registered in the system. This process involves three subactors that together represent the Client actor:<br>
-            The client device, the client application and the user behind it.<br>
-            All of them need to cooperate for a successful client registration. The registration process for the client would be as follows:
-          </p>
-          <ul>
-            <li>The USER installs the APP in the device. USER could be the OEM if we consider an APP that is preinstalled in the car. It could also be a third party adding services to the car, or it could be the owner/driver itself.</li> 
-            <li>The APP generates a key pair. In this step the APP needs to generate a key pair. The private key would be used to authenticate request coming from this APP/Client. In order to verify the requests, the public key should be uploaded to the system. If we have a device that support key attestation, then the key could be accompanied by a key attestation certificate that would help the system identify the DEVICE.</li>
-            <li>The USER register the APP to the system. This is the final step for registration. The user needs to confirm to the Access Grant server the public key of the APP and, optionally, restrict the permissions granted to the APP. This step can be performed in a web interface, where the user authenticates using any standard mechanism. The user will enter a Key ID or the full Key if requested, and the server will match that with the registered APP. If there is a matching, the system will prompt the USER for confirmation of the access rights granted to the APP.</li>
-          </ul>
-          <div class="issue">Should we include role assignment here? Ulf: I think we should</div>
-          After the registration, USER and APP are bonded, and in case the device supports some kind of key attestation, the DEVICE can also be bonded to them. The USER can decide to revoke that bond at any time. After revocation the APP is still registered to the system and can be bonded to a different user.
-          <div class="issue">Does it makes sense to bond an APP to more than one USER at the same time?Ulf: I do not think so.</div>
-          <div class="issue">Who should be in charge of de-registering APPs? Should be set an expiration time for registration? That would for the APP to re-register after some inactivity, limiting growth of inactive registered APPsUlf:I think we should use an expiration time. We can leave to WG discussion what is a suitable recommendation for this expiry.</div>
+    
 
-          Registered APPs can request access to any signal they were granted access to by the USER at the registration phase. In order to do so, the APP needs to request an Access Token to the Access Token server indicating the particular target signal path. In this request, the APPs needs to include also an identifier of is public key and a Proof-of-Possesion of the private key. A JWT signed by the private key of the APP, including the current unix time will serve that purpose.
-          <div class="issue">Should we also include purpose here?Ulf: I think we should.</div>
-          The Access Token Server will first validate the request:
-          <ul>
-            <li>It needs to check that the Key ID corresponds to a registered APP and recover the corresponding Public Key. If there is not APP registered with this key ID the request will be rejected.</li>
-            <li>It will check the JWT digital signature using the public key of the APP. If the digital signature verification fail the request will be rejected.</li>
-            <li>It will check the timestamp included in the JWT, in case the timestamp is too old, the request will be denied.</li>
-            <div class="issue">Should we define a recommended maximum accepted delay?Ulf:We can leave that to WG discussion.</div>
-            <li>Finally, it will check that the signal path requested is included in the access rights granted at registration time.</li>
-            <div class="issue">That final steps is the most complex, as it has to deal with the access control policy, i.e. RBAC or similar proposals. The other steps are very straightforward. We might need a separate section just for that and omit this in the flows to avoid unnecessary complexity when following them.Ulf:I think we should base it on RBAC. I agree that it should probably be in its own chapter, referred to here</div>
-          </ul> 
-
-          After successful validation, the APPs receives an Access Token that can be used later on to when querying the Gen2 Server. 
-          <div class="issue">This Access Token can be opaque or in the form of an JWT signed by the Access Token Server that includes access rights granted. Should we recommend one of the two options or leave it open? Ulf:I definitively think it should be the latter.</div>
-          The last phase of the flow is the actual fetching of the signals values. In order to get the signals from the Gen2 server the APP includes the Access Token in the request headers. The Gen2 server decides whether the request requires access control and if so involves the Gen2 access control  server to validate the request. If there is not Access Token and security is enable the request is rejected. If the token issued by the Access Token Server was opaque, the Gen2 access control server would need to contact it in each request, in order to obtain the access rights granted. If the token was a JWT, the Gen2 access control server will have all the information required to grant or deny the request. In any case, if the access rights granted match the requested path the request will be send to the Gen2 server that will send a response to the APP, otherwise the request will be rejected.
-
-          <p>
-          <figure id="fig-sequence-diagram-pki-based-flow">
-            <img src="images/pki-based-flow.png" alt="Sequence diagram showing a PKI based flow">
-            <figcaption> <span class="fig-title">Sequence diagram showing a PKI based flow</span></figcaption>
-          </figure>
-          </p>
-        </section>
         <section data-dfn-for="token-based-flow">
           <h2>Token based flow</h2>
           <p>
