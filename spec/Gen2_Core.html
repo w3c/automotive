@@ -429,6 +429,9 @@ In filter combinations where a search expression in the URI is combined with a s
       <section data-dfn-for="access-grant-server">
         <h2>Access Grant server</h2>
         <p>
+        (Client input: VIN, Role, Public key (optional), Credentials)<br>
+        Server output: PKI based - <br>
+        Server output: Token based - AG token containing fields for: Role, Expiry time, Issuer, 
         </p>
         <section data-dfn-for="pki-based-request">
           <h2>PKI based request</h2>
@@ -444,6 +447,14 @@ In filter combinations where a search expression in the URI is combined with a s
       <section data-dfn-for="access-token-server">
         <h2>Access Token server</h2>
         <p>
+        The Client shall after a successful interaction with the AG server request an Access token from the Access Token server. 
+        The Client input in that request must be:
+          <ul>
+            <li>An Access Grant token.</li>
+            <li>A Purpose.</li>
+          </ul>
+        The Access Grant token is, depending on which of the two flows used by the Client, either generated and signed by the AG server, or generated and self-signed by the Client.<br>
+        The Purpose must be supported by the Resource Owner, and thus be on the Purpose list, see the chapter Purpose.
         The main responsibilities of the Access Token server are:
           <ul>
             <li>To validate the Access Grant token.</li>
@@ -455,7 +466,10 @@ In filter combinations where a search expression in the URI is combined with a s
             <li>Signature validation.</li>
             <li>Expiry time check.</li>
           </ul>
-        The signature validation requires that the Access Grant server and the Access Token server previously have set up a trust relationship by e. g.  sharing a common secret or the like. 
+        The signature validation is handled differently depending on whether the token contains a public key or not. <br>
+        If it does, then it is signed by the private key associated with this public key, and thus the validation is performed using that key. 
+        If this validation is successful, then the authenticity of the public key must also be validated.<br>
+        In the case the AG token has been signed by the AG server, the validation requires that the Access Grant server and the Access Token server previously have set up a trust relationship by e. g.  sharing a common secret or the like. 
         The details of such a relationship is out-of-scope.<br>
         The expiry time MUST be later than the current system time of the AT server run-time. To allow for some time synchronization inaccuracy an error of tens of seconds may be allowed.<br>
         The mapping of Purpose to the set of signals relevant for the purpose is done by using the document described in the chapter "Purpose". 
@@ -464,6 +478,7 @@ In filter combinations where a search expression in the URI is combined with a s
           <ul>
             <li>The set of signals associated to the purpose.</li>
             <li>Expiry time.</li>
+            <li>Issuer identity.</li>
           </ul>
         </p>
       </section>
@@ -707,8 +722,10 @@ In filter combinations where a search expression in the URI is combined with a s
       <section data-dfn-for="purpose">
         <h2>Purpose</h2>
         <p>
-        A Client MUST provide a Purpose as input to a request for an Access token. A list of supported purposes needs to exist for a client to select from, this list is typically created and owned by the Resource owner. Each entry in the list contains a short description of the purpose, which is what the Client shall provide as input to its request for an Access token. There is also a long description, which may be used in the dialogue for consent, if needed. Then there is a list of the roles, per sub-actor, that can be granted this access, and last there is a list of  the signals that the client is given access to for this purpose, with the allowed access mode. The list SHALL use a JSON format as shown in the example below.<br>
-        {"purposes": [{"short": "Pay as you drive", "long": "Insurance cost based on drive data.", "roles":{"user": ["OEM", "Owner"], "app": ["OEM", "Third party"], "device": ["Vehicle", "Cloud"], "signal_access": [{"path": "Vehicle.Drivetrain.Transmission.Speed", "access_mode": "read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", "access_mode":"read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Longitude", "access_mode": "read-only"}] }] }
+        A Client MUST provide a Purpose as input to a request for an Access token. A list of supported purposes needs to exist for a client to select from, this list is typically created and owned by the Resource owner. Each entry in the list contains a short description of the purpose, which is what the Client shall provide as input to its request for an Access token. There is also a long description, which may be used in the dialogue for consent, if needed. Then there is a list of the roles, per sub-actor, that can be granted this access, and last there is a list of  the signals that the client is given access to for this purpose, with the allowed access mode. The list SHALL use a JSON format as shown in the example below.<br><br>
+        {"purposes": [{"short": "Pay as you drive", "long": "Insurance cost based on drive data.", "roles":{"user": ["OEM", "Owner"], "app": ["OEM", "Third party"], "device": ["Vehicle", "Cloud"], "signal_access": [{"path": "Vehicle.Drivetrain.Transmission.Speed", "access_mode": "read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", "access_mode":"read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Longitude", "access_mode": "read-only"}] }] }<br><br>
+        The Purpose list SHALL be securely provisioned to the AT server. The protocol for this is out-of-scope. 
+        The AT server MUST reject all requests for Access tokens if it is not in possession of a Purpose list.
         </p>
       </section>
     </section>
