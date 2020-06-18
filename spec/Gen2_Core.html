@@ -419,7 +419,7 @@ In filter combinations where a search expression in the URI is combined with a s
         </p>
         <div class="issue">We need to align this with the roles ...</div>
         <p>
-          The DEVICE is in charge of running the APPs that make requests to the VSS server. In general terms it could be the in-vehicle system, an user device or an Internet server. Presumably, APPs running in the vehicle will be intrinsically trusted, but for APPs running in the USER's device or in a Third-party server we might need to check the DEVICE capabilities.
+          The DEVICE is in charge of running the APPs that make requests to the VSS server. In general terms it could be the in-vehicle system, an user device or an Internet server. Presumably, APPs running in the vehicle will be intrinsically trusted, but for APPs running in the USER's device or in a Third-party server there might be a need to check the DEVICE capabilities.
           OAuth makes a distinction between public client and confidential client, being the later able to securely authenticate with the authorization server. For that purpose, it would be interesting check whether the DEVICE has some kind of Trusted Execution support that enables cryptographically assured DEVICE attestation. 
           Also, location of the DEVICE could be relevant for access control decisions. If the server is in a different country data regulation might impose restrictions. Also, if the DEVICE is a smart-phone it might be relevant whether the request was performed inside the car or from home.
         </p>
@@ -435,32 +435,34 @@ In filter combinations where a search expression in the URI is combined with a s
       </section>
       <section data-dfn-for="access-grant-server">
         <h2>Access Grant server</h2>
-        <div class="issue">Who runs the Access Grant server??</div>
+        <div class="issue">Who runs the Access Grant server??Ulf:Typically the OEM. Referring to OAuth2.0 abstract I would say the Resource Owner, but in the automotive ecosystem that is not pointing to one entity, but rather two: Vehicle Owner and OEM.</div>
         <p>
-          The Access Grant Server (AGS) is in charge of producing Grants, in the form of JWT Tokens to Clients. We call them Grant Tokens. Users need to register to the AGS in order to approve clients. Clients also need to be register to the AGS before requesting an AT from the AGS on behalf on an user. In every request, clients need to securely authenticate themselves and user approval needs to be checked, taking into account different information involving for example purpose. 
+          The Access Grant Server (AGS) is in charge of producing Grants, in the form of JWT Tokens to Clients, called Grant Tokens. Users need to register to the AGS in order to approve clients. Clients also need to be registered to the AGS before requesting a GT from the AGS on behalf on an user. In every request, clients need to securely authenticate themselves and user approval needs to be checked, taking into account different information involving for example purpose. 
+        <div class="issue">Purpose is not presented to the AGS but to the ATS. The clause above talk about both registration and authentication. This needs to be described in more detail.</div>
         </p>
         <p>
-          Depending on the capabilities of the client, the specification support two types of Grant Tokens. On the one hand, self issued Grant Tokens are supported for those clients able to run public key cryptographic primitives, i.e. key pair generation and signatures, and is the recommended choice for clients with access to some kind of trusted execution environment where private keys are protected from the regular execution environment. On the other hand, the specification supports Grant Tokens issued by the Access Grant Server. This choice requires no extra capabilities in the client, but forces the client to contact the AGS in every request.
+          Depending on the capabilities of the client, the specification support two types of Grant Tokens. On the one hand, self issued Grant Tokens are supported for those clients able to run public key cryptographic primitives, i.e. key pair generation and signatures, and is the recommended choice for clients with access to some kind of trusted execution environment where private keys are protected from the regular execution environment. On the other hand, the specification supports Grant Tokens issued by the Access Grant Server. This choice requires no extra capabilities in the client, but forces the client to contact the AGS in every request for a new Grant token.<br><br>
+        Specify input/output in Client/AGS interaction:<br>
+        Client input: VIN, Role, Public key (optional), Credentials)<br>
+        Server output: PKI based - <br>
+        Server output: Token based - AG token containing fields for: Role, Expiry time, Issuer, 
         </p>
 
           <section data-dfn-for="pki-based-grant-request">
           <h2>PKI based Grant Token request</h2>
-
-
-
           <p>
             As a first step before any interaction with the Gen2 server, the client needs to be registered in the system. This process involves three actors: The client device (DEVICE), the client application (APP) and the user that installs the application (ADMIN). All of them need to cooperate for a successful client registration. The registration and approval process for the client would be as follows:
           </p>
           <ul>
-            <li>The ADMIN installs the APP in the device. ADMIN could be the OEM if we consider an APP that is installed in the car, it be a third party adding services to the car, or deploying an application in the cloud, or it could be the owner/driver itself installing an application in its personal device.</li> 
-            <li>The APP generates a key pair. In this step the APP needs to generate a key pair. The private key would be used to authenticate request coming from this APP/Client. In order to verify the requests, the public key should be uploaded to the system. If we have a device that support key attestation, then the key could be accompanied by a key attestation certificate that would help the system identify the DEVICE.</li>
+            <li>The ADMIN installs the APP in the device. ADMIN could be the OEM in the case of an APP that is installed in the car, it be a third party adding services to the car, or deploying an application in the cloud, or it could be the owner/driver itself installing an application in its personal device.</li> 
+            <li>The APP generates a key pair. In this step the APP needs to generate a key pair. The private key would be used to authenticate request coming from this APP/Client. In order to verify the requests, the public key should be uploaded to the system. If a device supports key attestation, then the key could be accompanied by a key attestation certificate that would help the system identify the DEVICE.</li>
             <li>The ADMIN register the APP by confirming to the AGS its public key. In this step no permissions are assigned to the APP, the ADMIN registering the APP should only check that the public key is properly registered in the AGS. Also, the APP needs to provide some kind of Proof-of-Possession, e.g. [[RFC7800]]
             </li>
             <li>After successful registration the ADMIN can define some acceptable permissions with associated purposes to the APP. The permission definition process is completely decoupled from the access control decisions, as the user installing the application could be different than the user on behalf of which the APP is requesting the signals.</li>
           </ul>
 
           After APP registration, USERs can delegate access to them in the AGS. The process of delegating access involves confirming whether all permissions assigned by the ADMIN are accept or just a subset of them. Access can also be revoked to all or just a subset of permissions. USERs can only delegate access to those signals they have been granted access to.
-          <div class="issue">Who grants access to users? Who issues and manages roles? Is the AGS in charge of that?</div>
+          <div class="issue">Who grants access to users? Who issues and manages roles? Is the AGS in charge of that?<br>Ulf: I think we should keep the ADMIN out of scope here. The APP installment as such do not have to lead to any interaction with this access control system. The permissions/purpose setup should also be kept out-of-scope in this context. In the Purpose chapter I describe a document, the Purpose list that the ATS is provisioned by the "Resource owner" (typically OEM), which links purposes to both permissions and roles. In my view a Client is an abstract representation of the three subactors USER, APP, DEVICE, and a Client is "created" at the point when these three subactors authenticate/register with the AGS. The "credentials" that the AGS returns to the APP is the "proof" of the Client's existence. The Client shall in its request to the AGS include which role (User/App/Device) it desires. It is up to the AGS, through authentication and other means to decide whether the role request shall be granted. The exact details of how that decision is taken is out-of-scope.</div>
 
           Registered APPs can request access to any signal they were delegated access to. In order to do so, the APP needs to request an Access Token to the Access Token Server, indicating the particular target signal path. In this request, the APPs needs to include also an identifier of is public key and a Proof-of-Possesion of the private key. A JWT signed by the private key of the APP, including the current unix time will serve that purpose.
 
@@ -493,7 +495,14 @@ In filter combinations where a search expression in the URI is combined with a s
       <section data-dfn-for="access-token-server">
         <h2>Access Token server</h2>
         <p>
-          <div class="issue">Merge this section with the following.</div>
+        The Client shall after a successful interaction with the AG server request an Access token from the Access Token server. 
+        The Client input in that request must be:
+          <ul>
+            <li>An Access Grant token.</li>
+            <li>A Purpose.</li>
+          </ul>
+        The Access Grant token is, depending on which of the two flows used by the Client, either generated and signed by the AG server, or generated and self-signed by the Client.<br>
+        The Purpose must be supported by the Resource Owner, and thus be on the Purpose list, see the chapter Purpose.
         The main responsibilities of the Access Token server are:
           <ul>
             <li>To validate the Access Grant token.</li>
@@ -505,7 +514,10 @@ In filter combinations where a search expression in the URI is combined with a s
             <li>Signature validation.</li>
             <li>Expiry time check.</li>
           </ul>
-        The signature validation requires that the Access Grant server and the Access Token server previously have set up a trust relationship by e. g.  sharing a common secret or the like. 
+        The signature validation is handled differently depending on whether the token contains a public key or not. <br>
+        If it does, then it is signed by the private key associated with this public key, and thus the validation is performed using that key. 
+        If this validation is successful, then the authenticity of the public key must also be validated.<br>
+        In the case the AG token has been signed by the AG server, the validation requires that the Access Grant server and the Access Token server previously have set up a trust relationship by e. g.  sharing a common secret or the like. 
         The details of such a relationship is out-of-scope.<br>
         The expiry time MUST be later than the current system time of the AT server run-time. To allow for some time synchronization inaccuracy an error of tens of seconds may be allowed.<br>
         The mapping of Purpose to the set of signals relevant for the purpose is done by using the document described in the chapter "Purpose". 
@@ -514,6 +526,7 @@ In filter combinations where a search expression in the URI is combined with a s
           <ul>
             <li>The set of signals associated to the purpose.</li>
             <li>Expiry time.</li>
+            <li>Issuer identity.</li>
           </ul>
         </p>
       </section>
@@ -559,7 +572,7 @@ In filter combinations where a search expression in the URI is combined with a s
           After successful validation, the APPs receives an Access Token that can be used later on to when querying the Gen2 Server. 
           <div class="issue">This Access Token can be opaque or in the form of an JWT signed by the Access Token Server that includes access rights granted. Should we recommend one of the two options or leave it open? Ulf:I definitively think it should be the latter.</div>
           The last phase of the flow is the actual fetching of the signals values. In order to get the signals from the Gen2 server the APP includes the Access Token in the request headers. The Gen2 server decides whether the request requires access control and if so involves the Gen2 access control  server to validate the request. If there is not Access Token and security is enable the request is rejected. If the token issued by the Access Token Server was opaque, the Gen2 access control server would need to contact it in each request, in order to obtain the access rights granted. If the token was a JWT, the Gen2 access control server will have all the information required to grant or deny the request. In any case, if the access rights granted match the requested path the request will be send to the Gen2 server that will send a response to the APP, otherwise the request will be rejected.
-
+          <div class="issue">The Client request to the ATS for an Access token should contain the Purpose. The ATS then uses the Purpose list document to assign the access scope, and verifies that the Role of this Client shall be allowed this access scope.</div>
         </p>
         <p>
           <figure id="fig-secure-signal-request">
@@ -734,8 +747,10 @@ In filter combinations where a search expression in the URI is combined with a s
       <section data-dfn-for="purpose">
         <h2>Purpose</h2>
         <p>
-        A Client MUST provide a Purpose as input to a request for an Access token. A list of supported purposes needs to exist for a client to select from, this list is typically created and owned by the Resource owner. Each entry in the list contains a short description of the purpose, which is what the Client shall provide as input to its request for an Access token. There is also a long description, which may be used in the dialogue for consent, if needed. Then there is a list of the roles, per sub-actor, that can be granted this access, and last there is a list of  the signals that the client is given access to for this purpose, with the allowed access mode. The list SHALL use a JSON format as shown in the example below.<br>
-        {"purposes": [{"short": "Pay as you drive", "long": "Insurance cost based on drive data.", "roles":{"user": ["OEM", "Owner"], "app": ["OEM", "Third party"], "device": ["Vehicle", "Cloud"], "signal_access": [{"path": "Vehicle.Drivetrain.Transmission.Speed", "access_mode": "read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", "access_mode":"read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Longitude", "access_mode": "read-only"}] }] }
+        A Client MUST provide a Purpose as input to a request for an Access token. A list of supported purposes needs to exist for a client to select from, this list is typically created and owned by the Resource owner. Each entry in the list contains a short description of the purpose, which is what the Client shall provide as input to its request for an Access token. There is also a long description, which may be used in the dialogue for consent, if needed. Then there is a list of the roles, per sub-actor, that can be granted this access, and last there is a list of  the signals that the client is given access to for this purpose, with the allowed access mode. The list SHALL use a JSON format as shown in the example below.<br><br>
+        {"purposes": [{"short": "Pay as you drive", "long": "Insurance cost based on drive data.", "roles":{"user": ["OEM", "Owner"], "app": ["OEM", "Third party"], "device": ["Vehicle", "Cloud"], "signal_access": [{"path": "Vehicle.Drivetrain.Transmission.Speed", "access_mode": "read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", "access_mode":"read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Longitude", "access_mode": "read-only"}] }] }<br><br>
+        The Purpose list SHALL be securely provisioned to the AT server. The protocol for this is out-of-scope. 
+        The AT server MUST reject all requests for Access tokens if it is not in possession of a Purpose list.
         </p>
       </section>
     </section>
