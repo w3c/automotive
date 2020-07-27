@@ -354,147 +354,204 @@ In filter combinations where a search expression in the URI is combined with a s
  
     <section data-dfn-for="access-control-model">
       <h2>Access control model</h2>
-      <div class="issue">We should include some motivation text and maybe reference to Extended Vehicle and other standards where vehicle data is exposed to third parties so justify the need for a solid access control model.</div>
       <p>
+      Access control MUST be supported. However, in this chapter only the sections that describe the interactions between the Client and the Gen2 server are normative.
       </p>
-      <section data-dfn-for="gen2-oauth-architecture">
-        <h2>Gen2 OAuth 2.0 architecture</h2>
-        <div class="issue">We might need a different name, as it is inspired on OAuth2 but uses a different transport mechanisms. We are not using HTTP redirects or headers, everything is a JWT.</div>
+
+      <section data-dfn-for="architecture">
+        <h2>Architecture</h2>
         <p>
-        The Gen2 access control model builds on the concepts of OAuth2.0 [[RFC6749]].<br>
-        OAuth2.0 introduces an authorization layer to separate the role of the client from that of the resource owner. The client requests access to resources controlled by the resource owner and hosted by the resource server, and is issued a set of credentials.<br>
-        To access protected resources, the client obtains an access token -- a string denoting a specific scope, lifetime, and other access attributes.  Access tokens are issued to clients by an authorization server with the approval of the resource owner, provided in the form of a Grant. OAuth 2.0 support different Grant Types.
-
-        The client uses the access token to access the protected resources hosted by the resource server.<br><br>
-        OAuth2.0 defines four actors:<br>
-        <b>Resource owner</b><br>
-        An entity capable of granting access to a protected resource.<br>
-        <b>Resource server</b><br>
-        The server hosting the protected resources, capable of accepting and responding to protected resource requests using access tokens.<br>
+        <em>This section is non-normative.</em><br>
+        The Gen2 access control model is inspired by the concepts of OAuth2.0 [[RFC6749]], but some deviations exist as is described in the following chapters.<br><br>
+        Four actors are defined:<br>
         <b>Client</b><br>
-        An application making protected resource requests on behalf of the resource owner and with its authorization.<br>
-        <b>Authorization server</b><br>
-        The server issuing access tokens to the client after successfully authenticating the resource owner and obtaining authorization.<br><br>
-        The abstract OAuth 2.0 flow illustrated in the figure below describes the interaction between the four actors.<br>
+        An application making protected resource requests on behalf of the User and with its authorization.<br>
+        <b>Access Grant server</b><br>
+        The server issuing the Access Grant credential after successfully authenticating the Client.<br>
+        <b>Access Token server</b><br>
+        The server issuing the Access Token to the Client after successfully validating the request and obtaining authorization.<br>
+        <b>Gen2 server</b><br>
+        The server hosting the protected resources, capable of accepting and responding to protected resource requests using Access Tokens.<br><br>
+        The abstract protocol flow illustrated in the figure below describes the interaction between the four actors.<br>
         <figure id="fig-oauth2.0-flow">
-          <img src="images/oauth2-protocol-flow.jpg" alt="OAuth2.0 abstract protocol flow.">
-          <figcaption> <span class="fig-title">OAuth2.0 abstract protocol flow.</span></figcaption>
+          <img src="images/gen2-abstract-flow.jpg" alt="Gen2 abstract protocol flow.">
+          <figcaption> <span class="fig-title">The abstract protocol flow.</span></figcaption>
         </figure>
-
-        Two different flows are supported in Gen2, which both follow the OAuth2.0 abstract flow, as will be described in the chapters below are based on OAuth 2.0 Bearer token authentication [[RFC6750]]. The main difference between them is how the Grant, in our case the Grant Token, is obtained.
-
-        The actor names are however changed as shown in the table below.<br><br>
-		    <table border="1">
-    			<tr><th>OAuth2.0 name</th><th>Gen2 name</th></tr>
-    			<tr>
-    				<td>Client</td>
-    				<td>Client</td>
-    			</tr>
-    			<tr>
-    				<td>Resource Owner</td>
-    				<td>Access Grant server</td>
-    			</tr>
-    			<tr>
-    				<td>Authorization server</td>
-    				<td>Access Token server</td>
-    			</tr>
-    			<tr>
-    				<td>Resource server</td>
-    				<td>Gen2 access control server</td>
-    			</tr>
-		    </table><br>
-	     A detailed description of each actor is found in following chapters.
+        Besides the four actors directly involved in the abstract flow, there are two more actors.<br>
+        <b>Resource owner</b><br>
+        This is typically the driver of the vehicle, who may be asked for consent before access is granted.<br>
+        <b>Ecosystem manager</b><br>
+        The entity managing the access control ecosystem. It controls the Policy documents, and manages the PKI ecosystem that the other actors may utilize.<br><br>
+        The abstract protocol flow is implemented by two different flows, as will be described in the following chapters.<br>
+        The process to obtain the credentials needed for Client authentication is out-of-scope, as well as the installation procedures for the applications.
         </p>
       </section>
+
+      <section data-dfn-for="access-control-flows">
+        <h2>Protocol flows</h2>
+        <p>
+        <em>This section is non-normative.</em><br>
+        Two different flows are described. Which flow to use depends on the capabilities of the Client.<br>If a Client is able to run public key cryptographic primitives, 
+        i.e. key pair generation and signatures, and has access to some kind of trusted execution environment where private keys are protected from the regular execution environment, 
+        then it can use the PKI based flow. Clients that do not have access to these capabilities, or do not want to use them, must select the JWT based flow.<br>
+        The advantage of using the PKI based flow is that the Client does not have to contact the AGS when it needs a new Grant token, as it can self issue a new. 
+        In the JWT based flow the Client must contact the AGS in every time it needs a new Grant token.<br>
+        A Client selects the type of flow by either submitting a public key in the AG message, or not. The latter leading to a JWT based flow.
+        </p>
+      </section>
+
+      <section data-dfn-for="protocol-messages">
+        <h2>Protocol messages</h2>
+        <em>This section is non-normative.</em><br>
+        This chapter describes the payloads of the messages used in the protocol flow.
+
+        <section data-dfn-for="authorization-grant-request">
+          <h2>Access Grant request</h2>
+          <p>
+          The request shall contain the first three parameters below, the fourth is optional:
+          <ul>
+            <li>VIN: The vehicle identification number of the vehicle the Client wants to have access to.</li>
+            <li>Role: The role that the Client wants to be assigned. The role consists of a triplet of roles for User, App, and Device.</li>
+            <li>Credentials: The credentials the Client want to present to the AG server in order for authentication of its sub-actors User, App, and Device</li>
+            <li>Public key: If this parameter is present in the request it shall contain a public key of a key pair generated and owned by the Client.</li>
+          </ul> 
+          </p>
+        </section>
+
+        <section data-dfn-for="authorization-grant-response">
+          <h2>Access Grant response</h2>
+          <p>
+          The Access Grant response differs depending on whether the Client requested to self sign AG tokens, or to get an AG token signed by the AG server.<br>
+          In respective case, a successful response shall contain the following parameters:
+        <section data-dfn-for="ags-signed-token">
+          <h2>AGS signed AG token</h2>
+          <ul>
+            <li>AG token: The Access Grant token to directly use as input to the Access Token server.</li>
+          </ul>
+          </section>
+
+        <section data-dfn-for="client-signed-token">
+          <h2>Client signed AG token</h2>
+          <ul>
+            <li>Public key: The public key that the Client provided in the request.</li>
+            <li>Expiry time: The expiry time for the self certified AG tokens that the Client will create.</li>
+            <li>Client role: The role assigned to the Cient.</li>
+            <li>Signature: The signature of the three claims above, signed using the AGS private key.</li>
+          </ul>
+          An error response shall contain the following parameters:
+          <ul>
+            <li>Error code: The error code shall be informative in order for the Client to understand what it needs to correct to become successful.</li>
+          </ul> 
+          </p>
+        </section>
+        </section>
+
+        <section data-dfn-for="access-token-request">
+          <h2>Access Token request</h2>
+          <p>
+          The request shall contain the following parameters:
+          <ul>
+            <li>AG token: The Access Grant token must be JWT based. 
+            If the AG token the Client received from the AG server was PKI based, then it must generate and self sign a JWT based AG token.</li>
+            <li>Purpose: The Purpose must be the short name of a Purpose found on the Purpose list owned by the Ecosystem manager.</li>
+          </ul> 
+          </p>
+        </section>
+
+        <section data-dfn-for="access-token-response">
+          <h2>Access Token response</h2>
+          <p>
+          A successful response shall contain the following parameters:
+          <ul>
+            <li>Access token: The Access token to be used in Client requests to the Gen2 server for Proteced Resources.</li>
+          </ul> 
+          An error response shall contain the following parameters:
+          <ul>
+            <li>Error code: The error code shall be informative in order for the Client to understand what it needs to correct to become successful.</li>
+          </ul> 
+          </p>
+        </section>
+
+        <section data-dfn-for="protected-resource-request">
+          <h2>Protected Resource request</h2>
+          <p>
+          This is the Gen2 request including an Access token that is described in general in the Interface chapter, and for different transport protocols in the Gen2 CORE document.
+          </p>
+        </section>
+
+        <section data-dfn-for="protected-resource-response">
+          <h2>Protected Resource response</h2>
+          <p>
+          This is the Gen2 response that is described in general in the Interface chapter, and for different transport protocols in the Gen2 CORE document.
+          </p>
+        </section>
+      </section>
+
+      <section data-dfn-for="actors">
+        <h2>Actors</h2>
 
       <section data-dfn-for="client">
         <h2>Client</h2>
-
-        <div class="issue">I think USER needs a separate section, we need to show the distinction between client and USER because in OAuth, the USER delegates in the client, the user is not part of the client, although client requests have USER attributes attached somehow ...</div>
         <p>
-          <div class="issue">Describe the combi-role model. Isaac: I tried to include the concept when defining the subactors without actually naming it.</div>
+        <em>This section is non-normative.</em><br>
+          The Client is an abstract representation of three sub-actors: 
+          <ul>
+            <li>The Device.</li>
+            <li>The App.</li>
+            <li>The User.</li>
+          </ul> 
+          The Device is in charge of running the Apps that make requests to the VSS server.<br>
+          The App runs requests on behalf of the User.<br>
+          The User refers to the entity delegating access rights to the App.
         </p>
-        <p>
-          In our architecture there are three subactors that together represent the Client actor: The client DEVICE, the client APP and the USER behind it. All of them need to cooperate for a successful request. Depending on the kind of DEVICE, the APP permissions and the USER roles, different access control decision will be made.
-        </p>
-        <div class="issue">We need to align this with the roles ...</div>
-        <p>
-          The DEVICE is in charge of running the APPs that make requests to the VSS server. In general terms it could be the in-vehicle system, an user device or an Internet server. Presumably, APPs running in the vehicle will be intrinsically trusted, but for APPs running in the USER's device or in a Third-party server there might be a need to check the DEVICE capabilities.
-          OAuth makes a distinction between public client and confidential client, being the later able to securely authenticate with the authorization server. For that purpose, it would be interesting check whether the DEVICE has some kind of Trusted Execution support that enables cryptographically assured DEVICE attestation. 
-          Also, location of the DEVICE could be relevant for access control decisions. If the server is in a different country data regulation might impose restrictions. Also, if the DEVICE is a smart-phone it might be relevant whether the request was performed inside the car or from home.
-        </p>
-        <p>
-          The APP runs requests on behalf of the USER. During development and APP building some restriction could be imposed on the kind of information the APP can fetch from the VSS server. The developer might need provide the source code before the APP is assigned certain permissions. Permissions are assigned at building time and stay the same during the whole APP life cycle, so no new permissions can be assign after that. However the USER might have the option to deactivate some of the permissions depending on the platform running the APP.
-        </p>
-        
-        <p>
-          The USER refers to the entity delegating access rights to the APP. Different users might be involved in a single use case. The OEM might delegate access to some piece of information under its control, e.g. some data about the engine, but for driving data the driver's permission might be needed. Also, is the APP requires to access some vehicle identity the owners consent might be required.
-        </p>   
-        <div class="issue">I intentionally used delegation, permission and consent as synonyms in this last paragraph, we need to agree on the most precise and clear term for the reader.</div>
-
       </section>
+
       <section data-dfn-for="access-grant-server">
         <h2>Access Grant server</h2>
-        <div class="issue">Who runs the Access Grant server??Ulf:Typically the OEM. Referring to OAuth2.0 abstract I would say the Resource Owner, but in the automotive ecosystem that is not pointing to one entity, but rather two: Vehicle Owner and OEM.</div>
         <p>
-          The Access Grant Server (AGS) is in charge of producing Grants, in the form of JWT Tokens to Clients, called Grant Tokens. Users need to register to the AGS in order to approve clients. Clients also need to be registered to the AGS before requesting a GT from the AGS on behalf on an user. In every request, clients need to securely authenticate themselves and user approval needs to be checked, taking into account different information involving for example purpose. 
-        <div class="issue">Purpose is not presented to the AGS but to the ATS. The clause above talk about both registration and authentication. This needs to be described in more detail.</div>
-        </p>
-        <p>
-          Depending on the capabilities of the client, the specification support two types of Grant Tokens. On the one hand, self issued Grant Tokens are supported for those clients able to run public key cryptographic primitives, i.e. key pair generation and signatures, and is the recommended choice for clients with access to some kind of trusted execution environment where private keys are protected from the regular execution environment. On the other hand, the specification supports Grant Tokens issued by the Access Grant Server. This choice requires no extra capabilities in the client, but forces the client to contact the AGS in every request for a new Grant token.<br><br>
-        Specify input/output in Client/AGS interaction:<br>
-        Client input: VIN, Role, Public key (optional), Credentials)<br>
-        Server output: PKI based - <br>
-        Server output: Token based - AG token containing fields for: Role, Expiry time, Issuer, 
-        </p>
-
-          <section data-dfn-for="pki-based-grant-request">
-          <h2>PKI based Grant Token request</h2>
-          <p>
-            As a first step before any interaction with the Gen2 server, the client needs to be registered in the system. This process involves three actors: The client device (DEVICE), the client application (APP) and the user that installs the application (ADMIN). All of them need to cooperate for a successful client registration. The registration and approval process for the client would be as follows:
-          </p>
+        <em>This section is non-normative.</em><br>
+          The Access Grant server (AGS) is in charge of producing Access Grants to Clients.<br>
+          Depending on the capabilities of the Client, the specification supports two types of Access Grant Tokens.<br>
+          Client self issued Access Grant Tokens, referred to as Client signed AG tokens in this document, are supported for those Clients able to run public key cryptographic primitives, 
+          i.e. key pair generation and signatures, 
+          and is the recommended choice for Clients with access to some kind of trusted execution environment where private keys are protected from the regular execution environment.<br>
+          The specification also supports Grant Tokens issued by the Access Grant Server, referred to as AGS signed AG tokens in this document. 
+          This choice requires no extra capabilities in the client, but forces the client to contact the AGS in every request for a new Access Grant token.<br><br>
+          The Client request shall contain the following:
           <ul>
-            <li>The ADMIN installs the APP in the device. ADMIN could be the OEM in the case of an APP that is installed in the car, it be a third party adding services to the car, or deploying an application in the cloud, or it could be the owner/driver itself installing an application in its personal device.</li> 
-            <li>The APP generates a key pair. In this step the APP needs to generate a key pair. The private key would be used to authenticate request coming from this APP/Client. In order to verify the requests, the public key should be uploaded to the system. If a device supports key attestation, then the key could be accompanied by a key attestation certificate that would help the system identify the DEVICE.</li>
-            <li>The ADMIN register the APP by confirming to the AGS its public key. In this step no permissions are assigned to the APP, the ADMIN registering the APP should only check that the public key is properly registered in the AGS. Also, the APP needs to provide some kind of Proof-of-Possession, e.g. [[RFC7800]]
-            </li>
-            <li>After successful registration the ADMIN can define some acceptable permissions with associated purposes to the APP. The permission definition process is completely decoupled from the access control decisions, as the user installing the application could be different than the user on behalf of which the APP is requesting the signals.</li>
-          </ul>
-
-          After APP registration, USERs can delegate access to them in the AGS. The process of delegating access involves confirming whether all permissions assigned by the ADMIN are accept or just a subset of them. Access can also be revoked to all or just a subset of permissions. USERs can only delegate access to those signals they have been granted access to.
-          <div class="issue">Who grants access to users? Who issues and manages roles? Is the AGS in charge of that?<br>Ulf: I think we should keep the ADMIN out of scope here. The APP installment as such do not have to lead to any interaction with this access control system. The permissions/purpose setup should also be kept out-of-scope in this context. In the Purpose chapter I describe a document, the Purpose list that the ATS is provisioned by the "Resource owner" (typically OEM), which links purposes to both permissions and roles. In my view a Client is an abstract representation of the three subactors USER, APP, DEVICE, and a Client is "created" at the point when these three subactors authenticate/register with the AGS. The "credentials" that the AGS returns to the APP is the "proof" of the Client's existence. The Client shall in its request to the AGS include which role (User/App/Device) it desires. It is up to the AGS, through authentication and other means to decide whether the role request shall be granted. The exact details of how that decision is taken is out-of-scope.</div>
-
-          Registered APPs can request access to any signal they were delegated access to. In order to do so, the APP needs to request an Access Token to the Access Token Server, indicating the particular target signal path. In this request, the APPs needs to include also an identifier of is public key and a Proof-of-Possesion of the private key. A JWT signed by the private key of the APP, including the current unix time will serve that purpose.
-
-          The Access Token Server will validate the request as following:
-          <ul>
-            <li>It needs to check that the Key ID corresponds to a registered APP and recover the corresponding Public Key. If there is not APP registered with this key ID the request will be rejected.</li>
-            <li>It will check the JWT digital signature using the public key of the APP. If the digital signature verification fail the request will be rejected.</li>
-            <li>It will check the timestamp included in the JWT, in case the timestamp is too old, the request will be denied.</li>
-            <li>Finally, it will check that the signal path requested is included both in the permissions assigned at registration time by the ADMIN and the access rights of the USER behind the request.</li>
-            <div class="issue">That final steps is the most complex, as it has to deal with the access control policy, i.e. RBAC or similar proposals. The other steps are very straightforward. We might need a separate section just for that and omit this in the flows to avoid unnecessary complexity when following them.Ulf:I think we should base it on RBAC. I agree that it should probably be in its own chapter, referred to here</div>
+            <li>A VIN.</li>
+            <li>A Role.</li>
+            <li>Credentials.</li>
           </ul> 
-
-          <p>
-          <figure id="fig-sequence-diagram-pki-based-flow">
-            <img src="images/grant-token-request-pki.svg" alt="Sequence diagram showing a PKI based flow">
-            <figcaption> <span class="fig-title">Sequence diagram showing a PKI based flow</span></figcaption>
-          </figure>
+          If the Client plans to self sign AG tokens, then the request shall also contain:
+          <ul>
+            <li>A public key.</li>
+          </ul> 
+          The Vehicle identifiation number shall be for the vehicle that the Client wants to access.<br>
+          The Role contains roles for each of the three sub-actors that the Client represents.<br>
+          The credentials are to be used for authentication of each of the three sub-actors that the Client represents.<br>
+          The public key shall be generated by the Client, and the associated private key must be under control of the Client.<br><br>
+        The main responsibilities of the Access Grant server are:
+          <ul>
+            <li>To authenticate the Client sub-actors, and assess that their respective role request can be granted.</li>
+            <li>To check that the vehicle represented by the VIN belong to this Ecosystem, and is accessible.</li>
+            <li>To create an Access Grant.</li>
+          </ul>
+          The credentials for respective sub-actor shall be a certificate from a Certificate Authority known by the AG server. The AG server shall validate the certificate signature, 
+          and utilize certificate information to assess that the requested role can be granted.<br>
+          <div class="issue">The authentication process might need some more work.</div>
+          The AG server may contact the Ecosystem manager for checking the VIN.<br>
+          The Access Grant generation for the case of a Client request to get an AG server issued AG token results in an AG token as defined in the chapter AGS signed AG token.<br>
+          For the case of a Client request to self issue AG tokens, the AG server shall return the public key, the Role, 
+          the expiry time for any AG tokens that the Client issues, and a digital signature of the mentioned parameters, as described in the chapter Client signed AG token.
+        </p>
           </p>
-
         </section>
-
-
-        <section data-dfn-for="token-based-request">
-          <h2>Token based request</h2>
-          <p>
-          </p>
-        </section>
-      </section>
 
       <section data-dfn-for="access-token-server">
         <h2>Access Token server</h2>
         <p>
+        <em>This section is non-normative.</em><br>
         The Client shall after a successful interaction with the AG server request an Access token from the Access Token server. 
         The Client input in that request must be:
           <ul>
@@ -502,11 +559,11 @@ In filter combinations where a search expression in the URI is combined with a s
             <li>A Purpose.</li>
           </ul>
         The Access Grant token is, depending on which of the two flows used by the Client, either generated and signed by the AG server, or generated and self-signed by the Client.<br>
-        The Purpose must be supported by the Resource Owner, and thus be on the Purpose list, see the chapter Purpose.
+        The Purpose must be supported by the Ecosystem manager, and thus be on the Purpose list, see the chapter Purpose list.<br>
         The main responsibilities of the Access Token server are:
           <ul>
             <li>To validate the Access Grant token.</li>
-            <li>To map the Purpose to access of relevant signals.</li>
+            <li>To validate that the Client has permission for the requested Purpose.</li>
             <li>To create an Access Token.</li>
           </ul>
         The validation of the AG token consists of at least the following:
@@ -515,28 +572,21 @@ In filter combinations where a search expression in the URI is combined with a s
             <li>Expiry time check.</li>
           </ul>
         The signature validation is handled differently depending on whether the token contains a public key or not. <br>
-        If it does, then it is signed by the private key associated with this public key, and thus the validation is performed using that key. 
-        If this validation is successful, then the authenticity of the public key must also be validated.<br>
-        In the case the AG token has been signed by the AG server, the validation requires that the Access Grant server and the Access Token server previously have set up a trust relationship by e. g.  sharing a common secret or the like. 
-        The details of such a relationship is out-of-scope.<br>
-        The expiry time MUST be later than the current system time of the AT server run-time. To allow for some time synchronization inaccuracy an error of tens of seconds may be allowed.<br>
-        The mapping of Purpose to the set of signals relevant for the purpose is done by using the document described in the chapter "Purpose". 
-        If the Client role as declared in the AG token is not found in the set of allowed roles in the Purpose mapping document then the client request for an Access token MUST be denied. 
-        The Access token MUST contain the following fields:
-          <ul>
-            <li>The set of signals associated to the purpose.</li>
-            <li>Expiry time.</li>
-            <li>Issuer identity.</li>
-          </ul>
+        If it does, then the token is signed by the private key associated with this public key, and thus the validation is performed using the public key. 
+        If this validation is successful, then the authenticity of the public key must also be validated. This is done by validating the public key signature claim, 
+        which is signed using the AG server private key, so the validation is done using the AG server public key.<br>
+        In the case the AG token has been signed by the AG server, the AG token validation is done directly with the AG server public key.<br>
+        The expiry time must be later than the current system time of the AT server run-time. To allow for some time synchronization inaccuracy an error of tens of seconds may be allowed.<br>
+        If the Client role as declared in the AG token is not found in the set of allowed roles for the requested Purpose in the Purpose list document 
+        then the client request for an Access token must be denied.<br>
+        The Access token generation shall result in an AG token as defined in the chapter Access token.
         </p>
       </section>
 
-
-      <section data-dfn-for="gen2-secure-signal-request">
-        <h2>Gen2 secure signal request</h2>
+      <section data-dfn-for="gen2-access-control-server">
+        <h2>Gen2 access control server</h2>
         <p>
-
-        If the Gen2 server implements access control, then it MUST support validation of Access tokens.
+        The Gen2 server MUST support validation of Access tokens.
         This includes validation of at least the following:
           <ul>
             <li>Token signature.</li>
@@ -549,8 +599,11 @@ In filter combinations where a search expression in the URI is combined with a s
           If not delegated, then a preprovisioned common secret may be shared with the AT server, or other PKI based solutions may be used.<br>
           The Gen2 server SHALL have access to a secure system time, that cannot be modified by actors without system acknowledged credentials. 
           Time validation may allow for a time synchronization inaccuracy in the range of tens of seconds.<br>
-          A successful scope validation requires that all the nodes addressed by the path in the request MUST be matched by the paths in the scope field of the Access token.<br>
-          The access mode validation MUST have the outcome shown in the table below, which compares the type of request with the access control mode field in the Access token.<br><br>
+          A successful scope validation requires that all the nodes addressed by the path in the request MUST be matched by the paths associated to the Purpose in the scope claim of the Access token.<br>
+          The AT server may perform validations of the Device and App roles, such as MAC address checks, message round-trip measurements, etc.<br>
+          The access mode validation MUST have the outcome shown in the table below, 
+          when comparing the type of the Client request with the access control mode in the Purpose list that is associated to the scope claim in the Access token.
+          If the Client request contains several signals, and one fails the validation, then the entire request MUST be rejected.<br><br>
           <table class="simple">
           <thead>
             <tr><th>Validation</th><th>Read-only</th><th>Read-write</th></tr>
@@ -566,52 +619,174 @@ In filter combinations where a search expression in the URI is combined with a s
           </table>
         </p>
         <p>
-          Access Token need to be refreshed periodically. In order to obtain an Access Token, the client needs to contact the Access Grant Server and provide a Grant Token in the form of a JWT with all the information required to validate access rights for this request.
+          The Access Token need to be refreshed periodically, which is controlled by the expiry time. If the AG token that the Client used to obtain the now expired token is not expired, 
+          then the Client can revisit the AT server with this AG token to obtain a new Access token.<br>
+          If the AG token is expired, then the Client must obtain a new AG token first, before revisiting the AT server. 
+          The process for this depends on whether the Client has the capability to self sign AG tokens ,
+          in which case it can generate the new AG token itself, given that the expiry time for this has not expired.<br>
+        For Client requests that are not granted due to access control, the Gen2 server MUST return one of the error codes shown in the table below.<br>
+        <table id="errorDefs" class="parameters">
+	  <tbody><tr>
+	    <th>Error&nbsp;Number&nbsp;(Code)</th>
+	    <th>Error Reason</th>
+	    <th>Error Message</th>
+	  </tr>
+	  <tr>
+	    <td>404 (Not Found)</td>
+	    <td>missing_token</td>
+	    <td>One or more of the requested signals are access controlled, an access token must be included in the request.</td>
+	  </tr>
+	  <tr>
+	    <td>406 (Not Acceptable)</td>
+	    <td>invalid_token</td>
+	    <td>A fresh access token must be obtained.</td>
+	  </tr>
+	  <tr>
+	    <td>406 (Not Acceptable)</td>
+	    <td>insufficient_priviledges</td>
+	    <td>The priviledges represented by the access token are not sufficient.</td>
+	  </tr>
+	  </tbody>
+	</table>
         </p>
-        <p>
-          After successful validation, the APPs receives an Access Token that can be used later on to when querying the Gen2 Server. 
-          <div class="issue">This Access Token can be opaque or in the form of an JWT signed by the Access Token Server that includes access rights granted. Should we recommend one of the two options or leave it open? Ulf:I definitively think it should be the latter.</div>
-          The last phase of the flow is the actual fetching of the signals values. In order to get the signals from the Gen2 server the APP includes the Access Token in the request headers. The Gen2 server decides whether the request requires access control and if so involves the Gen2 access control  server to validate the request. If there is not Access Token and security is enable the request is rejected. If the token issued by the Access Token Server was opaque, the Gen2 access control server would need to contact it in each request, in order to obtain the access rights granted. If the token was a JWT, the Gen2 access control server will have all the information required to grant or deny the request. In any case, if the access rights granted match the requested path the request will be send to the Gen2 server that will send a response to the APP, otherwise the request will be rejected.
-          <div class="issue">The Client request to the ATS for an Access token should contain the Purpose. The ATS then uses the Purpose list document to assign the access scope, and verifies that the Role of this Client shall be allowed this access scope.</div>
-        </p>
-        <p>
-          <figure id="fig-secure-signal-request">
-            <img src="images/signal-request.svg" alt="Secure signal request sequence diagram">
-            <figcaption> <span class="fig-title">Sequence diagram showing a secure signal request</span></figcaption>
-          </figure>
-          </p>
-
       </section>
 
-      <section data-dfn-for="access-control-flows">
-        <h2>Access control flows</h2>
-    
+      <section data-dfn-for="resource-owner">
+        <h2>Resource owner</h2>
+        <p>
+        <em>This section is non-normative.</em><br>
+        The Resource owner is typically the owner and/or driver of the vehicle. If Consent is required for granting access to the protected resource, 
+        then it should be directed to the Resource owner.
+        </p>
+      </section>
 
-        <section data-dfn-for="token-based-flow">
-          <h2>Token based flow</h2>
+      <section data-dfn-for="ecosystem-manager">
+        <h2>Ecosystem manager</h2>
+        <p>
+        <em>This section is non-normative.</em><br>
+        The Ecosystem manager is the entity responsible for the functionality of the access control system. This typically includes the management of the Access Grant server, 
+        and the Access Token server, the Policy documents, and that there is a PKI domain for the other actors to utilize. 
+        </p>
+      </section>
+      </section>
+
+      <section data-dfn-for="credentials">
+        <h2>Credentials</h2>
+        <p>
+        </p>
+
+        <section data-dfn-for="client-authentication">
+          <h2>Client authentication</h2>
           <p>
-          <figure id="fig-sequence-diagram-token-based-flow">
-            <img src="images/token-based-flow.jpg" alt="Sequence diagram showing a token based flow">
-            <figcaption> <span class="fig-title">Sequence diagram showing a token based flow</span></figcaption>
-          </figure>
+          <em>This section is non-normative.</em><br>
+          The three Client sub-actors must provide authentication credentials to the AG server. 
+          This may be certificates that the sub-actors have obtained from a Certificate Authority that is known by the AG server. 
+          The interactions related to this is out of scope.
           </p>
         </section>
-        <section data-dfn-for="flow-negotiation">
-          <h2>Flow negotiation</h2>
+
+        <section data-dfn-for="authorization-grant-token">
+          <h2>Access Grant Token</h2>
           <p>
-          (A solution could be as described. 
-          A client can in its request to the AG server either provide a public key, or not.
-          If it does, then that signals that the client requests a PKI based flow.
-          If it is missing then that signals that the client requests a token based flow.
-          The AG server may return an error code if a PKI based flow is requested, but it does not have sufficient trust in the client.
-          The AG server may return an error code if a token based flow is requested, but the server requires a PKI based flow.)
+          <em>This section is non-normative.</em>
+          </p>
+
+          <section data-dfn-for="client-signed-agtoken">
+            <h2>Client signed AG Token</h2>
+            <p>
+          The Client self signed Access Grant token shall have the following claims in header and payload.<br>
+	  <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>          
+	  {
+            "alg": "HS256",
+            "typ": "JWT"
+          },
+          {
+            "iat": 1609452095,
+            "exp": 1609459199,
+            "clr": "user+app+dev",
+            "pub": client_pub_key
+            "sig": digital_signature
+            "aud": "w3.org/gen2",
+            "jti": "5967e92e-40e8-5f39-892d-cc0da890db1d"
+          }
+	  </pre>
+	  Algorithm (alg) shall be set to "HS256".<br>
+	  Type (typ) shall be set to "JWT".<br>
+          Issued at (iat) shall be set to the time of token issuance, in Unix time.<br>
+          Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
+          Client role (clr) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
+          Public key (pub) shall be set to the binary public key that the Client provided in the AG request.<br>
+          Digital signature (sig) shall be set to the digital signature of the claims pub, exp, and clr according to the following.<br>
+          The signature is calulated on the data from a concatenation as follows:<br> 
+          <b>Public key&#124W3C-Gen2&#124Expiry time&#124W3C-Gen2&#124Client role</b><br>
+          where "W3C-Gen2" is a case sensitive text string, and "&#124" is a vertical line character.<br>
+          Audience (aud) shall be set to the URL "w3.org/gen2".<br>
+          JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the Ecosystem manager.
+            </p>
+          </section>
+
+          <section data-dfn-for="ags-signed-agtoken">
+            <h2>AGS signed AG Token</h2>
+            <p>
+          The Access Grant token signed by the AG server shall have the following claims in header and payload.<br>
+	  <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>          
+	  {
+            "alg": "HS256",
+            "typ": "JWT"
+          },
+          {
+            "iat": 1609452095,
+            "exp": 1609459199,
+            "clr": "user+app+dev",
+            "aud": "w3.org/gen2",
+            "jti": "5967e92e-40e8-5f39-892d-cc0da890db1d"
+          }
+	  </pre>
+	  Algorithm (alg) shall be set to "HS256".<br>
+	  Type (typ) shall be set to "JWT".<br>
+          Issued at (iat) shall be set to the time of token issuance, in Unix time.<br>
+          Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
+          Client role (clr) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
+          Audience (aud) shall be set to the URL "w3.org/gen2".<br>
+          JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the Ecosystem manager.
+            </p>
+          </section>
+        </section>
+
+        <section data-dfn-for="access-token">
+          <h2>Access Token</h2>
+          <p>
+          The Access token SHALL have the following claims in header and payload.<br>
+	  <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>          
+	  {
+            "alg": "HS256",
+            "typ": "JWT"
+          },
+          {
+            "iat": 1609452095,
+            "exp": 1609459199,
+            "scp": "PurposeX",
+            "clr": "user+app+dev",
+            "aud": "w3.org/gen2",
+            "jti": "5967e93f-40f9-5f39-893e-cc0da890db2e"
+          }
+	  </pre>
+	  Algorithm (alg) shall be set to "HS256".<br>
+	  Type (typ) shall be set to "JWT".<br>
+          Issued at (iat) shall be set to the time of token issuance, in Unix time.<br>
+          Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
+          Scope (scp) shall be set to the Purpose short name, which logically links to the signal scope as defined in the Purpose list.<br>
+          Client role (clr) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
+          Audience (aud) shall be set to the URL "w3.org/gen2".<br>
+          JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the Ecosystem manager.
           </p>
         </section>
       </section>
 
-      <section data-dfn-for="role-based-access-control-model">
-        <h2>Role based access control model</h2>
+      <section data-dfn-for="client-roles">
+        <h2>Client roles</h2>
         <p>
+        <em>This section is non-normative.</em><br>
         The Client actor described in the Client chapter is characterized by three subactors:
           <ul>
             <li>The device.</li>
@@ -629,6 +804,7 @@ In filter combinations where a search expression in the URI is combined with a s
         As an example, a request for a Vehicle device role may be verified by the device MAC address, while a request for a Nomadic device role may be verified by a message round-trip time measurement. <br>
         From a security point of view a Client should not have access to more vehicle signals than are necessary, following the principle of least priviledge. This is achieved by the Purpose document described in the Purpose chapter, that assigns only the for the Purpose relevant signals to the Client. 
         </p>
+
         <section data-dfn-for="device-roles">
           <h2>Device roles</h2>
           <p>
@@ -644,6 +820,7 @@ In filter combinations where a search expression in the URI is combined with a s
           A Cloud device is used for applications that are deployed in any other off-vehicle device.<br>
           </p>
         </section>
+
         <section data-dfn-for="application-roles">
           <h2>Application roles</h2>
           <p>
@@ -657,6 +834,7 @@ In filter combinations where a search expression in the URI is combined with a s
           A Third party application is used for applications that are "certified" for vehicle deployment, but developed by a third party.<br>
           </p>
         </section>
+
         <section data-dfn-for="user-roles">
           <h2>User roles</h2>
           <p>
@@ -679,17 +857,53 @@ In filter combinations where a search expression in the URI is combined with a s
           </p>
         </section>
       </section>
-      <section data-dfn-for="access-control-selection-model">
-        <h2>Access control selection model</h2>
-        <p>This chapter describes a complementary functionality to the access control model, the ability to apply it selectively to parts of the tree. 
+
+      <section data-dfn-for="policy-documents">
+        <h2>Policy documents</h2>
+        <p>
+        <em>This section is non-normative.</em><br>
+        The Policy documents are typically owned and created by the Ecosystem manager. They need to be handled securely to protect their integrity. 
+        The Ecosystem manager shall securely provision them to the Access Token servers in the access control ecosystem.
+        </p>
+
+          <section data-dfn-for="purpose-list">
+            <h2>Purpose list</h2>
+            <p>
+        A Client shall provide a Purpose as input to a request for an Access token. A list of supported purposes needs to exist for a client to select from. The Ecosystem manager shall therefore provide means for Cliens to survey the list to find a Purpose hat fits its use case.<br>
+        Each entry in the list contains a short description of the purpose, which is what the Client shall provide as input to its request for an Access token. There is also a long description, which may be used in the dialogue for consent, if needed. Then there is a list of the roles, per sub-actor triplet, that can be granted this access, and last there is a list of  the signals that the client is given access to for this purpose, with the allowed access mode. The list may use a JSON format as shown in the example below.<br><br>
+        {"purposes": [{"short": "Pay as you drive", "long": "Insurance cost based on drive data.", "roles":[ ["OEM", ["OEM", "Third party"], "Vehicle"], [ ] ], "signal_access": [{"path": "Vehicle.Drivetrain.Transmission.Speed", "access_mode": "read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", "access_mode":"read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Longitude", "access_mode": "read-only"}] }, {}] }<br><br>
+        The Purpose list shall be securely provisioned to the AT server. The protocol for this is out-of-scope. 
+        The AT server must reject all requests for Access tokens if it is not in possession of a Purpose list.
+            </p>
+          </section>
+
+          <section data-dfn-for="scope-list">
+            <h2>Scope list</h2>
+            <p>
+            The Scope list contains a list of the VSS tree nodes for which access shall be prohibited, per Client role. 
+            This prohibition is regardless of whether the Client has a valid Access token or not.<br>
+            The Scope list can also be used to limit the node metadata that is returned on a Client service discovery request.<br>
+            Each entry in the list contains a list of paths to nodes that should be excluded, and a list of the roles, per sub-actor triplet, for which this exclusion should be made.<br>
+            The list may use a JSON format as shown in the example below.<br><br>
+        {"scope": [{"roles":[ [ ["Driver", "Passenger"], "Third party", "Vehicle"], [ ] ], "no_access": ["Vehicle.Drivetrain.Transmission.Speed", "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Longitude"]}, {}] }<br><br>
+        The Scope list shall be securely provisioned to the AT server. The protocol for this is out-of-scope.
+        The AT server shall not restrict the scope for any Client role if it is not in possession of a Scope list.
+            </p>
+          </section>
+      </section>
+
+      <section data-dfn-for="access-control-selection">
+        <h2>Access control selection</h2>
+        <p>
+        <em>This section is non-normative.</em><br>
+        This chapter describes a complementary functionality to the access control model, the ability to apply it selectively to parts of the tree. 
         It can be used in cases where not all nodes of the tree are believed to require access control, 
         or read-only is sufficient instead of read-write access control for certain nodes.<br>
-        This functionality requires that the Access token contains access permission data specifying whether the access to a node is read-only, or read-write.
+        This functionality requires that the Access token specifies whether the access granted to the Client to a signal is read-only, or read-write.
         It also requires that the metadata for the node in the VSS tree contains data specifying whether the access control verification should be carried out only for write request, 
         or for both read and write requests.<br>
-        The former requirement is realized by having a field in the Access token named "acm" specifying the access control mode. 
-        This field can either contain the string "read-only", or "read-write". 
-        The client request to the Access token server MUST contain either of these string values for every node in the request.<br>
+        The former requirement is realized as described in earliers chapters by that the Access token scope claim links to a Purpose entry in the Purpose list 
+        where the signals and their respective access mode are found.<br>
         The latter requirement is realized by adding to nodes in the VSS tree the key-value pair "validate":'access-control-mode', 
         where 'access-control-mode' is either the string "write-only", or "read-write".<br>
         <figure id="fig-access-control-selection">
@@ -697,13 +911,12 @@ In filter combinations where a search expression in the URI is combined with a s
           <figcaption> <span class="fig-title">Access control selection tagging.</span></figcaption>
         </figure>
         The figure above shows an example where both read and write requests to the three leftmost leaf nodes will be access controlled, 
-        while the two rightmost leaf nodes only will be access controlled for write requests.<br>
+        while the two rightmost leaf nodes only will be access controlled for write requests. 
+        An inheritance rule leads to that any nodes below a tagged node are assigned the same access control, if they are untagged.<br>
         This metadata is not likely to be applied to the standardised VSS tree, as different users of this standard may have different views on which nodes to apply it to. 
-        Instead it is anticipated that it is applied at a "deployment" stage, possibly using the VSS layering concept. 
-        To make possible a reduction of the number of nodes this metadata have to be added to, an inheritance model is used. 
-        If access-control-mode data is added to a node, then all nodes in the subtree for which this node is the root inherits the setting, 
-        unless there is access-control-mode data added to any node in this subtree. 
-        In such cases this new access-control-mode setting is inherited by the subtree of this node. 
+        Instead it is anticipated that it is applied at a "deployment" stage, possibly using the VSS layering concept.<br>
+        The inheritance model, which says that if access-control-mode data is added to a node, then all nodes in the subtree for which this node is the root inherits the setting, 
+        unless there is access-control-mode data added to any node in this subtree, makes possible a reduction of the number of nodes this metadata have to be added to.<br>
         This allows for example an entire VSS tree to be assigned an access-control-mode by merely applying it in the root of the tree.<br>
         The figure below shows an overview of the access control selection model, 
         and a table showing the required access control tagging of a node for the Gen2 server to grant the requested access. 
@@ -712,48 +925,11 @@ In filter combinations where a search expression in the URI is combined with a s
           <figcaption> <span class="fig-title">Access control selection model.</span></figcaption>
         </figure>
         If the VSS tree used by a Gen2 server contains access control selection tags, then the server MUST support their usage as described in this chapter.<br>
-        If it is not used, then a server MAY implement access control for the entire tree.<br>
-        If access control is implemented, the server MUST support the error codes shown in the table below.<br>
-        <table id="errorDefs" class="parameters">
-	  <tbody><tr>
-	    <th>Error&nbsp;Number&nbsp;(Code)</th>
-	    <th>Error Reason</th>
-	    <th>Error Message</th>
-	  </tr>
-	  <tr>
-	    <td>404 (Not Found)</td>
-	    <td>missing_token</td>
-	    <td>The addressed node is access controlled, a token must be included in the request.</td>
-	  </tr>
-	  <tr>
-	    <td>406 (Not Acceptable)</td>
-	    <td>invalid_token</td>
-	    <td>A new, valid access token must be obtained.</td>
-	  </tr>
-	  <tr>
-	    <td>406 (Not Acceptable)</td>
-	    <td>insufficient_priviledges</td>
-	    <td>The priviledges represented by the access token are not sufficient.</td>
-	  </tr>
-	  </tbody>
-	</table>
+        If it is not used, then a server may implement access control for the entire tree.<br>
         </p>
       </section>
     </section>
-    <section data-dfn-for="privacy-data-protection">
-      <h2>Privacy and data protection</h2>
-      <p>
-      </p>
-      <section data-dfn-for="purpose">
-        <h2>Purpose</h2>
-        <p>
-        A Client MUST provide a Purpose as input to a request for an Access token. A list of supported purposes needs to exist for a client to select from, this list is typically created and owned by the Resource owner. Each entry in the list contains a short description of the purpose, which is what the Client shall provide as input to its request for an Access token. There is also a long description, which may be used in the dialogue for consent, if needed. Then there is a list of the roles, per sub-actor, that can be granted this access, and last there is a list of  the signals that the client is given access to for this purpose, with the allowed access mode. The list SHALL use a JSON format as shown in the example below.<br><br>
-        {"purposes": [{"short": "Pay as you drive", "long": "Insurance cost based on drive data.", "roles":{"user": ["OEM", "Owner"], "app": ["OEM", "Third party"], "device": ["Vehicle", "Cloud"], "signal_access": [{"path": "Vehicle.Drivetrain.Transmission.Speed", "access_mode": "read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", "access_mode":"read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Longitude", "access_mode": "read-only"}] }] }<br><br>
-        The Purpose list SHALL be securely provisioned to the AT server. The protocol for this is out-of-scope. 
-        The AT server MUST reject all requests for Access tokens if it is not in possession of a Purpose list.
-        </p>
-      </section>
-    </section>
+
     <section data-dfn-for="interface">
       <h2>Interface</h2>
       <p>
