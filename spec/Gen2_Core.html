@@ -408,54 +408,65 @@ In filter combinations where a search expression in the URI is combined with a s
         <section data-dfn-for="authorization-grant-request">
           <h2>Access Grant request</h2>
           <p>
-          The request shall contain the first three parameters below, the fourth is optional:
+          The request shall contain the first two parameters below, the others are optional:
           <ul>
             <li>VIN: The vehicle identification number of the vehicle the Client wants to have access to.</li>
-            <li>Role: The role that the Client wants to be assigned. The role consists of a triplet of roles for User, App, and Device.</li>
-            <li>Credentials: The credentials the Client want to present to the AG server in order for authentication of its sub-actors User, App, and Device</li>
-            <li>Public key: If this parameter is present in the request it shall contain a public key of a key pair generated and owned by the Client.</li>
+            <li>Context: The context associated to the Client. The context consists of a triplet of roles for User, App permissions, and Device characteristics.</li>
+            <li>Proof: A proof mechanism that is used by the Client to attest its context to the AG server. This is indeed a composed proof for the User role, App permissions, and Device characteristics. If a public key is included in the request, the proof parameter will also include of proof of possession for this key.</li>
+
+            <div class="issue">Align terminology with <a href="https://www.w3.org/TR/vc-data-model/#proofs-signatures">Verifiable Credentials</a></div>
+
+            <li>Public key: If this parameter is present, the request shall contain a public key of a key pair generated and owned by the Client, and the Proof parameter shall include a proof of possession.</li>
           </ul> 
+          </p>
+          <p>
+            Depending on the kind of Proofs included in the request, the client and the server may need to run an interactive protocol to verify them. This protocol may involve also third parties, such as the Ecosystem manager or the resource owner. 
           </p>
         </section>
 
-        <section data-dfn-for="authorization-grant-response">
-          <h2>Access Grant response</h2>
-          <p>
-          The Access Grant response differs depending on whether the Client requested to self sign AG tokens, or to get an AG token signed by the AG server.<br>
-          In respective case, a successful response shall contain the following parameters:
-        <section data-dfn-for="ags-signed-token">
-          <h2>AGS signed AG token</h2>
-          <ul>
-            <li>AG token: The Access Grant token to directly use as input to the Access Token server.</li>
-          </ul>
-          </section>
+        
 
-        <section data-dfn-for="client-signed-token">
-          <h2>Client signed AG token</h2>
+<section data-dfn-for="authorization-grant-response">
+          <h2>Access Grant response</h2>
+          <div class="issue">I think we should not distinguish here both cases at this level.</div>
+          <p>
+          The response for an access grant request is an Access Grant token to directly use as input to the Access Token server. The Access Grant token is a digitally signed document issued by the AG Server including all relevant information needed to issue Access Tokens.
+        </p>
+        <p>
+        The Access Grant Token should include the following:
           <ul>
-            <li>Public key: The public key that the Client provided in the request.</li>
-            <li>Expiry time: The expiry time for the self certified AG tokens that the Client will create.</li>
-            <li>Client role: The role assigned to the Cient.</li>
-            <li>Signature: The signature of the three claims above, signed using the AGS private key.</li>
+            <li>Expiry time: Once the expiry time is reach, the client should request a new AG token.</li>
+            <li>Client context: The context verified for the Client in the request.</li>
+            <li>Public key (optional): If the client provided a public key in the request, it should be included in the AG Token.</li>
+            <li>Signature: The AG Token should be digitally signed using the AGS private key.</li>
           </ul>
+          
+        </p>
+        <p>
           An error response shall contain the following parameters:
           <ul>
             <li>Error code: The error code shall be informative in order for the Client to understand what it needs to correct to become successful.</li>
           </ul> 
           </p>
+
         </section>
-        </section>
+
 
         <section data-dfn-for="access-token-request">
           <h2>Access Token request</h2>
           <p>
-          The request shall contain the following parameters:
-          <ul>
-            <li>AG token: The Access Grant token must be JWT based. 
-            If the AG token the Client received from the AG server was PKI based, then it must generate and self sign a JWT based AG token.</li>
-            <li>Purpose: The Purpose must be the short name of a Purpose found on the Purpose list owned by the Ecosystem manager.</li>
-          </ul> 
+            All access token request should include an AG token. Moreover, if the Access Grant token includes a public key, the Client should also include in the request a fresh proof of possession for this public key.
           </p>
+          <p>
+            Apart from the AG Token, the request should include the short name of a Purpose found on the Purpose list owned by the Ecosystem manager.
+          </p>
+          <p>
+            Lastly, the AT request should include the details for the protected resource the Client wants to access, e.g. path and access mode.
+          </p>
+          <p>
+            The Access Token server acts as a Policy Enforcement Point, making decisions on whether to grant access to the protected resource based on the provided AG Token and Purpose.
+          </p>
+
         </section>
 
         <section data-dfn-for="access-token-response">
@@ -463,7 +474,7 @@ In filter combinations where a search expression in the URI is combined with a s
           <p>
           A successful response shall contain the following parameters:
           <ul>
-            <li>Access token: The Access token to be used in Client requests to the Gen2 server for Proteced Resources.</li>
+            <li>Access token: The Access token to be used in Client requests to the Gen2 server for Protected Resources.</li>
           </ul> 
           An error response shall contain the following parameters:
           <ul>
@@ -496,13 +507,11 @@ In filter combinations where a search expression in the URI is combined with a s
         <em>This section is non-normative.</em><br>
           The Client is an abstract representation of three sub-actors: 
           <ul>
-            <li>The Device.</li>
-            <li>The App.</li>
-            <li>The User.</li>
+            <li>The Device. It is in charge of running the Apps that make requests to the Gen2 server</li>
+            <li>The App. It runs requests on behalf of the User.</li>
+            <li>The User. Delegated access rights to the App.</li>
           </ul> 
-          The Device is in charge of running the Apps that make requests to the VSS server.<br>
-          The App runs requests on behalf of the User.<br>
-          The User refers to the entity delegating access rights to the App.
+          All the information regarding the client is encoded in the Context of the request.
         </p>
       </section>
 
@@ -511,39 +520,35 @@ In filter combinations where a search expression in the URI is combined with a s
         <p>
         <em>This section is non-normative.</em><br>
           The Access Grant server (AGS) is in charge of producing Access Grants to Clients.<br>
-          Depending on the capabilities of the Client, the specification supports two types of Access Grant Tokens.<br>
-          Client self issued Access Grant Tokens, referred to as Client signed AG tokens in this document, are supported for those Clients able to run public key cryptographic primitives, 
-          i.e. key pair generation and signatures, 
-          and is the recommended choice for Clients with access to some kind of trusted execution environment where private keys are protected from the regular execution environment.<br>
-          The specification also supports Grant Tokens issued by the Access Grant Server, referred to as AGS signed AG tokens in this document. 
-          This choice requires no extra capabilities in the client, but forces the client to contact the AGS in every request for a new Access Grant token.<br><br>
+          Depending on the capabilities of the Client, the specification supports two types of Access Grant Tokens: Short term and long term AG Tokens.<br>
+          Long term Access Grant Tokens, are supported for those Clients able to run public key cryptographic primitives, i.e. key pair generation and signatures, 
+          and is the recommended choice for Clients with access to some kind of trusted execution environment where private keys are protected from the regular execution environment. Those AG Tokens include a public key that is owned by the Client and can be used to recurrently request Access Tokens without the involvement of the AGS in a secure way.<br>
+          The specification also supports short term Access Grant Tokens that require no extra capabilities in the client, but forces the client to contact the AGS before every request for an Access Token.<br>
           The Client request shall contain the following:
           <ul>
             <li>A VIN.</li>
-            <li>A Role.</li>
-            <li>Credentials.</li>
+            <li>A Context.</li>
+            <li>A set of Proofs.</li>
           </ul> 
-          If the Client plans to self sign AG tokens, then the request shall also contain:
+          If the Client needs a long term AG token, then the request shall also contain:
           <ul>
             <li>A public key.</li>
           </ul> 
-          The Vehicle identifiation number shall be for the vehicle that the Client wants to access.<br>
-          The Role contains roles for each of the three sub-actors that the Client represents.<br>
-          The credentials are to be used for authentication of each of the three sub-actors that the Client represents.<br>
+          The Vehicle identification number shall be for the vehicle that the Client wants to access.<br>
+          The Context contains all relevant information from the client, i.e. for each of the three sub-actors that the Client represents.<br>
+          The Proofs are to be used for verifying the Context of the Client.<br>
           The public key shall be generated by the Client, and the associated private key must be under control of the Client.<br><br>
         The main responsibilities of the Access Grant server are:
           <ul>
-            <li>To authenticate the Client sub-actors, and assess that their respective role request can be granted.</li>
+            <li>To verify the Client Context, and assess that their respective role request can be granted.</li>
             <li>To check that the vehicle represented by the VIN belong to this Ecosystem, and is accessible.</li>
             <li>To create an Access Grant.</li>
           </ul>
-          The credentials for respective sub-actor shall be a certificate from a Certificate Authority known by the AG server. The AG server shall validate the certificate signature, 
+          The proofs may include certificates from a Certificate Authority known by the AG server. The AG server shall validate the certificate signature, 
           and utilize certificate information to assess that the requested role can be granted.<br>
-          <div class="issue">The authentication process might need some more work.</div>
+          <div class="issue">The authentication process might need some more work. I think we should leave that completely out of scope.</div>
           The AG server may contact the Ecosystem manager for checking the VIN.<br>
-          The Access Grant generation for the case of a Client request to get an AG server issued AG token results in an AG token as defined in the chapter AGS signed AG token.<br>
-          For the case of a Client request to self issue AG tokens, the AG server shall return the public key, the Role, 
-          the expiry time for any AG tokens that the Client issues, and a digital signature of the mentioned parameters, as described in the chapter Client signed AG token.
+          The Access Grant generation is defined in the corresponding chapter.
         </p>
           </p>
         </section>
@@ -557,13 +562,16 @@ In filter combinations where a search expression in the URI is combined with a s
           <ul>
             <li>An Access Grant token.</li>
             <li>A Purpose.</li>
+            <li>A Target.</li> 
           </ul>
-        The Access Grant token is, depending on which of the two flows used by the Client, either generated and signed by the AG server, or generated and self-signed by the Client.<br>
-        The Purpose must be supported by the Ecosystem manager, and thus be on the Purpose list, see the chapter Purpose list.<br>
+        Optionally, for long term Access Grant tokens, i.e. those including a public key, the Chile must also include in the request a fresh proof of possession.<br>
+        The Purpose must be supported by the Ecosystem manager, and thus be on the Purpose list, see the chapter Purpose list. It should also include the Target included in the request.<br>
+        <div class="issue">The way I see it Access Token should be per resource, so that the Gen2 server only needs to perform a very simplistic checking. That's why I have included the Target here. Target is a combination of path and access mode.</div>
         The main responsibilities of the Access Token server are:
           <ul>
             <li>To validate the Access Grant token.</li>
-            <li>To validate that the Client has permission for the requested Purpose.</li>
+            <div class="issue">I see "To validate that the Client has permission for the requested Purpose." included in creation of the AG Token. This should be the responsibility of the AG Server.</div>
+            <li>To that the Target is included in the approved Purpose.</li>
             <li>To create an Access Token.</li>
           </ul>
         The validation of the AG token consists of at least the following:
@@ -571,14 +579,10 @@ In filter combinations where a search expression in the URI is combined with a s
             <li>Signature validation.</li>
             <li>Expiry time check.</li>
           </ul>
-        The signature validation is handled differently depending on whether the token contains a public key or not. <br>
-        If it does, then the token is signed by the private key associated with this public key, and thus the validation is performed using the public key. 
-        If this validation is successful, then the authenticity of the public key must also be validated. This is done by validating the public key signature claim, 
-        which is signed using the AG server private key, so the validation is done using the AG server public key.<br>
-        In the case the AG token has been signed by the AG server, the AG token validation is done directly with the AG server public key.<br>
+        Additionally, when the token contains a public key, i.e. long term Access Grant tokens, the Access Token server needs to verify that there is a valid and fresh proof of possession for this public key. <br>
+        The AG token signature validation is done directly with the AG server public key.<br>
         The expiry time must be later than the current system time of the AT server run-time. To allow for some time synchronization inaccuracy an error of tens of seconds may be allowed.<br>
-        If the Client role as declared in the AG token is not found in the set of allowed roles for the requested Purpose in the Purpose list document 
-        then the client request for an Access token must be denied.<br>
+        If the Client role as declared in the AG token is not found in the set of allowed roles for the requested Purpose in the Purpose list document or the Target is not included in the requested Purpose, then the client request for an Access token must be denied.<br>
         The Access token generation shall result in an AG token as defined in the chapter Access token.
         </p>
       </section>
@@ -869,7 +873,7 @@ In filter combinations where a search expression in the URI is combined with a s
           <section data-dfn-for="purpose-list">
             <h2>Purpose list</h2>
             <p>
-        A Client shall provide a Purpose as input to a request for an Access token. A list of supported purposes needs to exist for a client to select from. The Ecosystem manager shall therefore provide means for Cliens to survey the list to find a Purpose hat fits its use case.<br>
+        A Client shall provide a Purpose as input to a request for an Access token. A list of supported purposes needs to exist for a client to select from. The Ecosystem manager shall therefore provide means for Clients to survey the list to find a Purpose hat fits its use case.<br>
         Each entry in the list contains a short description of the purpose, which is what the Client shall provide as input to its request for an Access token. There is also a long description, which may be used in the dialogue for consent, if needed. Then there is a list of the roles, per sub-actor triplet, that can be granted this access, and last there is a list of  the signals that the client is given access to for this purpose, with the allowed access mode. The list may use a JSON format as shown in the example below.<br><br>
         {"purposes": [{"short": "Pay as you drive", "long": "Insurance cost based on drive data.", "roles":[ ["OEM", ["OEM", "Third party"], "Vehicle"], [ ] ], "signal_access": [{"path": "Vehicle.Drivetrain.Transmission.Speed", "access_mode": "read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", "access_mode":"read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Longitude", "access_mode": "read-only"}] }, {}] }<br><br>
         The Purpose list shall be securely provisioned to the AT server. The protocol for this is out-of-scope. 
