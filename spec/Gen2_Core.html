@@ -23,14 +23,15 @@
           companyURL: "https://www.volvocars.com/intl"
         },
         {
+          name: "Isaac Agudo",
+          company: "NICS Lab / University of Malaga",
+          companyURL: "https://www.nics.uma.es"
+        },
+                {
           name: "Patrick Lünnemann",
           company: "Volkswagen Group",
           companyURL: "https://www.volkswagenag.com",
           w3cid: 95844
-        },{
-          name: "Isaac Agudo",
-          company: "NICS Lab / University of Malaga",
-          companyURL: "https://www.nics.uma.es"
         }],
         edDraftURI: "https://github.com/w3c/automotive/blob/gh-pages/spec/Gen2_Core.html",
         shortName: "Gen2-CORE",
@@ -88,88 +89,15 @@
 
 The service is intended for use with a tree-like logical taxonomy to
 represent the vehicle data. An illustrative example of such a tree
-structure is shown in <a href="#tree-example">Figure 1</a>. While it
+structure is shown in <a href="#fig-example-vss-tree">Figure 1</a>. While it
 is meant to support conforming taxonomies it was created principally
 with the <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a> (VSS) in mind. For more
 details, see the <a href="http://genivi.github.io/vehicle_signal_specification/">VSS documentation</a>.
 		</p>
-    <figure id="tree-example" class="example">
-			<img uml='
-			@startuml 
-				skinparam component {
-					BorderColor Black
-					FontSize 16
-					
-					BackgroundColor<<branch>> MediumSeaGreen
-					FontColor<<branch>> White
-					
-					BackgroundColor<<rbranch>> Red
-					FontColor<<rbranch>> White
-					
-					BackgroundColor<<attribute>> Yellow
-					FontColor<<attribute>> Black
-					
-					BackgroundColor<<sensor>> CornflowerBlue
-					FontColor<<sensor>> White
-					
-					BackgroundColor<<actuator>> DarkGrey
-					FontColor<<actuator>> White
-					
-					BackgroundColor<<element>> LightCoral
-					FontColor<<element>> White				
-				}
-				[Vehicle] -- [Navigation]
-				[Vehicle] -- [Car]
-				[Vehicle] -- [Private]
-				[Vehicle]<<branch>>
-				[Navigation]<<branch>>
-				[Private]<<branch>>
-				[Car]<<branch>>
-				
-				[Navigation] -- [...]
-				[...]<<branch>>
-				
-				[Car] -- [Engine]
-				[Car] -- [Body]
-				[Engine]<<branch>>
-				[Body]<<branch>>
-				
-				[Engine] -- [RPM]
-				[Engine] -- [Speed]
-				[Engine] -- [Fueltype]
-				[RPM]<<sensor>>
-				[Speed]<<sensor>>
-				[Fueltype]<<attribute>>
-				
-				[Body] -- [Mirror]
-				[Body] -- [Door]
-				[Body] -- [Weight]
-				[Mirror]<<branch>>
-				[Door]<<branch>>
-				[Weight]<<attribute>>
-				
-				[Door] -- [&nbsp;...&nbsp;]
-				[&nbsp;...&nbsp;]<<branch>>
-				
-				[Mirror] -- [Left]
-				[Left] -- [Heated]
-				[Left] -- [Dimmed]
-				[Left] -- [Fold]
-				[Left]<<branch>>
-				[Right]<<branch>>
-				[Heated]<<sensor>>
-				[Dimmed]<<sensor>>
-				[Fold]<<actuator>>
-				
-				[Mirror] -- [Right]
-				[Right] -- [ ... ]
-				[ ... ]<<branch>>
-				
-			@enduml
-			'>
-        <figcaption>Diagram showing an example VSS 2.0 tree.</figcaption>
-      </figure>
-<div class="issue">VSS does not have a "domain root node" for the vehicle signal domain, like the Car node in Fig 1. To be introduced in VSS, or removed from here?</div>
+        <figure id="fig-example-vss-tree">
+          <img src="images/vss-tree.jpg" alt="example-vss-tree">
+          <figcaption> <span class="fig-title">Diagram showing an example VSS 2.0 tree.</span></figcaption>
+        </figure>
 
       <section data-dfn-for="address">
         <h2>Addressing</h2>
@@ -178,9 +106,8 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
         <p>The <dfn>scheme</dfn> describes the protocol to use to reach the addressed element.</p>
         <p>The <dfn>authority</dfn> describes where to reach the server holding and managing the data representation.
           Scheme and authority are defined within the protocol adaptation.</p>
-        <p>The <dfn>path</dfn> consists of the slash delimited node names of the nodes traversed from the tree root to the tree leaf representing the data point. E. g. the path expression from traversing the nodes Vehicle, Car, Engine, RPM would be "Vehicle/Car/Engine/RPM".</p>
+        <p>The <dfn>path</dfn> consists of the slash delimited node names of the nodes traversed from the tree root to the tree leaf representing the data point. E. g. the path expression from traversing the nodes Vehicle, Car, Engine, RPM would be "Vehicle/Car/Engine/RPM". The VSS data model uses a dot as delimiter, the implementaion of this specification is expected to handle the necessary translation.</p>
         <p>The <a>query</a> contains further information related to the request, see <a href="#filtering"></a>.
-<div class="issue">VSS 2.0 should use slash as delimiter. If not, this difference should be pointed out here.</div>
       </section>
         <section id="service-discovery">
           <h2>Service discovery</h2>
@@ -243,10 +170,11 @@ where<br>
   - the equal sign (EQ) is the only allowed comparison operator for search filtering.<br>
   - search-expression is a path expression that may contain the wildcard character (*) for representation of an unknown node name.<br><br>
 The search-expression is relative to the root node given by the path component in the request. An example could be "*/*/isOpen", which, preceeded with a slash, and concatenated with the request root-path "Vehicle/Cabin/Door" would generate the absolute search expression "Vehicle/Cabin/Door/*/*/isOpen", in which case the response would contain all values from the isOpen nodes in that subtree, but not from the other possible leaf nodes in it.<br><br>
-The search filter can be used also in subscribe requests, see chapter Filter combinations.
-
+The search filter can be used also in subscribe requests, see chapter Filter combinations.<br>
+The response message on a request addressing multiple signals contains all the matching signal values. Notifications from a subscription addressing multiple signals contain one signal value per notification.
 		</p>
         </section>
+
        <section data-dfn-for="data-value-filter">
           <h3>Data value filter</h2>
 		<p>If a request, typically when it is addressing a subtree, is only interested in response data with a specific value, then a data value filter can be used. 
@@ -347,9 +275,7 @@ where<br>
 <dfn>Vehicle/Cabin/Door?$pathEQ*/*/isOpenAND$dataEQfalse</dfn><br> 
 which would return data for all locked doors.<br>
 In filter combinations where a search expression in the URI is combined with a subscribe filter expression in the payload, the logical AND operator combines them.</p>
-<div class="issue">Shall it be possible to use search filtering in subscribe requests?</div>
       </section>
-<div class="issue">Other data models may want further query support.Should there be some text about that?</div>
      </section>
  
     <section data-dfn-for="access-control-model">
@@ -393,10 +319,10 @@ In filter combinations where a search expression in the URI is combined with a s
         <em>This section is non-normative.</em><br>
         Two different flows are described. Which flow to use depends on the capabilities of the Client.<br>If a Client is able to run public key cryptographic primitives, 
         i.e. key pair generation and signatures, and has access to some kind of trusted execution environment where private keys are protected from the regular execution environment, 
-        then it can use the PKI based flow. Clients that do not have access to these capabilities, or do not want to use them, must select the JWT based flow.<br>
-        The advantage of using the PKI based flow is that the Client does not have to contact the AGS when it needs a new Grant token, as it can self issue a new. 
-        In the JWT based flow the Client must contact the AGS in every time it needs a new Grant token.<br>
-        A Client selects the type of flow by either submitting a public key in the AG message, or not. The latter leading to a JWT based flow.
+        then it can use the Client signed flow. Clients that do not have access to these capabilities, or do not want to use them, must select the AGS signed flow.<br>
+        The advantage of using the Client signed flow is that the Client does not have to contact the AGS when it needs a new Grant token, as it can self issue a new. 
+        In the AGS signed flow the Client must contact the AGS in every time it needs a new Grant token.<br>
+        A Client selects the type of flow by either submitting a public key in the AG message, or not. The latter leading to an AGS signed flow.
         </p>
       </section>
 
@@ -413,9 +339,6 @@ In filter combinations where a search expression in the URI is combined with a s
             <li>VIN: The vehicle identification number of the vehicle the Client wants to have access to.</li>
             <li>Context: The context associated to the Client. The context consists of a triplet of roles for User, App permissions, and Device characteristics.</li>
             <li>Proof: A proof mechanism that is used by the Client to attest its context to the AG server. This is indeed a composed proof for the User role, App permissions, and Device characteristics. If a public key is included in the request, the proof parameter will also include of proof of possession for this key.</li>
-
-            <div class="issue">Align terminology with <a href="https://www.w3.org/TR/vc-data-model/#proofs-signatures">Verifiable Credentials</a></div>
-
             <li>Public key: If this parameter is present, the request shall contain a public key of a key pair generated and owned by the Client, and the Proof parameter shall include a proof of possession.</li>
           </ul> 
           </p>
@@ -428,7 +351,6 @@ In filter combinations where a search expression in the URI is combined with a s
 
 <section data-dfn-for="authorization-grant-response">
           <h2>Access Grant response</h2>
-          <div class="issue">I think we should not distinguish here both cases at this level.</div>
           <p>
           The response for an access grant request is an Access Grant token to directly use as input to the Access Token server. The Access Grant token is a digitally signed document issued by the AG Server including all relevant information needed to issue Access Tokens.
         </p>
@@ -459,9 +381,6 @@ In filter combinations where a search expression in the URI is combined with a s
           </p>
           <p>
             Apart from the AG Token, the request should include the short name of a Purpose found on the Purpose list owned by the Ecosystem manager.
-          </p>
-          <p>
-            Lastly, the AT request should include the details for the protected resource the Client wants to access, e.g. path and access mode.
           </p>
           <p>
             The Access Token server acts as a Policy Enforcement Point, making decisions on whether to grant access to the protected resource based on the provided AG Token and Purpose.
@@ -522,8 +441,10 @@ In filter combinations where a search expression in the URI is combined with a s
           The Access Grant server (AGS) is in charge of producing Access Grants to Clients.<br>
           Depending on the capabilities of the Client, the specification supports two types of Access Grant Tokens: Short term and long term AG Tokens.<br>
           Long term Access Grant Tokens, are supported for those Clients able to run public key cryptographic primitives, i.e. key pair generation and signatures, 
-          and is the recommended choice for Clients with access to some kind of trusted execution environment where private keys are protected from the regular execution environment. Those AG Tokens include a public key that is owned by the Client and can be used to recurrently request Access Tokens without the involvement of the AGS in a secure way.<br>
-          The specification also supports short term Access Grant Tokens that require no extra capabilities in the client, but forces the client to contact the AGS before every request for an Access Token.<br>
+          and is the recommended choice for Clients with access to some kind of trusted execution environment where private keys are protected from the regular execution environment. 
+          Those AG Tokens include a public key that is owned by the Client and can be used to recurrently request Access Tokens without the involvement of the AGS in a secure way.<br>
+          The specification also supports short term Access Grant Tokens that require no extra capabilities in the client, 
+          but due to its shorter expiry time it forces the client to contact the AGS more often before ATS requests for an Access Token.<br>
           The Client request shall contain the following:
           <ul>
             <li>A VIN.</li>
@@ -546,7 +467,6 @@ In filter combinations where a search expression in the URI is combined with a s
           </ul>
           The proofs may include certificates from a Certificate Authority known by the AG server. The AG server shall validate the certificate signature, 
           and utilize certificate information to assess that the requested role can be granted.<br>
-          <div class="issue">The authentication process might need some more work. I think we should leave that completely out of scope.</div>
           The AG server may contact the Ecosystem manager for checking the VIN.<br>
           The Access Grant generation is defined in the corresponding chapter.
         </p>
@@ -562,16 +482,14 @@ In filter combinations where a search expression in the URI is combined with a s
           <ul>
             <li>An Access Grant token.</li>
             <li>A Purpose.</li>
-            <li>A Target.</li> 
           </ul>
-        Optionally, for long term Access Grant tokens, i.e. those including a public key, the Chile must also include in the request a fresh proof of possession.<br>
-        The Purpose must be supported by the Ecosystem manager, and thus be on the Purpose list, see the chapter Purpose list. It should also include the Target included in the request.<br>
-        <div class="issue">The way I see it Access Token should be per resource, so that the Gen2 server only needs to perform a very simplistic checking. That's why I have included the Target here. Target is a combination of path and access mode.</div>
+        Optionally, for long term Access Grant tokens, i.e. those including a public key, the Client must also include in the request a fresh proof of possession.<br>
+        The Purpose must be supported by the Ecosystem manager, and thus be on the Purpose list, see the chapter Purpose list. 
+        The Purpose list associates a set of accessible signals to the Purpose, thus realizing the principle of least priviledge.<br>
         The main responsibilities of the Access Token server are:
           <ul>
             <li>To validate the Access Grant token.</li>
-            <div class="issue">I see "To validate that the Client has permission for the requested Purpose." included in creation of the AG Token. This should be the responsibility of the AG Server.</div>
-            <li>To that the Target is included in the approved Purpose.</li>
+            <li>To validate that the Client Role provides permission for the requested Purpose.</li>
             <li>To create an Access Token.</li>
           </ul>
         The validation of the AG token consists of at least the following:
@@ -582,7 +500,8 @@ In filter combinations where a search expression in the URI is combined with a s
         Additionally, when the token contains a public key, i.e. long term Access Grant tokens, the Access Token server needs to verify that there is a valid and fresh proof of possession for this public key. <br>
         The AG token signature validation is done directly with the AG server public key.<br>
         The expiry time must be later than the current system time of the AT server run-time. To allow for some time synchronization inaccuracy an error of tens of seconds may be allowed.<br>
-        If the Client role as declared in the AG token is not found in the set of allowed roles for the requested Purpose in the Purpose list document or the Target is not included in the requested Purpose, then the client request for an Access token must be denied.<br>
+        If the Client Role as declared in the AG token is not found in the set of allowed roles for the requested Purpose in the Purpose list document, 
+        then the client request for an Access token must be denied.<br>
         The Access token generation shall result in an AG token as defined in the chapter Access token.
         </p>
       </section>
@@ -604,7 +523,7 @@ In filter combinations where a search expression in the URI is combined with a s
           The Gen2 server SHALL have access to a secure system time, that cannot be modified by actors without system acknowledged credentials. 
           Time validation may allow for a time synchronization inaccuracy in the range of tens of seconds.<br>
           A successful scope validation requires that all the nodes addressed by the path in the request MUST be matched by the paths associated to the Purpose in the scope claim of the Access token.<br>
-          The AT server may perform validations of the Device and App roles, such as MAC address checks, message round-trip measurements, etc.<br>
+          Validation of the Device and App roles may involve MAC address checks, message round-trip measurements, etc.<br>
           The access mode validation MUST have the outcome shown in the table below, 
           when comparing the type of the Client request with the access control mode in the Purpose list that is associated to the scope claim in the Access token.
           If the Client request contains several signals, and one fails the validation, then the entire request MUST be rejected.<br><br>
@@ -804,8 +723,7 @@ In filter combinations where a search expression in the URI is combined with a s
             <li>Provide input to the AG server for decision on restriction of the permissions granted.</li>
           </ul>
         The AG server must in the authentication process of the client possibly separately authenticate each of the three subactors. 
-        For the AG server to decide on which authentication method to use per subactor can be quite complex, but will be at least somewhat eased if the Client request a role for each subactor. 
-        As an example, a request for a Vehicle device role may be verified by the device MAC address, while a request for a Nomadic device role may be verified by a message round-trip time measurement. <br>
+        For the AG server to decide on which authentication method to use per subactor can be quite complex, but may be somewhat eased by the Client request for roles for each subactor.<br>
         From a security point of view a Client should not have access to more vehicle signals than are necessary, following the principle of least priviledge. This is achieved by the Purpose document described in the Purpose chapter, that assigns only the for the Purpose relevant signals to the Client. 
         </p>
 
@@ -819,9 +737,9 @@ In filter combinations where a search expression in the URI is combined with a s
             <li>Cloud</li>
             <li>Undefined</li>
           </ul>
-          A Vehicle device is used for applications that are deployed in-vehicle, in e. g. the center stack ECU.<br>
-          A Nomadic device is used for applications that are deployed in a User's mobile phone, laptop, etc.<br>
-          A Cloud device is used for applications that are deployed in any other off-vehicle device.<br>
+          A Vehicle role is used for applications that are deployed in-vehicle, in e. g. the center stack ECU.<br>
+          A Nomadic role is used for applications that are deployed in a User's mobile phone, laptop, etc, that uses short range radio communication like Bluetooth, or WiFi.<br>
+          A Cloud role is used for applications that are deployed in off-vehicle devices, and uses a long range radio communication like cellular in the connection to the vehicle.<br>
           </p>
         </section>
 
@@ -834,8 +752,8 @@ In filter combinations where a search expression in the URI is combined with a s
             <li>Third party</li>
             <li>Undefined</li>
           </ul>
-          An OEM application is used for applications that are pre-installed in the vehicle by the OEM, or later OEM-provisioned to the vehicle.<br>
-          A Third party application is used for applications that are "certified" for vehicle deployment, but developed by a third party.<br>
+          An OEM application role is used for applications that are pre-installed in the vehicle by the OEM, or later OEM-provisioned to the vehicle.<br>
+          A Third party application role is used for applications that are "certified" for vehicle deployment, but developed by a third party.<br>
           </p>
         </section>
 
@@ -873,7 +791,7 @@ In filter combinations where a search expression in the URI is combined with a s
           <section data-dfn-for="purpose-list">
             <h2>Purpose list</h2>
             <p>
-        A Client shall provide a Purpose as input to a request for an Access token. A list of supported purposes needs to exist for a client to select from. The Ecosystem manager shall therefore provide means for Clients to survey the list to find a Purpose hat fits its use case.<br>
+        A Client shall provide a Purpose as input to a request for an Access token. A list of supported purposes needs to exist for a client to select from. The Ecosystem manager shall therefore provide means for Clients to survey the list to find a Purpose that fits its use case.<br>
         Each entry in the list contains a short description of the purpose, which is what the Client shall provide as input to its request for an Access token. There is also a long description, which may be used in the dialogue for consent, if needed. Then there is a list of the roles, per sub-actor triplet, that can be granted this access, and last there is a list of  the signals that the client is given access to for this purpose, with the allowed access mode. The list may use a JSON format as shown in the example below.<br><br>
         {"purposes": [{"short": "Pay as you drive", "long": "Insurance cost based on drive data.", "roles":[ ["OEM", ["OEM", "Third party"], "Vehicle"], [ ] ], "signal_access": [{"path": "Vehicle.Drivetrain.Transmission.Speed", "access_mode": "read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", "access_mode":"read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Longitude", "access_mode": "read-only"}] }, {}] }<br><br>
         The Purpose list shall be securely provisioned to the AT server. The protocol for this is out-of-scope. 
@@ -906,7 +824,7 @@ In filter combinations where a search expression in the URI is combined with a s
         This functionality requires that the Access token specifies whether the access granted to the Client to a signal is read-only, or read-write.
         It also requires that the metadata for the node in the VSS tree contains data specifying whether the access control verification should be carried out only for write request, 
         or for both read and write requests.<br>
-        The former requirement is realized as described in earliers chapters by that the Access token scope claim links to a Purpose entry in the Purpose list 
+        The former requirement is realized as described in earlier chapters by that the Access token scope claim links to a Purpose entry in the Purpose list 
         where the signals and their respective access mode are found.<br>
         The latter requirement is realized by adding to nodes in the VSS tree the key-value pair "validate":'access-control-mode', 
         where 'access-control-mode' is either the string "write-only", or "read-write".<br>
@@ -917,7 +835,7 @@ In filter combinations where a search expression in the URI is combined with a s
         The figure above shows an example where both read and write requests to the three leftmost leaf nodes will be access controlled, 
         while the two rightmost leaf nodes only will be access controlled for write requests. 
         An inheritance rule leads to that any nodes below a tagged node are assigned the same access control, if they are untagged.<br>
-        This metadata is not likely to be applied to the standardised VSS tree, as different users of this standard may have different views on which nodes to apply it to. 
+        This metadata is not likely to be applied to the standardised VSS tree, as different implementers of this standard may have different views on which nodes to apply it to. 
         Instead it is anticipated that it is applied at a "deployment" stage, possibly using the VSS layering concept.<br>
         The inheritance model, which says that if access-control-mode data is added to a node, then all nodes in the subtree for which this node is the root inherits the setting, 
         unless there is access-control-mode data added to any node in this subtree, makes possible a reduction of the number of nodes this metadata have to be added to.<br>
@@ -1110,11 +1028,9 @@ In filter combinations where a search expression in the URI is combined with a s
       {"non-scope": [{"roles": ["Independent", "Third party", "Cloud"], "paths": ["Vehicle.Private.*", "Vehicle.ADAS.*"}, {} ]}<br>
       This mapping document is typically created and owned by the Resource owner and securely provisioned to the AT server.<br>
       If a service discovery request does not contain an Access Grant token, then the list entry with the "roles" set to "Undefined","Undefined","Undefined" shall be used.<br>
-      If there is no match for theClient role in the document, then the complete subtree shall be returned to the Client.
-<div class="issue">The PKi based flow also needs to have a credential containing the roles.</div>
+      If there is no match for the Client role in the document, then the complete subtree shall be returned to the Client.
       </p>
     </section>
-    <section id="issue-summary" class="appendix"></section>
     <section id="tof" class="appendix"></section>
   </body>
 </html>
