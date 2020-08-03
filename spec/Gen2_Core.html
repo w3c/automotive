@@ -319,10 +319,10 @@ In filter combinations where a search expression in the URI is combined with a s
         <em>This section is non-normative.</em><br>
         Two different flows are described. Which flow to use depends on the capabilities of the Client.<br>If a Client is able to run public key cryptographic primitives, 
         i.e. key pair generation and signatures, and has access to some kind of trusted execution environment where private keys are protected from the regular execution environment, 
-        then it can use the Client signed flow. Clients that do not have access to these capabilities, or do not want to use them, must select the AGS signed flow.<br>
-        The advantage of using the Client signed flow is that the Client does not have to contact the AGS when it needs a new Grant token, as it can self issue a new. 
-        In the AGS signed flow the Client must contact the AGS in every time it needs a new Grant token.<br>
-        A Client selects the type of flow by either submitting a public key in the AG message, or not. The latter leading to an AGS signed flow.
+        then it can use the Long term flow. Clients that do not have access to these capabilities, or do not want to use them, must select the Short term flow.<br>
+        The advantage of using the Long term flow is that the Client does not have to contact the AGS when it needs a new Grant token, as it can self issue a new. 
+        In the Short term flow the Client must contact the AGS every time it needs a new Grant token.<br>
+        A Client selects the type of flow by either submitting a public key in the AG message, or not. The latter leading to an Short term flow.
         </p>
       </section>
 
@@ -439,11 +439,11 @@ In filter combinations where a search expression in the URI is combined with a s
         <p>
         <em>This section is non-normative.</em><br>
           The Access Grant server (AGS) is in charge of producing Access Grants to Clients.<br>
-          Depending on the capabilities of the Client, the specification supports two types of Access Grant Tokens: Short term and long term AG Tokens.<br>
+          Depending on the capabilities of the Client, the specification supports two types of Access Grant Tokens: Short term and Long term AG Tokens.<br>
           Long term Access Grant Tokens, are supported for those Clients able to run public key cryptographic primitives, i.e. key pair generation and signatures, 
           and is the recommended choice for Clients with access to some kind of trusted execution environment where private keys are protected from the regular execution environment. 
           Those AG Tokens include a public key that is owned by the Client and can be used to recurrently request Access Tokens without the involvement of the AGS in a secure way.<br>
-          The specification also supports short term Access Grant Tokens that require no extra capabilities in the client, 
+          The specification also supports Short term Access Grant Tokens that require no extra capabilities in the client, 
           but due to its shorter expiry time it forces the client to contact the AGS more often before ATS requests for an Access Token.<br>
           The Client request shall contain the following:
           <ul>
@@ -451,7 +451,7 @@ In filter combinations where a search expression in the URI is combined with a s
             <li>A Context.</li>
             <li>A set of Proofs.</li>
           </ul> 
-          If the Client needs a long term AG token, then the request shall also contain:
+          If the Client needs a Long term AG token, then the request shall also contain:
           <ul>
             <li>A public key.</li>
           </ul> 
@@ -483,13 +483,13 @@ In filter combinations where a search expression in the URI is combined with a s
             <li>An Access Grant token.</li>
             <li>A Purpose.</li>
           </ul>
-        Optionally, for long term Access Grant tokens, i.e. those including a public key, the Client must also include in the request a fresh proof of possession.<br>
+        Optionally, for Long term Access Grant tokens, i.e. those including a public key, the Client must also include in the request a fresh proof of possession.<br>
         The Purpose must be supported by the Ecosystem manager, and thus be on the Purpose list, see the chapter Purpose list. 
         The Purpose list associates a set of accessible signals to the Purpose, thus realizing the principle of least priviledge.<br>
         The main responsibilities of the Access Token server are:
           <ul>
             <li>To validate the Access Grant token.</li>
-            <li>To validate that the Client Role provides permission for the requested Purpose.</li>
+            <li>To validate that the Client context provides permission for the requested Purpose.</li>
             <li>To create an Access Token.</li>
           </ul>
         The validation of the AG token consists of at least the following:
@@ -497,10 +497,10 @@ In filter combinations where a search expression in the URI is combined with a s
             <li>Signature validation.</li>
             <li>Expiry time check.</li>
           </ul>
-        Additionally, when the token contains a public key, i.e. long term Access Grant tokens, the Access Token server needs to verify that there is a valid and fresh proof of possession for this public key. <br>
+        Additionally, when the token contains a public key, i.e. Long term Access Grant tokens, the Access Token server needs to verify that there is a valid and fresh proof of possession for this public key. <br>
         The AG token signature validation is done directly with the AG server public key.<br>
         The expiry time must be later than the current system time of the AT server run-time. To allow for some time synchronization inaccuracy an error of tens of seconds may be allowed.<br>
-        If the Client Role as declared in the AG token is not found in the set of allowed roles for the requested Purpose in the Purpose list document, 
+        If the Client context as declared in the AG token does not match in the set of allowed roles for the requested Purpose in the Purpose list document, 
         then the client request for an Access token must be denied.<br>
         The Access token generation shall result in an AG token as defined in the chapter Access token.
         </p>
@@ -615,9 +615,9 @@ In filter combinations where a search expression in the URI is combined with a s
           </p>
 
           <section data-dfn-for="client-signed-agtoken">
-            <h2>Client signed AG Token</h2>
+            <h2>Long term AG Token</h2>
             <p>
-          The Client self signed Access Grant token shall have the following claims in header and payload.<br>
+          The Long term Access Grant token shall have the following claims in header and payload.<br>
 	  <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>          
 	  {
             "alg": "HS256",
@@ -626,7 +626,7 @@ In filter combinations where a search expression in the URI is combined with a s
           {
             "iat": 1609452095,
             "exp": 1609459199,
-            "clr": "user+app+dev",
+            "clx": "user+app+dev",
             "pub": client_pub_key
             "sig": digital_signature
             "aud": "w3.org/gen2",
@@ -637,11 +637,11 @@ In filter combinations where a search expression in the URI is combined with a s
 	  Type (typ) shall be set to "JWT".<br>
           Issued at (iat) shall be set to the time of token issuance, in Unix time.<br>
           Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
-          Client role (clr) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
+          Client context (clx) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
           Public key (pub) shall be set to the binary public key that the Client provided in the AG request.<br>
-          Digital signature (sig) shall be set to the digital signature of the claims pub, exp, and clr according to the following.<br>
+          Digital signature (sig) shall be set to the digital signature of the claims pub, exp, and clx according to the following.<br>
           The signature is calulated on the data from a concatenation as follows:<br> 
-          <b>Public key&#124W3C-Gen2&#124Expiry time&#124W3C-Gen2&#124Client role</b><br>
+          <b>Public key&#124W3C-Gen2&#124Expiry time&#124W3C-Gen2&#124Client context</b><br>
           where "W3C-Gen2" is a case sensitive text string, and "&#124" is a vertical line character.<br>
           Audience (aud) shall be set to the URL "w3.org/gen2".<br>
           JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the Ecosystem manager.
@@ -649,9 +649,9 @@ In filter combinations where a search expression in the URI is combined with a s
           </section>
 
           <section data-dfn-for="ags-signed-agtoken">
-            <h2>AGS signed AG Token</h2>
+            <h2>Short term AG Token</h2>
             <p>
-          The Access Grant token signed by the AG server shall have the following claims in header and payload.<br>
+          The Short term Access Grant token shall have the following claims in header and payload.<br>
 	  <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>          
 	  {
             "alg": "HS256",
@@ -660,7 +660,7 @@ In filter combinations where a search expression in the URI is combined with a s
           {
             "iat": 1609452095,
             "exp": 1609459199,
-            "clr": "user+app+dev",
+            "clx": "user+app+dev",
             "aud": "w3.org/gen2",
             "jti": "5967e92e-40e8-5f39-892d-cc0da890db1d"
           }
@@ -669,7 +669,7 @@ In filter combinations where a search expression in the URI is combined with a s
 	  Type (typ) shall be set to "JWT".<br>
           Issued at (iat) shall be set to the time of token issuance, in Unix time.<br>
           Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
-          Client role (clr) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
+          Client context (clx) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
           Audience (aud) shall be set to the URL "w3.org/gen2".<br>
           JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the Ecosystem manager.
             </p>
@@ -689,7 +689,7 @@ In filter combinations where a search expression in the URI is combined with a s
             "iat": 1609452095,
             "exp": 1609459199,
             "scp": "PurposeX",
-            "clr": "user+app+dev",
+            "clx": "user+app+dev",
             "aud": "w3.org/gen2",
             "jti": "5967e93f-40f9-5f39-893e-cc0da890db2e"
           }
@@ -699,15 +699,15 @@ In filter combinations where a search expression in the URI is combined with a s
           Issued at (iat) shall be set to the time of token issuance, in Unix time.<br>
           Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
           Scope (scp) shall be set to the Purpose short name, which logically links to the signal scope as defined in the Purpose list.<br>
-          Client role (clr) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
+          Client context (clx) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
           Audience (aud) shall be set to the URL "w3.org/gen2".<br>
           JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the Ecosystem manager.
           </p>
         </section>
       </section>
 
-      <section data-dfn-for="client-roles">
-        <h2>Client roles</h2>
+      <section data-dfn-for="client-context">
+        <h2>Client context</h2>
         <p>
         <em>This section is non-normative.</em><br>
         The Client actor described in the Client chapter is characterized by three subactors:
@@ -716,8 +716,11 @@ In filter combinations where a search expression in the URI is combined with a s
             <li>The application.</li>
             <li>The user of the application.</li>
           </ul>
-          Each of these subactors is in turn characterized by a role, building on the concept of a <a href="https://en.wikipedia.org/wiki/Role-based_access_control">Role Based Access Control (RBAC) model</a>. Gen2 specifies a rudimentary list of roles for each subactor, it is expected that these lists are augmented by the Resource owners, hopefully in a cooperative effort.<br>
-        Using an RBAC model provides the following main purposes in the Gen2 access control model:
+          Each of these subactors is in turn characterized by a role, 
+          building on the concept of a <a href="https://en.wikipedia.org/wiki/Role-based_access_control">Role Based Access Control (RBAC) model</a>. 
+          The set of these three roles is called the Client context.<br>
+          Gen2 specifies a rudimentary list of roles for each subactor, it is expected that these lists are augmented by the Resource owners, hopefully in a cooperative effort.<br>
+          Using an RBAC model provides the following main purposes in the Gen2 access control model:
           <ul>
             <li>Provide input to the AG server for decision on which authentication methods to apply.</li>
             <li>Provide input to the AG server for decision on restriction of the permissions granted.</li>
@@ -792,8 +795,20 @@ In filter combinations where a search expression in the URI is combined with a s
             <h2>Purpose list</h2>
             <p>
         A Client shall provide a Purpose as input to a request for an Access token. A list of supported purposes needs to exist for a client to select from. The Ecosystem manager shall therefore provide means for Clients to survey the list to find a Purpose that fits its use case.<br>
-        Each entry in the list contains a short description of the purpose, which is what the Client shall provide as input to its request for an Access token. There is also a long description, which may be used in the dialogue for consent, if needed. Then there is a list of the roles, per sub-actor triplet, that can be granted this access, and last there is a list of  the signals that the client is given access to for this purpose, with the allowed access mode. The list may use a JSON format as shown in the example below.<br><br>
-        {"purposes": [{"short": "Pay as you drive", "long": "Insurance cost based on drive data.", "roles":[ ["OEM", ["OEM", "Third party"], "Vehicle"], [ ] ], "signal_access": [{"path": "Vehicle.Drivetrain.Transmission.Speed", "access_mode": "read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", "access_mode":"read-only"}, {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Longitude", "access_mode": "read-only"}] }, {}] }<br><br>
+        Each entry in the list contains a short description of the purpose, which is what the Client shall provide as input to its request for an Access token. There is also a long description, which may be used in the dialogue for consent, if needed. Then there is a list of the Client contexts, i. e. the sub-actor role triplet, that can be granted this access, and last there is a list of  the signals that the client is given access to for this purpose, with the allowed access mode. The list shall use a JSON format as shown in the example below.
+        <pre><code>
+        {"purposes":
+            [{"short": "Pay as you drive", 
+            "long": "Insurance cost based on drive data.", 
+            "contexts":[ ["OEM", ["OEM", "Third party"], "Vehicle"], [ ] ], 
+            "signal_access":
+                [{"path": "Vehicle.Drivetrain.Transmission.Speed", "access_mode": "read-only"}, 
+                {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", "access_mode":"read-only"}, 
+                {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Longitude", "access_mode": "read-only"}] 
+            }, 
+            {}] 
+        }
+        </code></pre>
         The Purpose list shall be securely provisioned to the AT server. The protocol for this is out-of-scope. 
         The AT server must reject all requests for Access tokens if it is not in possession of a Purpose list.
             </p>
@@ -802,14 +817,24 @@ In filter combinations where a search expression in the URI is combined with a s
           <section data-dfn-for="scope-list">
             <h2>Scope list</h2>
             <p>
-            The Scope list contains a list of the VSS tree nodes for which access shall be prohibited, per Client role. 
+            The Scope list contains a list of the VSS tree nodes for which access shall be prohibited, per Client context. 
             This prohibition is regardless of whether the Client has a valid Access token or not.<br>
             The Scope list can also be used to limit the node metadata that is returned on a Client service discovery request.<br>
-            Each entry in the list contains a list of paths to nodes that should be excluded, and a list of the roles, per sub-actor triplet, for which this exclusion should be made.<br>
-            The list may use a JSON format as shown in the example below.<br><br>
-        {"scope": [{"roles":[ [ ["Driver", "Passenger"], "Third party", "Vehicle"], [ ] ], "no_access": ["Vehicle.Drivetrain.Transmission.Speed", "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Longitude"]}, {}] }<br><br>
+            Each entry in the list contains a list of paths to nodes that should be excluded, and a list of the Client contexts, i. e. the sub-actor role triplet, for which this exclusion should be made.<br>
+            The list shall use a JSON format as shown in the example below.
+        <pre><code>
+        {"scope":
+            [{"contexts":[ [ ["Driver", "Passenger"], "Third party", "Vehicle"], [ ] ], 
+            "no_access":
+                ["Vehicle.Drivetrain.Transmission.Speed", 
+                "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", 
+                "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Longitude"]
+            }, 
+            {}] 
+        }
+        </code></pre>
         The Scope list shall be securely provisioned to the AT server. The protocol for this is out-of-scope.
-        The AT server shall not restrict the scope for any Client role if it is not in possession of a Scope list.
+        The AT server shall not restrict the scope for any Client context if it is not in possession of a Scope list.
             </p>
           </section>
       </section>
@@ -1019,17 +1044,6 @@ In filter combinations where a search expression in the URI is combined with a s
     <section id="dynamic-registry-api" class="appendix">
       <h4>Dynamic registry API</h4>
       <p>The dynamic reqistry API provides the functionality to dynamically add or delete branches of the VSS tree. A branch can only be deleted if it has been dynamically added. In the following an entity requesting dynamic registry services is called a "service manager", and the entity performing these requests is called the "core server", see the figure "Gen2 server reference architecure".</p>
-    </section>
-    <section id="role-to-tree-presentation" class="appendix">
-      <h2>Role to tree presentation</h2>
-      <p>
-      If a document with "non-scope" information as shown below is provisioned to the AT server, then this document MUST be used to "prune" the subtree to be returned on a service discovery request from the nodes defined in the document, associated with the Client role. 
-      For each role declared in the document a "negative" access scope is defined by using VSS path expressions, including the usage of wildcards. This means that the nodes addressed by the expressions shall not be accessible by a client with these roles, and the metadata describing these nodes shall not be returned in a service discovery request. The table is expressed in JSON format as exemplified below.<br>
-      {"non-scope": [{"roles": ["Independent", "Third party", "Cloud"], "paths": ["Vehicle.Private.*", "Vehicle.ADAS.*"}, {} ]}<br>
-      This mapping document is typically created and owned by the Resource owner and securely provisioned to the AT server.<br>
-      If a service discovery request does not contain an Access Grant token, then the list entry with the "roles" set to "Undefined","Undefined","Undefined" shall be used.<br>
-      If there is no match for the Client role in the document, then the complete subtree shall be returned to the Client.
-      </p>
     </section>
     <section id="tof" class="appendix"></section>
   </body>
