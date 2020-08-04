@@ -352,24 +352,22 @@ In filter combinations where a search expression in the URI is combined with a s
 <section data-dfn-for="authorization-grant-response">
           <h2>Access Grant response</h2>
           <p>
-          The response for an access grant request is an Access Grant token to directly use as input to the Access Token server. The Access Grant token is a digitally signed document issued by the AG Server including all relevant information needed to issue Access Tokens.
-        </p>
-        <p>
-        The Access Grant Token should include the following:
+          The response shall contain the first parameter below, the other is optional:
           <ul>
-            <li>Expiry time: Once the expiry time is reach, the client should request a new AG token.</li>
-            <li>Client context: The context verified for the Client in the request.</li>
-            <li>Public key (optional): If the client provided a public key in the request, it should be included in the AG Token.</li>
-            <li>Signature: The AG Token should be digitally signed using the AGS private key.</li>
-          </ul>
-          
+            <li>AG token: A signed token with claims needed for the validation of the Client request.</li>
+            <li>Proof: A proof of possession of the Client public key.</li>
+          </ul> 
+          The response for a successful access grant request is a Short term Access Grant token.  This can be used as direct input to the Access Token server, or its claims can be used to create a Long term Access Grant token for Clients that prefer that option, and have the capability to do so.<br>
+          If the request contained a public key, then the AGS shall create an object that the Client can use as a proof of that it is the owner of the public key. 
+          This is done by creating a digital signature for the public key, signed by the AGS private key.<br>
+          The Access Grant token is a digitally signed document issued by the AG Server including all relevant information needed to issue Access Tokens.
         </p>
         <p>
           An error response shall contain the following parameters:
           <ul>
             <li>Error code: The error code shall be informative in order for the Client to understand what it needs to correct to become successful.</li>
           </ul> 
-          </p>
+        </p>
 
         </section>
 
@@ -377,6 +375,12 @@ In filter combinations where a search expression in the URI is combined with a s
         <section data-dfn-for="access-token-request">
           <h2>Access Token request</h2>
           <p>
+          The request shall contain the first two parameters below, the other is optional:
+          <ul>
+            <li>AG token: A signed token with claims needed for the validation of the Client request.</li>
+            <li>Purpose: The Purpose shall be one of the short text entries from the Purpose list.</li>
+            <li>Proof: A proof of possession of the public key in the AG token.</li>
+          </ul> 
             All access token request should include an AG token. Moreover, if the Access Grant token includes a public key, the Client should also include in the request a fresh proof of possession for this public key.
           </p>
           <p>
@@ -442,7 +446,7 @@ In filter combinations where a search expression in the URI is combined with a s
           Depending on the capabilities of the Client, the specification supports two types of Access Grant Tokens: Short term and Long term AG Tokens.<br>
           Long term Access Grant Tokens, are supported for those Clients able to run public key cryptographic primitives, i.e. key pair generation and signatures, 
           and is the recommended choice for Clients with access to some kind of trusted execution environment where private keys are protected from the regular execution environment. 
-          Those AG Tokens include a public key that is owned by the Client and can be used to recurrently request Access Tokens without the involvement of the AGS in a secure way.<br>
+          The Client must create and sign the Long term AG token, which must contain the public key that corresponds to the private key used by the Client to sign the AG token.<br>
           The specification also supports Short term Access Grant Tokens that require no extra capabilities in the client, 
           but due to its shorter expiry time it forces the client to contact the AGS more often before ATS requests for an Access Token.<br>
           The Client request shall contain the following:
@@ -498,11 +502,12 @@ In filter combinations where a search expression in the URI is combined with a s
             <li>Expiry time check.</li>
           </ul>
         Additionally, when the token contains a public key, i.e. Long term Access Grant tokens, the Access Token server needs to verify that there is a valid and fresh proof of possession for this public key. <br>
-        The AG token signature validation is done directly with the AG server public key.<br>
+        The Short term AG token signature validation is done with the AG server public key, for a Long term AG token it is done with the public key contained in the token. 
+        In the latter case also the proof of the Client possession of the public key must be validated.<br>
         The expiry time must be later than the current system time of the AT server run-time. To allow for some time synchronization inaccuracy an error of tens of seconds may be allowed.<br>
         If the Client context as declared in the AG token does not match in the set of allowed roles for the requested Purpose in the Purpose list document, 
         then the client request for an Access token must be denied.<br>
-        The Access token generation shall result in an AG token as defined in the chapter Access token.
+        The Access token to be generated is defined in the chapter Access token.
         </p>
       </section>
 
@@ -719,11 +724,11 @@ In filter combinations where a search expression in the URI is combined with a s
           Each of these subactors is in turn characterized by a role, 
           building on the concept of a <a href="https://en.wikipedia.org/wiki/Role-based_access_control">Role Based Access Control (RBAC) model</a>. 
           The set of these three roles is called the Client context.<br>
-          Gen2 specifies a rudimentary list of roles for each subactor, it is expected that these lists are augmented by the Resource owners, hopefully in a cooperative effort.<br>
+          Gen2 specifies a rudimentary list of roles for each subactor, it is expected that these lists are augmented by the Ecosystem manager, hopefully in a cooperative effort.<br>
           Using an RBAC model provides the following main purposes in the Gen2 access control model:
           <ul>
-            <li>Provide input to the AG server for decision on which authentication methods to apply.</li>
-            <li>Provide input to the AG server for decision on restriction of the permissions granted.</li>
+            <li>Input to the AG server in the Client authentication process.</li>
+            <li>Input to the AT server in the Purpose validation.</li>
           </ul>
         The AG server must in the authentication process of the client possibly separately authenticate each of the three subactors. 
         For the AG server to decide on which authentication method to use per subactor can be quite complex, but may be somewhat eased by the Client request for roles for each subactor.<br>
