@@ -352,10 +352,8 @@ In filter combinations where a search expression in the URI is combined with a s
             <li>VIN: The vehicle identification number. This may be a pseudo-VIN, or any other identity that uniquely links to the vehicle in the access control ecosystem.</li>
             <li>Context: The context associated to the Client. The context consists of a triplet of roles for User, App permissions, and Device characteristics.</li>
             <li>Proof: A proof mechanism that is used by the Client to attest its context to the AG server. This is indeed a composed proof for the User role, App permissions, 
-            and Device characteristics. If a public key is included in the request, the proof parameter shall also include of proof of possession (PoP) for this key, 
-            see chapter <a href="#proof-of-possession"></a>.</li>
-            <li>Public key: If this parameter is present, the request shall contain a public key of a key pair generated and owned by the Client, 
-            and the Proof parameter shall include a PoP.</li>
+            and Device characteristics.</li>
+            <li>Public key: If this parameter is present, the client will receive a Long Term Access Grant Token in return.</li>
           </ul> 
           </p>
           <p>
@@ -364,8 +362,6 @@ In filter combinations where a search expression in the URI is combined with a s
           </p>
         </section>
 
-        
-
 <section id="authorization-grant-response">
           <h2>Access Grant Response</h2>
           <p>
@@ -373,8 +369,9 @@ In filter combinations where a search expression in the URI is combined with a s
           <ul>
             <li>AG token: A signed token with claims needed for the validation of the Client request.</li>
           </ul> 
-          The response for a successful access grant request is a Short or Long term Access Grant token, depending on the input in the request message.  
-          It can be used as direct input to the Access Token server, in the case of a Long term AG token then also together with a PoP.<br>
+          The response for a successful access grant request is a Short or Long term Access Grant token, depending on the input in the request message. 
+          The only difference between both kind of tokens is that Long term Access Grant token would include the public key used in the request.
+          <br>
           The Access Grant token is a digitally signed document issued by the AG Server including all relevant information needed to issue Access Tokens.
         </p>
         <p>
@@ -386,22 +383,17 @@ In filter combinations where a search expression in the URI is combined with a s
 
         </section>
 
+       
 
         <section id="access-token-request">
           <h2>Access Token Request</h2>
           <p>
-          The request shall contain the first two parameters below, the other is optional:
+          The request shall contain at least these two parameters below:
           <ul>
             <li>AG token: A signed token with claims needed for the validation of the Client request.</li>
             <li>Purpose: The Purpose shall be one of the short text entries from the <a href="#purpose-list"></a>.</li>
-            <li>Proof: A PoP in the AG token.</li>
           </ul> 
-            All access token request shall include an AG token. Moreover, if the Access Grant token includes a public key, 
-            the Client should also include in the request a fresh PoP. 
-            This shall be a fresh timestamp that is digitally signed using the associated private key.
-          </p>
-          <p>
-            Apart from the AG Token, the request should include the short name of a Purpose found on the <a href="#purpose-list"></a> owned by the Ecosystem manager.
+            Short term Access Grant tokens can be used as direct input to the Access Token server, but Long term AG tokens should be accompanied by a Proof of Possession (PoP) for the private key corresponding to the public key included in the token, see chapter <a href="#proof-of-possession"></a>.
           </p>
           <p>
             The Access Token server acts as a Policy Enforcement Point, making decisions on whether to grant access to the protected resource based on the provided AG Token and Purpose.
@@ -449,7 +441,7 @@ In filter combinations where a search expression in the URI is combined with a s
           <ul>
             <li>The Device. It is in charge of running the Apps that make requests to the Gen2 server</li>
             <li>The App. It runs requests on behalf of the User.</li>
-            <li>The User. Delegating access rights to the App.</li>
+            <li>The User. It delegates access rights to the App.</li>
           </ul> 
           All the information regarding the client is encoded in the Context of the request.
         </p>
@@ -463,7 +455,6 @@ In filter combinations where a search expression in the URI is combined with a s
           Depending on the capabilities of the Client, the specification supports two types of Access Grant Tokens: Short term and Long term AG Tokens.<br>
           Long term Access Grant Tokens, are supported for those Clients able to run public key cryptographic primitives, i.e. key pair generation and signatures, 
           and is the recommended choice for Clients with access to a trusted execution environment where private keys are protected from the regular execution environment. 
-          The Client must when requesting a Long term AG token create a PoP, see <a href="#proof-of-possession"></a>.<br>
           The specification also supports Short term Access Grant Tokens that require no extra capabilities in the client, 
           but due to its shorter expiry time it forces the client to contact the AGS more often before Access Token Server (ATS) requests for an Access Token.<br>
           The Client request shall contain the following:
@@ -486,28 +477,27 @@ In filter combinations where a search expression in the URI is combined with a s
             <li>To check that the vehicle represented by the VIN belong to this Ecosystem, and is accessible.</li>
             <li>To create an Access Grant token.</li>
           </ul>
-          The proofs may include certificates from a Certificate Authority known by the AG server. The AG server shall validate the certificate signature, 
-          and utilize certificate information to assess that the requested role can be granted.<br>
+          The proofs may include certificates from a Certificate Authority known by the AG server. For example, users might authenticate themselves using X.509 identity certificates and roles might be issued using attribute certificates. In those cases, as part of the authentication protocol, the AG server shall also validate the certificates signatures.<br>
           The AG server may contact the Ecosystem manager for checking the VIN.<br>
-          The Access Grant generation is defined in the corresponding chapter.
+          The Access Grant token generation is defined in the corresponding chapter.
         </p>
           </p>
         </section>
 
+       
       <section id="access-token-server">
         <h2>Access Token Server</h2>
         <p>
         <em>This section is non-normative.</em><br>
         The Client shall after a successful interaction with the AG server request an Access token from the Access Token server. 
-        The Client request shall contain the first two parameters below, the third is optional.
+        The Client request shall contain at least these two parameters below.
           <ul>
             <li>Access Grant token.</li>
             <li>Purpose.</li>
-            <li>Proof of possession.</li>
           </ul>
-        For Long term Access Grant tokens, i.e. those including a public key, the Client must also include a fresh PoP in the request.<br>
+        For Long term Access Grant tokens, i.e. those including a public key, the Client must also include a PoP, for the corresponding private key, in the request.<br>
         The Purpose must be supported by the Ecosystem manager, and thus be on the Purpose list, see the chapter <a href="#purpose-list"></a>. 
-        The Purpose list associates a set of accessible signals to the Purpose, thus realizing the principle of least priviledge.<br>
+        The Purpose list associates a set of accessible signals to the Purpose, thus realizing the principle of least privilege.<br>
         The main responsibilities of the Access Token server are:
           <ul>
             <li>To validate the Access Grant token.</li>
@@ -519,9 +509,9 @@ In filter combinations where a search expression in the URI is combined with a s
             <li>Signature validation.</li>
             <li>Expiry time check.</li>
           </ul>
-        Additionally, when the token contains a public key, i.e. Long term Access Grant tokens, the Access Token server needs to verify that there is a valid and fresh PoP for this public key. <br>
+        Additionally, for Long term Access Grant tokens, the Access Token server needs to verify the PoP using the public key contained in the token, see chapter <a href="#proof-of-possession"></a>.<br>
         The AG token signature validation is done with the AG server public key. 
-        For Long term AG tokens also the Client PoP must be validated, which is done with the public key contained in the token.<br>
+        <br>
         To allow for some time synchronization inaccuracy and minor network latency, expiry times should be set to include potential modest margin of error, possibly as long as tens of seconds.<br>
         If the Client context as declared in the AG token does not match in the set of allowed roles for the requested Purpose in the Purpose list document, 
         then the client request for an Access token must be denied.<br>
@@ -625,7 +615,7 @@ In filter combinations where a search expression in the URI is combined with a s
           <em>This section is non-normative.</em><br>
           The three Client sub-actors must provide authentication credentials to the AG server. 
           This may be certificates that the sub-actors have obtained from a Certificate Authority that is known by the AG server. 
-          The interactions related to this is out of scope.
+          The interactions related to this are out of scope.
           </p>
         </section>
 
@@ -641,7 +631,7 @@ In filter combinations where a search expression in the URI is combined with a s
           The Short term Access Grant token shall have the following claims in header and payload.<br>
 	  <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>          
 	  {
-            "alg": "HS256",
+            "alg": "ES256",
             "typ": "JWT"
           },
           {
@@ -652,7 +642,7 @@ In filter combinations where a search expression in the URI is combined with a s
             "jti": "5967e92e-40e8-5f39-892d-cc0da890db1d"
           }
 	  </pre>
-	  Algorithm (alg) shall be set to "HS256".<br>
+	  Algorithm (alg) shall be set to a valid RSA or ECDSA algorithms according to [[RFC7518]].<br>
 	  Type (typ) shall be set to "JWT".<br>
           Issued at (iat) shall be set to the time of token issuance, in Unix time.<br>
           Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
@@ -668,7 +658,7 @@ In filter combinations where a search expression in the URI is combined with a s
           The Long term Access Grant token shall have the following claims in header and payload.<br>
 	  <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>          
 	  {
-            "alg": "HS256",
+            "alg": "ES256",
             "typ": "JWT"
           },
           {
@@ -680,12 +670,12 @@ In filter combinations where a search expression in the URI is combined with a s
             "jti": "5967e92e-40e8-5f39-892d-cc0da890db1d"
           }
 	  </pre>
-	  Algorithm (alg) shall be set to "HS256".<br>
+	  Algorithm (alg) shall be set to a valid RSA or ECDSA algorithms according to [[RFC7518]].<br>
 	  Type (typ) shall be set to "JWT".<br>
           Issued at (iat) shall be set to the time of token issuance, in Unix time.<br>
           Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
           Client context (clx) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
-          Public key (pub) shall be set to the binary public key that the Client provided in the AG request.<br>
+          Public key (pub) shall be set to the public key that the Client provided in the AG request, using the JSON Web Key (JWK) data structure [[RFC7517]].<br>
           Audience (aud) shall be set to the URL "w3.org/gen2".<br>
           JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the Ecosystem manager.
             </p>
@@ -710,7 +700,7 @@ In filter combinations where a search expression in the URI is combined with a s
             "jti": "5967e93f-40f9-5f39-893e-cc0da890db2e"
           }
 	  </pre>
-	  Algorithm (alg) shall be set to "HS256".<br>
+	  Algorithm (alg) shall be set to any valid algorithms according to [[RFC7518]].<br>
 	  Type (typ) shall be set to "JWT".<br>
           Issued at (iat) shall be set to the time of token issuance, in Unix time.<br>
           Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
@@ -723,9 +713,19 @@ In filter combinations where a search expression in the URI is combined with a s
 
         <section id="proof-of-possession">
           <h2>Proof of Possession</h2>
-          <p>
           <em>This section is non-normative.</em><br>
-          ...as defined in [[RFC7800]].(Is it the right RFC? If not, just change the number here, the Reference chapter will be updated automagically:)
+
+          <p>
+            Long term Access Grant tokens need to be accompanied by a Proof of Possession (PoP) for the private key corresponding to the public key included in the Access Grant token. This requirement enables a longer validity for this kind of tokens, ranging from a few days to a even a year.
+            By adding the PoP, we prevent an eavesdropper to reuse an Access Token request, impersonating the client. Without a PoP, the longer the validity of an Access Grant token, the higher the risk an attacker could intercept and reuse it.
+            PoP for JWT are defined in [[RFC7800]], but in essence, a PoP enables the requester to proof to the server that it has access to a private key, without disclosing it. Traditionally that would require the server to create a random challenge, or nonce, and ask the client to sign it with its private key. Along with the public key, the server would be able to verify the PoP.
+            This scheme would require an extra step in the protocols, where the client ask for the nonce.
+          </p><p>
+            In order to avoid this extra step, the client can generate the nonce itself. The server would need to check that nonces are not reused. Although logging previous nonces at the server side would work for small environments, we propose the use of an incremental nonce in the form of a timestamp. One of the drawbacks of this proposal is that the server has no means to check whether the PoP has been precomputed or not. However, this is irrelevant from the eavesdropper point of view.
+          </p><p>
+            In case freshness of the PoP was a critical requirement, we could use a public source of randomness to obtain the nonce, e.g. <a href="https://www.cloudflare.com/leagueofentropy/">Leage of Entropy</a> or <a href="https://csrc.nist.gov/projects/interoperable-randomness-beacons">Interoperable Randomness Beacons</a>. That would provide the server a mean to check freshness of the PoP but on the other hand, it would require the client to access the public source of randomness every time it needs to create a PoP which is against the main designs goal of the Long term Access Token grant.
+              </li>
+            </ul>
           </p>
         </section>
       </section>
