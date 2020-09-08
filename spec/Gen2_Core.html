@@ -388,7 +388,7 @@ In filter combinations where a search expression in the URI is combined with a s
         <section id="access-token-request">
           <h2>Access Token Request</h2>
           <p>
-          The request shall contain these two parameters below:
+          The request shall contain at least these two parameters below:
           <ul>
             <li>AG token: A signed token with claims needed for the validation of the Client request.</li>
             <li>Purpose: The Purpose shall be one of the short text entries from the <a href="#purpose-list"></a>.</li>
@@ -490,7 +490,7 @@ In filter combinations where a search expression in the URI is combined with a s
         <p>
         <em>This section is non-normative.</em><br>
         The Client shall after a successful interaction with the AG server request an Access token from the Access Token server. 
-        The Client request shall contain these two parameters below.
+        The Client request shall contain at least these two parameters below.
           <ul>
             <li>Access Grant token.</li>
             <li>Purpose.</li>
@@ -716,8 +716,16 @@ In filter combinations where a search expression in the URI is combined with a s
           <em>This section is non-normative.</em><br>
 
           <p>
-
-          ...as defined in [[RFC7800]].
+            Long term Access Grant tokens need to be accompanied by a Proof of Possession (PoP) for the private key corresponding to the public key included in the Access Grant token. This requirement enables a longer validity for this kind of tokens, ranging from a few days to a even a year.
+            By adding the PoP, we prevent an eavesdropper to reuse an Access Token request, impersonating the client. Without a PoP, the longer the validity of an Access Grant token, the higher the risk an attacker could intercept and reuse it.
+            PoP for JWT are defined in [[RFC7800]], but in essence, a PoP enables the requester to proof to the server that it has access to a private key, without disclosing it. Traditionally that would require the server to create a random challenge, or nonce, and ask the client to sign it with its private key. Along with the public key, the server would be able to verify the PoP.
+            This scheme would require an extra step in the protocols, where the client ask for the nonce. In order to avoid this extra step there are different strategies:
+            <ul>
+              <li>Use a client generated nonce. In this case, the client itself generates a new nonce for each PoP. The server would need to check that the nonce is indeed new for each PoP. Logging previous nonces at the server side would only work for small environments. An alternative would be to use incremental nonces, e.g. a timestamp. In any case, the server has no means to check whether the PoP is fresh or it has been precomputed.
+              </li>
+              <li>Use a public source of randomness. In this case, the client uses as nonce a publicly available random number, e.g. <a href="https://www.cloudflare.com/leagueofentropy/">Leage of Entropy</a> or <a href="https://csrc.nist.gov/projects/interoperable-randomness-beacons">Interoperable Randomness Beacons</a>. That would provide the server a mean to check freshness of the PoP but on the other hand, it would require the client to access the public source of randomness every time it needs to create a PoP.
+              </li>
+            </ul>
           </p>
         </section>
       </section>
