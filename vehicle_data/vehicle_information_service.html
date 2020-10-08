@@ -173,12 +173,21 @@ Working Draft of this specification</a>, the following <a href="viss-diff.html">
       WebSocket server instance that listens for an inbound connection request from a client in order to enable secure access to vehicle signals. 
       In this specification this module is referred to as the <dfn>VIS Server</dfn> or just 'the server'.</p>
 
-      <p>This specification defines a number of methods for accessing vehicle data which are strictly agnostic to the data model. Any data model where data and signals can be specified using a string could potentially be supported. However this version of the specification specifies that the data model is the GENIVI Vehicle Signal Specification [[!VSS]]. The VSS supports both extensibility and the ability to define private branches and will be used for each of the examples within this specification.</p>
-
+      <p>This specification defines a number of methods for accessing
+      vehicle data which are strictly agnostic to the data model. Any
+      data model where data and signals can be specified using a
+      string could potentially be supported. However this version of
+      the specification specifies that the data model is the <a
+      href="https://genivi.github.io/vehicle_signal_specification/introduction/overview/">GENIVI
+      Vehicle Signal Specification (VSS)</a>. VSS supports both
+      extensibility and the ability to define private branches and
+      will be used for each of the examples within this
+      specification.</p>
+      
       <p>The version of VSS is made clear within VSS
       itself as of version 2.0. In the absence of VersionVSS.Major,
       VersionVSS.Minor, VersionVSS.Patch and VersionVSS.Label it
-      should be assumed VSS is version 1.0.</p>
+      should be assumed <a href="https://github.com/GENIVI/vehicle_signal_specification/tree/v1.0">VSS is version 1.0</a>.</p>
       
       <p>In addition, the 'tree' of signals that is accessible at any point in time may also vary depending on standard access control principles.
          That is, it can vary based on the identity of the user (person or organisation) requesting the data and/or the application or 
