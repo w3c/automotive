@@ -843,7 +843,10 @@ In filter combinations where a search expression in the URI is combined with a s
             The Scope list contains a list of the VSS tree nodes for which access shall be prohibited, per Client context. 
             This prohibition is regardless of whether the Client has a valid Access token or not.<br>
             The Scope list can also be used to limit the node metadata that is returned on a Client service discovery request.<br>
-            Each entry in the list contains a list of paths to nodes that should be excluded, and a list of the Client contexts, i. e. the sub-actor role triplet, for which this exclusion should be made.<br>
+            Each entry in the list contains a list of paths to nodes that should be excluded, and a list of the Client contexts, i. e. the sub-actor role triplet, 
+            for which this exclusion should be made.<br>
+            The Scope list may contain an entry for a context with all three Roles set to "Undefined". 
+            The no-access scope of this entry shall then be used for signal discovery requests where no token is included.<br>
             The list shall use a JSON format as shown in the example below.
         <pre><code>
         {"scope":
