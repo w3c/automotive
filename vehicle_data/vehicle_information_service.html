@@ -7,7 +7,9 @@
             class='remove'></script>
     <script class="remove">
       var respecConfig = {
-          specStatus:           "ED",
+          specStatus:           "PR",
+          xref:                 "web-platform",
+	  prEnd: "2020-12-31",
           shortName:            "vehicle-information-service",
           previousMaturity: "WD",
           previousPublishDate: "2016-10-20",
@@ -65,11 +67,12 @@
 
 	  
           localBiblio: {
-            "VSS": {
+            VSS: {
               title: "Vehicle Signal Specification",
               href: "https://github.com/GENIVI/vehicle_signal_specification",
+              //href: "https://github.com/GENIVI/vehicle_signal_specification/tree/v1.0",
               status: "1.0",
-              "date": "March 2017",
+              date: "March 2017",
               publisher: "GENIVI Alliance",
             }
           },	      
@@ -188,7 +191,7 @@ Working Draft of this specification</a>, the following <a href="viss-diff.html">
       will be used for each of the examples within this
       specification.</p>
       
-      <p>The version of VSS is made clear within VSS
+      <p>The version of [[VSS]] is made clear within VSS
       itself as of version 2.0. In the absence of VersionVSS.Major,
       VersionVSS.Minor, VersionVSS.Patch and VersionVSS.Label it
       should be assumed <a href="https://github.com/GENIVI/vehicle_signal_specification/tree/v1.0">VSS is version 1.0</a>.</p>
@@ -338,8 +341,9 @@ function subscriptionHandler(msg){
         <p> The acronym 'VISS' is used to refer to this document, the 'Vehicle Information Service Specification'.</p>
         <p> The acronym 'VSS' is used to refer to the <a href="https://github.com/GENIVI/vehicle_signal_specification/">'Vehicle Signal Specification'</a> which is defined by the GENIVI Alliance.
         </p>
- 	<p>The term 'WebSocket' when used in this document, is as defined in the <a data-cite="!WEBSOCKETS-API">W3C WebSocket API</a>
- 	 and the <a data-cite="WEBSOCKETS-PROTOCOL" href="https://www.w3.org/TR/websockets/">WebSocket Protocol</a>.</p>
+ 	<p>The term 'WebSocket' when used in this document, is as
+	defined in the {{WebSocket}}
+ 	 and the [[RFC6455]].</p>
       </section>
 
       <!-- Table of Figures -->
@@ -355,7 +359,7 @@ function subscriptionHandler(msg){
       bus respond to the messages.</p>
 
       <p>In the component diagram included in Figure 2, the internal vehicle CAN, MOST and LIN networks and the ECUs that communicate
-      via these networks are abstracted and for simplicity, represented by the <dfn>System</dfn> component.</p>
+      via these networks are abstracted and for simplicity, represented by the System component.</p>
 
       <p>For safety, security and commercial reasons not all clients should be able to GET, SET or SUBSCRIBE to particular vehicle
       signals and data attributes. As a consequence, access-control must be managed so clients cannot simply connect directly to ECUs
@@ -370,7 +374,11 @@ function subscriptionHandler(msg){
 	      exposing vehicle signals and data to on-board clients by implementing the interface and behaviours defined in this
 	      <dfn>Vehicle Information Service Specification (VISS)</dfn>.</p>
 
-      <p>The VIS Server exposes signals and data in a manner that is consistent with the accompanying data model. The data model is not mandated by this specification, however the recommended data model used within this specification is the <dfn>Vehicle Signal Specification (VSS)</dfn>.
+      <p>The VIS Server exposes signals and data in a manner that is
+      consistent with the accompanying data model. The data model is
+      not mandated by this specification, however the recommended data
+      model used within this specification is the <dfn>Vehicle Service
+      Specification (VSS)</dfn>.
       This defines a 'tree-like' logical taxonomy of the vehicle, (formally a Directed Acyclic Graph), where major vehicle structures
       (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as
       their child nodes. Each of the child nodes in the tree is further decomposed into its logical constituents, and the process is
@@ -630,13 +638,13 @@ connection with URI-schema ​‘wss’</a>. Non-encrypted communication
       <section>
       <h3>Message Structure</h3>
 
-       <p>The client MUST use the <a data-cite="!WEBSOCKETS-API">WebSocket</a> <dfn>send</dfn> method,
+       <p>The client MUST use the {{WebSocket}} <dfn>send</dfn> method,
         to pass request messages to the server. The message signature SHALL be:</p>
 
 	<pre class="highlight hljs javascript">
 		WebSocket.send(request)
 	</pre>
-	<p>The request message MUST be comprised of one of the request objects defined in this section. The client SHALL
+	<p>The request message MUST be comprised of one of the request objects defined in this section. The client SHAsLL
 	receive responses from the server using the WebSocket <dfn>onmessage</dfn> method, as follows:</p>
 	<pre class="highlight hljs javascript">
 		WebSocket.onmessage = function(obj){
@@ -704,7 +712,7 @@ connection with URI-schema ​‘wss’</a>. Non-encrypted communication
 	</table>
 
 	<p>The request and response parameters contain a limited number of attributes, defined in the table below.</p>
-  	<h4></h4><h4></h4>
+
   	<h4>Term Definitions</h4>
 	<table class="parameters">
 	  <tr>
@@ -713,7 +721,7 @@ connection with URI-schema ​‘wss’</a>. Non-encrypted communication
 	    <th>Description</th>
 	  </tr>
 	  <tr>
-	    <td> <dfn>action</dfn></td>
+	    <td> <a>action</a></td>
 	    <td> <a href="#action">Action</a></td>
 	    <td>The type of action requested by the client or delivered by the server.</td>
 	  </tr>
@@ -858,7 +866,7 @@ connection with URI-schema ​‘wss’</a>. Non-encrypted communication
 }
 </pre>
 
-	<h4 id="action">Action</h4>
+	<h4 id="action"><dfn>Action</dfn></h4>
 
 	<p>The Action enumeration is used to define the type of action requested by the client.
 	All client messages MUST contain a JSON structure that has an <a>action</a> name/value pair and the
@@ -2174,7 +2182,7 @@ connection with URI-schema ​‘wss’</a>. Non-encrypted communication
 		});
 	</pre>
         </section>
-
+	<section>
 <h2>Unsubscribe All</h2>
 <p>To unsubscribe from all subscriptions, the client SHALL send an <a>unsubscribeAllRequest</a> message to the server. This is
 comprised of a JSON structure which contains an action property set to <a>unsubscribeAll</a>. This does not require a 
@@ -2250,6 +2258,7 @@ to unsubscribe from, the VIS Server will return an <a>unsubscribeSuccessResponse
 }
 </pre>
 
+  <h6>unsubscribeAllErrorResponse</h6>
 <p>The <a>unsubscribeAllErrorResponse</a> has the following properties and schema:</p>
 <table class=simple>
   <thead>
@@ -2265,6 +2274,7 @@ to unsubscribe from, the VIS Server will return an <a>unsubscribeSuccessResponse
     </tr>
   </tbody>
 </table>
+
 <pre>
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
@@ -2306,7 +2316,7 @@ receive <- {
     "timestamp": 1489985044000
 }
 </pre>
-
+</section>
     <section>
       <h3>Server Side Filtering</h3>
       <p><a>Filters</a> may be specified to enable Server side filtering
