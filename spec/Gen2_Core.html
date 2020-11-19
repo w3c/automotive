@@ -3,9 +3,7 @@
   <head>
     <meta charset='utf-8'>
     <title>Gen2 - Core</title>
-    <script 
-      src='https://www.w3.org/Tools/respec/respec-w3c-common' 
-      class='remove'></script>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
     <script type="text/javascript" src="plantuml/jquery.js"></script>
     <script type="text/javascript" src="plantuml/jquery_plantuml.js"></script>
     <script type="text/javascript" src="plantuml/rawdeflate.js"></script>	 
@@ -635,6 +633,7 @@ In filter combinations where a search expression in the URI is combined with a s
             "typ": "JWT"
           },
           {
+            "vin": "vehicle-id",
             "iat": 1609452095,
             "exp": 1609459199,
             "clx": "user+app+dev",
@@ -644,6 +643,7 @@ In filter combinations where a search expression in the URI is combined with a s
 	  </pre>
 	  Algorithm (alg) shall be set to a valid RSA or ECDSA algorithms according to [[RFC7518]].<br>
 	  Type (typ) shall be set to "JWT".<br>
+	  VIN (vin) shall be set to the vehicle identity provided by the Client.<br>
           Issued at (iat) shall be set to the time of token issuance, in Unix time.<br>
           Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
           Client context (clx) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
@@ -662,16 +662,18 @@ In filter combinations where a search expression in the URI is combined with a s
             "typ": "JWT"
           },
           {
+            "vin": "vehicle-id",
             "iat": 1609452095,
             "exp": 1609459199,
             "clx": "user+app+dev",
-            "pub": client_pub_key
+            "pub": client_pub_key,
             "aud": "w3.org/gen2",
             "jti": "5967e92e-40e8-5f39-892d-cc0da890db1d"
           }
 	  </pre>
 	  Algorithm (alg) shall be set to a valid RSA or ECDSA algorithms according to [[RFC7518]].<br>
 	  Type (typ) shall be set to "JWT".<br>
+	  VIN (vin) shall be set to the vehicle identity provided by the Client.<br>
           Issued at (iat) shall be set to the time of token issuance, in Unix time.<br>
           Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
           Client context (clx) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
@@ -736,9 +738,9 @@ In filter combinations where a search expression in the URI is combined with a s
         <em>This section is non-normative.</em><br>
         The Client actor described in the <a href="#client"></a> chapter is characterized by three subactors:
           <ul>
-            <li>The device.</li>
-            <li>The application.</li>
             <li>The user of the application.</li>
+            <li>The application.</li>
+            <li>The device.</li>
           </ul>
           Each of these subactors is in turn characterized by a role, 
           building on the concept of a <a href="https://en.wikipedia.org/wiki/Role-based_access_control">Role Based Access Control (RBAC) model</a>. 
@@ -754,34 +756,6 @@ In filter combinations where a search expression in the URI is combined with a s
         Following the principle of least priviledge, a Client should not have access to more vehicle signals than necessary. 
         This is achieved by the Purpose document described in the <a href="#purpose-list"></a> chapter, that assigns only the for the Purpose relevant signals to the Client. 
         </p>
-
-        <section id="device-roles">
-          <h2>Device Roles</h2>
-          <p>
-          Gen2 specifies the following minimum set of roles for devices:
-          <ul>
-            <li>Vehicle</li>
-            <li>Nomadic</li>
-            <li>Cloud</li>
-          </ul>
-          A Vehicle role is used for applications that are deployed in-vehicle, in e. g. the center stack ECU.<br>
-          A Nomadic role is used for applications that are deployed in a User's mobile phone, laptop, etc, that uses short range radio communication like Bluetooth, or WiFi.<br>
-          A Cloud role is used for applications that are deployed in off-vehicle devices, and uses a long range radio communication like cellular in the connection to the vehicle.<br>
-          </p>
-        </section>
-
-        <section id="application-roles">
-          <h2>Application Roles</h2>
-          <p>
-          Gen2 specifies the following minimum set of roles for applications:
-          <ul>
-            <li>OEM</li>
-            <li>Third party</li>
-          </ul>
-          An OEM application role is used for applications that are pre-installed in the vehicle by the OEM, or later OEM-provisioned to the vehicle.<br>
-          A Third party application role is used for applications that are "certified" for vehicle deployment, but developed by a third party.<br>
-          </p>
-        </section>
 
         <section id="user-roles">
           <h2>User Roles</h2>
@@ -803,6 +777,34 @@ In filter combinations where a search expression in the URI is combined with a s
           A Passenger user is anyone travelling in the vehicle, but not being the Driver.<br>
           </p>
         </section>
+
+        <section id="application-roles">
+          <h2>Application Roles</h2>
+          <p>
+          Gen2 specifies the following minimum set of roles for applications:
+          <ul>
+            <li>OEM</li>
+            <li>Third party</li>
+          </ul>
+          An OEM application role is used for applications that are pre-installed in the vehicle by the OEM, or later OEM-provisioned to the vehicle.<br>
+          A Third party application role is used for applications that are "certified" for vehicle deployment, but developed by a third party.<br>
+          </p>
+        </section>
+
+        <section id="device-roles">
+          <h2>Device Roles</h2>
+          <p>
+          Gen2 specifies the following minimum set of roles for devices:
+          <ul>
+            <li>Vehicle</li>
+            <li>Nomadic</li>
+            <li>Cloud</li>
+          </ul>
+          A Vehicle role is used for applications that are deployed in-vehicle, in e. g. the center stack ECU.<br>
+          A Nomadic role is used for applications that are deployed in a User's mobile phone, laptop, etc, that uses short range radio communication like Bluetooth, or WiFi.<br>
+          A Cloud role is used for applications that are deployed in off-vehicle devices, and uses a long range radio communication like cellular in the connection to the vehicle.<br>
+          </p>
+        </section>
       </section>
 
       <section id="policy-documents">
@@ -820,13 +822,12 @@ In filter combinations where a search expression in the URI is combined with a s
         Each entry in the list contains a short description of the purpose, which is what the Client shall provide as input to its request for an Access token. There is also a long description, which may be used in the dialogue for consent, if needed. Then there is a list of the Client contexts, i. e. the sub-actor role triplet, that can be granted this access, and last there is a list of  the signals that the client is given access to for this purpose, with the allowed access mode. The list shall use a JSON format as shown in the example below.
         <pre><code>
         {"purposes":
-            [{"short": "Pay as you drive", 
-            "long": "Insurance cost based on drive data.", 
-            "contexts":[ ["OEM", ["OEM", "Third party"], "Vehicle"], [ ] ], 
+            [{"short": "fuel-status", 
+            "long": "Fuel level and remaining range.", 
+            "contexts":[{"user":"Independent","app":["OEM", "Third party"], "device":"Cloud"}, {"user":"Owner", "app":"Third party", "device":"Nomadic"}, {"user":"Driver", "app":"OEM", "device":"Vehicle"}], 
             "signal_access":
-                [{"path": "Vehicle.Drivetrain.Transmission.Speed", "access_mode": "read-only"}, 
-                {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", "access_mode":"read-only"}, 
-                {"path": "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Longitude", "access_mode": "read-only"}] 
+                [{"path": "Vehicle.Powertrain.EnergyStorage.FuelSystem.Level", "access_mode": "read-only"}, 
+                {"path": "Vehicle.Powertrain.EnergyStorage.FuelSystem.Range", "access_mode": "read-only"}] 
             }, 
             {}] 
         }
@@ -842,11 +843,14 @@ In filter combinations where a search expression in the URI is combined with a s
             The Scope list contains a list of the VSS tree nodes for which access shall be prohibited, per Client context. 
             This prohibition is regardless of whether the Client has a valid Access token or not.<br>
             The Scope list can also be used to limit the node metadata that is returned on a Client service discovery request.<br>
-            Each entry in the list contains a list of paths to nodes that should be excluded, and a list of the Client contexts, i. e. the sub-actor role triplet, for which this exclusion should be made.<br>
+            Each entry in the list contains a list of paths to nodes that should be excluded, and a list of the Client contexts, i. e. the sub-actor role triplet, 
+            for which this exclusion should be made.<br>
+            The Scope list may contain an entry for a context with all three Roles set to "Undefined". 
+            The no-access scope of this entry shall then be used for signal discovery requests where no token is included.<br>
             The list shall use a JSON format as shown in the example below.
         <pre><code>
         {"scope":
-            [{"contexts":[ [ ["Driver", "Passenger"], "Third party", "Vehicle"], [ ] ], 
+            [{"contexts":[ { "user":["Driver", "Passenger"], "app":"Third party", "device":"Vehicle"}, { } ], 
             "no_access":
                 ["Vehicle.Drivetrain.Transmission.Speed", 
                 "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", 
