@@ -157,14 +157,14 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
 	  where<br>
 	  <ul>
 	  <li>Get is the transport protocol method,</li>
-	  <li>vsspath is the VSS path,</li>
+	  <li>vsspath is the path starting from the tree root,</li>
 	  <li>filter is the key name for the filter expression,</li>
 	  <li>json-expression contains the filter instructions.</li>
 	  </ul>
 	  </ul>
 	  The JSON expression has the following format:<br>
 	  <ul>
-	  <li>[{"op-type":"paths/capture", "op-value":["a", "b",..], "op-extra":{}}, {},...]</li>
+	  <li>[{"op-type":"paths/capture", "op-value":["a", "b",..], "op-extra":{}}, {optional-second-object}]</li>
 	  </ul>
 	  where<br>
 	  <ul>
@@ -177,7 +177,7 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
 	  <ul>
 	  <li>for the paths type:</li>
 	  <ul>
-	  <li>one or more VSS paths</li>
+	  <li>one or more relative paths</li>
 	  </ul>
 	  <li>for the capture type:</li>
 	  <ul>
@@ -191,7 +191,8 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
 	  and is described in the following chapters.</li>
 	  </ul>
 	  In the JSON object, the key-value pairs "op-type" and "op-value are mandatory, while "op-extra" is optional.
-	  The JSON expression may consist of multiple JSON objects, which are then logically combined through the AND operator.<br>
+	  The JSON expression may consist of one or two JSON objects with a structure as described. 
+	  In the case of two objects, te op-type must be "paths" and "capture" in respective object, which are then logically combined through the AND operator.<br>
 	  The capture types (time-based, range, change, curve-logic) are only applicable for subscription requests. 
 	  Subscription requests are only supported by the websocket transport protocol.<br>
 	  The restriction on how many objects that can be combined is set by the URL size restriction on 1k characters (*).<br>
@@ -202,10 +203,11 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
         <h2>Paths Filter Operation</h2>
 		<p>
 		The paths filter operation is used when a single request is used to rerieve signal data from multiple data points in the VSS tree. 
-		The vsspath shall point to the last node in the tree that is common for the relative paths in the filter op-value. 
+		The vsspath shall point to the last node in the tree that is common for the relative paths in the filter op-value, that start off from this node. 
 		If the end point of a path in the filter op-value is a branch, then all leaf nodes in the sub-tree below this branch are addressed.
 		A path in the filter op-value may contain the wildcard character (*) as a representative for a path segment. 
-		If the path in the filter op-value ends with one or more wildcards, then only the leaf nodes matching the number of wildcards are addressed. 
+		If the path in the filter op-value ends with one or more wildcards, then only the leaf nodes with path segments matching the number of wildcards are addressed. 
+		Different elements of the op-value array may address the same node, in which case it is the responsibility of the server to resolve this to a singleton in the notifications.<br>
 		The op-extra key-value pair is not used in paths filter operations.<br>
 		Examples can be found in the TRANSPORT specification.
 		</p>
@@ -218,7 +220,8 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
 		The op-extra key-value pair is used in capture filter operations, as described for the following capture types below.
 		<ul>
 		<li>time-based: the op-extra contains the period time X in between captures, {"period":"X"}.</li>
-		<li>range: the op-extra contains the range boundary, and the logical operator, {"boundary": "X", "logic-op":"Y"}, where Y is one of the supported logical operators (**).</li>
+		<li>range: the op-extra contains the range boundary, and the logical operator, {"boundary": "X", "logic-op":"Y"}, where Y is one of the supported logical operators (**).
+		The op-extra may be an array of these objects, combined through a logical AND to allow expressions of a bounded range.</li>
 		<li>change: the op-extra contains the change boundary, and the logical operator, {"boundary": "X", "logic-op":"Y"}, where Y is one of the supported logical operators (**).</li>
 		<li>curve-logic: the op-extra contains the maximum error limit, and the buffer size, {"max-err": "X", "buf-size":"Y"}, where X is a float value, 
 		and Y is the number of buffer elements.</li>
@@ -227,6 +230,35 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
 		where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than", "lte" is "less than or equal".<br>
 		Examples can be found in the TRANSPORT specification.
                </p>
+        </section>
+
+     <section id="multiple-signals-request">
+          <h2>Multiple Signals Request</h2>
+	    <p>
+	    The filtering operations may be used to address multiple tree nodes in one request. 
+	    This leads to specific handling in certain situations, as described below.
+	    </p>
+
+     <section id="error-handling">
+          <h2>Error Handling</h2>
+	    <p>
+	    A request may address both valid nodes, and invalid nodes. 
+	    The latter case shall lead to an error response that contains information about which node, or nodes, that are invalid. 
+	    //More details to come when decided on.
+	    </p>
+     </section>
+
+     <section id="subscription-notification-triggering">
+          <h2>Subscription Notification Triggering</h2>
+	    <p>
+	    A subscription request must always contain a capture filter operation that describes the trigger event that leads to that the server dispatches an asynchronous notification message.
+	    For the capture types "range" or "change", the triggering is dependent on the signal value. 
+	    When the request addresses multiple signals, the triggering condition shall only be evaluated on one of the signals, which is the first signal in the op-value array of paths. 
+	    The first path in the array must therefore not contain wildcards to address multiple signals. 
+	    In this case one of the path addresses in the wildcard expression must be selected as the first array element, which can then be followed by the wildcard expression. 
+	    The duplicate reference to one signal that this leads to shall be resolved by the server to a singleton in the notifications.
+	    </p>
+     </section>
      </section>
    </section>
 
@@ -251,16 +283,27 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
 	<li>vsspath is the VSS path,</li>
 	<li>metadata-type describes the type of metadata that is requested, which can have one of the values:</li>
 	<ul>
-	<li>spec: the entire set of metadata that is stored in the VSS tree for the addressed node(s). This is referred to as a signal discovery request.</li>
-	<li>status: current status of the addressed node(s). This is metadata that the server have access to that is not described in the VSS tree. </li>
+	<li>static-metadata: the entire set of metadata that is stored in the VSS tree for the addressed node(s). This is referred to as a signal discovery request.</li>
+	<li>dynamic-metadata: current status of the addressed node(s). This is metadata that the server have access to that is not described in the VSS tree, 
+	and its vlue may ary over time. </li>
+	<li>Any metadata key name in the sets of static or dynamic metadata.</li>
 	</ul>
 	</ul>
-	The response to a status metadata request may include any of the following keys:
+	For the set of static metadata key names, see the <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a>.<br><br>
+	The set of dynamic metadata keynames are found in the list below. If a corresponding value to a key name is not present, the key-value pair is omitted in the response.
 	<ul>
-	<li>sample-frequency: the native capture frequency in Hz that is used by the vehicle system.</li>
+	<li>sample-rate: the native capture frequency in Hz that is used by the vehicle system.</li>
 	<li>capture-filter: the capture filter operation that the vehicle system is configured for.</li>
+	<li>availability: the current availability of a signal. The possible values are ["available", "temporary-unavailable", "permanently-unavailable"]. 
+	The temporary-unavailable is returned when the signal is inaccessible due to the current vehicle state. 
+	The permanently-unavailable is returned if the subsystem represented by the signal exists in the vehice, but is broken and requires repair.</li>
+	<li>validate: the access control rule that is applied to the node and its sub-tree. 
+	The server response shall conform to the inheritance rules, see the access control selection chapter.</li>
 	<li>****Any more?****</li>
 	</ul>
+	Multiple key names can be combined in the same request by concatenating them with a plus sign (+) as delimiter.<br>
+	A metadata request can be combined with a paths filter operation to address multiple nodes, but not with a capture filter operation.<br>
+	The response is a JSON formatted object with corresponding key-value pairs per addressed node.<br>
 	Examples can be found in the TRANSPORT specification.
 	</p>
     </section>
