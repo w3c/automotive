@@ -106,15 +106,15 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
         <p>The <dfn>authority</dfn> describes where to reach the server holding and managing the data representation.
           Scheme and authority are defined within the protocol adaptation.</p>
         <p>The <dfn>path</dfn> consists of the slash delimited node names of the nodes traversed from the tree root to the tree leaf representing the data point. E. g. the path expression from traversing the nodes Vehicle, Car, Engine, RPM would be "Vehicle/Car/Engine/RPM". The VSS data model uses a dot as delimiter, the implementaion of this specification is expected to handle the necessary translation.</p>
-        <p>The <a>query</a> contains further information related to the request, see <a href="#filtering"></a>.
+        <p>The <a>query</a> contains further information related to the request, see <a href="#filter-request"></a>.
       </section>
 
         <section id="service-discovery">
           <h2>Service Discovery</h2>
           <p>The purpose of the data model is to provide a client with a description of the data that enables the client to make a request for desired vehicle data, and interpret the response. In order to obtain that description, the client MAY request that the server returns the VSS tree content, i. e. the metadata describing the accessible vehicle data. The client is able to request metadata from any point in the signal tree, such that only the metadata for the nodes within the given branch of the tree is returned. For example, only metadata for the chassis branch of the VSS tree is returned when the chassis path is specified. If the path is set to the VSS root, the response contains the metadata for the entire tree. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message.<br>
           Some parts of the VSS tree may not be accessible to the Client due to restrictions defined in the <a href="#scope-list"></a>.<br>
-          A service discovery request has the format of a read, where the path is appended with a query component, see <a href="#service-discovery-filter"></a> for the details.<br>The key data components of these messagess are defined below:</p>
-          <ul>  
+          A service discovery request has the format of a read, where the path is appended with a query component, see <a href="#capture-filter-operation"></a> for the details.<br>The key data components of these messagess are defined below:</p>
+          <ul>
             <li>Request message parameters:</li>
             <ul>  
               <li>Path: The address to one or more nodes in the VSS tree, followed by the query component specifying the service discovery.</li>
@@ -138,156 +138,175 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
         </section>
     </section>
 	
-    <section id="filtering">
-      <h2>Filtering</h2>
-	  <p>Filtering is a mechanism to refine a client request, in order to more precisely control the data in a response. Filtering can be applied in read requests and in subscribe requests.For read requests the filter expression MUST be appended to the request path in the form of a <a>query</a> component following the description in [[RFC3986]]. For subscribe requests the filter expression MUST be carried in the request payload. The filter expression follows the same general rules in both request cases. The query component must have the following structure<br>
-  <dfn>reserved-word comparison-operator expression</dfn><br>
-where<br>
-  - reserved-word must have the dollar-sign as the first character ($). The availabe reserved words are described in the chapters below.<br>
-  - comparison-operator is one of either the equal sign (EQ), the greater than sign (GT), or the less than sign (LT).<br>
-  - expression is a character string with its interpretation given by the preceding reserved-word and comparison operator.<br><br>
-Filter expressions can consist of multiple query expressions, as described in <a href="#filter-combinations"></a>.<br><br>
-As filtering is implemented on the server side, in vehicles, the filtering complexity is intentionally kept to a low level in order to not load the processing resources too much.
+    <section id="filter-request">
+      <h2>Filter Request</h2>
+	  <p>
+	  Filtering is a mechanism to refine a client request, in order to more precisely control what is returned in a response. 
+	  Filtering can be applied in read requests and in subscribe requests. 
+	  A request where filtering is applied has the following structure
+	  <ul>
+	  <li>for the HTTP protocol:</li>
+	  <ul>
+	  <li>GET /vsspath?filter=json-expression</li>
+	  </ul>
+	  <li>for the Websocket protocol:</li>
+	  <ul>
+	  <li>{"action":"get", "path":"vsspath", "filter":"JSON-expression"}</li>
+	  </ul>
+	  </ul>
+	  where<br>
+	  <ul>
+	  <li>Get is the transport protocol method,</li>
+	  <li>vsspath is the path starting from the tree root,</li>
+	  <li>filter is the key name for the filter expression,</li>
+	  <li>json-expression contains the filter instructions.</li>
+	  </ul>
+	  </ul>
+	  The JSON expression has the following format:<br>
+	  <ul>
+	  <li>[{"op-type":"paths/capture", "op-value":["a", "b",..], "op-extra":{}}, {optional-second-object}]</li>
+	  </ul>
+	  where<br>
+	  <ul>
+	  <li>op-type: the key name for the filter operation type, which can have one of the values:</li>
+	  <ul>
+	  <li>paths: the filtering is applied to the sub tree addressed by the vsspath,</li>
+	  <li>capture: the filtering is applied to the data of the response to the request.</li>
+	  </ul>
+	  <li>op-value: the key name for the filter operation, which can have one of the values:</li>
+	  <ul>
+	  <li>for the paths type:</li>
+	  <ul>
+	  <li>one or more relative paths</li>
+	  </ul>
+	  <li>for the capture type:</li>
+	  <ul>
+	  <li>time-based: data captures are done with a fixed period time,</li>
+	  <li>range: data captures are done when values are in the given range,</li>
+	  <li>change: data capture is done when the value since last capture has changed more than a fixed value,</li>
+	  <li>curve-logic: captured data are processed according to the curve logic algorithm before being sent to client.</li>
+	  </ul>
+	  </ul>
+	  <li>op-extra: the key name for the optional configuration data that the filter operation requires. This data varies depending on the op-type and op-value, 
+	  and is described in the following chapters.</li>
+	  </ul>
+	  In the JSON object, the key-value pairs "op-type" and "op-value are mandatory, while "op-extra" is optional.
+	  The JSON expression may consist of one or two JSON objects with a structure as described. 
+	  In the case of two objects, te op-type must be "paths" and "capture" in respective object, which are then logically combined through the AND operator.<br>
+	  The capture types (time-based, range, change, curve-logic) are only applicable for subscription requests. 
+	  Subscription requests are only supported by the websocket transport protocol.<br>
+	  The restriction on how many objects that can be combined is set by the URL size restriction on 1k characters (*).<br>
+	  (*) 1k is the "conservative limit, which should always be supported, a more liberal limit is 2k, which is supported in most cases.
 	  </p> 
 
-     <section id="read-filter">
-        <h3>Read Filtering</h2>
-		<p>The available read filtering options are presented in the following chapters, and are only applicable to read requests. As described in [[RFC3986]], a question mark must be inserted as a delimiter between the path and the query components.
-		</p>
-
-       <section id="service-discovery-filter">
-          <h3>Service Discovery Filter</h2>
-		<p>The service discovery query has the structure<br>
-  <dfn>$spec EQ depth</dfn><br>
-where<br>
-  - $spec is the reserved word for service discovery filtering.<br>
-  - the equal sign (EQ) is the only allowed comparison operator for service discovery filtering.<br>
-  - depth sets the maximum branch depth that is returned in the response, counted from the root node given by the path component in the request.
-Depth MUST be a positive integer. If set to zero, it is replaced by the max depth of the subtree.
-		</p>
-        </section>
-
-       <section id="search-filter">
-          <h3>Search Filter</h2>
-		<p>If the path in a read request does not terminate in a leaf node, then the response will contain values from all leaf nodes in the subtree given by the path. The search filter makes it possible to tailor a subset of this response. The search query has the structure<br>
-  <dfn>$path EQ search-expression</dfn><br>
-where<br>
-  - $path is the reserved word for search filtering.<br>
-  - the equal sign (EQ) is the only allowed comparison operator for search filtering.<br>
-  - search-expression is a path expression that may contain the wildcard character (*) for representation of an unknown node name.<br><br>
-The search-expression is relative to the root node given by the path component in the request. An example could be "*/*/isOpen", which, preceded with a slash, and concatenated with the request root-path "Vehicle/Cabin/Door" would generate the absolute search expression "Vehicle/Cabin/Door/*/*/isOpen", in which case the response would contain all values from the isOpen nodes in that subtree, but not from the other possible leaf nodes in it.<br><br>
-The search filter can be used also in subscribe requests, see chapter <a href="#filter-combinations"></a>.<br>
-The response message on a request addressing multiple signals contains all the matching signal values. Notifications from a subscription addressing multiple signals contain one signal value per notification.
-		</p>
-        </section>
-
-       <section id="data-value-filter">
-          <h3>Data Value Filter</h2>
-		<p>If a request, typically when it is addressing a subtree, is only interested in response data with a specific value, then a data value filter can be used. 
-The data value query has the structure<br>
-  <dfn>$data comparison-operator value</dfn><br>
-where<br>
-  - $data is the reserved word for data value filtering.<br>
-  - comparison-operator is one of either the equal sign (EQ), the greater than sign (GT), or the less than sign (LT).<br>
-  - value is a number following Javascript syntax rules, or a boolean value.<br><br>
-If the data type of the value-expression is different from the data type of the node matching the path, then an error response is returned.
-		</p>
-        </section>
-      </section>
-
-     <section id="subscribe-filter">
-        <h3>Subscribe Filtering</h2>
-		<p>The available subscribe filtering options are presented in the following chapters, and is only applicable to subscribe requests. The filter expression is carried in the request payload in the form of a key-value pair "filter": "filter expression", where "filter" is the key name, and "filter expression" is replaced by the actual expression. 
-		</p>
-
-       <section id="interval-filter">
-          <h3>Interval Filter</h2>
-		<p>An interval filter is used in a subscribe request when the client wants subscription notifications to be issued by the server at a regular time interval. 
-The interval query has the structure<br>
-  <dfn>$interval EQ value</dfn><br>
-where<br>
-  - $interval is the reserved word for interval filtering.<br>
-  - the equal sign (EQ) is the only allowed comparison operator for interval filtering.<br>
-  - value is an integer value in milliseconds representing the interval between issued notifications.<br>
-		</p>
-        </section>
-
-       <section id="range-filter">
-          <h3>Range Filter</h2>
-		<p>A range filter is used when the client wants subscription notifications to be issued by the server when a value enters/exits the defined range.
-The range query has the structure<br>
-  <dfn>$range comparison-operator value</dfn><br>
-where<br>
-  - $range is the reserved word for range filtering.<br>
-  - comparison-operator is one of either the greater than sign (GT), or the less than sign (LT).<br>
-  - value is a number following Javascript syntax rules.<br>
-		</p>
-        </section>
-
-       <section id="change-filter">
-          <h3>Change Filter</h2>
-		<p>A change filter is used when the client wants subscription notifications to be issued by the server when a value has changed more than a defined value since last notification.
-The change query has the structure<br>
-  <dfn>$change comparison-operator value</dfn><br>
-where<br>
-  - $change is the reserved word for change filtering.<br>
-  - comparison-operator is one of either the greater than sign (GT), or the not equal sign (NEQ).<br>
-  - value is a number following Javascript syntax rules.<br><br>
-When using the not equal comparison operator it MUST have the value zero, all other values lead to an error response. The usage is interpreted as "for any change", and also supports boolean changes.
-		</p>
-        </section>
-      </section>
-
-      <section id="filter-combinations">
-        <h3>Filter Combinations</h2>
-		<p>Queries of the types described below can be aggregated to form more complex queries. The format for this is then<br>
-  <dfn>query1 AND query2 AND .. queryN</dfn><br>
-where<br>
-  - queryN is any of the query types, following the allowed combinations shown in Table 1.<br>
-  - N is maximum four.<br>
-  - AND is the logical AND operator.<br>
-		</p>
+     <section id="paths-filter-operation">
+        <h2>Paths Filter Operation</h2>
 		<p>
-		<table border="1">
-			<tr><th>Index</th><th>Filter name</th><th>Allowed combinations</th></tr>
-			<tr>
-				<th>1.</th>
-				<td><dfn>Service discovery</dfn></td>
-				<td>None</td>
-			</tr>
-			<tr>
-				<th>2.</th>
-				<td><dfn>Search</dfn></td>
-				<td>3+4+5+6</td>
-			</tr>
-			<tr>
-				<th>3.</th>
-				<td><dfn>Data value</dfn></td>
-				<td>2</td>
-			</tr>
-			<tr>
-				<th>4.</th>
-				<td><dfn>Interval</dfn></td>
-				<td>2</td>
-			</tr>
-			<tr>
-				<th>5.</th>
-				<td><dfn>Range</dfn></td>
-				<td>2+5+6</td>
-			</tr>
-			<tr>
-				<th>6.</th>
-				<td><dfn>Change</dfn></td>
-				<td>2+5</td>
-			</tr>
-		</table>
+		The paths filter operation is used when a single request is used to rerieve signal data from multiple data points in the VSS tree. 
+		The vsspath shall point to the last node in the tree that is common for the relative paths in the filter op-value, that start off from this node. 
+		If the end point of a path in the filter op-value is a branch, then all leaf nodes in the sub-tree below this branch are addressed.
+		A path in the filter op-value may contain the wildcard character (*) as a representative for a path segment. 
+		If the path in the filter op-value ends with one or more wildcards, then only the leaf nodes with path segments matching the number of wildcards are addressed. 
+		Different elements of the op-value array may address the same node, in which case it is the responsibility of the server to resolve this to a singleton in the notifications.<br>
+		The op-extra key-value pair is not used in paths filter operations.<br>
+		Examples can be found in the TRANSPORT specification.
 		</p>
-              <p>An example of a read request URI containing an aggregated query is<br> 
-<dfn>Vehicle/Cabin/Door?$pathEQ*/*/isOpenAND$dataEQfalse</dfn><br> 
-which would return data for all locked doors.<br>
-In filter combinations where a search expression in the URI is combined with a subscribe filter expression in the payload, the logical AND operator combines them.</p>
-      </section>
+        </section>
+
+     <section id="capture-filter-operation">
+          <h2>Capture Filter Operation</h2>
+		<p>
+		The capture filter operation is used when the client want to restrict the amount of data that will be returned. 
+		The op-extra key-value pair is used in capture filter operations, as described for the following capture types below.
+		<ul>
+		<li>time-based: the op-extra contains the period time X in between captures, {"period":"X"}.</li>
+		<li>range: the op-extra contains the range boundary, and the logical operator, {"boundary": "X", "logic-op":"Y"}, where Y is one of the supported logical operators (**).
+		The op-extra may be an array of these objects, combined through a logical AND to allow expressions of a bounded range.</li>
+		<li>change: the op-extra contains the change boundary, and the logical operator, {"boundary": "X", "logic-op":"Y"}, where Y is one of the supported logical operators (**).</li>
+		<li>curve-logic: the op-extra contains the maximum error limit, and the buffer size, {"max-err": "X", "buf-size":"Y"}, where X is a float value, 
+		and Y is the number of buffer elements.</li>
+		</ul>
+		(**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
+		where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than", "lte" is "less than or equal".<br>
+		Examples can be found in the TRANSPORT specification.
+               </p>
+        </section>
+
+     <section id="multiple-signals-request">
+          <h2>Multiple Signals Request</h2>
+	    <p>
+	    The filtering operations may be used to address multiple tree nodes in one request. 
+	    This leads to specific handling in certain situations, as described below.
+	    </p>
+
+     <section id="error-handling">
+          <h2>Error Handling</h2>
+	    <p>
+	    A request may address both valid nodes, and invalid nodes. 
+	    The latter case shall lead to an error response that contains information about which node, or nodes, that are invalid. 
+	    //More details to come when decided on.
+	    </p>
      </section>
+
+     <section id="subscription-notification-triggering">
+          <h2>Subscription Notification Triggering</h2>
+	    <p>
+	    A subscription request must always contain a capture filter operation that describes the trigger event that leads to that the server dispatches an asynchronous notification message.
+	    For the capture types "range" or "change", the triggering is dependent on the signal value. 
+	    When the request addresses multiple signals, the triggering condition shall only be evaluated on one of the signals, which is the first signal in the op-value array of paths. 
+	    The first path in the array must therefore not contain wildcards to address multiple signals. 
+	    In this case one of the path addresses in the wildcard expression must be selected as the first array element, which can then be followed by the wildcard expression. 
+	    The duplicate reference to one signal that this leads to shall be resolved by the server to a singleton in the notifications.
+	    </p>
+     </section>
+     </section>
+   </section>
+
+   <section id="metadata-request">
+     <h2>Metadata Request</h2>
+	<p>
+	Metadata requests are used when the client instead of the data associated to a VSS node wants to retrieve meta data associated to the VSS node.<br>
+	A request for metadata has the following structure
+	<ul>
+	<li>for the HTTP protocol:</li>
+	<ul>
+	<li>GET /vsspath#metadata-type</li>
+	</ul>
+	<li>for the Websocket protocol:</li>
+	<ul>
+	<li>{"action":"get", "path":"vsspath", "metadata":"metadata-type"}</li>
+	</ul>
+	</ul>
+	where
+	<ul>
+	<li>Get is the transport protocol method,</li>
+	<li>vsspath is the VSS path,</li>
+	<li>metadata-type describes the type of metadata that is requested, which can have one of the values:</li>
+	<ul>
+	<li>static-metadata: the entire set of metadata that is stored in the VSS tree for the addressed node(s). This is referred to as a signal discovery request.</li>
+	<li>dynamic-metadata: current status of the addressed node(s). This is metadata that the server have access to that is not described in the VSS tree, 
+	and its vlue may ary over time. </li>
+	<li>Any metadata key name in the sets of static or dynamic metadata.</li>
+	</ul>
+	</ul>
+	For the set of static metadata key names, see the <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a>.<br><br>
+	The set of dynamic metadata keynames are found in the list below. If a corresponding value to a key name is not present, the key-value pair is omitted in the response.
+	<ul>
+	<li>sample-rate: the native capture frequency in Hz that is used by the vehicle system.</li>
+	<li>capture-filter: the capture filter operation that the vehicle system is configured for.</li>
+	<li>availability: the current availability of a signal. The possible values are ["available", "temporary-unavailable", "permanently-unavailable"]. 
+	The temporary-unavailable is returned when the signal is inaccessible due to the current vehicle state. 
+	The permanently-unavailable is returned if the subsystem represented by the signal exists in the vehice, but is broken and requires repair.</li>
+	<li>validate: the access control rule that is applied to the node and its sub-tree. 
+	The server response shall conform to the inheritance rules, see the access control selection chapter.</li>
+	<li>****Any more?****</li>
+	</ul>
+	Multiple key names can be combined in the same request by concatenating them with a plus sign (+) as delimiter.<br>
+	A metadata request can be combined with a paths filter operation to address multiple nodes, but not with a capture filter operation.<br>
+	The response is a JSON formatted object with corresponding key-value pairs per addressed node.<br>
+	Examples can be found in the TRANSPORT specification.
+	</p>
+    </section>
  
     <section id="access-control-model">
       <h2>Access Control Model</h2>
