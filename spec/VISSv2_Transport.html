@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>Gen2-Transport</title>
+    <title>VISS version 2-Transport</title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
     <script type="text/javascript" src="plantuml/jquery.js"></script>
     <script type="text/javascript" src="plantuml/jquery_plantuml.js"></script>
@@ -20,14 +20,14 @@
           company: "Volvo Cars",
           companyURL: "https://www.volvocars.com/intl"
         }],
-        edDraftURI: "https://github.com/w3c/automotive/blob/gh-pages/spec/Gen2_Transport.html",
-        shortName: "Gen2-TRANSPORT"
+        edDraftURI: "https://github.com/w3c/automotive/blob/gh-pages/spec/VISSv2_Transport.html",
+        shortName: "VISSv2-TRANSPORT"
       };
     </script>
   </head>
   <body>
     <section id='abstract'>
-      <p>This document, the Gen2 TRANSPORT specification, describes the Gen2 transport protocols, and the mapping of the message layer on these transports. The companion specification Gen2 CORE describes the messaging layer.</p>
+      <p>This document, the VISS version 2 TRANSPORT specification, describes the VISSv2 transport protocols, and the mapping of the message layer on these transports. The companion specification VISSv2 CORE describes the messaging layer.</p>
     </section>
     <section id='sotd'>
       <p>
@@ -37,7 +37,7 @@
     <section data-dfn-for="introduction">
       <h2>Introduction</h2>
       <p>This document describes the transport bindings of the Vehicle Service Interface. The split between transport bindings and messaging layer specifications improves readability and simplify
-extending Gen2 to further transports in the future. The Gen2 supports multiple transport bindings, namely HTTPS and secure WebSockets.</p>
+extending VISSv2 to further transports in the future. The VISSv2 supports multiple transport bindings, namely HTTPS and secure WebSockets.</p>
     </section>
   <!-- Conformance -->
       <section id="conformance"><!--OddPage--><h2 id="x2-conformance"><span class="secno">2. </span>Conformance</h2>
@@ -50,12 +50,12 @@ extending Gen2 to further transports in the future. The Gen2 supports multiple t
   to be interpreted as described in [<cite><a class="bibref" href="#bib-RFC2119">RFC2119</a></cite>].
 </p>
 	<p>This specification defines conformance criteria that apply to a single product: specifically the 'Vehicle API'
-	<dfn data-dfn-type="dfn" id="dfn-gen2">Gen2</dfn> that implements the interfaces, semantics and behaviour
+	<dfn data-dfn-type="dfn" id="dfn-VISSv2">VISSv2</dfn> that implements the interfaces, semantics and behaviour
 		defined in this document.</p>
       </section>
     <section data-dfn-for="terminology">
       <h2>Terminology</h2>
-      <p>The acronym 'Gen2' is used to refer to this document, the 'Gen2' specification.
+      <p>The acronym 'VISSv2' is used to refer to this document, the VISS version 2 specification.
  The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance.
  The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.</p>
     </section>
@@ -236,7 +236,7 @@ The client MAY send a HTTPS GET request message to the server to get the value o
               {<br>
               <blockquote>
                 "value": "2372",<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br><br>
               Error response:<br>
@@ -285,7 +285,7 @@ The client MAY send a HTTPS GET request message to the server to get the value o
               {<br>
               <blockquote>
                 "metadata": {"FuelSystem":{"type":"branch","description":"Fuel system data.","children":{"HybridType, ... }}}<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
             </p>
@@ -315,7 +315,7 @@ The client MAY send a HTTPS GET request message to the server to get the value o
               {<br>
               <blockquote>
                 "value": {{"path":"Vehicle.Cabin.Door.Row1.Left.IsOpen", "value":"false"},..., {"path":"Vehicle.Cabin.Door.Row4.Right.IsOpen","value":"true"}}<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
             </p>
@@ -351,7 +351,7 @@ The client may request that the server sets the value of one or more signals e.g
               Transfer-Encoding: chunked<br><br>
               {<br>
               <blockquote>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br><br>
               Error response:<br>
@@ -399,23 +399,23 @@ The client may request that the server sets the value of one or more signals e.g
 	suitable standards compliant WebSocket library to request that a
 	WebSocket connection is opened on the server.</p>
 
-	<p>Implementations that support additional devices or multiple Gen2 services
-        should provide discovery. Alternatively, the location of a particular Gen2
+	<p>Implementations that support additional devices or multiple VISSv2 services
+        should provide discovery. Alternatively, the location of a particular VISSv2
         Server instance on the local vehicle network may be handled by
         configuration, either as part of a package manifest or by consulting a
-        registry on application install. The 'wwwgen2' hostname in this
+        registry on application install. The 'wwwVISSv2' hostname in this
         specification is used an example.
 	</p>
 	      
 	<p>A client running on the vehicle is able to connect to the
-	Gen2 Server instance using the hostname e.g. 'wwwgen2' and uses the
-	default port 443. The hostname 'wwwgen2' may locally be mapped to the localhost
+	VISSv2 Server instance using the hostname e.g. 'wwwVISSv2' and uses the
+	default port 443. The hostname 'wwwVISSv2' may locally be mapped to the localhost
 	IP address 127.0.0.1 e.g. by adding an entry to the /etc/hosts file.</p>
 
-	<p>The sub-protocol name <em class="rfc2119" title="SHALL">SHALL</em> be 'gen2' with a version number suffix, e.g. gen21.0. The sub-protocol version will
-	be associated with exactly one Gen2 Server Specification version so that the client and server can 
+	<p>The sub-protocol name <em class="rfc2119" title="SHALL">SHALL</em> be 'VISSv2' with the digit 2 being the version number. The sub-protocol version will
+	be associated with exactly one VISS Server Specification version so that the client and server can 
 	correctly validate and parse request and response message packets.</p>
-	<pre class="highlight hljs javascript" aria-busy="false">	  <span class="hljs-keyword">var</span> vehicle  = <span class="hljs-keyword">new</span> WebSocket(<span class="hljs-string">"wss://wwwgen2"</span>, <span class="hljs-string">"gen21.0"</span>);
+	<pre class="highlight hljs javascript" aria-busy="false">	  <span class="hljs-keyword">var</span> vehicle  = <span class="hljs-keyword">new</span> WebSocket(<span class="hljs-string">"wss://wwwVISSv2"</span>, <span class="hljs-string">"VISSv2"</span>);
 	</pre>
 	<p>The client <em class="rfc2119" title="SHALL">SHALL</em> connect to the server over HTTPS and request that
 	the server opens a WebSocket. All WebSocket communications between
@@ -451,14 +451,14 @@ The client may request that the server sets the value of one or more signals e.g
 	<p>The following example shows the lifetime of a WebSocket on
 	the client:</p>
 	<div class="example"><div class="example-title marker"><span>Example 6</span></div><pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-comment">// Open the WebSocket</span>
-<span class="hljs-keyword">var</span> vehicle  = <span class="hljs-keyword">new</span> WebSocket(<span class="hljs-string">"wss://wwwgen2:4343"</span>, <span class="hljs-string">"gen21.0"</span>);
+<span class="hljs-keyword">var</span> vehicle  = <span class="hljs-keyword">new</span> WebSocket(<span class="hljs-string">"wss://wwwVISSv2:4343"</span>, <span class="hljs-string">"VISSv21.0"</span>);
 
 <span class="hljs-comment">// WebSocket is used to GET, SET, SUBSCRIBE and UNSUBSCRIBE</span>
 …
 
 <span class="hljs-comment">// Close the WebSocket</span>
 vehicle.close();</pre></div>
-	<p>The Gen2 Server may terminate the WebSocket connection
+	<p>The VISSv2 Server may terminate the WebSocket connection
 	if it has not received a request for a period determined by
 	the server. It is the client’s responsibility to handle this
 	gracefully and to recover and request new
@@ -498,7 +498,7 @@ vehicle.close();</pre></div>
     </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
     <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-value">value</a></td><td>object</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -513,7 +513,7 @@ vehicle.close();</pre></div>
     </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
     <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -533,7 +533,7 @@ vehicle.close();</pre></div>
                 "action": "get",<br>
                 "requestId": "8756",<br>
                 "value": "2372",<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br><br>
               Error response:<br>
@@ -542,7 +542,7 @@ vehicle.close();</pre></div>
                 "action": "get",<br>
                 "requestId": "8756",<br>
                 "error": {"number": 404, "reason": "Not found", "message": "No match for path in tree."},<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
             </p>
@@ -569,7 +569,7 @@ vehicle.close();</pre></div>
                 "action": "get",<br>
                 "requestId": "8657",<br>
                 "value": "2372",<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
             </p>
@@ -596,7 +596,7 @@ vehicle.close();</pre></div>
                 "action": "get",<br>
                 "requestId": "5687",<br>
                 "metadata": {"FuelSystem":{"type":"branch","description":"Fuel system data.","children":{"HybridType, ... }}}<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
             </p>
@@ -623,7 +623,7 @@ vehicle.close();</pre></div>
                 "action": "get",<br>
                 "value": {{"path":"Vehicle.Cabin.Door.Row1.Left.IsOpen", "value":"false"},..., {"path":"Vehicle.Cabin.Door.Row4.Right.IsOpen","value":"true"}},<br>
                 "requestId": "5688",<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
             </p>
@@ -660,7 +660,7 @@ vehicle.close();</pre></div>
     <th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-setsuccessresponse">setSuccessResponse</dfn></th>
     </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
     <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -675,7 +675,7 @@ vehicle.close();</pre></div>
     </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
     <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -695,7 +695,7 @@ vehicle.close();</pre></div>
               <blockquote>
                 "action": "set",<br>
                 "requestId": "5687",<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br><br>
               Error response:<br>
@@ -704,7 +704,7 @@ vehicle.close();</pre></div>
                 "action": "set",<br>
                 "requestId": "5687",<br>
                 "error": {"number": 404, "reason": "Not found", "message": "No match for path in tree."},<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
           <section data-dfn-for="wss-authorized-update">
@@ -730,7 +730,7 @@ vehicle.close();</pre></div>
               <blockquote>
                 "action": "set",<br>
                 "requestId": "5687",<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
             </p>
@@ -766,7 +766,7 @@ vehicle.close();</pre></div>
     </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
     <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -781,7 +781,7 @@ vehicle.close();</pre></div>
     </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
     <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -796,7 +796,7 @@ vehicle.close();</pre></div>
     </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
     <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-value">value</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -811,7 +811,7 @@ vehicle.close();</pre></div>
     </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
     <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -832,7 +832,7 @@ vehicle.close();</pre></div>
                 "action": "subscribe",<br>
                 "subscriptionId": "12345",<br>
                 "requestId": "6578",<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote
               }<br><br>
               Error response:<br>
@@ -841,7 +841,7 @@ vehicle.close();</pre></div>
                 "action": "subscribe",<br>
                 "requestId": "6578",<br>
                 "error": {"number": 404, "reason": "Not found", "message": "No match for path in tree."},<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br><br>
               Notification:<br>
@@ -850,7 +850,7 @@ vehicle.close();</pre></div>
                 "action": "subscription",<br>
                 "subscriptionId": "12345",<br>
                 "value": "50",<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote
               }<br><br>
               Error notification:<br>
@@ -859,7 +859,7 @@ vehicle.close();</pre></div>
                 "action": "subscription",<br>
                 "subscriptionId": "12345",<br>
                 "error": {"number": 401, "reason": "token_expired", "message": "Access token has expired."},<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote
               }<br>
             </p>
@@ -887,7 +887,7 @@ vehicle.close();</pre></div>
                 "action": "subscribe",<br>
                 "subscriptionId": "12345",<br>
                 "requestId": "6578",<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote
               }<br><br>
               Notification:<br>
@@ -896,7 +896,7 @@ vehicle.close();</pre></div>
                 "action": "subscription",<br>
                 "subscriptionId": "12345",<br>
                 "value": "50",<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote
               }<br>
             </p>
@@ -932,7 +932,7 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
     </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
     <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -948,7 +948,7 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
     <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
     <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-timestamp">timestamp</a></td><td>string</td><td>Yes</td></tr>
+    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
   
 </tbody>
 </table>
@@ -968,7 +968,7 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
                 "action": "unsubscribe",<br>
                 "subscriptionId": "12345",<br>
                 "requestId": "5786",<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br><br>
               Error response:<br>
@@ -977,7 +977,7 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
                 "action": "unsubscribe",<br>
                 "requestId": "6578",<br>
                 "error": {"number": 404, "reason": "Not found", "message": "No matching subscription Id."},<br>
-                "timestamp": "2020-04-15T13:37:00Z"<br>
+                "ts": "2020-04-15T13:37:00Z"<br>
               </blockquote>
               }<br>
             </p>
@@ -1025,7 +1025,7 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
 	    <td>A JWT formatted security token.</td>
 	  </tr>
 	  <tr>
-	    <td><dfn data-dfn-type="dfn" id="dfn-timestamp">timestamp</dfn> </td>
+	    <td><dfn data-dfn-type="dfn" id="dfn-ts">ts</dfn> </td>
 	    <td>string</td>
 	    <td>The Coordinated Universal Time (UTC) time that represents the capture of the data (see chapter Timestamps in CORE).</td>
 	  </tr>
@@ -1054,8 +1054,8 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
 	</tbody></table>        </section>
         <section id="json-def">
           <h2>JSON Schema Definitions</h2>
-      <p>The payload that is sent over the supported transport protocols SHALL use the JSON definitions in this appendix, unless otherwise specified in the Gen2 TRANSPORT specification.</p>
-<p>The definitions within this section describe the datatypes referenced within the JSON Schema for the Gen2 WebSocket interfaces, and for the Gen2 HTTP payloads.</p>
+      <p>The payload that is sent over the supported transport protocols SHALL use the JSON definitions in this appendix, unless otherwise specified in the VISSv2 TRANSPORT specification.</p>
+<p>The definitions within this section describe the datatypes referenced within the JSON Schema for the VISSv2 WebSocket interfaces, and for the VISSv2 HTTP payloads.</p>
 <pre aria-busy="false" class="hljs json">{
     <span class="hljs-attr">"definitions"</span>: {
         <span class="hljs-attr">"action"</span>: {
@@ -1074,7 +1074,7 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
             <span class="hljs-attr">"description"</span>: <span class="hljs-string">"The data value returned by the server. This could either be a basic type, or a complex type comprised of nested name/value pairs in JSON format."</span>,
             <span class="hljs-attr">"type"</span>: <span class="hljs-string">"string"</span>
         },
-        <span class="hljs-attr">"timestamp"</span>: {
+        <span class="hljs-attr">"ts"</span>: {
             <span class="hljs-attr">"description"</span>: <span class="hljs-string">"The Coordinated Universal Time (UTC) time that represents the capture of the data (see chapter Timestamps in CORE)."</span>,
             <span class="hljs-attr">"type"</span>: <span class="hljs-string">"string"</span>
         },
