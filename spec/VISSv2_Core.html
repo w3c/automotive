@@ -410,7 +410,7 @@
 		The vehicle system makes its own decision whether to record any data, and for how long this data will be kept in storage. 
 		The number of data points in the response depends on the period size, and the sample frequency. 
 		The latter can not be set by the client, so the client should have some understanding of its value to estimate the amount of data it may receive. 
-		A request for historic data will return only the current value if no historic data is available. 
+		A request for historic data will return a Not found error if historic data is unavailable. 
 		The period must conform to the [[ISO8601]] duration format, expressed with days, hour, minute, and second data, i. e. "op-value": "PdddDThhHmmMssS".
 		The number of days shall be less than 999.<br>
 		Examples can be found in the TRANSPORT specification.
