@@ -406,8 +406,9 @@
 		However, it may for various reasons at least temporarily have access to also older data points. 
 		A scenario where this could occur is when a vehicle temporarily loses its connectivity, 
 		maybe because it enters into a tunnel. Assuming that the vehicle detects the loss of connectivity, it may then start to record data. 
-		If recorded this data may then be accessed using the history op-type. 
+		If recorded, this data may then be accessed using the history op-type. 
 		The vehicle system makes its own decision whether to record any data, and for how long this data will be kept in storage. 
+		The period goes from current time, excluding the current value, and backwards in time. 
 		The number of data points in the response depends on the period size, and the sample frequency. 
 		The latter can not be set by the client, so the client should have some understanding of its value to estimate the amount of data it may receive. 
 		A request for historic data will return a Not found error if historic data is unavailable. 
