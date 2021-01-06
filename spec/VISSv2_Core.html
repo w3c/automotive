@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>Gen2 - Core</title>
+    <title>VISS version 2 - Core</title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
     <script type="text/javascript" src="plantuml/jquery.js"></script>
     <script type="text/javascript" src="plantuml/jquery_plantuml.js"></script>
@@ -31,8 +31,8 @@
           companyURL: "https://www.volkswagenag.com",
           w3cid: 95844
         }],
-        edDraftURI: "https://github.com/w3c/automotive/blob/gh-pages/spec/Gen2_Core.html",
-        shortName: "Gen2-CORE",
+        edDraftURI: "https://github.com/w3c/automotive/blob/gh-pages/spec/VISSv2_Core.html",
+        shortName: "VISSv2-CORE",
         localBiblio: {
           "SemVer": {
             title: "Semantic Versioning 2.0.0",
@@ -47,9 +47,9 @@
   <body>
     <section id='abstract'>
       <p>
-        This document, the Gen2 core specification, describes the Gen2 messaging layer. 
-        The companion specifications for the Gen2 transport protocols detail the mapping of the messaging layer to selected transports.
-        The ontologies based on the Gen2 core specification are defined in documents for each specific domain
+        This document, the VISS version 2 CORE specification, describes the VISSv2 messaging layer. 
+        The companion specifications for the VISSv2 transport protocols detail the mapping of the messaging layer to selected transports.
+        The ontologies based on the VISSv2 core specification are defined in documents for each specific domain
         (e.g. navigation, media, vehicle data). 
       </p>
     </section>
@@ -58,7 +58,7 @@
     <section id="introduction">
       <h2>Introduction</h2>
       <p>
-        This document describes the messaging API for Gen2 protocol. 
+        This document describes the messaging API for VISSv2 protocol. 
         This includes the messaging layer and set of rules for structuring data.
         The separation between payload encoding (transport) and messaging API (core) improves adaptability. 
         Extending and describing multiple transport protocols becomes possible.
@@ -68,10 +68,10 @@
         and a <a>client</a> using the data.
       </p>
       <p>
-        The Gen2 messaging layer uses a RESTful design for all methods exchanged via the interface (<a href="#interface"></a>).
+        The VISSv2 messaging layer uses a RESTful design for all methods exchanged via the interface (<a href="#interface"></a>).
       </p>
       <p>
-        The Gen2 data structuring rules (<a href="http://genivi.github.io/vehicle_signal_specification/">VSS Rule set</a>) are the same through all transport protocols.
+        The VISSv2 data structuring rules (<a href="http://genivi.github.io/vehicle_signal_specification/">VSS Rule set</a>) are the same through all transport protocols.
         The basis for structuring data hold by a <a>server</a> is a tree.
       </p>
     </section>
@@ -79,19 +79,19 @@
     <section id="conformance"></section>
     <section id="terms">
       <h2>Terminology</h2>
-      <p>The acronym 'Gen2' is used to refer to this document, the second generation specification. The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance. The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.</p>
+      <p>The acronym 'VISSv2' is used to refer to this document, the second generation specification. 
+      The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance. 
+      The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.
+      </p>
     </section>
 
     <section id="data-model">
       <h2>Data Model</h2>
-		<p>
-
-The service is intended for use with a tree-like logical taxonomy to
-represent the vehicle data. An illustrative example of such a tree
-structure is shown in <a href="#fig-example-vss-tree">Figure 1</a>. While it
-is meant to support conforming taxonomies it was created principally
-with the <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a> (VSS) in mind. For more
-details, see the <a href="http://genivi.github.io/vehicle_signal_specification/">VSS documentation</a>.
+		<p>The service is intended for use with a tree-like logical taxonomy to represent the vehicle data. 
+		An illustrative example of such a tree structure is shown in <a href="#fig-example-vss-tree">Figure 1</a>. 
+		While it is meant to support conforming taxonomies it was created principally with the 
+		<a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a> (VSS) in mind. 
+		For more details, see the <a href="http://genivi.github.io/vehicle_signal_specification/">VSS documentation</a>.
 		</p>
         <figure id="fig-example-vss-tree">
           <img src="images/vss-tree.jpg" alt="example-vss-tree">
@@ -105,15 +105,24 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
         <p>The <dfn>scheme</dfn> describes the protocol to use to reach the addressed element.</p>
         <p>The <dfn>authority</dfn> describes where to reach the server holding and managing the data representation.
           Scheme and authority are defined within the protocol adaptation.</p>
-        <p>The <dfn>path</dfn> consists of the slash delimited node names of the nodes traversed from the tree root to the tree leaf representing the data point. E. g. the path expression from traversing the nodes Vehicle, Car, Engine, RPM would be "Vehicle/Car/Engine/RPM". The VSS data model uses a dot as delimiter, the implementaion of this specification is expected to handle the necessary translation.</p>
+        <p>The <dfn>path</dfn> consists of the slash delimited node names of the nodes traversed from the tree root to the tree leaf representing the data point. 
+        E. g. the path expression from traversing the nodes Vehicle, Car, Engine, RPM would be "Vehicle/Car/Engine/RPM". The VSS data model uses a dot as delimiter, 
+        the implementaion of this specification is expected to handle the necessary translation.</p>
         <p>The <a>query</a> contains further information related to the request, see <a href="#filter-request"></a>.
       </section>
 
         <section id="service-discovery">
           <h2>Service Discovery</h2>
-          <p>The purpose of the data model is to provide a client with a description of the data that enables the client to make a request for desired vehicle data, and interpret the response. In order to obtain that description, the client MAY request that the server returns the VSS tree content, i. e. the metadata describing the accessible vehicle data. The client is able to request metadata from any point in the signal tree, such that only the metadata for the nodes within the given branch of the tree is returned. For example, only metadata for the chassis branch of the VSS tree is returned when the chassis path is specified. If the path is set to the VSS root, the response contains the metadata for the entire tree. If the server is able to satisfy the request it SHALL return a Response message. If an error occurs the server SHALL return an ErrorResponse message.<br>
+          <p>The purpose of the data model is to provide a client with a description of the data that enables the client to make a request for desired vehicle data, 
+          and interpret the response. In order to obtain that description, the client MAY request that the server returns the VSS tree content, 
+          i. e. the metadata describing the accessible vehicle data. The client is able to request metadata from any point in the signal tree, 
+          such that only the metadata for the nodes within the given branch of the tree is returned. For example, 
+          only metadata for the chassis branch of the VSS tree is returned when the chassis path is specified. 
+          If the path is set to the VSS root, the response contains the metadata for the entire tree. If the server is able to satisfy the request it SHALL return a Response message. 
+          If an error occurs the server SHALL return an ErrorResponse message.<br>
           Some parts of the VSS tree may not be accessible to the Client due to restrictions defined in the <a href="#scope-list"></a>.<br>
-          A service discovery request has the format of a read, where the path is appended with a query component, see <a href="#capture-filter-operation"></a> for the details.<br>The key data components of these messagess are defined below:</p>
+          A service discovery request has the format of a read, where the path is appended with a query component, 
+          see <a href="#capture-filter-operation"></a> for the details.<br>The key data components of these messagess are defined below:</p>
           <ul>
             <li>Request message parameters:</li>
             <ul>  
@@ -130,13 +139,183 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
               <li>Timestamp: A timestamp associated with the failed request.</li>
             </ul>  
           </ul>  
-
-        <section id="dynamic-registry">
-          <h2>Dynamic Registry</h2>
-          <p>To enable e. g. after-market services it SHALL be possible to dynamically add new branches to the VSS tree, and if requested also to delete them at a later point.<br>Requests of this type are not expected to be frequent for the type of data that is represented in the "vehicle signal domain", which is the current scope of VSS. These requests are therefore partitioned in a separate API, which is described in "Appendix: Dynamic registry API". </p>
-        </section>
         </section>
     </section>
+
+    <section id="interface">
+      <h2>Interface</h2>
+      <p>
+        This chapter describes the different methods and its arguments that govern the communication between a <a>client</a> and the <a>server</a>.
+      </p>
+
+      <section id="methods">
+        <h2>Methods</h2>
+        <p>
+          The transport protocols used to implement these methods MUST implement the Read and Update methods, and MAY implement the Subscribe, Unsubscribe, and Subscription methods. 
+        </p>
+        <section id="read">
+          <h2><dfn>Read</dfn></h2>
+          <p>Purpose: Get one or more values addressed by the given path.</p>
+          <p>The client MAY have to obtain an <a>authorization</a> token before being able to access the values.
+             If the server is able to satisfy the request it MUST return a <a>success response</a>.
+             If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.</p>
+          <p>Arguments, of which path is mandatory: 
+          <ul>
+            <li><a>path</a> The path as defined in VSS to one or more nodes in the VSS tree.</li>
+            <li><a>filter</a> Additional information defining the requested data.</li>
+            <li><a>authorization</a> The authorization token.</li>
+          </ul>
+          </p>
+          <p>Success response:
+            <ul>  
+              <li><a>value</a> The value(s) associated with the addressed VSS nodes.</li>
+              <li><a>timestamp</a> The sample time of the value.</li>
+            </ul>
+          </p>
+        </section>
+
+        <section id="update">
+          <h2><dfn>Update</dfn></h2>
+          <p>Purpose: Provide altered value to the vehicle signal(s) addressed by the <a>path</a></p>
+          <p>The client MAY have to obtain an authorization token before being able to update the vehicle signal(s).  
+             If the server is able to satisfy the request it MUST return a <a>success response</a>. 
+             If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.</p>
+          <p>Arguments, of which path and value are mandatory: 
+            <ul>
+              <li><a>path</a> The path as defined in VSS to a single node in the VSS tree.</li>
+              <li><a>value</a> The value by which the vehicle signal addressed by the path will be updated to.</li>
+              <li><a>authorization</a> The authorization token.</li>
+            </ul>
+          </p>
+          <p>Success response:
+            <ul>  
+              <li><a>timestamp</a> The time for updating of the vehicle signals.</li>
+            </ul>
+          </p>
+        </section>
+
+        <section id="subscribe">
+          <h2><dfn>Subscribe</dfn></h2>
+          <p>Purpose: Get asynchronous messages containing the value(s) addressed by the path. The triggering rules for issuing the notification messages are set by the filter data.</p>
+          <p>The client MAY have to obtain an authorization token before being able to subscribe to the vehicle signal(s).
+             The server MUST issue a notification if a trigger rule is fulfilled.
+             If the server is able to satisfy the request it MUST return a <a>success response</a>.
+             If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.
+             If an error occurs during the subscription period, the server SHOULD return an <a>error notification</a>.</p>
+          <p>Arguments, of which path and filter are mandatory: 
+            <ul>
+              <li><a>path</a> The path as defined in VSS to one or more nodes in the VSS tree.</li>
+              <li><a>filter</a> The rule set describing triggering criterias for issuance of asynchronous notification messages.</li>
+              <li><a>authorization</a> The authorization token.</li>
+            </ul>
+          </p>
+          <p>Success response:
+            <ul>  
+              <li><a>subscriptionId</a> A handle identifying notification messages associated with the subscription.</li>
+              <li><a>timestamp</a> The start time for the subscription period.</li>
+            </ul>
+          </p>
+        </section>
+        <section id="unsubscribe">
+          <h2><dfn>Unsubscribe</dfn></h2>
+          <p>Purpose: Termination of the subscription period started by a previous subscribe request.</p>
+          <p>If the server is able to satisfy the request it MUST return a <a>success response</a>, and it MUST stop issuing notifications associated to the subscription handle.
+             If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.</p>
+          <p>Arguments, of which subscriptionId is mandatory: 
+            <ul>
+              <li><a>subscriptionId</a> Handle identifying the subscription.</li>
+            </ul>
+          </p>
+          <p>Success response:
+            <ul>  
+              <li><a>subscriptionId</a> Handle identifying the subscription.</li>
+              <li><a>timestamp</a> The stop time for the subscription period.</li>
+            </ul>
+          </p>
+        </section>
+        <section id="subscription">
+          <h2><dfn>Subscription</dfn></h2>
+          <p>Purpose: Asynchronous client notification according to the subscribe request trigger rules.</p>
+          <p>The server MUST issue a notification message when a triggering rule associated with the subscription is met.
+             If the server cannot fulfill the triggering rules it MUST issue an error notification and terminate the subscription. 
+          </p>
+          <p>Arguments: 
+            <ul>
+              <li><a>subscriptionId</a> Handle identifying the subscription.</li>
+              <li><a>value</a> The value(s) associated with the node(s) being addressed in the subscribe request.</li>
+              <li><a>timestamp</a> The time for the trigger activation.</li>
+            </ul>
+          </p>
+        </section>
+      </section>
+
+      <section id="error-information">
+        <h2>Error Information</h2>
+        <p>The server MUST inform a client about errors ocurring in interactions between the two, whether it is in a synchronous <a>error response</a> to a request message, 
+        or an asynchronous <a>error notification</a> message.
+        </p>
+
+        <section id="error-format">
+          <h2>Error Format</h2>
+          <p>The error information has three components - a <a>number</a>, a <a>reason</a>, and a <a>message</a>. The number MUST always be part of the error information, 
+             while the reason and message components MAY be a part of it.
+            <ul>
+              <li><dfn data-dfn-type="dfn" id="dfn-error-number">number</dfn> See VISSv2:TRANSPORT, "Status code" chapter.</li>
+              <li><dfn data-dfn-type="dfn" id="dfn-error-reason">reason</dfn> See VISSv2:TRANSPORT, "Status code" chapter.</li>
+              <li><dfn data-dfn-type="dfn" id="dfn-error-message">message</dfn> See VISSv2:TRANSPORT, "Status code" chapter.</li>
+            </ul>
+          </p>
+          </section>
+      </section>
+
+      <section id="security">
+        <h2>Security</h2>
+        <p>
+        </p>
+      </section>
+
+      <section id="timestamp">
+        <h2>Timestamps</h2>
+        <p>
+           Timestamps in transport payloads MUST conform to the ISO8601 standard, using the UTC format with a trailing Z. 
+           Time resolution SHALL at least be seconds, with subsecond resolution as an optional degree of precision when desired.
+           The time and date format shall be as shown below, where the sub-second data and delimiter is optional.<br>
+           YYYY-MM-DDTHH:MM:SS.ssssssZ<br>
+           The exception to this is timestamps within tokens, which MUST conform to Unix time. 
+        </p>
+      </section>
+
+        <section id="definitions">
+          <h2>Definitions</h2>
+	<p></p>
+
+	<dl title="enum Defs" class="idl">
+	  <dt><dfn data-dfn-type="dfn" id="dfn-client">client</dfn></dt>
+	  <dd>An entity that works with data managed by a server.</dd>
+	  <dt><dfn data-dfn-type="dfn" id="dfn-server">server</dfn></dt>
+	  <dd>An entity that manages and offers access to data.</dd>
+          <dt><dfn data-dfn-type="dfn" id="dfn-success-response">success response</dfn></dt>
+          <dd>The message being returned by the server to the client when no error is encountered. These are specific per request type</dd>
+	  <dt><dfn data-dfn-type="dfn" id="dfn-error-response">error response</dfn></dt>
+	  <dd>The message being returned by the server to the client when an error is encountered. These have a common format for all request types</dd>
+	  <dt><dfn data-dfn-type="dfn" id="dfn-error-notification">error notification</dfn></dt>
+	  <dd>The asynchronous message being returned by the server to the client when an error is encountered.</dd>
+	  <dt><dfn data-dfn-type="dfn" id="dfn-value">value</dfn></dt>
+	  <dd>The data that is associated with one or more VSS nodes. Regardless of its data type, a single data item is always represented as a string in message payloads.</dd>
+          <dt><dfn data-dfn-type="dfn" id="dfn-timestamp">timestamp</dfn></dt>
+          <dd>A date and time representation. See chapter <a href="#timestamp"></a>.</dd>
+	  <dt><dfn data-dfn-type="dfn" id="dfn-filter">filter</dfn></dt>
+	  <dd>Additional to help the server in the selection of data for the client.</dd>
+	  <dt><dfn data-dfn-type="dfn" id="dfn-query">query</dfn></dt>
+	  <dd>A filter may consist of multiple query expressions.</dd>
+	  <dt><dfn data-dfn-type="dfn" id="dfn-authorization">authorization</dfn></dt>
+	  <dd>A token providing a verifiable proof that the client may be authorized access to the requested value(s).</dd>
+	  <dt><dfn data-dfn-type="dfn" id="dfn-subscription-id">subscriptionId</dfn></dt>
+	  <dd>A handle identifying a subscription session.</dd>
+	</dl>
+      </section>
+    </section>
+
 	
     <section id="filter-request">
       <h2>Filter Request</h2>
@@ -164,22 +343,27 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
 	  </ul>
 	  The JSON expression has the following format:<br>
 	  <ul>
-	  <li>[{"op-type":"paths/capture", "op-value":["a", "b",..], "op-extra":{}}, {optional-second-object}]</li>
+	  <li>[{"op-type":"x", "op-value":["y", "z",..], "op-extra":{}}, {optional-object}]</li>
 	  </ul>
 	  where<br>
 	  <ul>
 	  <li>op-type: the key name for the filter operation type, which can have one of the values:</li>
 	  <ul>
 	  <li>paths: the filtering is applied to the sub tree addressed by the vsspath,</li>
+	  <li>history: the filtering is applied to the historic data that the server may have available,</li>
 	  <li>capture: the filtering is applied to the data of the response to the request.</li>
 	  </ul>
 	  <li>op-value: the key name for the filter operation, which can have one of the values:</li>
 	  <ul>
-	  <li>for the paths type:</li>
+	  <li>paths:</li>
 	  <ul>
-	  <li>one or more relative paths</li>
+	  <li>one or more relative paths.</li>
 	  </ul>
-	  <li>for the capture type:</li>
+	  <li>history:</li>
+	  <ul>
+	  <li>the time period from current time and backwards in time.</li>
+	  </ul>
+	  <li>capture:</li>
 	  <ul>
 	  <li>time-based: data captures are done with a fixed period time,</li>
 	  <li>range: data captures are done when values are in the given range,</li>
@@ -190,25 +374,48 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
 	  <li>op-extra: the key name for the optional configuration data that the filter operation requires. This data varies depending on the op-type and op-value, 
 	  and is described in the following chapters.</li>
 	  </ul>
-	  In the JSON object, the key-value pairs "op-type" and "op-value are mandatory, while "op-extra" is optional.
-	  The JSON expression may consist of one or two JSON objects with a structure as described. 
-	  In the case of two objects, te op-type must be "paths" and "capture" in respective object, which are then logically combined through the AND operator.<br>
+	  In the JSON object, the key-value pairs "op-type" and "op-value" are mandatory, while "op-extra" is optional.
+	  The JSON expression may consist of maximum one object with op-type "paths", plus maximum one object with op-type "capture", 
+	  which are then logically combined as with an AND operator.<br>
+	  The server SHALL support all combinations up to this maximum.<br>
 	  The capture types (time-based, range, change, curve-logic) are only applicable for subscription requests. 
 	  Subscription requests are only supported by the websocket transport protocol.<br>
-	  The restriction on how many objects that can be combined is set by the URL size restriction on 1k characters (*).<br>
+	  The restriction on how many objects that can be combined is also set by the URL size restriction on 1k characters (*).<br>
 	  (*) 1k is the "conservative limit, which should always be supported, a more liberal limit is 2k, which is supported in most cases.
 	  </p> 
 
      <section id="paths-filter-operation">
         <h2>Paths Filter Operation</h2>
 		<p>
-		The paths filter operation is used when a single request is used to rerieve signal data from multiple data points in the VSS tree. 
+		The paths filter operation is used when a single request is used to retrieve signal data from multiple data points in the VSS tree. 
 		The vsspath shall point to the last node in the tree that is common for the relative paths in the filter op-value, that start off from this node. 
 		If the end point of a path in the filter op-value is a branch, then all leaf nodes in the sub-tree below this branch are addressed.
-		A path in the filter op-value may contain the wildcard character (*) as a representative for a path segment. 
+		A path in the filter op-value may contain the wildcard character (*) as a representative for a path segment.<br>
+		Every path element in an op-value array must address at least one node in the tree, or else an error response is returned.<br>
 		If the path in the filter op-value ends with one or more wildcards, then only the leaf nodes with path segments matching the number of wildcards are addressed. 
 		Different elements of the op-value array may address the same node, in which case it is the responsibility of the server to resolve this to a singleton in the notifications.<br>
+		If the op-value contains a single path then it shall not be enclosed with JSON array brackets.<br>
 		The op-extra key-value pair is not used in paths filter operations.<br>
+		Examples can be found in the TRANSPORT specification.
+		</p>
+        </section>
+
+     <section id="history-filter-operation">
+        <h2>History Filter Operation</h2>
+		<p>
+		The server typically have access only to the latest, most fresh data point representing a signal. 
+		However, it may for various reasons at least temporarily have access to also older data points. 
+		A scenario where this could occur is when a vehicle temporarily loses its connectivity, 
+		maybe because it enters into a tunnel. Assuming that the vehicle detects the loss of connectivity, it may then start to record data. 
+		If recorded, this data may then be accessed using the history op-type. 
+		The vehicle system makes its own decision whether to record any data, and for how long this data will be kept in storage. 
+		The period goes from current time, excluding the current value, and backwards in time. 
+		The number of data points in the response depends on the period size, and the sample frequency. 
+		The latter can not be set by the client, so the client should have some understanding of its value to estimate the amount of data it may receive. 
+		A request for historic data will return a Not found error if historic data is unavailable. 
+		The period must conform to the [[ISO8601]] duration format, expressed with days, hour, minute, and second data, i. e. "op-value": "PdddDThhHmmMssS".
+		The number of days shall be less than 999. Only a single period can be expressed.<br>
+		The op-extra key-value pair is not used in history filter operations.<br>
 		Examples can be found in the TRANSPORT specification.
 		</p>
         </section>
@@ -220,11 +427,15 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
 		The op-extra key-value pair is used in capture filter operations, as described for the following capture types below.
 		<ul>
 		<li>time-based: the op-extra contains the period time X in between captures, {"period":"X"}.</li>
-		<li>range: the op-extra contains the range boundary, and the logical operator, {"boundary": "X", "logic-op":"Y"}, where Y is one of the supported logical operators (**).
-		The op-extra may be an array of these objects, combined through a logical AND to allow expressions of a bounded range.</li>
-		<li>change: the op-extra contains the change boundary, and the logical operator, {"boundary": "X", "logic-op":"Y"}, where Y is one of the supported logical operators (**).</li>
-		<li>curve-logic: the op-extra contains the maximum error limit, and the buffer size, {"max-err": "X", "buf-size":"Y"}, where X is a float value, 
-		and Y is the number of buffer elements.</li>
+		<li>range: the op-extra contains the range boundary, and the logical operator, {"logic-op":"X", "boundary": "Y"}, where X is one of the supported logical operators (**), 
+		and Y boundary of the range.
+		The op-extra may be an array of two of these objects, combined through a logical AND to support expressions of a bounded range.</li>
+		<li>change: the op-extra contains the the logical operator for comparison of previous and current values, {"logic-op":"X", "diff":"Y"}, 
+		where X is one of the supported logical operators (**), and Y is the value of the required change.</li>
+		<li>curve-logic: the op-extra contains the maximum error limit, and the buffer size, {"max-err": "X", "buf-size":"Y"}, 
+		where X is a float value setting the max allowed error between any data sample and the simplified curve, 
+		and Y is the number of buffer elements. Data is processed when the buffer becomes full, and the essential data points are returned as a time series per signal. 
+		For more information on curve logic, please see "link-to-curve-logic-home".</li>
 		</ul>
 		(**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
 		where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than", "lte" is "less than or equal".<br>
@@ -236,15 +447,39 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
           <h2>Multiple Signals Request</h2>
 	    <p>
 	    The filtering operations may be used to address multiple tree nodes in one request. 
-	    This leads to specific handling in certain situations, as described below.
+	    This may lead to specific issues in certain situations, as described below.
 	    </p>
 
      <section id="error-handling">
           <h2>Error Handling</h2>
 	    <p>
-	    A request may address both valid nodes, and invalid nodes. 
-	    The latter case shall lead to an error response that contains information about which node, or nodes, that are invalid. 
-	    //More details to come when decided on.
+	    A request addressing multiple nodes may address both valid nodes, and invalid nodes. 
+	    The latter case shall lead to a Not found error response message part that contains information about which node, or nodes, that are invalid. 
+	    The error response shall not contain data from any of the validly addressed nodes.
+	    </p>
+     </section>
+
+     <section id="error-handling">
+          <h2>Response syntax</h2>
+	    <p>
+	    A response may contain multiple values, due to either that multiple nodes are addressed, or to that multiple values for one signal is returned.
+	    These two reasons can be combined, leading to four different cases.
+		<ul>
+		<li>Request for a single value from a single node.</li>
+		<li>Request for multiple values from a single node.</li>
+		<li>Request for a single value from multiple nodes.</li>
+		<li>Request for multiple values from multiple nodes.</li>
+		</ul>
+		The syntax to accomodate these four cases have a common structure where a data point ("dp") consists of one or more objects containing a "value" and a timestamp ("ts"), 
+		and the complete aggregation ("data"), consists of one or more objects containing a "path" and a data point (dp"). The syntax of the four cases are shown below.
+              <pre><code>
+		“data”:{“path”:”X”, “dp”:{“value”:”Y”, “ts”:”Z”}}
+		“data”:{“path”:”X”, “dp”: [{“value”:”Y1”, “ts”:”Z1”}, …, {“value”:”Yn”, “ts”:”Zn”}]}
+		“data”:[{“path”:”X1”, “dp”:{“value”:”Y1”, “ts”:”Z1”}}, …, {“path”:”Xm”, “dp”:{“value”:”Ym”, “ts”:”Zm”}}]
+		“data”:[{“path”:”X1”, “dp”:[{“value”:”Y11”, “ts”:”Z11”}, …, {“value”:”Y1n”, “ts”:”Z1n”}]}, …, {“path”:”Xm”, “dp”:[{“value”:”Ym1”, “ts”:”Zm1”}, …, {“value”:”Ymn”, “ts”:”Zmn”}]}]
+              </code></pre>
+               In the case of a request for multiple values from multiple nodes, the datapoint for different paths may contain single or multiple objects, 
+               as the vehicle system may not have multiple values recorded for all requested signals.
 	    </p>
      </section>
 
@@ -311,14 +546,14 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
     <section id="access-control-model">
       <h2>Access Control Model</h2>
       <p>
-      Access control MUST be supported. However, in this chapter only the sections that describe the interactions between the Client and the Gen2 server are normative.
+      Access control MUST be supported. However, in this chapter only the sections that describe the interactions between the Client and the VISSv2 server are normative.
       </p>
 
       <section id="architecture">
         <h2>Architecture</h2>
         <p>
         <em>This section is non-normative.</em><br>
-        The Gen2 access control model is inspired by the concepts of OAuth2.0 [[RFC6749]], but some deviations exist as is described in the following chapters.<br><br>
+        The VISSv2 access control model is inspired by the concepts of OAuth2.0 [[RFC6749]], but some deviations exist as is described in the following chapters.<br><br>
         Four actors are defined:<br>
         <b>Client</b><br>
         An application making protected and authorized resource requests on behalf of its user.<br>
@@ -326,11 +561,11 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
         The server issuing the Access Grant credential after successfully authenticating the Client.<br>
         <b>Access Token server</b><br>
         The server issuing the Access Token to the Client after successfully validating the request and obtaining authorization.<br>
-        <b>Gen2 server</b><br>
+        <b>VISSv2 server</b><br>
         The server hosting the protected resources, capable of accepting and responding to protected resource requests using Access Tokens.<br><br>
         The abstract protocol flow illustrated in the figure below describes the interaction between the four actors.<br>
         <figure id="fig-oauth2.0-flow">
-          <img src="images/gen2-abstract-flow.jpg" alt="Gen2 abstract protocol flow.">
+          <img src="images/VISSv2-abstract-flow.jpg" alt="VISSv2 abstract protocol flow.">
           <figcaption> <span class="fig-title">The abstract protocol flow.</span></figcaption>
         </figure>
         Besides the four actors directly involved in the abstract flow, there are two more actors.<br>
@@ -410,7 +645,8 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
             <li>AG token: A signed token with claims needed for the validation of the Client request.</li>
             <li>Purpose: The Purpose shall be one of the short text entries from the <a href="#purpose-list"></a>.</li>
           </ul> 
-            Short term Access Grant tokens can be used as direct input to the Access Token server, but Long term AG tokens should be accompanied by a Proof of Possession (PoP) for the private key corresponding to the public key included in the token, see chapter <a href="#proof-of-possession"></a>.
+            Short term Access Grant tokens can be used as direct input to the Access Token server, but Long term AG tokens should be accompanied by a Proof of Possession (PoP) 
+            for the private key corresponding to the public key included in the token, see chapter <a href="#proof-of-possession"></a>.
           </p>
           <p>
             The Access Token server acts as a Policy Enforcement Point, making decisions on whether to grant access to the protected resource based on the provided AG Token and Purpose.
@@ -423,7 +659,7 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
           <p>
           A successful response shall contain the parameter:
           <ul>
-            <li>Access token: The Access token to be used in Client requests to the Gen2 server for Protected Resources.</li>
+            <li>Access token: The Access token to be used in Client requests to the VISSv2 server for Protected Resources.</li>
           </ul> 
           An error response shall contain the parameter:
           <ul>
@@ -435,14 +671,15 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
         <section id="protected-resource-request">
           <h2>Protected Resource Request</h2>
           <p>
-          This is the Gen2 request including an Access token that is described in general in the <a href="#interface"></a> chapter, and for different transport protocols in the Gen2 CORE document.
+          This is the VISSv2 request including an Access token that is described in general in the <a href="#interface"></a> chapter, 
+          and for different transport protocols in the VISSv2 CORE document.
           </p>
         </section>
 
         <section id="protected-resource-response">
           <h2>Protected Resource Response</h2>
           <p>
-          This is the Gen2 response that is described in general in the <a href="#interface"></a> chapter, and for different transport protocols in the Gen2 CORE document.
+          This is the VISSv2 response that is described in general in the <a href="#interface"></a> chapter, and for different transport protocols in the VISSv2 CORE document.
           </p>
         </section>
       </section>
@@ -456,7 +693,7 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
         <em>This section is non-normative.</em><br>
           The Client is an abstract representation of three sub-actors: 
           <ul>
-            <li>The Device. It is in charge of running the Apps that make requests to the Gen2 server</li>
+            <li>The Device. It is in charge of running the Apps that make requests to the VISSv2 server</li>
             <li>The App. It runs requests on behalf of the User.</li>
             <li>The User. It delegates access rights to the App.</li>
           </ul> 
@@ -494,7 +731,9 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
             <li>To check that the vehicle represented by the VIN belong to this Ecosystem, and is accessible.</li>
             <li>To create an Access Grant token.</li>
           </ul>
-          The proofs may include certificates from a Certificate Authority known by the AG server. For example, users might authenticate themselves using X.509 identity certificates and roles might be issued using attribute certificates. In those cases, as part of the authentication protocol, the AG server shall also validate the certificates signatures.<br>
+          The proofs may include certificates from a Certificate Authority known by the AG server. For example, 
+          users might authenticate themselves using X.509 identity certificates and roles might be issued using attribute certificates. In those cases, as part of the authentication protocol, 
+          the AG server shall also validate the certificates signatures.<br>
           The AG server may contact the Ecosystem manager for checking the VIN.<br>
           The Access Grant token generation is defined in the corresponding chapter.
         </p>
@@ -526,7 +765,8 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
             <li>Signature validation.</li>
             <li>Expiry time check.</li>
           </ul>
-        Additionally, for Long term Access Grant tokens, the Access Token server needs to verify the PoP using the public key contained in the token, see chapter <a href="#proof-of-possession"></a>.<br>
+        Additionally, for Long term Access Grant tokens, the Access Token server needs to verify the PoP using the public key contained in the token, 
+        see chapter <a href="#proof-of-possession"></a>.<br>
         The AG token signature validation is done with the AG server public key. 
         <br>
         To allow for some time synchronization inaccuracy and minor network latency, expiry times should be set to include potential modest margin of error, possibly as long as tens of seconds.<br>
@@ -536,10 +776,10 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
         </p>
       </section>
 
-      <section id="gen2-access-control-server">
-        <h2>Gen2 Access Control Server</h2>
+      <section id="VISSv2-access-control-server">
+        <h2>VISSv2 Access Control Server</h2>
         <p>
-        The Gen2 server MUST support validation of Access tokens.
+        The VISSv2 server MUST support validation of Access tokens.
         This includes validation of at least the following:
           <ul>
             <li>Token signature.</li>
@@ -550,9 +790,10 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
           If any of the mentioned validations above fail, the server MUST reject the access request.<br>
           Token signature validation may be delegated to the AT server, if a secure communication link can be established.
           If not delegated, then a preprovisioned common secret may be shared with the AT server, or other PKI based solutions may be used.<br>
-          The Gen2 server SHALL have access to a secure system time, that cannot be modified by actors without system acknowledged credentials. 
+          The VISSv2 server SHALL have access to a secure system time, that cannot be modified by actors without system acknowledged credentials. 
           Time validation may allow for a time synchronization inaccuracy in the range of tens of seconds.<br>
-          A successful scope validation requires that all the nodes addressed by the path in the request MUST be matched by the paths associated with the Purpose in the scope claim of the Access token.<br>
+          A successful scope validation requires that all the nodes addressed by the path in the request MUST 
+          be matched by the paths associated with the Purpose in the scope claim of the Access token.<br>
           Validation of the Device and App roles may involve MAC address checks, message round-trip measurements, etc.<br>
           The access mode validation MUST have the outcome shown in the table below, 
           when comparing the type of the Client request with the access control mode in the <a href="#purpose-list"></a> that is associated to the scope claim in the Access token.
@@ -575,7 +816,7 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
           The Access Token need to be refreshed periodically, which is controlled by the expiry time. If the AG token that the Client used to obtain the now expired Access token is not expired, 
           then the Client can revisit the AT server with this AG token to obtain a new Access token.<br>
           If the AG token is expired, then the Client must obtain a new AG token first, before revisiting the AT server.<br>
-          For Client requests that are not granted due to access control, the Gen2 server MUST return one of the error codes shown in the table below.<br>
+          For Client requests that are not granted due to access control, the VISSv2 server MUST return one of the error codes shown in the table below.<br>
         <table id="errorDefs" class="parameters">
 	  <tbody><tr>
 	    <th>Error&nbsp;Number&nbsp;(Code)</th>
@@ -656,7 +897,7 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
             "iat": 1609452095,
             "exp": 1609459199,
             "clx": "user+app+dev",
-            "aud": "w3.org/gen2",
+            "aud": "w3.org/VISSv2",
             "jti": "5967e92e-40e8-5f39-892d-cc0da890db1d"
           }
 	  </pre>
@@ -666,7 +907,7 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
           Issued at (iat) shall be set to the time of token issuance, in Unix time.<br>
           Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
           Client context (clx) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
-          Audience (aud) shall be set to the URL "w3.org/gen2".<br>
+          Audience (aud) shall be set to the URL "w3.org/VISSv2".<br>
           JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the Ecosystem manager.
             </p>
           </section>
@@ -686,7 +927,7 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
             "exp": 1609459199,
             "clx": "user+app+dev",
             "pub": client_pub_key,
-            "aud": "w3.org/gen2",
+            "aud": "w3.org/VISSv2",
             "jti": "5967e92e-40e8-5f39-892d-cc0da890db1d"
           }
 	  </pre>
@@ -697,7 +938,7 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
           Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
           Client context (clx) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
           Public key (pub) shall be set to the public key that the Client provided in the AG request, using the JSON Web Key (JWK) data structure [[RFC7517]].<br>
-          Audience (aud) shall be set to the URL "w3.org/gen2".<br>
+          Audience (aud) shall be set to the URL "w3.org/VISSv2".<br>
           JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the Ecosystem manager.
             </p>
           </section>
@@ -717,7 +958,7 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
             "exp": 1609459199,
             "scp": "PurposeX",
             "clx": "user+app+dev",
-            "aud": "w3.org/gen2",
+            "aud": "w3.org/VISSv2",
             "jti": "5967e93f-40f9-5f39-893e-cc0da890db2e"
           }
 	  </pre>
@@ -727,7 +968,7 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
           Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
           Scope (scp) shall be set to the Purpose short name, which logically links to the signal scope as defined in the <a href="#purpose-list"></a>.<br>
           Client context (clx) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
-          Audience (aud) shall be set to the URL "w3.org/gen2".<br>
+          Audience (aud) shall be set to the URL "w3.org/VISSv2".<br>
           JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the Ecosystem manager.
           </p>
         </section>
@@ -737,14 +978,25 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
           <em>This section is non-normative.</em><br>
 
           <p>
-            Long term Access Grant tokens need to be accompanied by a Proof of Possession (PoP) for the private key corresponding to the public key included in the Access Grant token. This requirement enables a longer validity for this kind of tokens, ranging from a few days to a even a year.
-            By adding the PoP, we prevent an eavesdropper to reuse an Access Token request, impersonating the client. Without a PoP, the longer the validity of an Access Grant token, the higher the risk an attacker could intercept and reuse it.
-            PoP for JWT are defined in [[RFC7800]], but in essence, a PoP enables the requester to proof to the server that it has access to a private key, without disclosing it. Traditionally that would require the server to create a random challenge, or nonce, and ask the client to sign it with its private key. Along with the public key, the server would be able to verify the PoP.
+            Long term Access Grant tokens need to be accompanied by a Proof of Possession (PoP) for the private key corresponding to the public key included in the Access Grant token. 
+            This requirement enables a longer validity for this kind of tokens, ranging from a few days to a even a year.
+            By adding the PoP, we prevent an eavesdropper to reuse an Access Token request, impersonating the client. Without a PoP, the longer the validity of an Access Grant token, 
+            the higher the risk an attacker could intercept and reuse it.
+            PoP for JWT are defined in [[RFC7800]], but in essence, a PoP enables the requester to proof to the server that it has access to a private key, without disclosing it. 
+            Traditionally that would require the server to create a random challenge, or nonce, and ask the client to sign it with its private key. Along with the public key, 
+            the server would be able to verify the PoP.
             This scheme would require an extra step in the protocols, where the client ask for the nonce.
           </p><p>
-            In order to avoid this extra step, the client can generate the nonce itself. The server would need to check that nonces are not reused. Although logging previous nonces at the server side would work for small environments, we propose the use of an incremental nonce in the form of a timestamp. One of the drawbacks of this proposal is that the server has no means to check whether the PoP has been precomputed or not. However, this is irrelevant from the eavesdropper point of view.
+            In order to avoid this extra step, the client can generate the nonce itself. The server would need to check that nonces are not reused. 
+            Although logging previous nonces at the server side would work for small environments, we propose the use of an incremental nonce in the form of a timestamp. 
+            One of the drawbacks of this proposal is that the server has no means to check whether the PoP has been precomputed or not. 
+            However, this is irrelevant from the eavesdropper point of view.
           </p><p>
-            In case freshness of the PoP was a critical requirement, we could use a public source of randomness to obtain the nonce, e.g. <a href="https://www.cloudflare.com/leagueofentropy/">Leage of Entropy</a> or <a href="https://csrc.nist.gov/projects/interoperable-randomness-beacons">Interoperable Randomness Beacons</a>. That would provide the server a mean to check freshness of the PoP but on the other hand, it would require the client to access the public source of randomness every time it needs to create a PoP which is against the main designs goal of the Long term Access Token grant.
+            In case freshness of the PoP was a critical requirement, we could use a public source of randomness to obtain the nonce, 
+            e.g. <a href="https://www.cloudflare.com/leagueofentropy/">Leage of Entropy</a> or 
+            <a href="https://csrc.nist.gov/projects/interoperable-randomness-beacons">Interoperable Randomness Beacons</a>. 
+            That would provide the server a mean to check freshness of the PoP but on the other hand, 
+            it would require the client to access the public source of randomness every time it needs to create a PoP which is against the main designs goal of the Long term Access Token grant.
               </li>
             </ul>
           </p>
@@ -764,8 +1016,8 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
           Each of these subactors is in turn characterized by a role, 
           building on the concept of a <a href="https://en.wikipedia.org/wiki/Role-based_access_control">Role Based Access Control (RBAC) model</a>. 
           The set of these three roles is called the Client context.<br>
-          Gen2 specifies a rudimentary list of roles for each subactor, it is expected that these lists are augmented by the Ecosystem manager, hopefully in a cooperative effort.<br>
-          Using an RBAC model provides the following main purposes in the Gen2 access control model:
+          VISSv2 specifies a rudimentary list of roles for each subactor, it is expected that these lists are augmented by the Ecosystem manager, hopefully in a cooperative effort.<br>
+          Using an RBAC model provides the following main purposes in the VISSv2 access control model:
           <ul>
             <li>Input to the AG server in the Client authentication process.</li>
             <li>Input to the AT server in the Purpose validation.</li>
@@ -779,7 +1031,7 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
         <section id="user-roles">
           <h2>User Roles</h2>
           <p>
-          Gen2 specifies the following minimum set of roles for users:
+          VISSv2 specifies the following minimum set of roles for users:
           <ul>
             <li>OEM</li>
             <li>Dealer</li>
@@ -800,7 +1052,7 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
         <section id="application-roles">
           <h2>Application Roles</h2>
           <p>
-          Gen2 specifies the following minimum set of roles for applications:
+          VISSv2 specifies the following minimum set of roles for applications:
           <ul>
             <li>OEM</li>
             <li>Third party</li>
@@ -813,7 +1065,7 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
         <section id="device-roles">
           <h2>Device Roles</h2>
           <p>
-          Gen2 specifies the following minimum set of roles for devices:
+          VISSv2 specifies the following minimum set of roles for devices:
           <ul>
             <li>Vehicle</li>
             <li>Nomadic</li>
@@ -837,8 +1089,12 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
           <section id="purpose-list">
             <h2>Purpose List</h2>
             <p>
-        A Client shall provide a Purpose as input to a request for an Access token. A list of supported purposes needs to exist for a client to select from. The Ecosystem manager shall therefore provide means for Clients to survey the list to find a Purpose that fits its use case.<br>
-        Each entry in the list contains a short description of the purpose, which is what the Client shall provide as input to its request for an Access token. There is also a long description, which may be used in the dialogue for consent, if needed. Then there is a list of the Client contexts, i. e. the sub-actor role triplet, that can be granted this access, and last there is a list of  the signals that the client is given access to for this purpose, with the allowed access mode. The list shall use a JSON format as shown in the example below.
+        A Client shall provide a Purpose as input to a request for an Access token. A list of supported purposes needs to exist for a client to select from. 
+        The Ecosystem manager shall therefore provide means for Clients to survey the list to find a Purpose that fits its use case.<br>
+        Each entry in the list contains a short description of the purpose, which is what the Client shall provide as input to its request for an Access token. 
+        There is also a long description, which may be used in the dialogue for consent, if needed. Then there is a list of the Client contexts, i. e. the sub-actor role triplet, 
+        that can be granted this access, and last there is a list of  the signals that the client is given access to for this purpose, 
+        with the allowed access mode. The list shall use a JSON format as shown in the example below.
         <pre><code>
         {"purposes":
             [{"short": "fuel-status", 
@@ -911,193 +1167,15 @@ details, see the <a href="http://genivi.github.io/vehicle_signal_specification/"
         unless there is access-control-mode data added to any node in this subtree, makes possible a reduction of the number of nodes this metadata have to be added to.<br>
         This allows for example an entire VSS tree to be assigned an access-control-mode by merely applying it in the root of the tree.<br>
         The figure below shows an overview of the access control selection model, 
-        and a table showing the required access control tagging of a node for the Gen2 server to grant the requested access. 
+        and a table showing the required access control tagging of a node for the VISSv2 server to grant the requested access. 
         <figure id="fig-access-control-selection-model">
           <img src="images/access-control-selection-model.jpg" alt="Access control selection model.">
           <figcaption> <span class="fig-title">Access control selection model.</span></figcaption>
         </figure>
-        If the VSS tree used by a Gen2 server contains access control selection tags, then the server MUST support their usage as described in this chapter.<br>
+        If the VSS tree used by a VISSv2 server contains access control selection tags, then the server MUST support their usage as described in this chapter.<br>
         If it is not used, then a server may implement access control for the entire tree.<br>
         </p>
       </section>
-    </section>
-
-    <section id="interface">
-      <h2>Interface</h2>
-      <p>
-        This chapter describes the different methods and its arguments that govern the communication between a <a>client</a> and the <a>server</a>.
-      </p>
-
-      <section id="methods">
-        <h2>Methods</h2>
-        <p>
-          The transport protocols used to implement these methods MUST implement the Read and Update methods, and MAY implement the Subscribe, Unsubscribe, and Subscription methods. 
-        </p>
-        <section id="read">
-          <h2><dfn>Read</dfn></h2>
-          <p>Purpose: Get one or more values addressed by the given path.</p>
-          <p>The client MAY have to obtain an <a>authorization</a> token before being able to access the values.
-             If the server is able to satisfy the request it MUST return a <a>success response</a>.
-             If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.</p>
-          <p>Arguments: 
-          <ul>
-            <li><a>path</a> The path as defined in VSS to one or more nodes in the VSS tree.</li>
-            <li><a>filter</a> Additional information defining the requested data.</li>
-            <li><a>authorization</a> The authorization token.</li>
-          </ul>
-          </p>
-          <p>Success response:
-            <ul>  
-              <li><a>value</a> The value(s) associated with the addressed VSS nodes.</li>
-              <li><a>timestamp</a> The sample time of the value.</li>
-            </ul>
-          </p>
-        </section>
-
-        <section id="update">
-          <h2><dfn>Update</dfn></h2>
-          <p>Purpose: Provide altered value to the vehicle signal(s) addressed by the <a>path</a></p>
-          <p>The client MAY have to obtain an authorization token before being able to update the vehicle signal(s).  
-             If the server is able to satisfy the request it MUST return a <a>success response</a>. 
-             If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.</p>
-          <p>Arguments: 
-            <ul>
-              <li><a>path</a> The path as defined in VSS to one or more nodes in the VSS tree.</li>
-              <li><a>value</a> The value by which the vehicls signals addressed by the path will be updated to.</li>
-              <li><a>authorization</a> The authorization token.</li>
-            </ul>
-          </p>
-          <p>Success response:
-            <ul>  
-              <li><a>timestamp</a> The time for updating of the vehicle signals.</li>
-            </ul>
-          </p>
-        </section>
-
-        <section id="subscribe">
-          <h2><dfn>Subscribe</dfn></h2>
-          <p>Purpose: Get asynchronous messages containing the value(s) addressed by the path. The triggering rules for issuing the notification messages are set by the filter data.</p>
-          <p>The client MAY have to obtain an authorization token before being able to subscribe to the vehicle signal(s).
-             The server MUST issue a notification if a trigger rule is fulfilled.
-             If the server is able to satisfy the request it MUST return a <a>success response</a>.
-             If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.
-             If an error occurs during the subscription period, the server SHOULD return an <a>error notification</a>.</p>
-          <p>Arguments: 
-            <ul>
-              <li><a>path</a> The path as defined in VSS to one or more nodes in the VSS tree.</li>
-              <li><a>filter</a> The rule set describing triggering criterias for issuance of asynchronous notification messages.</li>
-              <li><a>authorization</a> The authorization token.</li>
-            </ul>
-          </p>
-          <p>Success response:
-            <ul>  
-              <li><a>subscriptionId</a> A handle identifying notification messages associated with the subscription.</li>
-              <li><a>timestamp</a> The start time for the subscription period.</li>
-            </ul>
-          </p>
-        </section>
-        <section id="unsubscribe">
-          <h2><dfn>Unsubscribe</dfn></h2>
-          <p>Purpose: Termination of the subscription period started by a previous subscribe request.</p>
-          <p>If the server is able to satisfy the request it MUST return a <a>success response</a>, and it MUST stop issuing notifications associated to the subscription handle.
-             If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.</p>
-          <p>Arguments: 
-            <ul>
-              <li><a>subscriptionId</a> Handle identifying the subscription.</li>
-            </ul>
-          </p>
-          <p>Success response:
-            <ul>  
-              <li><a>subscriptionId</a> Handle identifying the subscription.</li>
-              <li><a>timestamp</a> The stop time for the subscription period.</li>
-            </ul>
-          </p>
-        </section>
-        <section id="subscription">
-          <h2><dfn>Subscription</dfn></h2>
-          <p>Purpose: Asynchronous client notification according to the subscribe request trigger rules.</p>
-          <p>The server MUST issue a notification message when a triggering rule associated with the subscription is met.
-             If the server cannot fulfill the triggering rules it MUST issue an error notification and terminate the subscription. 
-          </p>
-          <p>Arguments: 
-            <ul>
-              <li><a>subscriptionId</a> Handle identifying the subscription.</li>
-              <li><a>value</a> The value(s) associated with the node(s) being addressed in the subscribe request.</li>
-              <li><a>timestamp</a> The time for the trigger activation.</li>
-            </ul>
-          </p>
-        </section>
-      </section>
-
-      <section id="error-information">
-        <h2>Error Information</h2>
-        <p>The server MUST inform a client about errors ocurring in interactions between the two, whether it is in a synchronous <a>error response</a> to a request message, or an asynchronous <a>error notification</a> message.
-        </p>
-
-        <section id="error-format">
-          <h2>Error Format</h2>
-          <p>The error information has three components - a <a>number</a>, a <a>reason</a>, and a <a>message</a>. The number MUST always be part of the error information, 
-             while the reason and message components MAY be a part of it.
-            <ul>
-              <li><dfn data-dfn-type="dfn" id="dfn-error-number">number</dfn> See Gen2:TRANSPORT, "Status code" chapter.</li>
-              <li><dfn data-dfn-type="dfn" id="dfn-error-reason">reason</dfn> See Gen2:TRANSPORT, "Status code" chapter.</li>
-              <li><dfn data-dfn-type="dfn" id="dfn-error-message">message</dfn> See Gen2:TRANSPORT, "Status code" chapter.</li>
-            </ul>
-          </p>
-          </section>
-      </section>
-
-      <section id="security">
-        <h2>Security</h2>
-        <p>
-        </p>
-      </section>
-
-      <section id="timestamp">
-        <h2>Timestamps</h2>
-        <p>
-           Timestamps in transport payloads MUST conform to the ISO8601 standard, using the UTC format with a trailing Z. 
-           Time resolution SHALL at least be seconds, with subsecond resolution as an optional degree of precision when desired.
-           The time and date format shall be as shown below, where the sub-second data and delimiter is optional.<br>
-           YYYY-MM-DDTHH:MM:SS.ssssssZ<br>
-           The exception to this is timestamps within tokens, which MUST conform to Unix time. 
-        </p>
-      </section>
-
-        <section id="definitions">
-          <h2>Definitions</h2>
-	<p></p>
-
-	<dl title="enum Defs" class="idl">
-	  <dt><dfn data-dfn-type="dfn" id="dfn-client">client</dfn></dt>
-	  <dd>An entity that works with data managed by a server.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-server">server</dfn></dt>
-	  <dd>An entity that manages and offers access to data.</dd>
-          <dt><dfn data-dfn-type="dfn" id="dfn-success-response">success response</dfn></dt>
-          <dd>The message being returned by the server to the client when no error is encountered. These are specific per request type</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-error-response">error response</dfn></dt>
-	  <dd>The message being returned by the server to the client when an error is encountered. These have a common format for all request types</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-error-notification">error notification</dfn></dt>
-	  <dd>The asynchronous message being returned by the server to the client when an error is encountered.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-value">value</dfn></dt>
-	  <dd>The data that is associated with one or more VSS nodes. Regardless of its data type, a single data item is always represented as a string in message payloads.</dd>
-          <dt><dfn data-dfn-type="dfn" id="dfn-timestamp">timestamp</dfn></dt>
-          <dd>A date and time representation. See chapter <a href="#timestamp"></a>.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-filter">filter</dfn></dt>
-	  <dd>Additional to help the server in the selection of data for the client.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-query">query</dfn></dt>
-	  <dd>A filter may consist of multiple query expressions.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-authorization">authorization</dfn></dt>
-	  <dd>A token providing a verifiable proof that the client may be authorized access to the requested value(s).</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-subscription-id">subscriptionId</dfn></dt>
-	  <dd>A handle identifying a subscription session.</dd>
-	</dl>
-      </section>
-    </section>
-
-    <section id="dynamic-registry-api" class="appendix">
-      <h4>Dynamic Registry API</h4>
-      <p>The dynamic reqistry API provides the functionality to dynamically add or delete branches of the VSS tree. A branch can only be deleted if it has been dynamically added. In the following an entity requesting dynamic registry services is called a "service manager", and the entity performing these requests is called the "core server", see the figure "Gen2 server reference architecure".</p>
     </section>
 
     <section id="tof" class="appendix"></section>
