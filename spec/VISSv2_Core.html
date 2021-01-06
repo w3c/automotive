@@ -387,13 +387,14 @@
      <section id="paths-filter-operation">
         <h2>Paths Filter Operation</h2>
 		<p>
-		The paths filter operation is used when a single request is used to rerieve signal data from multiple data points in the VSS tree. 
+		The paths filter operation is used when a single request is used to retrieve signal data from multiple data points in the VSS tree. 
 		The vsspath shall point to the last node in the tree that is common for the relative paths in the filter op-value, that start off from this node. 
 		If the end point of a path in the filter op-value is a branch, then all leaf nodes in the sub-tree below this branch are addressed.
 		A path in the filter op-value may contain the wildcard character (*) as a representative for a path segment.<br>
 		Every path element in an op-value array must address at least one node in the tree, or else an error response is returned.<br>
 		If the path in the filter op-value ends with one or more wildcards, then only the leaf nodes with path segments matching the number of wildcards are addressed. 
 		Different elements of the op-value array may address the same node, in which case it is the responsibility of the server to resolve this to a singleton in the notifications.<br>
+		If the op-value contains a single path then it shall not be enclosed with JSON array brackets.<br>
 		The op-extra key-value pair is not used in paths filter operations.<br>
 		Examples can be found in the TRANSPORT specification.
 		</p>
@@ -413,7 +414,8 @@
 		The latter can not be set by the client, so the client should have some understanding of its value to estimate the amount of data it may receive. 
 		A request for historic data will return a Not found error if historic data is unavailable. 
 		The period must conform to the [[ISO8601]] duration format, expressed with days, hour, minute, and second data, i. e. "op-value": "PdddDThhHmmMssS".
-		The number of days shall be less than 999.<br>
+		The number of days shall be less than 999. Only a single period can be expressed.<br>
+		The op-extra key-value pair is not used in history filter operations.<br>
 		Examples can be found in the TRANSPORT specification.
 		</p>
         </section>
@@ -477,7 +479,7 @@
 		“data”:[{“path”:”X1”, “dp”:[{“value”:”Y11”, “ts”:”Z11”}, …, {“value”:”Y1n”, “ts”:”Z1n”}]}, …, {“path”:”Xm”, “dp”:[{“value”:”Ym1”, “ts”:”Zm1”}, …, {“value”:”Ymn”, “ts”:”Zmn”}]}]
               </code></pre>
                In the case of a request for multiple values from multiple nodes, the datapoint for different paths may contain single or multiple objects, 
-               as the vhicle system may not have multiple values recorded for all requested signals.
+               as the vehicle system may not have multiple values recorded for all requested signals.
 	    </p>
      </section>
 
