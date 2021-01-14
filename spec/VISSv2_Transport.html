@@ -34,40 +34,32 @@
         This is required.
       </p>
     </section>
-    <section data-dfn-for="introduction">
+
+    <section id="introduction">
       <h2>Introduction</h2>
       <p>This document describes the transport bindings of the Vehicle Service Interface. The split between transport bindings and messaging layer specifications improves readability and simplify
 extending VISSv2 to further transports in the future. The VISSv2 supports multiple transport bindings, namely HTTPS and secure WebSockets.</p>
     </section>
-  <!-- Conformance -->
-      <section id="conformance"><!--OddPage--><h2 id="x2-conformance"><span class="secno">2. </span>Conformance</h2>
-<p>
-  As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,
-  and notes in this specification are non-normative. Everything else in this specification is
-  normative.
-</p>
-<p id="respecRFC2119">The key words  <em class="rfc2119">MAY</em>, <em class="rfc2119">MUST</em>, and <em class="rfc2119">SHALL</em> are 
-  to be interpreted as described in [<cite><a class="bibref" href="#bib-RFC2119">RFC2119</a></cite>].
-</p>
-	<p>This specification defines conformance criteria that apply to a single product: specifically the 'Vehicle API'
-	<dfn data-dfn-type="dfn" id="dfn-VISSv2">VISSv2</dfn> that implements the interfaces, semantics and behaviour
-		defined in this document.</p>
-      </section>
-    <section data-dfn-for="terminology">
+
+    <section id="conformance"></section>
+
+    <section id="terminology">
       <h2>Terminology</h2>
       <p>The acronym 'VISSv2' is used to refer to this document, the VISS version 2 specification.
  The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance.
  The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.</p>
     </section>
-    <section data-dfn-for="transport-common-defs">
+
+    <section id="transport-common-defs">
       <h2>Transport Common Definitions</h2>
       <p>This chapter defines features that SHALL be common for all transport protocols.</p>
+
       <section id="status-codes">
         <h2>Status Codes</h2>
 	<p>The server implementation <em class="rfc2119" title="SHALL">SHALL</em> support the error numbers listed in the table below, 
 	with the associated reason and message fields, for all supported transport protocols.</p>
-        <p>The client <em class="rfc2119" title="SHOULD">SHOULD</em> support any status code defined in <a href='#bib-HTTP-PROTOCOL'>[RFC2616]</a>.</p>
-<table id="errorDefs" class="parameters">
+        <p>The client <em class="rfc2119" title="SHOULD">SHOULD</em> support any status code defined in [[RFC2616]].</p>
+        <table id="errorDefs" class="parameters">
 	  <tbody><tr>
 	    <th>Error&nbsp;Number&nbsp;(Code)</th>
 	    <th>Error Reason</th>
@@ -180,213 +172,298 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
 	  </tr>
 	</tbody></table>
       </section>
-      <section data-dfn-for="transport-payload">
+
+      <section id="transport-payload">
         <h2>Transport Payload</h2>
         <p>The payload SHALL have JSON format. See <a href='#json-def'></a> for the payload format of the messages for the different transport protocols.</p>
       </section>
-      <section data-dfn-for="authorization">
+
+      <section id="authorization">
         <h2>Authorization</h2>
           <p>Clients must provide a token to the server in order to verify that it is correctly authorized for the service it requests (see CORE document).Tokens are integrated in HTTP requests in the <code>Authorization</code> header. For WebSockets requests an optional <code>authorization</code> property in the payload can be used.</p>
       </section>
     </section>
-    <section data-dfn-for="transport-protocols">
+
+    <section id="transport-protocols">
       <h2>Transport Protocols</h2>
-      <p>The transport protocols supported are the secure versions of <a href='#bib-HTTP-PROTOCOL'>HTTP</a> and <a href='#bib-WEBSOCKETS-PROTOCOL'>WebSockets</a>. Further transport protocols may be supported in future versions of this specification.</p>
-      <section data-dfn-for="https">
+      <p>The transport protocols supported are the secure versions of the HTTP and WebSockets protocols. 
+      Further transport protocols may be supported in future versions of this specification.
+      </p>
+
+      <section id="https">
         <h2>HTTPS</h2>
         <p>The message data components described in the CORE document are in the first hand mapped to required HTTP parameters, and only when there is no appropriate mapping it is mapped to the payload. The subscribe/unsubscribe messages are not supported by this transport protocol.</p>
-        <section data-dfn-for="https-life-time-mngmnt">
+
+        <section id="https-life-time-mngmnt">
           <h2>Session Life Time Management</h2>
-          <section data-dfn-for="https-initialisation">
+
+          <section id="https-initialisation">
             <h2>Initialization</h2>
             <p>N/A?</p>
           </section>
-          <section data-dfn-for="https-closure">
+
+          <section id="https-closure">
             <h2>Closure</h2>
             <p>N/A?</p>
           </section>
         </section>
-        <section data-dfn-for="https-transport-messages">
+
+        <section id="https-transport-messages">
           <h2>Transport Messages</h2>
-          <section data-dfn-for="https-read">
+
+          <section id="https-read">
             <h2>Read</h2>
             <p>
-The client MAY send a HTTPS GET request message to the server to get the value of one or more vehicle signals. If the server is able to satisfy the request it SHALL return a response containing the requested value(s). If the server is unable to fulfil the request, e.g. because the client is not authorized to retrieve one or more of the signals, then the server response SHALL have the status code set to indicate error.
+            The client MAY send a HTTPS GET request message to the server to get one or more value(s) of one or more vehicle signal(s). 
+            If the server is able to satisfy the request it SHALL return a response containing the requested value(s). 
+            If the server is unable to fulfil the request, e.g. because the client is not authorized to retrieve one or more of the signals, 
+            then the server response SHALL have the status code set to indicate error.
             </p>
             <p>
-              <b>Example:</b><br>
-              Request:<br>
-              GET Vehicle/Drivetrain/InternalCombustionEngine/RPM HTTP/1.1<br>
-              Host: 127.0.0.1:1337<br>
-              Connection: keep-alive<br>
-              Accept: application/json<br>
-              User-Agent: Chrome/34.0.1847.137 Safari/537.36<br>
-              Accept-Encoding: gzip,deflate<br>
-              Accept-Language: en-US,en;q=0.8,de;q=0.6<br><br>
-              Successful response:<br>
-              HTTP/1.1 200 OK<br>
-              X-Powered-By: Express<br>
-              Vary: Accept-Encoding<br>
-              Content-Type: application/json; charset=utf-8<br>
-              ETag: "-32550834"<br>
-              Content-Encoding: gzip<br>
-              Date: Tue, 13 Jun 2014 19:47:27 GMT<br>
-              Connection: keep-alive<br>
-              Transfer-Encoding: chunked<br>
-              {<br>
-              <blockquote>
-                "value": "2372",<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote>
-              }<br><br>
-              Error response:<br>
-              HTTP/1.1 404 Not Found<br>
-              Content-Type: application/json; charset=utf-8<br>
-              Date: Tue, 13 Jun 2014 19:47:27 GMT<br>
-              Connection: keep-alive<br>
-              Transfer-Encoding: chunked<br>
-              {<br>
-              <blockquote>
-                "message": "No match for path in tree."<br>
-              </blockquote>
+              <b>Example:</b>
+              Request:
+              <pre><code>
+              GET /Vehicle/Drivetrain/InternalCombustionEngine/RPM   HTTP/1.1
+              Host: 127.0.0.1:1337
+              Connection: keep-alive
+              Accept: application/json
+              User-Agent: Chrome/34.0.1847.137 Safari/537.36
+              Accept-Encoding: gzip,deflate
+              Accept-Language: en-US,en;q=0.8,de;q=0.6
+              </code></pre>
+              Successful response:
+              <pre><code>
+              HTTP/1.1 200 OK
+              X-Powered-By: Express
+              Vary: Accept-Encoding
+              Content-Type: application/json; charset=utf-8
+              ETag: "-32550834"
+              Content-Encoding: gzip
+              Date: Tue, 13 Jun 2014 19:47:27 GMT
+              Connection: keep-alive
+              Transfer-Encoding: chunked
+              {
+                “data”:{“path”:”Vehicle/Drivetrain/InternalCombustionEngine/RPM”, 
+                        “dp”:{“value”:”2372”, “ts”:”2020-04-15T13:37:00Z”}
+                       }
               }
+              </code></pre>
+              Error response:
+              <pre><code>
+              HTTP/1.1 404 Not Found
+              Content-Type: application/json; charset=utf-8
+              Date: Tue, 13 Jun 2014 19:47:27 GMT
+              Connection: keep-alive
+              Transfer-Encoding: chunked
+              {
+                "message": "No match for path in tree."
+              }
+              </code></pre>
             </p>
-          <section data-dfn-for="https-authorized-read">
+
+          <section id="https-authorized-read">
             <h2>Authorized Read</h2>
-<p>JWT tokens will be sent in the <code>Authorization</code> header, following with term <code>Bearer</code> and a space character.</p>
-<p>The following example assumes <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds</code> is the actual token:</p>
-<pre><code>  GET /<span class="hljs-params">Vehicle</span>/<span class="hljs-params">Drivetrain</span>/<span class="hljs-params">InternalCombustionEngine</span>/<span class="hljs-params">RPM</span>/ HTTP/<span class="hljs-number">1.1</span>
-<span class="hljs-symbol">  Host:</span> <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>:<span class="hljs-number">1337</span>
-<span class="hljs-symbol">  Authorization:</span> Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds
-</code></pre>
-          </section>
-          <section id="https-service-discovery-read">
-            <h2>Service Discovery Read</h2>
             <p>
-              <b>Example:</b><br>
-              Request:<br>
-              GET Vehicle/Drivetrain/FuelSystem?$spec=0 HTTP/1.1<br>
-              Host: 127.0.0.1:1337<br>
-              Connection: keep-alive<br>
-              Accept: application/json<br>
-              User-Agent: Chrome/34.0.1847.137 Safari/537.36<br>
-              Accept-Encoding: gzip,deflate<br>
-              Accept-Language: en-US,en;q=0.8,de;q=0.6<br><br>
-              Response:<br>
-              HTTP/1.1 200 OK<br>
-              X-Powered-By: Express<br>
-              Vary: Accept-Encoding<br>
-              Content-Type: application/json; charset=utf-8<br>
-              ETag: "-32550834"<br>
-              Content-Encoding: gzip<br>
-              Date: Tue, 13 Jun 2014 19:47:27 GMT<br>
-              Connection: keep-alive<br>
-              Transfer-Encoding: chunked<br><br>
-              {<br>
-              <blockquote>
-                "metadata": {"FuelSystem":{"type":"branch","description":"Fuel system data.","children":{"HybridType, ... }}}<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote>
-              }<br>
+            JWT tokens will be sent in the <code>Authorization</code> header, following with term <code>Bearer</code> and a space character.
             </p>
+            <p>
+            The following example assumes <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds</code> is the actual token:
+            </p>
+            <pre><code>
+            GET /Vehicle/Drivetrain/InternalCombustionEngine/RPM   HTTP/1.1
+            Host:127.0.0.1:1337
+            Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds
+            </code></pre>
           </section>
+
           <section id="https-search-read">
             <h2>Search Read</h2>
             <p>
-              <b>Example:</b><br>
-              Request:<br>
-              GET Vehicle/Cabin/Door?$path=*.*.IsOpen HTTP/1.1<br>
-              Host: 127.0.0.1:1337<br>
-              Connection: keep-alive<br>
-              Accept: application/json<br>
-              User-Agent: Chrome/34.0.1847.137 Safari/537.36<br>
-              Accept-Encoding: gzip,deflate<br>
-              Accept-Language: en-US,en;q=0.8,de;q=0.6<br><br>
-              Response:<br>
-              HTTP/1.1 200 OK<br>
-              X-Powered-By: Express<br>
-              Vary: Accept-Encoding<br>
-              Content-Type: application/json; charset=utf-8<br>
-              ETag: "-32550834"<br>
-              Content-Encoding: gzip<br>
-              Date: Tue, 13 Jun 2014 19:47:27 GMT<br>
-              Connection: keep-alive<br>
-              Transfer-Encoding: chunked<br><br>
-              {<br>
-              <blockquote>
-                "value": {{"path":"Vehicle.Cabin.Door.Row1.Left.IsOpen", "value":"false"},..., {"path":"Vehicle.Cabin.Door.Row4.Right.IsOpen","value":"true"}}<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote>
-              }<br>
+              The search read request uses the query pattern described in the CORE document to provide one or more path expressions, relative to the path in the GET URL.<br>
+              <b>Example:</b>
+              Request:
+              <pre><code>
+              GET /Vehicle/Cabin/Door?filter={"op-type":"paths", "op-value":"*/*/IsOpen"}   HTTP/1.1
+              Host: 127.0.0.1:1337
+              Connection: keep-alive
+              Accept: application/json
+              User-Agent: Chrome/34.0.1847.137 Safari/537.36
+              Accept-Encoding: gzip,deflate
+              Accept-Language: en-US,en;q=0.8,de;q=0.6
+              </code></pre>
+              Response:
+              <pre><code>
+              HTTP/1.1 200 OK
+              X-Powered-By: Express
+              Vary: Accept-Encoding
+              Content-Type: application/json; charset=utf-8
+              ETag: "-32550834"
+              Content-Encoding: gzip
+              Date: Tue, 13 Jun 2014 19:47:27 GMT
+              Connection: keep-alive
+              Transfer-Encoding: chunked
+              {
+                “data”:[{“path”:”Vehicle/Cabin/Door/Row1/Left/IsOpen”, “dp”:{“value”:”false”, “ts”:”2020-04-15T13:37:00Z”}}, 
+                        {...},… 
+                        {“path”:”Vehicle/Cabin/Door/Row4/Right/IsOpen”, “dp”:{“value”:”true”, “ts”:”2020-04-15T13:37:00Z”}}
+                       ]
+              }
+              </code></pre>
             </p>
           </section>
+
+          <section id="https-history-read">
+            <h2>History Read</h2>
+            <p>
+              The history read request uses the query pattern described in the CORE document to read recorded values for a given period backwards in time.<br>
+              <b>Example:</b>
+              Request:
+              <pre><code>
+              GET /Vehicle.Acceleration.Longitudinal?filter={"op-type":"history", "op-value":"P2DT12H"}   HTTP/1.1
+              Host: 127.0.0.1:1337
+              Connection: keep-alive
+              Accept: application/json
+              User-Agent: Chrome/34.0.1847.137 Safari/537.36
+              Accept-Encoding: gzip,deflate
+              Accept-Language: en-US,en;q=0.8,de;q=0.6
+              </code></pre>
+              Response:
+              <pre><code>
+              HTTP/1.1 200 OK
+              X-Powered-By: Express
+              Vary: Accept-Encoding
+              Content-Type: application/json; charset=utf-8
+              ETag: "-32550834"
+              Content-Encoding: gzip
+              Date: Tue, 13 Jun 2014 19:47:27 GMT
+              Connection: keep-alive
+              Transfer-Encoding: chunked
+              {
+                “data”:{“path”:”Vehicle.Acceleration.Longitudinal”, “dp”:[{“value”:”0.123”, “ts”:”2020-04-15T13:00:00Z”}, ..., {“value”:”0.125”, “ts”:”2020-04-15T13:37:00Z”}]}
+              }
+              </code></pre>
+            </p>
           </section>
-          <section data-dfn-for="https-update">
+
+          <section id="https-service-discovery-read">
+            <h2>Service Discovery Read</h2>
+            <p>
+              The service discovery request uses the URL fragment pattern as described in the CORE document to retrieve the static metadata, i. e. the metadata defined in the VSS tree.
+              The dynamic metadata, i. e. any other metadata kept by the vehicle system, is retrieved by the fragment name "dynamic-metadata".<br>
+              <b>Example:</b>
+              Request:
+              <pre><code>
+              GET /Vehicle/Drivetrain/FuelSystem#static-metadata   HTTP/1.1
+              Host: 127.0.0.1:1337
+              Connection: keep-alive
+              Accept: application/json
+              User-Agent: Chrome/34.0.1847.137 Safari/537.36
+              Accept-Encoding: gzip,deflate
+              Accept-Language: en-US,en;q=0.8,de;q=0.6
+              </code></pre>
+              Response:
+              <pre><code>
+              HTTP/1.1 200 OK
+              X-Powered-By: Express
+              Vary: Accept-Encoding
+              Content-Type: application/json; charset=utf-8
+              ETag: "-32550834"
+              Content-Encoding: gzip
+              Date: Tue, 13 Jun 2014 19:47:27 GMT
+              Connection: keep-alive
+              Transfer-Encoding: chunked
+              {
+                "metadata": {"FuelSystem":{"type":"branch","description":"Fuel system data.","children":{"HybridType, ... }}}
+                "ts": "2020-04-15T13:37:00Z"
+              }
+              </code></pre>
+            </p>
+          </section>
+        </section>
+
+          <section id="https-update">
             <h2>Update</h2>
             <p>
-The client may request that the server sets the value of one or more signals e.g. to lock one or more doors or open a window by sending an HTTPS POST request to the server. In the case of several signals being set, they MUST all be of the same data type, and be set to the same value. If the server is able to satisfy the request its response SHALL have a 200 OK status code set. If an error occurs e.g. because the client is not authorized to set the requested value, or the value is read-only, the server response SHALL have the status code set to indicate error.
+            The client may request that the server sets the value of one or more signals e.g. to lock one or more doors or open a window by sending an HTTPS POST request to the server. 
+            In the case of several signals being set, they MUST all be of the same data type, and be set to the same value. 
+            If the server is able to satisfy the request its response SHALL have a 200 OK status code set. 
+            If an error occurs e.g. because the client is not authorized to set the requested value, or the value is read-only, the server response SHALL have the status code set to indicate error.
             </p>
             <p>
-              <b>Example:</b><br>
-              POST /Vehicle/Drivetrain/Transmission/PerformanceMode HTTP/1.1<br>
-              Host: 127.0.0.1:9000<br>
-              Connection: keep-alive<br>
-              Accept: application/json<br>
-              User-Agent: Chrome/34.0.1847.137 Safari/537.36<br>
-              Accept-Encoding: gzip,deflate<br>
-              Accept-Language: en-US,en;q=0.8,de;q=0.6<br><br>
-              {<br>
-              <blockquote>
-                "value": "sport",<br>
-              </blockquote>
-              }<br><br>
-              Successful response:<br>
-              HTTP/1.1 200 OK<br>
-              Vary: Accept-Encoding<br>
-              Content-Type: application/json; charset=utf-8<br>
-              ETag: "-32550834"<br>
-              Content-Encoding: gzip<br>
-              Date: Tue, 07 Apr 1980 00:00:00 GMT<br>
-              Connection: keep-alive<br>
-              Transfer-Encoding: chunked<br><br>
-              {<br>
-              <blockquote>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote>
-              }<br><br>
-              Error response:<br>
-              HTTP/1.1 404 Not Found<br>
-              Content-Type: application/json; charset=utf-8<br>
-              Date: Tue, 07 Apr 1980 00:00:00 GMT<br>
-              Connection: keep-alive<br>
-              Transfer-Encoding: chunked<br>
-              {<br>
-              <blockquote>
-                "message": "No match for path in tree."<br>
-              </blockquote>
+              <b>Example:</b>
+              <pre><code>
+              POST /Vehicle/Drivetrain/Transmission/PerformanceMode   HTTP/1.1
+              Host: 127.0.0.1:1337
+              Connection: keep-alive
+              Accept: application/json
+              User-Agent: Chrome/34.0.1847.137 Safari/537.36
+              Accept-Encoding: gzip,deflate
+              Accept-Language: en-US,en;q=0.8,de;q=0.6
+              {
+                "value": "sport"
               }
+              </code></pre>
+              Successful response:
+              <pre><code>
+              HTTP/1.1 200 OK
+              Vary: Accept-Encoding
+              Content-Type: application/json; charset=utf-8
+              ETag: "-32550834"
+              Content-Encoding: gzip
+              Date: Tue, 07 Apr 1980 00:00:00 GMT
+              Connection: keep-alive
+              Transfer-Encoding: chunked
+              {
+                "ts": "2020-04-15T13:37:00Z"
+              }
+              </code></pre>
+              Error response:
+              <pre><code>
+              HTTP/1.1 404 Not Found
+              Content-Type: application/json; charset=utf-8
+              Date: Tue, 07 Apr 1980 00:00:00 GMT
+              Connection: keep-alive
+              Transfer-Encoding: chunked
+              {
+                "message": "No match for path in tree."
+              }
+              </code></pre>
             </p>
-          <section data-dfn-for="https-authorized-update">
+
+          <section id="https-authorized-update">
             <h2>Authorized Update</h2>
-<p>JWT tokens will be sent in the <code>Authorization</code> header, following with term <code>Bearer</code> and a space character.</p>
-<p>The following example assumes <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds</code> is the actual token:</p>
-<pre><code>  POST /<span class="hljs-params">Vehicle</span>/<span class="hljs-params">Drivetrain</span>/<span class="hljs-params">Transmission</span>/<span class="hljs-params">PerformanceMode</span>/ HTTP/<span class="hljs-number">1.1</span>
-<span class="hljs-symbol">  Host:</span> <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>:<span class="hljs-number">1337</span>
-<span class="hljs-symbol">  Authorization:</span> Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds
-  {
-    "value": "sport",
-  }
-</code></pre>
+            <p>
+            JWT tokens will be sent in the <code>Authorization</code> header, following with term <code>Bearer</code> and a space character.
+            </p>
+            <p>
+            The following example assumes <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds</code> is the actual token:
+            </p>
+            <pre><code>
+            POST /Vehicle/Drivetrain/Transmission/PerformanceMode   HTTP/1.1
+            Host:127.0.0.1:1337
+            Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds
+            {
+              "value": "sport"
+            }
+            </code></pre>
           </section>
           </section>
         </section>
       </section>
-      <section data-dfn-for="secure-websockets">
+
+      <section id="secure-websockets">
         <h2>Secure WebSockets</h2>
-        <p>As the WebSocket protocol does not implicitly provide a logical association between the request and response messages described here a key-value pair with the keyname "requestId" is added to the data components described in the CORE document. As the WebSockets protocol neither specifies a set of explicit methods, another key-value pair with the keyname "action" is also added. See <a href='#action-def'></a> for the declaration of these new key-value pairs. All data components are mapped to the payload.</p>
-        <section data-dfn-for="wss-lifetime-mngmnt">
+        <p>
+        As the WebSocket protocol does not implicitly provide a logical association between the request and response messages described here a key-value pair with the keyname "requestId" 
+        is added to the data components described in the CORE document. As the WebSockets protocol neither specifies a set of explicit methods, 
+        another key-value pair with the keyname "action" is also added. See <a href='#action-def'></a> for the declaration of these new key-value pairs. 
+        All data components are mapped to the payload.
+        </p>
+
+        <section id="wss-lifetime-mngmnt">
           <h2>Session Life Time Management</h2>
-          <section data-dfn-for="wss-initialisation">
+
+          <section id="wss-initialisation">
             <!--OddPage--><h2>Initialization</h2>
 
 	<p>If the client application is an HTML Application running in a web
@@ -415,8 +492,9 @@ The client may request that the server sets the value of one or more signals e.g
 	<p>The sub-protocol name <em class="rfc2119" title="SHALL">SHALL</em> be 'VISSv2' with the digit 2 being the version number. The sub-protocol version will
 	be associated with exactly one VISS Server Specification version so that the client and server can 
 	correctly validate and parse request and response message packets.</p>
-	<pre class="highlight hljs javascript" aria-busy="false">	  <span class="hljs-keyword">var</span> vehicle  = <span class="hljs-keyword">new</span> WebSocket(<span class="hljs-string">"wss://wwwVISSv2"</span>, <span class="hljs-string">"VISSv2"</span>);
-	</pre>
+        <pre><code>
+	var vehicle  = new WebSocket("wss://wwwVISSv2:443", "VISSv2");
+        </code></pre>
 	<p>The client <em class="rfc2119" title="SHALL">SHALL</em> connect to the server over HTTPS and request that
 	the server opens a WebSocket. All WebSocket communications between
 	the client and server <em class="rfc2119" title="MUST">MUST</em> be over ‘wss’. Non encrypted communication
@@ -442,7 +520,8 @@ The client may request that the server sets the value of one or more signals e.g
         updates and dirty reads could potentially occur if the server has
         more than one WebSocket connection open.</p>	 
           </section>
-          <section data-dfn-for="wss-closure">
+
+          <section id="wss-closure">
             <!--OddPage--><h2>Closure</h2>
 	<p>The WebSocket may be closed by either the client or the
 	server by invoking the ‘close()’ method on the WebSocket
@@ -450,103 +529,103 @@ The client may request that the server sets the value of one or more signals e.g
 
 	<p>The following example shows the lifetime of a WebSocket on
 	the client:</p>
-	<div class="example"><div class="example-title marker"><span>Example 6</span></div><pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-comment">// Open the WebSocket</span>
-<span class="hljs-keyword">var</span> vehicle  = <span class="hljs-keyword">new</span> WebSocket(<span class="hljs-string">"wss://wwwVISSv2:4343"</span>, <span class="hljs-string">"VISSv21.0"</span>);
-
-<span class="hljs-comment">// WebSocket is used to GET, SET, SUBSCRIBE and UNSUBSCRIBE</span>
-…
-
-<span class="hljs-comment">// Close the WebSocket</span>
-vehicle.close();</pre></div>
-	<p>The VISSv2 Server may terminate the WebSocket connection
-	if it has not received a request for a period determined by
-	the server. It is the client’s responsibility to handle this
-	gracefully and to recover and request new
-	subscriptions, where required.</p>
-
-          </section>
+        <pre><code>
+	// Open the WebSocket</span>
+	var vehicle  = new WebSocket("wss://wwwVISSv2:443", "VISSv2");
+	…
+	// Close the WebSocket
+	vehicle.close();
+        </code></pre>
+	<p>The VISSv2 Server may terminate the WebSocket connection if it has not received a request for a period determined by
+	the server. It is the client’s responsibility to handle this gracefully and to recover and request new subscriptions, where required.
+	</p>
         </section>
-        <section data-dfn-for="wss-transport-messages">
+      </section>
+
+      <section id="wss-transport-messages">
           <h2>Transport Messages</h2>
-          <section data-dfn-for="wss-read-message">
+
+          <section id="wss-read-message">
             <h2>Read</h2>
-<p>The client <em class="rfc2119" title="MAY">MAY</em> send a <a href="#dfn-getrequest" class="internalDFN" data-link-type="dfn">getRequest</a> message to the server to get the value of one or more vehicle signals. If the server is able to satisfy the request it <em class="rfc2119" title="SHALL">SHALL</em> return a <a href="#dfn-getsuccessresponse" class="internalDFN" data-link-type="dfn">getSuccessResponse</a> message. If the server is unable to fulfil the request, e.g. because the client is not authorized to retrieve one or more of the signals, then the server <em class="rfc2119" title="SHALL">SHALL</em> return a <a href="#dfn-geterrorresponse" class="internalDFN" data-link-type="dfn">getErrorResponse</a> message. The structure of these message objects is defined below.
-</p>
-<br>
-<table class="simple">
-<thead>
-  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
-</thead>
-<tbody>
-  <tr>
-    <th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-getrequest">getRequest</dfn></th>
-    </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-path">path</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-authorization">authorization</a></td><td>string</td><td>Optional</td></tr>
-    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
-  
-</tbody>
-</table>
-<br>
-<table class="simple">
-<thead>
-  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
-</thead>
-<tbody>
-  <tr>
-    <th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-getsuccessresponse">getSuccessResponse</dfn></th>
-    </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-value">value</a></td><td>object</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
-  
-</tbody>
-</table>
-<p>In the table above the "value" attribute has the type object. The reason for this is that it may contain multiple values, each associated to other attributes, which in JSON is represented as an object. However, in the case of a single value, it MUST be of type string. </p>
-<table class="simple">
-<thead>
-  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
-</thead>
-<tbody>
-  <tr>
-    <th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-geterrorresponse">getErrorResponse</dfn></th>
-    </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
-  
-</tbody>
-</table>
+            <p>The client <em class="rfc2119" title="MAY">MAY</em> send a <a href="#dfn-getrequest" class="internalDFN" data-link-type="dfn">getRequest</a> 
+            message to the server to get the value of one or more vehicle signals. 
+            If the server is able to satisfy the request it <em class="rfc2119" title="SHALL">SHALL</em> return a 
+            <a href="#dfn-getsuccessresponse" class="internalDFN" data-link-type="dfn">getSuccessResponse</a> message. 
+            If the server is unable to fulfil the request, e.g. because the client is not authorized to retrieve one or more of the signals, then the server 
+            <em class="rfc2119" title="SHALL">SHALL</em> return a <a href="#dfn-geterrorresponse" class="internalDFN" data-link-type="dfn">getErrorResponse</a> message. 
+            The structure of these message objects is defined below.
+            </p><br>
+            <table class="simple">
+            <thead>
+              <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+            </thead>
+            <tbody>
+                <tr><th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-getrequest">getRequest</dfn></th></tr>
+                <tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+                <tr><td><a href="#dfn-path">path</a></td><td>string</td><td>Yes</td></tr>
+                <tr><td><a href="#dfn-authorization">authorization</a></td><td>string</td><td>Optional</td></tr>
+                <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+            </tbody>
+            </table>
+            <br>
+            <table class="simple">
+            <thead>
+              <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+            </thead>
+            <tbody>
+             <tr><th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-getsuccessresponse">getSuccessResponse</dfn></th></tr>
+             <tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+             <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+             <tr><td><a href="#dfn-value">data</a></td><td>object/array</td><td>Yes</td></tr>
+           </tbody>
+           </table>
+           <p>
+           In the table above the "data" attribute is either an object containing "value" and "ts" name/value pairs, or an array of such objects. 
+           </p>
+           <table class="simple">
+           <thead>
+             <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+           </thead>
+           <tbody>
+           <tr><th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-geterrorresponse">getErrorResponse</dfn></th></tr>
+           <tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+           <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+           <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
+           <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
+           </tbody>
+           </table>
             <p>
               <b>Example:</b><br>
-              Request:<br> 
-              {<br>
-              <blockquote>
-                "action": "get",<br>
-                "path": "Vehicle/Drivetrain/InternalCombustionEngine/RPM",<br>
-                "requestId": "8756"<br>
-              </blockquote>
-              }<br><br>
-              Successful response:<br>
-              {<br>
-              <blockquote>
-                "action": "get",<br>
-                "requestId": "8756",<br>
-                "value": "2372",<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote>
-              }<br><br>
-              Error response:<br>
-              {<br>
-              <blockquote>
-                "action": "get",<br>
-                "requestId": "8756",<br>
-                "error": {"number": 404, "reason": "Not found", "message": "No match for path in tree."},<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote>
-              }<br>
+              Request:
+              <pre><code>
+              {
+                "action": "get",
+                "path": "Vehicle/Drivetrain/InternalCombustionEngine/RPM",
+                "requestId": "8756"
+              }
+              </code></pre>
+              Successful response:
+              <pre><code>
+              {
+                "action": "get",
+                "requestId": "8756",
+                “data”:{“path”:”Vehicle/Drivetrain/InternalCombustionEngine/RPM”, 
+                        “dp”:{“value”:”2372”, “ts”:”2020-04-15T13:37:00Z”}
+                       }
+              }
+              </code></pre>
+              Error response:
+              <pre><code>
+              {
+                "action": "get",
+                "requestId": "8756",
+                "error": {"number": 404, "reason": "Not found", "message": "No match for path in tree."},
+                "ts": "2020-04-15T13:37:00Z"
+              }
+              </code></pre>
             </p>
-          <section data-dfn-for="wss-authorized-read">
+
+          <section id="wss-authorized-read">
             <h2>Authorized Read</h2>
             <p> If the operation on the VSS node that is addressed requires authorization, 
                then the request must contain the field "authorization" with its value being a JWT token.
@@ -554,160 +633,193 @@ vehicle.close();</pre></div>
             </p>
             <p>
               <b>Example:</b><br>
-              Request:<br> 
-              {<br>
-              <blockquote>
-                "action": "get",<br>
-                "path": "Vehicle/Drivetrain/InternalCombustionEngine/RPM",<br>
-                "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds"<br>
-                "requestId": "8657"<br>
-              </blockquote>
-              }<br><br>
-              Response:<br>
-              {<br>
-              <blockquote>
-                "action": "get",<br>
-                "requestId": "8657",<br>
-                "value": "2372",<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote>
-              }<br>
+              Request:
+              <pre><code>
+              {
+                "action": "get",
+                "path": "Vehicle/Drivetrain/InternalCombustionEngine/RPM",
+                "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds"
+                "requestId": "8657"
+              }
+              </code></pre>
+              Response:
+              <pre><code>
+              {
+                "action": "get",
+                "requestId": "8657",
+                “data”:{“path”:”Vehicle/Drivetrain/InternalCombustionEngine/RPM”, 
+                        “dp”:{“value”:”2372”, “ts”:”2020-04-15T13:37:00Z”}
+                       }
+              }
+              </code></pre>
             </p>
           </section>
+
+          <section id="wss-search-read">
+            <h2>Search Read</h2>
+            <p>A client may issue a search read request to access multiple values in one request message. 
+               This is realized by adding a "filter" object following the pattern described in the CORE spec, "Filtering" chapter.
+            </p>
+            <p>
+              <b>Example:</b><br>
+              Request:
+              <pre><code>
+              {
+                "action": "get",
+                "path": "Vehicle/Cabin/Door,
+                "filter": {"op-type":"paths", "op-value":"*/*/IsOpen"}
+                "requestId": "5688"
+              }
+              </code></pre>
+              Response:
+              <pre><code>
+              {
+                "action": "get",
+                “data”:[{“path”:”Vehicle/Cabin/Door/Row1/Left/IsOpen”, “dp”:{“value”:”false”, “ts”:”2020-04-15T13:37:00Z”}}, 
+                        {...},… 
+                        {“path”:”Vehicle/Cabin/Door/Row4/Right/IsOpen”, “dp”:{“value”:”true”, “ts”:”2020-04-15T13:37:00Z”}}
+                       ]
+                "requestId": "5688",
+              }
+              </code></pre>
+            </p>
+          </section>
+
+          <section id="wss-search-read">
+            <h2>History Read</h2>
+            <p>A client may issue a history read request to access recorded data points. 
+               This is realized by adding a "filter" object following the pattern described in the CORE spec, "Filtering" chapter.
+            </p>
+            <p>
+              <b>Example:</b><br>
+              Request:
+              <pre><code>
+              {
+                "action": "get",
+                "path": "Vehicle.Acceleration.Longitudinal",
+                "filter": {"op-type":"history", "op-value":"P2DT12H"}
+                "requestId": "5688"
+              }
+              </code></pre>
+              Response:
+              <pre><code>
+              {
+                "action": "get",
+                “data”:{“path”:”Vehicle.Acceleration.Longitudinal”, “dp”:[{“value”:”0.123”, “ts”:”2020-04-15T13:00:00Z”}, ..., {“value”:”0.125”, “ts”:”2020-04-15T13:37:00Z”}]},
+                "requestId": "5688",
+              }
+              </code></pre>
+            </p>
+          </section>
+
           <section id="wss-service-discovery-read">
             <h2>Service Discovery Read</h2>
             <p>A client may issue a service discovery read request to access the metadata defining the nodes in the VSS tree. 
                A successful response will contain the metadata from all nodes of the subtree defined by the subtree root node that is addressed by the path.
-               The service discovery read request MUST contain a query component with the reserved word "$spec", and an associated integer value (see CORE spec, "Filtering" chapter).
+               The service discovery read request "path" MUST contain a fragment component with the reserved word "static-metadata", see CORE spec, "Filtering" chapter.
             </p>
             <p>
               <b>Example:</b><br>
-              Request:<br> 
-              {<br>
-              <blockquote>
-                "action": "get",<br>
-                "path": "Vehicle/Drivetrain/FuelSystem?$spec=0",<br>
-                "requestId": "5687"<br>
-              </blockquote>
-              }<br><br>
-              Response:<br>
-              {<br>
-              <blockquote>
-                "action": "get",<br>
-                "requestId": "5687",<br>
-                "metadata": {"FuelSystem":{"type":"branch","description":"Fuel system data.","children":{"HybridType, ... }}}<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote>
-              }<br>
-            </p>
-          </section>
-          <section id="wss-search-read">
-            <h2>Search Read</h2>
-            <p>A client may issue a search read request to access multiple values in one request message. 
-               A successful response will contain the values from all nodes matching the path concatenated with $path value (a delimiter is automatically inserted). 
-               The search read request MUST contain a query component with the reserved word "$path", and an associated extension to the path (see CORE spec, "Filtering" chapter).
-            </p>
-            <p>
-              <b>Example:</b><br>
-              Request:<br> 
-              {<br>
-              <blockquote>
-                "action": "get",<br>
-                "path": "Vehicle/Cabin/Door?$path=*.*.IsOpen",<br>
-                "requestId": "5688"<br>
-              </blockquote>
-              }<br><br>
-              Response:<br>
-              {<br>
-              <blockquote>
-                "action": "get",<br>
-                "value": {{"path":"Vehicle.Cabin.Door.Row1.Left.IsOpen", "value":"false"},..., {"path":"Vehicle.Cabin.Door.Row4.Right.IsOpen","value":"true"}},<br>
-                "requestId": "5688",<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote>
-              }<br>
+              Request:
+              <pre><code>
+              {
+                "action": "get",
+                "path": "Vehicle/Drivetrain/FuelSystem#static-metadata",
+                "requestId": "5687"
+              }
+              </code></pre>
+              Response:
+              <pre><code>
+              {
+                "action": "get",
+                "requestId": "5687",
+                "metadata": {"FuelSystem":{"type":"branch","description":"Fuel system data.","children":{"HybridType, ... }}}
+                "ts": "2020-04-15T13:37:00Z"
+              }
+              </code></pre>
             </p>
           </section>
           </section>
-          <section data-dfn-for="wss-update">
+
+          <section id="wss-update">
             <h2>Update</h2>
-            <p>The client may request that the server sets the value of one or more signals e.g. to lock one or more doors or open a window by sending a <a href="#dfn-setrequest" class="internalDFN" data-link-type="dfn">setRequest</a> message to the server. In the case of several signals being set, they MUST all be of the same data type, and be set to the same value. 
+            <p>
+            The client may request that the server sets the value of one or more signals e.g. to lock one or more doors or open a window by sending a 
+            <a href="#dfn-setrequest" class="internalDFN" data-link-type="dfn">setRequest</a> message to the server. 
+            In the case of several signals being set, they MUST all be of the same data type, and be set to the same value. 
             If the server is able to satisfy the request it <em class="rfc2119" title="SHALL">SHALL</em> return a 
-	<a href="#dfn-setsuccessresponse" class="internalDFN" data-link-type="dfn">setSuccessResponse</a> message. If an error occurs e.g. because the client is not authorized to set the requested value, or the value is read-only, the server <em class="rfc2119" title="SHALL">SHALL</em> return a <a href="#dfn-seterrorresponse" class="internalDFN" data-link-type="dfn">setErrorResponse</a> message.
+            <a href="#dfn-setsuccessresponse" class="internalDFN" data-link-type="dfn">setSuccessResponse</a> message. 
+            If an error occurs e.g. because the client is not authorized to set the requested value, or the value is read-only, 
+            the server <em class="rfc2119" title="SHALL">SHALL</em> return a <a href="#dfn-seterrorresponse" class="internalDFN" data-link-type="dfn">setErrorResponse</a> message.
             </p>
-<table class="simple">
-<thead>
-  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
-</thead>
-<tbody>
-  <tr>
-    <th rowspan="6"><dfn data-dfn-type="dfn" id="dfn-setrequest">setRequest</dfn></th>
-    </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-path">path</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-value">value</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-authorization">authorization</a></td><td>string</td><td>Optional</td></tr>
-    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
-  
-</tbody>
-</table>
-<br>
-<table class="simple">
-<thead>
-  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
-</thead>
-<tbody>
-  <tr>
-    <th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-setsuccessresponse">setSuccessResponse</dfn></th>
-    </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
-  
-</tbody>
-</table>
-<br>
-<table class="simple">
-<thead>
-  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
-</thead>
-<tbody>
-  <tr>
-    <th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-seterrorresponse">setErrorResponse</dfn></th>
-    </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
-  
-</tbody>
-</table>
+	<table class="simple">
+	<thead>
+	  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+	</thead>
+	<tbody>
+	  <tr><th rowspan="6"><dfn data-dfn-type="dfn" id="dfn-setrequest">setRequest</dfn></th></tr>
+	  <tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-path">path</a></td><td>string</td><td>Yes</td></tr>
+          <tr><td><a href="#dfn-value">value</a></td><td>string</td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-authorization">authorization</a></td><td>string</td><td>Optional</td></tr>
+	  <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>  
+	</tbody>
+	</table>
+	<br>
+	<table class="simple">
+	<thead>
+	  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+	</thead>
+	<tbody>
+	  <tr><th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-setsuccessresponse">setSuccessResponse</dfn></th></tr>
+	  <tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr> 
+	</tbody>
+	</table>
+	<br>
+	<table class="simple">
+	<thead>
+	  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+	</thead>
+	<tbody>
+	  <tr><th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-seterrorresponse">setErrorResponse</dfn></th></tr>
+	  <tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
+	</tbody>
+	</table>
             <p>
               <b>Example:</b><br>
-              Request:<br> 
-              {<br>
-              <blockquote>
-                "action": "set",<br>
-                "path": "Vehicle/Drivetrain/Transmission/PerformanceMode",<br>
-                "value": "sport",<br>
-                "requestId": "5687"<br>
-              </blockquote>
-              }<br><br>
-              Successful response:<br>
-              {<br>
-              <blockquote>
-                "action": "set",<br>
-                "requestId": "5687",<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote>
-              }<br><br>
-              Error response:<br>
-              {<br>
-              <blockquote>
-                "action": "set",<br>
-                "requestId": "5687",<br>
-                "error": {"number": 404, "reason": "Not found", "message": "No match for path in tree."},<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote>
-              }<br>
-          <section data-dfn-for="wss-authorized-update">
+              Request:
+              <pre><code>
+              {
+                "action": "set",
+                "path": "Vehicle/Drivetrain/Transmission/PerformanceMode",
+                "value": "sport",
+                "requestId": "5687"
+              }
+               </code></pre>
+             Successful response:
+              <pre><code>
+              {
+                "action": "set",
+                "requestId": "5687",
+                "ts": "2020-04-15T13:37:00Z"
+              }
+               </code></pre>
+             Error response:
+              <pre><code>
+              {
+                "action": "set",
+                "requestId": "5687",
+                "error": {"number": 404, "reason": "Not found", "message": "No match for path in tree."},
+                "ts": "2020-04-15T13:37:00Z"
+              }
+               </code></pre>
+
+         <section id="wss-authorized-update">
             <h2>Authorized Update</h2>
             <p>If the operation on the VSS node that is addressed requires authorization, 
                then the request must contain the field "authorization" with its value being a JWT token.
@@ -715,280 +827,330 @@ vehicle.close();</pre></div>
             </p>
             <p>
               <b>Example:</b><br>
-              Request:<br> 
-              {<br>
-              <blockquote>
-                "action": "set",<br>
-                "path": "Vehicle/Drivetrain/Transmission/PerformanceMode",<br>
-                "value": "sport",<br>
-                "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds"<br>
-                "requestId": "5687"<br>
-              </blockquote>
-              }<br><br>
-              Response:<br>
-              {<br>
-              <blockquote>
-                "action": "set",<br>
-                "requestId": "5687",<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote>
-              }<br>
+              Request:
+              <pre><code>
+              {
+                "action": "set",
+                "path": "Vehicle/Drivetrain/Transmission/PerformanceMode",
+                "value": "sport",
+                "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds"
+                "requestId": "5687"
+              }
+               </code></pre>
+              Response:
+              <pre><code>
+              {
+                "action": "set",
+                "requestId": "5687",
+                "ts": "2020-04-15T13:37:00Z"
+              }
+               </code></pre>
             </p>
           </section>
           </section>
+
           <section id="subscribe">
             <h2>Subscribe</h2>
-            <p>The client may send a <a href="#dfn-subscriberequest" class="internalDFN" data-link-type="dfn">subscribeRequest</a> message to request a subscription to one or more signals, thereby requesting the server to repeatedly return subscription notification messages, as specified by the "filter" query (see CORE, "Filtering" chapter). The server <em class="rfc2119" title="MAY">MAY</em> reduce the number of <a href="#dfn-subscriptionnotification" class="internalDFN" data-link-type="dfn">subcriptionNotification</a> messages sent to the client in order to reduce processing demands, particularly when the client has subscribed to continuously varying signals. If the server is able to satisfy the request it SHALL return a <a href="#dfn-subscribesuccessresponse" class="internalDFN" data-link-type="dfn">subscribeSuccessResponse</a> message. If an error occurs e.g. because the client is not authorized to set the requested value, the server SHALL return a <a href="#dfn-subscribeerrorresponse" class="internalDFN" data-link-type="dfn">subscribeErrorResponse</a> message.
+            <p>
+            The client may send a <a href="#dfn-subscriberequest" class="internalDFN" data-link-type="dfn">subscribeRequest</a> message to request a subscription to one or more signals, 
+            thereby requesting the server to repeatedly return subscription notification messages, as specified by the "filter" query (see CORE, "Filtering" chapter). 
+            The server <em class="rfc2119" title="MAY">MAY</em> reduce the number of <a href="#dfn-subscriptionnotification" class="internalDFN" data-link-type="dfn">subcriptionNotification</a> 
+            messages sent to the client in order to reduce processing demands.<br>
+            If the server is able to satisfy the request it SHALL return a <a href="#dfn-subscribesuccessresponse" class="internalDFN" data-link-type="dfn">subscribeSuccessResponse</a> message. 
+            If an error occurs e.g. because the client is not authorized to set the requested value, the server SHALL return a 
+            <a href="#dfn-subscribeerrorresponse" class="internalDFN" data-link-type="dfn">subscribeErrorResponse</a> message.<br>
+            The subscription variants are, as described in the CORE document:
+	  <ul>
+	  <li>time-based: notifications are issued at a regular time interval,</li>
+	  <li>change: notifications are issued when the value has changed as specified,</li>
+	  <li>range: notifications are issued when the value is in the specified range,</li>
+	  <li>curve-logic: notifications are issued when the buffer is full, and then processed according to the curve logic algorithm.</li>
+	  </ul>
             </p>
-<table class="simple">
- <thead>
-   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
- </thead>
- <tbody>
-   <tr>
-     <th rowspan="6"><dfn data-dfn-type="dfn" id="dfn-subscriberequest">subscribeRequest</dfn></th>
-     </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
-     <tr><td><a href="#dfn-path">path</a></td><td>string</td><td>Yes</td></tr>
-     <tr><td><a href="#dfn-filter">filter</a></td><td>string</td><td>Optional</td></tr>
-     <tr><td><a href="#dfn-authorization">authorization</a></td><td>string</td><td>Optional</td></tr>
-     <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
-   
- </tbody>
- </table>
-<br>
-<table class="simple">
-<thead>
-  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
-</thead>
-<tbody>
-  <tr>
-    <th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-subscribesuccessresponse">subscribeSuccessResponse</dfn></th>
-    </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
-  
-</tbody>
-</table>
-<br>
-<table class="simple">
-<thead>
-  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
-</thead>
-<tbody>
-  <tr>
-    <th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-subscribeerrorresponse">subscribeErrorResponse</dfn></th>
-    </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
-  
-</tbody>
-</table>
-<br>
-<table class="simple">
-<thead>
-  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
-</thead>
-<tbody>
-  <tr>
-    <th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-subscriptionnotification">subscriptionNotification</dfn></th>
-    </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-value">value</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
-  
-</tbody>
-</table>
-<br>
-<table class="simple">
-<thead>
-  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
-</thead>
-<tbody>
-  <tr>
-    <th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-subscriptionerrornotification">subscriptionErrorNotification</dfn></th>
-    </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
-  
-</tbody>
-</table>
+	<table class="simple">
+ 	<thead>
+	   <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+	 </thead>
+	 <tbody>
+	   <tr><th rowspan="6"><dfn data-dfn-type="dfn" id="dfn-subscriberequest">subscribeRequest</dfn></th></tr>
+	   <tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+	   <tr><td><a href="#dfn-path">path</a></td><td>string</td><td>Yes</td></tr>
+	   <tr><td><a href="#dfn-filter">filter</a></td><td>string</td><td>Optional</td></tr>
+	   <tr><td><a href="#dfn-authorization">authorization</a></td><td>string</td><td>Optional</td></tr>
+	   <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr> 
+	 </tbody>
+	 </table>
+	<br>
+	<table class="simple">
+	<thead>
+	  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+	</thead>
+	<tbody>
+	  <tr><th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-subscribesuccessresponse">subscribeSuccessResponse</dfn></th></tr>
+	  <tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr> 
+	</tbody>
+	</table>
+	<br>
+	<table class="simple">
+	<thead>
+	  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+	</thead>
+	<tbody>
+	  <tr><th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-subscribeerrorresponse">subscribeErrorResponse</dfn></th></tr>
+	  <tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
+	</tbody>
+	</table>
+	<br>
+	<table class="simple">
+	<thead>
+	  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+	</thead>
+	<tbody>
+	  <tr><th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-subscriptionnotification">subscriptionNotification</dfn></th></tr>
+	  <tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-value">data</a></td><td>object/array</td><td>Yes</td></tr>
+	</tbody>
+	</table>
+	<br>
+	<table class="simple">
+	<thead>
+	  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+	</thead>
+	<tbody>
+	  <tr><th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-subscriptionerrornotification">subscriptionErrorNotification</dfn></th></tr>
+	  <tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
+	</tbody>
+	</table>
             <p>
               <b>Example:</b><br>
-              Request:<br> 
-              {<br>
-              <blockquote>
-                "action": "subscribe",<br>
-                "path": "Vehicle/Drivetrain/FuelSystem/Level",<br>
-                "filter": "$intervalEQ2"<br>
-                "requestId": "6578"<br>
-              </blockquote>
-              }<br><br>
-              Successful response:<br>
-              {<br>
-              <blockquote>
-                "action": "subscribe",<br>
-                "subscriptionId": "12345",<br>
-                "requestId": "6578",<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote
-              }<br><br>
-              Error response:<br>
-              {<br>
-              <blockquote>
-                "action": "subscribe",<br>
-                "requestId": "6578",<br>
-                "error": {"number": 404, "reason": "Not found", "message": "No match for path in tree."},<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote>
-              }<br><br>
-              Notification:<br>
-              {<br>
-              <blockquote>
-                "action": "subscription",<br>
-                "subscriptionId": "12345",<br>
-                "value": "50",<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote
-              }<br><br>
-              Error notification:<br>
-              {<br>
-              <blockquote>
-                "action": "subscription",<br>
-                "subscriptionId": "12345",<br>
-                "error": {"number": 401, "reason": "token_expired", "message": "Access token has expired."},<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote
-              }<br>
+              Request:
+              <pre><code>
+              {
+                "action": "subscribe",
+                "path": "Vehicle/Drivetrain/FuelSystem/Level",
+                "filter": {"op-type":"capture", "op-value":"time-based", "op-extra":{"period":"3"}}
+                "requestId": "6578"
+              }
+               </code></pre>
+              Successful response:
+              <pre><code>
+              {
+                "action": "subscribe",
+                "subscriptionId": "12345",
+                "requestId": "6578",
+                "ts": "2020-04-15T13:37:00Z"
+              }
+               </code></pre>
+              Error response:
+              <pre><code>
+              {
+                "action": "subscribe",
+                "requestId": "6578",
+                "error": {"number": 404, "reason": "Not found", "message": "No match for path in tree."},
+                "ts": "2020-04-15T13:37:00Z"
+              }
+               </code></pre>
+              Notification:
+              <pre><code>
+              {
+                "action": "subscription",
+                "subscriptionId": "12345",
+                “data”:{“path”:”Vehicle/Drivetrain/FuelSystem/Level”, 
+                        “dp”:{“value”:”50”, “ts”:”2020-04-15T13:37:00Z”}
+                       }
+              }
+               </code></pre>
+              Error notification:
+              <pre><code>
+              {
+                "action": "subscription",
+                "subscriptionId": "12345",
+                "error": {"number": 401, "reason": "token_expired", "message": "Access token has expired."},
+                "ts": "2020-04-15T13:37:00Z"
+              }
+               </code></pre>
             </p>
-          <section id="subscribe">
+
+          <section id="authorized-subscribe">
             <h2>Authorized Subscribe</h2>
-            <p>If the operation on the VSS node that is addressed requires authorization, 
-               then the request must contain the field "authorization" with its value being a JWT token.
-               The token validation must be successful for a subscribeSuccessResponse to be returned, else a subscribeErrorResponse is returned.
+            <p>
+            If the operation on the VSS node that is addressed requires authorization, 
+            then the request must contain the field "authorization" with its value being a JWT token.
+            The token validation must be successful for a subscribeSuccessResponse to be returned, else a subscribeErrorResponse is returned.
             </p>
             <p>
               <b>Example:</b><br>
-              Request:<br> 
-              {<br>
-              <blockquote>
-                "action": "subscribe",<br>
-                "path": "Vehicle/Drivetrain/FuelSystem/Level",<br>
-                "filter": "$rangeGT5AND$rangeLT10"<br>
-                "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds"<br>
-                "requestId": "6578"<br>
-              </blockquote>
-              }<br><br>
-              Successful response:<br>
-              {<br>
-              <blockquote>
-                "action": "subscribe",<br>
-                "subscriptionId": "12345",<br>
-                "requestId": "6578",<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote
-              }<br><br>
-              Notification:<br>
-              {<br>
-              <blockquote>
-                "action": "subscription",<br>
-                "subscriptionId": "12345",<br>
-                "value": "50",<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote
-              }<br>
+              Request:
+              <pre><code>
+              {
+                "action": "subscribe",
+                "path": "Vehicle/Drivetrain/FuelSystem/Level",
+                "filter": "{"op-type":"capture", "op-value":"range", "op-extra":[{"logic-op":"gt", "boundary":"49"}, {"logic-op":"lt", "boundary":"51"}]},
+                "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds",
+                "requestId": "6578"
+              }
+               </code></pre>
+              Successful response:
+              <pre><code>
+              {
+                "action": "subscribe",
+                "subscriptionId": "12345",
+                "requestId": "6578",
+                "ts": "2020-04-15T13:37:00Z"
+              }
+               </code></pre>
+              Notification:
+              <pre><code>
+              {
+                "action": "subscription",
+                "subscriptionId": "12345",
+                “data”:{“path”:”Vehicle/Drivetrain/FuelSystem/Level”, 
+                        “dp”:{“value”:”50”, “ts”:”2020-04-15T13:37:00Z”}
+                       }
+              }
+               </code></pre>
+            </p>
+          </section>
+
+          <section id="curve-logic-subscribe">
+            <h2>Curve Logic Subscribe</h2>
+            <p>
+            Curve logic data compression by eliminating data points that are within a set error margin is activated via a subscription request. 
+            Notifications will be issued when the buffer becomes full, after insignificant data points have been eliminated.
+            </p>
+            <p>
+              <b>Example:</b><br>
+              Request:
+              <pre><code>
+              {
+                "action": "subscribe",
+                "path": "Vehicle/Drivetrain/FuelSystem/Level",
+                "filter": "{"op-type":"capture", "op-value":"curve-logic", "op-extra":{"max-err":"0.5", "buf-size":"100"}},
+                "requestId": "6578"
+              }
+               </code></pre>
+              Successful response:
+              <pre><code>
+              {
+                "action": "subscribe",
+                "subscriptionId": "12345",
+                "requestId": "6578",
+                "ts": "2020-04-15T13:37:00Z"
+              }
+               </code></pre>
+              Notification:
+              <pre><code>
+              {
+                "action": "subscription",
+                "subscriptionId": "12345",
+                “data”:{“path”:”Vehicle/Drivetrain/FuelSystem/Level”, 
+                        “dp”:[{“value”:”50”, “ts”:”2020-04-15T13:00:00Z”}, ..., {“value”:”25”, “ts”:”2020-04-15T13:37:00Z”}]
+                       }
+              }
+               </code></pre>
             </p>
           </section>
           </section>
-          <section data-dfn-for="unsubscribe">
+
+          <section id="unsubscribe">
             <h2>Unsubscribe</h2>
-            <p>To unsubscribe from a subscription, the client <em class="rfc2119" title="SHALL">SHALL</em> send an <a href="#dfn-unsubscriberequest" class="internalDFN" data-link-type="dfn">unsubscribeRequest</a> message to the server. If the server is able to satisfy the request it returns an <a href="#dfn-unsubscribesuccessresponse" class="internalDFN" data-link-type="dfn">unsubscribeSuccessResponse</a> message. If an error occurs, for example because an invalid subscriptionId is passed to the server, an <a href="#dfn-unsubscribeerrorresponse" class="internalDFN" data-link-type="dfn">unsubscribeErrorResponse</a> message is returned.
-<br>
-If the client has created more than one WebSocket instance, it <em class="rfc2119" title="MUST">MUST</em> always unsubscribe using the same WebSocket instance that was originally used to create the subscription.
+            <p>
+            To unsubscribe from a subscription, the client <em class="rfc2119" title="SHALL">SHALL</em> send an 
+            <a href="#dfn-unsubscriberequest" class="internalDFN" data-link-type="dfn">unsubscribeRequest</a> message to the server. 
+            If the server is able to satisfy the request it returns an <a href="#dfn-unsubscribesuccessresponse" class="internalDFN" data-link-type="dfn">unsubscribeSuccessResponse</a> message. 
+            If an error occurs, for example because an invalid subscriptionId is passed to the server, an 
+            <a href="#dfn-unsubscribeerrorresponse" class="internalDFN" data-link-type="dfn">unsubscribeErrorResponse</a> message is returned.
+            <br>
+            If the client has created more than one WebSocket instance, it <em class="rfc2119" title="MUST">MUST</em> always unsubscribe using the same WebSocket instance 
+            that was originally used to create the subscription.
             </p>
-<table class="simple">
-  <thead>
-    <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-unsubscriberequest">unsubscribeRequest</dfn></th>
-      </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
-      <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
-      <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
-    
-  </tbody>
-  </table>
-<br>
-<table class="simple">
-<thead>
-  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
-</thead>
-<tbody>
-  <tr>
-    <th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-unsubscribesuccessresponse">unsubscribeSuccessResponse</dfn></th>
-    </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
-  
-</tbody>
-</table>
-<br>
-<table class="simple">
-<thead>
-  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
-</thead>
-<tbody>
-  <tr>
-    <th rowspan="6"><dfn data-dfn-type="dfn" id="dfn-unsubscribeerrorresponse">unsubscribeErrorResponse</dfn></th>
-    </tr><tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
-    <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
-  
-</tbody>
-</table>
+	<table class="simple">
+	  <thead>
+	    <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+	  </thead>
+	  <tbody>
+	    <tr><th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-unsubscriberequest">unsubscribeRequest</dfn></th></tr>
+	    <tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+	    <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
+	    <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+	  </tbody>
+	  </table>
+	<br>
+	<table class="simple">
+	<thead>
+	  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+	</thead>
+	<tbody>
+	  <tr><th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-unsubscribesuccessresponse">unsubscribeSuccessResponse</dfn></th></tr>
+	  <tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
+	</tbody>
+	</table>
+	<br>
+	<table class="simple">
+	<thead>
+	  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+	</thead>
+	<tbody>
+	  <tr><th rowspan="6"><dfn data-dfn-type="dfn" id="dfn-unsubscribeerrorresponse">unsubscribeErrorResponse</dfn></th></tr>
+	  <tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
+	</tbody>
+	</table>
             <p>
               <b>Example:</b><br>
-              Request:<br> 
-              {<br>
-              <blockquote>
-                "action": "unsubscribe",<br>
-                "subscriptionId": "12345",<br>
-                "requestId": "5786"<br>
-              </blockquote>
-              }<br><br>
-              Successful response:<br>
-              {<br>
-              <blockquote>
-                "action": "unsubscribe",<br>
-                "subscriptionId": "12345",<br>
-                "requestId": "5786",<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote>
-              }<br><br>
-              Error response:<br>
-              {<br>
-              <blockquote>
-                "action": "unsubscribe",<br>
-                "requestId": "6578",<br>
-                "error": {"number": 404, "reason": "Not found", "message": "No matching subscription Id."},<br>
-                "ts": "2020-04-15T13:37:00Z"<br>
-              </blockquote>
-              }<br>
+              Request:
+              <pre><code>
+              {
+                "action": "unsubscribe",
+                "subscriptionId": "12345",
+                "requestId": "5786"
+              }
+               </code></pre>
+              Successful response:
+              <pre><code>
+              {
+                "action": "unsubscribe",
+                "subscriptionId": "12345",
+                "requestId": "5786",
+                "ts": "2020-04-15T13:37:00Z"
+              }
+               </code></pre>
+              Error response:
+              <pre><code>
+              {
+                "action": "unsubscribe",
+                "requestId": "6578",
+                "error": {"number": 404, "reason": "Not found", "message": "No matching subscription Id."},
+                "ts": "2020-04-15T13:37:00Z"
+              }
+               </code></pre>
             </p>
           </section>
         </section>
       </section>
-      <section data-dfn-for="Defs">
+
+      <section id="Defs">
         <h2>Definitions</h2>
-        <section data-dfn-for="term-def">
+
+        <section id="term-def">
           <h2>Term Definitions</h2>
-<table class="parameters">
+	<table class="parameters">
 	  <tbody><tr>
 	    <th>Attribute</th>
 	    <th>Type</th>
@@ -1002,20 +1164,20 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
 	  <tr>
 	    <td> <dfn data-dfn-type="dfn" id="dfn-path">path</dfn></td>
 	    <td>String</td>
-	    <td>The path to the desired vehicle signal(s), as defined by the
-	    <a href="https://www.w3.org/auto/wg/wiki/Vehicle_Information_Service_Specification#Data_Model">
-	    	Vehicle	Signal Specification (VSS)</a>.</td>
+	    <td>The path to a node in the VSS tree, as defined by the
+	    <a href="https://github.com/GENIVI/vehicle_signal_specification">
+	    	Vehicle Signal Specification (VSS)</a>.</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn data-dfn-type="dfn" id="dfn-requestid">requestId</dfn></td>
-      <td>String</td>
+            <td>String</td>
 	    <td> Unique id value specified by the client. Returned by the server in
 	    the response and used by the client to link the request and response
 	    messages. The value <em class="rfc2119" title="MAY">MAY</em> be an integer or a Universally Unique Identifier (UUID).</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn data-dfn-type="dfn" id="dfn-subscriptionid">subscriptionId</dfn> </td>
-      <td>String</td>
+            <td>String</td>
 	    <td>Value returned by the server to uniquely identify each subscription.
 	    The value <em class="rfc2119" title="MAY">MAY</em> be an integer or a Universally Unique Identifier (UUID).</td>
 	  </tr>
@@ -1025,16 +1187,24 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
 	    <td>A JWT formatted security token.</td>
 	  </tr>
 	  <tr>
+	    <td><dfn data-dfn-type="dfn" id="dfn-ts">data</dfn> </td>
+	    <td>object/array</td>
+	    <td>Contains a path and one or more data points.</td>
+	  </tr>
+	  <tr>
+	    <td><dfn data-dfn-type="dfn" id="dfn-ts">dp</dfn> </td>
+	    <td>object/array</td>
+	    <td>The data point contains a value and a timestamp.</td>
+	  </tr>
+	  <tr>
 	    <td><dfn data-dfn-type="dfn" id="dfn-ts">ts</dfn> </td>
 	    <td>string</td>
-	    <td>The Coordinated Universal Time (UTC) time that represents the capture of the data (see chapter Timestamps in CORE).</td>
+	    <td>The Coordinated Universal Time (UTC) time stamp that represents the capture of the value.</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn data-dfn-type="dfn" id="dfn-value">value</dfn> </td>
-	    <td> string or object </td>
-	    <td> The data value returned by the server. This could either be a string
-	    (when single value), or a complex type comprised of nested name/value pairs in JSON
-	    format(when multiple values).</td>
+	    <td>string</td>
+	    <td> The data value associated with the path.</td>
 	  </tr>
     <tr>
       <td> <dfn data-dfn-type="dfn" id="dfn-filter">filter</dfn> </td>
@@ -1051,67 +1221,92 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
 	    <td> <a href="#error-def">Error</a> </td>
 	    <td> Returns an error code, reason and message.</td>
 	  </tr>
-	</tbody></table>        </section>
+	</tbody></table>
+        </section>
+
         <section id="json-def">
           <h2>JSON Schema Definitions</h2>
-      <p>The payload that is sent over the supported transport protocols SHALL use the JSON definitions in this appendix, unless otherwise specified in the VISSv2 TRANSPORT specification.</p>
-<p>The definitions within this section describe the datatypes referenced within the JSON Schema for the VISSv2 WebSocket interfaces, and for the VISSv2 HTTP payloads.</p>
-<pre aria-busy="false" class="hljs json">{
-    <span class="hljs-attr">"definitions"</span>: {
-        <span class="hljs-attr">"action"</span>: {
-            <span class="hljs-attr">"enum"</span>: [ <span class="hljs-string">"get"</span>, <span class="hljs-string">"set"</span>, <span class="hljs-string">"subscribe"</span>, <span class="hljs-string">"subscription"</span>, <span class="hljs-string">"unsubscribe"</span>],
-            <span class="hljs-attr">"description"</span>: <span class="hljs-string">"The type of action requested by the client and/or delivered by the server"</span>,
+          <p>
+          The payload that is sent over the supported transport protocols SHALL use the JSON definitions in this appendix, unless otherwise specified in the VISSv2 TRANSPORT specification.<br>
+          The definitions within this section describe the datatypes referenced within the JSON Schema for the VISSv2 WebSocket interfaces, and for the VISSv2 HTTP payloads.
+          </p>
+              <pre><code>
+{
+    "definitions": {
+        "action": {
+            "enum": [ "get", "set", "subscribe", "subscription", "unsubscribe"],
+            "description": "The type of action requested by the client and/or delivered by the server",
         },
-        <span class="hljs-attr">"requestId"</span>: {
-            <span class="hljs-attr">"description"</span>: <span class="hljs-string">"Returned by the server in the response and used by the client to link the request and response messages."</span>,
-            <span class="hljs-attr">"type"</span>: <span class="hljs-string">"string"</span>
+        "requestId": {
+            "description": "Returned by the server in the response and used by the client to link the request and response messages.",
+            "type": "string"
         },
-        <span class="hljs-attr">"path"</span>: {
-            <span class="hljs-attr">"description"</span>: <span class="hljs-string">"The path to the desired vehicle signal(s), as defined by the metadata schema."</span>,
-            <span class="hljs-attr">"type"</span>: <span class="hljs-string">"string"</span>
+        "path": {
+            "description": "The path to the desired vehicle signal(s), as defined by the metadata schema.",
+            "type": "string"
         },
-        <span class="hljs-attr">"value"</span>: {
-            <span class="hljs-attr">"description"</span>: <span class="hljs-string">"The data value returned by the server. This could either be a basic type, or a complex type comprised of nested name/value pairs in JSON format."</span>,
-            <span class="hljs-attr">"type"</span>: <span class="hljs-string">"string"</span>
+        "ts": {
+            "description": "The Coordinated Universal Time (UTC) time that represents the capture of the data (see chapter Timestamps in CORE).",
+            "type": "string"
         },
-        <span class="hljs-attr">"ts"</span>: {
-            <span class="hljs-attr">"description"</span>: <span class="hljs-string">"The Coordinated Universal Time (UTC) time that represents the capture of the data (see chapter Timestamps in CORE)."</span>,
-            <span class="hljs-attr">"type"</span>: <span class="hljs-string">"string"</span>
+        "filter": {
+            "description": "May be specified in order to throttle the demands of subscriptions on the server. See CORE:Filtering chapter",
+            "type": "string"
         },
-        <span class="hljs-attr">"filter"</span>: {
-            <span class="hljs-attr">"description"</span>: <span class="hljs-string">"May be specified in order to throttle the demands of subscriptions on the server. See CORE:Filtering chapter"</span>,
-            <span class="hljs-attr">"type"</span>: <span class="hljs-string">"string"</span>
+        "subscriptionId":{
+            "description": "Integer handle value which is used to uniquely identify the subscription.",
+            "type": "string"
         },
-        <span class="hljs-attr">"subscriptionId"</span>:{
-            <span class="hljs-attr">"description"</span>: <span class="hljs-string">"Integer handle value which is used to uniquely identify the subscription."</span>,
-            <span class="hljs-attr">"type"</span>: <span class="hljs-string">"string"</span>
+        "metadata":{
+            "description": "Metadata describing the potentially available signal tree.",
+            "type": "object"
         },
-        <span class="hljs-attr">"metadata"</span>:{
-            <span class="hljs-attr">"description"</span>: <span class="hljs-string">"Metadata describing the potentially available signal tree."</span>,
-            <span class="hljs-attr">"type"</span>: <span class="hljs-string">"object"</span>
-        },
-        <span class="hljs-attr">"error"</span>: {
-            <span class="hljs-attr">"description"</span>: <span class="hljs-string">"Server response for error cases"</span>,
-            <span class="hljs-attr">"type"</span>: <span class="hljs-string">"object"</span>,
-            <span class="hljs-attr">"properties"</span>: {
-                <span class="hljs-attr">"number"</span>: {
-                    <span class="hljs-attr">"description"</span>: <span class="hljs-string">"HTTP Status Code Number"</span>,
-                    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"integer"</span>                   
+        "data": {
+            "description": "Data including path and one or more data point(s).",
+            "type": "object/array",
+            "properties": {
+                "path": {
+                    "description": "The path to the desired vehicle signal(s), as defined by the metadata schema.",
+                    "type": "string"
                 },
-                <span class="hljs-attr">"reason"</span>: {
-                    <span class="hljs-attr">"description"</span>: <span class="hljs-string">"Pre-defined string value that can be used to distinguish between errors that have the same code"</span>,
-                    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"string"</span>                    
+                "dp": {
+                    "description": "Data point including one or more value and time samp",
+                    "type": "object/array"                   
+                    "properties": {
+                        "value": {
+                            "description": "The value related to the associated path.",
+                            "type": "string"                    
+                        },
+                        "ts": {
+                            "description": "Timestamp associated with the value capture.",
+                            "type": "string"                    
+                        }
+                }
+            }   
+        },
+        "error": {
+            "description": "Server response for error cases",
+            "type": "object",
+            "properties": {
+                "number": {
+                    "description": "HTTP Status Code Number",
+                    "type": "integer"                   
                 },
-                <span class="hljs-attr">"message"</span>: {
-                    <span class="hljs-attr">"description"</span>: <span class="hljs-string">"Message text describing the cause in more detail"</span>,
-                    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"string"</span>                    
+                "reason": {
+                    "description": "Pre-defined string value that can be used to distinguish between errors that have the same code",
+                    "type": "string"                    
+                },
+                "message": {
+                    "description": "Message text describing the cause in more detail",
+                    "type": "string"                    
                 }
             }   
         }
     }
 }
-</pre>
+               </code></pre>
         </section>
+
         <section id="action-def">
           <h2>Action Definitions</h2>
 	<p>The Action enumeration is used to define the type of action requested by the client.
@@ -1120,22 +1315,23 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
 
 	<dl title="enum Action" class="idl">
 	  <dt><dfn data-dfn-type="dfn" id="dfn-get">get</dfn></dt>
-	  <dd>Enables the client to get one or more values once.</dd>
+	  <dd>Enables the client to read one or more values.</dd>
 	  <dt><dfn data-dfn-type="dfn" id="dfn-set">set</dfn></dt>
-	  <dd>Enables the client to set one or more values once.</dd>
+	  <dd>Enables the client to update one value.</dd>
     <dt><dfn data-dfn-type="dfn" id="dfn-subscribe">subscribe</dfn></dt>
     <dd>Enables the client to request notifications containing a JSON data structure with values for one or more
-      vehicle signals and/or data attributes. The client requests that it is notified when the signal changes on the server.</dd>
+      vehicle signal.</dd>
 	  <dt><dfn data-dfn-type="dfn" id="dfn-unsubscribe">unsubscribe</dfn></dt>
-	  <dd>Allows the client to notify the server that it should no longer receive notifications based on that subscription.</dd>
+	  <dd>Enables the client to request that it should no longer receive notifications based on that subscription.</dd>
     <dt><dfn data-dfn-type="dfn" id="dfn-subscription">subscription</dfn></dt>
     <dd>Enables the server to send notifications to the client containing a JSON data structure with values for one or more
       vehicle signals.</dd>
 	  </dl>
         </section>
+
         <section id="error-def">
           <h2>Error Definitions</h2>
-          <p>The error number SHOULD be a status code defined in RFC2616, c. f. chapter "Status codes". The error reason SHOULD be the corresponding reason-phrase from RFC2616. The error message is meant to give a more precise description of the error.
+          <p>The error number SHOULD be a status code defined in [[RFC2616]], c. f. chapter "Status codes". The error reason SHOULD be the corresponding reason-phrase from [[RFC2616]]. The error message is meant to give a more precise description of the error.
           </p>
 <table class="simple">
   <thead>
@@ -1153,34 +1349,8 @@ If the client has created more than one WebSocket instance, it <em class="rfc211
         </section>
       </section>
     </section>
-    <section id="table-of-figures">
-      <h2>Table of Figures</h2>
-      <p><!-- <a href="#xxx"></a>.  -->Diagram showing xxx.</p>
-    </section>
 
-<section id="references" class="appendix"><!--OddPage--><h2 id="a-references"><span class="secno">A. </span>References</h2><section id="normative-references"><h3 id="a-1-normative-references"><span class="secno">A.1 </span>Normative references</h3>
-<dl class="bibliography">
-<dt id="bib-RFC2119">[RFC2119]</dt>
-<dd><a href="https://tools.ietf.org/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. S. Bradner. IETF. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
-</dd>
-<dt id="bib-VSS">[VSS]</dt>
-<dd><a href="https://github.com/GENIVI/vehicle_signal_specification"><cite>Vehicle Signal Specification</cite></a>.  GENIVI Alliance. March 2017. 1.0. URL: <a href="https://github.com/GENIVI/vehicle_signal_specification">https://github.com/GENIVI/vehicle_signal_specification</a>
-</dd>
-<dt id="bib-WEBSOCKETS-API">[WEBSOCKETS-API]</dt>
-<dd><a href="https://www.w3.org/TR/websockets/"><cite>The WebSocket API</cite></a>. Ian Hickson. W3C. 20 September 2012. W3C Candidate Recommendation. URL: <a href="https://www.w3.org/TR/websockets/">https://www.w3.org/TR/websockets/</a>
-</dd>
-</dl>
-</section>
-<section id="informative-references"><h3 id="a-2-informative-references"><span class="secno">A.2 </span>Informative references</h3>
-<dl class="bibliography">
-<dt id="bib-WEBSOCKETS-PROTOCOL">[WEBSOCKETS-PROTOCOL]</dt>
-<dd><a href="https://tools.ietf.org/html/rfc6455"><cite>The WebSocket Protocol</cite></a>. I. Fette; A. Melnikov. IETF. December 2011. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6455">https://tools.ietf.org/html/rfc6455</a>
-</dd>
-<dt id="bib-HTTP-PROTOCOL">[HTTP-PROTOCOL]</dt>
-<dd><a href="https://tools.ietf.org/html/rfc2616"><cite>Hypertext Transfer Protocol -- HTTP/1.1.</cite></a>. Fielding, et al. IETF. June 1999. URL: <a href="https://tools.ietf.org/html/rfc2616">https://tools.ietf.org/html/rfc2616</a>
-</dd>
-</dl>
-</section>
+    <section id="tof" class="appendix"></section>
 
   </body>
 </html>
