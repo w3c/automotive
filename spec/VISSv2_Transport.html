@@ -349,11 +349,11 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
             <h2>Service Discovery Read</h2>
             <p>
               The service discovery request uses the URL fragment pattern as described in the CORE document to retrieve the static metadata, i. e. the metadata defined in the VSS tree.
-              The dynamic metadata, i. e. any other metadata kept by the vehicle system, is retrieved by the fragment name "dynamic-metadata".<br>
+              The dynamic metadata, i. e. any other metadata kept by the vehicle system, is retrieved by the setting the "op-value" to  "dynamic".<br>
               <b>Example:</b>
               Request:
               <pre><code>
-              GET /Vehicle/Drivetrain/FuelSystem#static-metadata   HTTP/1.1
+              GET /Vehicle/Drivetrain/FuelSystem?filter={"op-type":"metadata", "op-value":"static"}   HTTP/1.1
               Host: 127.0.0.1:1337
               Connection: keep-alive
               Accept: application/json
@@ -666,8 +666,8 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <pre><code>
               {
                 "action": "get",
-                "path": "Vehicle/Cabin/Door,
-                "filter": {"op-type":"paths", "op-value":"*/*/IsOpen"}
+                "path": "Vehicle/Cabin,
+                "filter": {"op-type":"paths", "op-value":["Door/*/*/IsOpen", "DriverPosition"]}
                 "requestId": "5688"
               }
               </code></pre>
@@ -677,7 +677,8 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
                 "action": "get",
                 “data”:[{“path”:”Vehicle/Cabin/Door/Row1/Left/IsOpen”, “dp”:{“value”:”false”, “ts”:”2020-04-15T13:37:00Z”}}, 
                         {...},… 
-                        {“path”:”Vehicle/Cabin/Door/Row4/Right/IsOpen”, “dp”:{“value”:”true”, “ts”:”2020-04-15T13:37:00Z”}}
+                        {“path”:”Vehicle/Cabin/Door/Row4/Right/IsOpen”, “dp”:{“value”:”true”, “ts”:”2020-04-15T13:37:00Z”}},
+                        {“path”:”Vehicle/Cabin/DriverPosition”, “dp”:{“value”:”1”, “ts”:”2020-04-15T07:00:00Z”}}
                        ]
                 "requestId": "5688",
               }
@@ -714,9 +715,9 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
 
           <section id="wss-service-discovery-read">
             <h2>Service Discovery Read</h2>
-            <p>A client may issue a service discovery read request to access the metadata defining the nodes in the VSS tree. 
-               A successful response will contain the metadata from all nodes of the subtree defined by the subtree root node that is addressed by the path.
-               The service discovery read request "path" MUST contain a fragment component with the reserved word "static-metadata", see CORE spec, "Filtering" chapter.
+            <p>A client may issue a service discovery read request to access dynamic metadata. 
+               A successful response will contain the requested metadata from all nodes of the subtree defined by the subtree root node that is addressed by the path.
+              The static metadata, i. e. ther metadata in the VSS tree, is retrieved by the setting the "op-value" to  "static", and the "op-extra" to relevant static metadata.<br>
             </p>
             <p>
               <b>Example:</b><br>
@@ -724,7 +725,8 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <pre><code>
               {
                 "action": "get",
-                "path": "Vehicle/Drivetrain/FuelSystem#static-metadata",
+                "path": "Vehicle/Drivetrain/FuelSystem",
+                "filter":"{"op-type":"metadata", "op-value":"dynamic", "op-extra":"availability+validate"}
                 "requestId": "5687"
               }
               </code></pre>
@@ -733,7 +735,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "get",
                 "requestId": "5687",
-                "metadata": {"FuelSystem":{"type":"branch","description":"Fuel system data.","children":{"HybridType, ... }}}
+                "metadata": {"FuelSystem":{"availability":"available","validate":"read-write","children":{"HybridType, ... }}}
                 "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>

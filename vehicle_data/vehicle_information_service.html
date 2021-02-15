@@ -3,11 +3,13 @@
   <head>
     <title>Vehicle Information Service Specification</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
+    <script src='https://www.w3.org/Tools/respec/respec-w3c'
             class='remove'></script>
     <script class="remove">
       var respecConfig = {
-          specStatus:           "ED",
+          specStatus:           "PR",
+          xref:                 "web-platform",
+	  prEnd: "2020-12-31",
           shortName:            "vehicle-information-service",
           previousMaturity: "WD",
           previousPublishDate: "2016-10-20",
@@ -33,9 +35,14 @@
             url: "mailto:powell@vin.li",
 	    companyURL: "https://www.vin.li/",
 	    w3cid: 83094
+          }, {
+            name: "Ted Guild", company: "W3C",
+            url: "mailto:ted@w3.org",
+	    companyURL: "https://www.w3.org/",
+	    w3cid: 11537
           }],
           edDraftURI:           "https://w3c.github.io/automotive/vehicle_data/vehicle_information_service.html",
-          wg:           "Automotive Working Group",
+	  group: "auto",
 	  license: "w3c-doc",
           otherLinks: [{
             key: 'Repository and Participation',
@@ -56,16 +63,16 @@
              ]
           }],
 
-          wgURI:        "https://www.w3.org/auto/wg/",
           wgPublicList: "public-automotive",
-          wgPatentURI: "https://www.w3.org/2004/01/pp-impl/76043/status",
+
 	  
           localBiblio: {
-            "VSS": {
+            VSS: {
               title: "Vehicle Signal Specification",
               href: "https://github.com/GENIVI/vehicle_signal_specification",
+              //href: "https://github.com/GENIVI/vehicle_signal_specification/tree/v1.0",
               status: "1.0",
-              "date": "March 2017",
+              date: "March 2017",
               publisher: "GENIVI Alliance",
             }
           },	      
@@ -134,7 +141,7 @@
   <body>
     <!-- Abstract -->
     <section id="abstract">
-	<p>This specification defines a WebSocket based API for a Vehicle Information Service (VIS) to enable client applications to get, set, subscribe and unsubscribe to vehicle signals and data attributes.</p>
+	<p>This specification defines a WebSocket based API for a Vehicle Information Service (VIS) to enable client applications to 'Get', 'Set', 'Subscribe' and 'Unsubscribe' to vehicle signals and data attributes.</p>
 	<p>The purpose of the specification is to promote a Server API that enables application development in a consistent manner across participating automotive manufacturers.</p>
 	  </section>
 
@@ -171,20 +178,29 @@ Working Draft of this specification</a>, the following <a href="viss-diff.html">
 
       <p>A vehicle-based software module may implement the interface and behaviours defined in this specification by creating a 
       WebSocket server instance that listens for an inbound connection request from a client in order to enable secure access to vehicle signals. 
-      In this specification this module is referred to as the <dfn>VIS Server</dfn> or just 'the server'.</p>
+      In this specification, this module is referred to as the <dfn>VIS Server</dfn> or just 'the server'.</p>
 
-      <p>This specification defines a number of methods for accessing vehicle data which are strictly agnostic to the data model. Any data model where data and signals can be specified using a string could potentially be supported. However this version of the specification specifies that the data model is the GENIVI Vehicle Signal Specification [[!VSS]]. The VSS supports both extensibility and the ability to define private branches and will be used for each of the examples within this specification.</p>
-
-      <p>The version of VSS is made clear within VSS
+      <p>This specification defines a number of methods for accessing
+      vehicle data which are strictly agnostic to the data model. Any
+      data model where data and signals can be specified using a
+      string could potentially be supported. However, this version of
+      the specification specifies that the data model is the <a
+      href="https://genivi.github.io/vehicle_signal_specification/introduction/overview/">GENIVI
+      Vehicle Signal Specification (VSS)</a>. VSS supports both
+      extensibility and the ability to define private branches and
+      will be used for each of the examples within this
+      specification.</p>
+      
+      <p>The version of [[VSS]] is made clear within VSS
       itself as of version 2.0. In the absence of VersionVSS.Major,
       VersionVSS.Minor, VersionVSS.Patch and VersionVSS.Label it
-      should be assumed VSS is version 1.0.</p>
+      should be assumed <a href="https://github.com/GENIVI/vehicle_signal_specification/tree/v1.0">VSS is version 1.0</a>.</p>
       
       <p>In addition, the 'tree' of signals that is accessible at any point in time may also vary depending on standard access control principles.
          That is, it can vary based on the identity of the user (person or organisation) requesting the data and/or the application or 
 	 device (e.g. vehicle) where the request originates.</p>
 
-      <p>To support this, the VIS Specification describes an extensible token based security mechanism that can optionally be used 
+      <p>To support this, the VIS Specification describes an extensible token-based security mechanism that can optionally be used 
 	 to pass tokens to the VIS Server,
         for example to represent the user of an application and/or the device that the client application is running on.</p>
 
@@ -323,10 +339,11 @@ function subscriptionHandler(msg){
       <section id="terminology">
 	<h2>Terminology</h2>
         <p> The acronym 'VISS' is used to refer to this document, the 'Vehicle Information Service Specification'.</p>
-        <p> The acronym 'VSS' is used to refer to the <a href="https://github.com/GENIVI/vehicle_signal_specification/">'Vehicle Signal Specification'</a> which is defined by the GENIVI Alliance.
+        <p> The acronym '[[VSS]]' is used to refer to the <a href="https://github.com/GENIVI/vehicle_signal_specification/">'Vehicle Signal Specification'</a> which is defined by the GENIVI Alliance.
         </p>
- 	<p>The term 'WebSocket' when used in this document, is as defined in the <a data-cite="!WEBSOCKETS-API">W3C WebSocket API</a>
- 	 and the <a data-cite="WEBSOCKETS-PROTOCOL">WebSocket Protocol</a>.</p>
+ 	<p>The term 'WebSocket' when used in this document, is as
+	defined in the {{WebSocket}}
+ 	 and the [[RFC6455]].</p>
       </section>
 
       <!-- Table of Figures -->
@@ -342,7 +359,7 @@ function subscriptionHandler(msg){
       bus respond to the messages.</p>
 
       <p>In the component diagram included in Figure 2, the internal vehicle CAN, MOST and LIN networks and the ECUs that communicate
-      via these networks are abstracted and for simplicity, represented by the <dfn>System</dfn> component.</p>
+      via these networks are abstracted and for simplicity, represented by the System component.</p>
 
       <p>For safety, security and commercial reasons not all clients should be able to GET, SET or SUBSCRIBE to particular vehicle
       signals and data attributes. As a consequence, access-control must be managed so clients cannot simply connect directly to ECUs
@@ -357,7 +374,11 @@ function subscriptionHandler(msg){
 	      exposing vehicle signals and data to on-board clients by implementing the interface and behaviours defined in this
 	      <dfn>Vehicle Information Service Specification (VISS)</dfn>.</p>
 
-      <p>The VIS Server exposes signals and data in a manner that is consistent with the accompanying data model. The data model is not mandated by this specification, however the recommended data model used within this specification is the <dfn>Vehicle Signal Specification (VSS)</dfn>.
+      <p>The VIS Server exposes signals and data in a manner that is
+      consistent with the accompanying data model. The data model is
+      not mandated by this specification, however the recommended data
+      model used within this specification is the <dfn>Vehicle Service
+      Specification (VSS)</dfn>.
       This defines a 'tree-like' logical taxonomy of the vehicle, (formally a Directed Acyclic Graph), where major vehicle structures
       (e.g. body, engine) are near the top of the tree and the logical assemblies and components that comprise them, are defined as
       their child nodes. Each of the child nodes in the tree is further decomposed into its logical constituents, and the process is
@@ -409,12 +430,12 @@ function subscriptionHandler(msg){
       is powered up, various systems start up, including potentially those that provide off-board connectivity and the vehicle typically
       connects either to a local WiFi network or to a Mobile Network Operator (MNO) and is dynamically assigned an IP address.</p>
 
-      <p>At this point, internet based clients and servers do not know the dynamic IP address that was assigned to a specific vehicle.
-      So normally, a vehicle has to connect to a well known endpoint, generally using a URL to connect to a V2X Server.
+      <p>At this point, internet-based clients and servers do not know the dynamic IP address that was assigned to a specific vehicle.
+      So normally, a vehicle has to connect to a well-known endpoint, generally using a URL to connect to a V2X Server.
       The vehicle and the internet server typically mutually authenticate and the vehicle 'registers' with the V2X server over
       an encrypted channel passing it a unique identifier e.g. its Vehicle Identification Number (VIN). From that point on, the V2X server
       has the IP address that is currently assigned to a vehicle with a particular VIN, and can share this information with other
-      internet based clients and servers, which are then able to send messages to the vehicle.</p>
+      internet-based clients and servers, which are then able to send messages to the vehicle.</p>
 
       <p>However, if the vehicle loses connectivity and is dynamically assigned a new IP address, it needs to re-register its new
       IP address and the new address needs to be communicated to any interested parties. For simplicity, this is not shown in the
@@ -422,9 +443,9 @@ function subscriptionHandler(msg){
       off-board server (which is shown) but also because these scenarios do not affect the interface and behaviours defined in this
       Vehicle Information Service Specification.</p>
 
-      <p>The component diagram shows four different types of internet based clients. A user may use a <dfn>Web Page</dfn> or a <dfn>
+      <p>The component diagram shows four different types of internet-based clients. A user may use a <dfn>Web Page</dfn> or a <dfn>
       Web Application</dfn> running on a phone or tablet connected to the vehicle's ethernet network to request access to vehicle 
-      signals on a particular vehicle. Alternatively these signals could be accessed using a <dfn>Native or Managed Runtime Application</dfn> or via another automated
+      signals on a particular vehicle. Alternatively, these signals could be accessed using a <dfn>Native or Managed Runtime Application</dfn> or via another automated
       <dfn>Client System</dfn> or service, for example an onboard agent communicating with a Traffic Management System in a 'Smart City'.</p>
            	      
       <h3>VIS Server State Diagram</h3>
@@ -489,7 +510,7 @@ function subscriptionHandler(msg){
         A request for a different set of vehicle signals MAY require that only the user is authorized or that only the device
         is authorized to access particular signals.</p>
 	      
-	<p>The client and the server are each individually responsible for implementing security best practice. This includes
+	<p>The client and the server are each individually responsible for implementing security best practices. This includes
 	but is not limited to securely obtaining and verifying tokens (as applicable) and the prevention of replays or spoofing
 	of tokens by malicious actors or agents.</p>
 
@@ -521,7 +542,7 @@ function subscriptionHandler(msg){
         <p>If the client or the server close the WebSocket connection and a new WebSocket instance is opened, then it is
         opened without elevated access control privileges.
 
-        <p>This service specification defines a standardized, token based approach for access control that includes specific error
+        <p>This service specification defines a standardized, token-based approach for access control that includes specific error
         responses for common user and device access control scenarios. It is important however, that the security model is extensible.
         Hence, the server MAY implement any type of token that is  consistent with this standardized approach and MAY optionally
         define additional token(s) for other Security Principal type(s). If this is the case, it is expected that the precise type of security tokens that are supported by a particular server
@@ -559,11 +580,11 @@ function subscriptionHandler(msg){
 	<p>If the client application is an HTML Application running in a web
 	runtime or is a web page running in a browser, the WebSocket
 	instance may either be instantiated natively or be created using a
-	'standards compliant' WebSocket JavaScript library.</p>
+	'standards-compliant' WebSocket JavaScript library.</p>
 	<p>A WebSocket can also be initiated from a native (e.g. C++) Application
 	or from an Application written using a 'Managed Runtime' language like
 	Java or C#. It is assumed that native and managed clients use a
-	suitable standards compliant WebSocket library to request that a
+	suitable standards-compliant WebSocket library to request that a
 	WebSocket connection is opened on the server.</p>
 
 	<p>Implementations that support additional devices or multiple VIS services
@@ -587,8 +608,10 @@ function subscriptionHandler(msg){
 	</pre>
 	<p>The client SHALL connect to the server over HTTPS and request that
 	the server opens a WebSocket. All WebSocket communications between
-	the client and server MUST be over ‘wss’. Non encrypted communication
-	is not supported, hence the server MUST refuse ‘ws’ connection requests.</p>
+	the client and server MUST be over ​<a href="https://tools.ietf.org/html/rfc6455#section-11.1.2">Secure WebSocket
+connection with URI-schema ​‘wss’</a>. Non-encrypted communication
+	is not supported, hence the server MUST refuse Insecure
+	WebSocket connections with URI-schema ‘ws’ connection requests.</p>
 	      
         <p>This specification assumes that a single WebSocket is used to enable communication between a client application
         and the server. It is not explicitly prohibited for the client to request that the server opens more than one WebSocket,
@@ -615,13 +638,13 @@ function subscriptionHandler(msg){
       <section>
       <h3>Message Structure</h3>
 
-       <p>The client MUST use the <a data-cite="!WEBSOCKETS-API">WebSocket</a> <dfn>send</dfn> method,
+       <p>The client MUST use the {{WebSocket}} <dfn>send</dfn> method,
         to pass request messages to the server. The message signature SHALL be:</p>
 
 	<pre class="highlight hljs javascript">
 		WebSocket.send(request)
 	</pre>
-	<p>The request message MUST be comprised of one the request objects defined in this section. The client SHALL
+	<p>The request message MUST be comprised of one of the request objects defined in this section. The client SHAsLL
 	receive responses from the server using the WebSocket <dfn>onmessage</dfn> method, as follows:</p>
 	<pre class="highlight hljs javascript">
 		WebSocket.onmessage = function(obj){
@@ -689,7 +712,7 @@ function subscriptionHandler(msg){
 	</table>
 
 	<p>The request and response parameters contain a limited number of attributes, defined in the table below.</p>
-  	<h4></h4><h4></h4>
+
   	<h4>Term Definitions</h4>
 	<table class="parameters">
 	  <tr>
@@ -698,7 +721,7 @@ function subscriptionHandler(msg){
 	    <th>Description</th>
 	  </tr>
 	  <tr>
-	    <td> <dfn>action</dfn></td>
+	    <td> <a>action</a></td>
 	    <td> <a href="#action">Action</a></td>
 	    <td>The type of action requested by the client or delivered by the server.</td>
 	  </tr>
@@ -730,7 +753,8 @@ function subscriptionHandler(msg){
 	  <tr>
 	    <td><dfn>timestamp</dfn> </td>
 	    <td>integer</td>
-	    <td>The Coordinated Universal Time (UTC) time that the server returned the response (expressed as number of milliseconds).</td>
+	    <td>The Coordinated Universal Time (UTC) time that the
+	    server returned the response (expressed as the number of milliseconds).</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn>value</dfn> </td>
@@ -842,7 +866,7 @@ function subscriptionHandler(msg){
 }
 </pre>
 
-	<h4 id="action">Action</h4>
+	<h4 id="action"><dfn>Action</dfn></h4>
 
 	<p>The Action enumeration is used to define the type of action requested by the client.
 	All client messages MUST contain a JSON structure that has an <a>action</a> name/value pair and the
@@ -1067,13 +1091,13 @@ function subscriptionHandler(msg){
         <p>The Vehicle Signal Server (VSS) specification allows branches to be defined as either public or private. The VIS server will 
 	satisfy a request for metadata in a public branch regardless of the access control permissions associated with the client 
 	making the request. This means that a user could see that a particular signal in a public branch is available but they may not 
-	be currently authorized to Get, Set, or Subscribe to that signal. If a branch is defined to be 'private', only suitably 
+	be currently authorized to 'Get', 'Set', or 'Subscribe' to that signal. If a branch is defined to be 'private', only suitably 
 	authorized clients will be able to retrieve metadata for that branch. This is to enable vehicle manufacturers to apply access 
 	controls to metadata for commercially sensitive signals and data.</p>
 
         <p>      
-        If a signal is requested to which the client has no access then the server will reject the request as detailed by the Get, 
-	Set, and Subscribe sections of this specification. The server shall only return metadata for branches and nodes which are 
+        If a signal is requested to which the client has no access then the server will reject the request as detailed by the 'Get', 
+	'Set', and 'Subscribe' sections of this specification. The server shall only return metadata for branches and nodes which are 
 	classified as private if the client has appropriate access permissions.</p> 
 
       <h4 data-idl id="idl-def-metadataRequest">Metadata Request</h4>
@@ -1936,7 +1960,7 @@ function subscriptionHandler(msg){
 
 	<p>The server ensures that a new unique subscriptionId value is
 	returned for each successful subscription request on a particular
-	WebSocket connection. However the server does not guarantee that
+	WebSocket connection. However, the server does not guarantee that
 	subscription handle values are unique between different WebSocket
 	instances.</p>
 
@@ -2158,7 +2182,7 @@ function subscriptionHandler(msg){
 		});
 	</pre>
         </section>
-
+	<section>
 <h2>Unsubscribe All</h2>
 <p>To unsubscribe from all subscriptions, the client SHALL send an <a>unsubscribeAllRequest</a> message to the server. This is
 comprised of a JSON structure which contains an action property set to <a>unsubscribeAll</a>. This does not require a 
@@ -2234,6 +2258,7 @@ to unsubscribe from, the VIS Server will return an <a>unsubscribeSuccessResponse
 }
 </pre>
 
+  <h6>unsubscribeAllErrorResponse</h6>
 <p>The <a>unsubscribeAllErrorResponse</a> has the following properties and schema:</p>
 <table class=simple>
   <thead>
@@ -2249,6 +2274,7 @@ to unsubscribe from, the VIS Server will return an <a>unsubscribeSuccessResponse
     </tr>
   </tbody>
 </table>
+
 <pre>
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
@@ -2290,7 +2316,7 @@ receive <- {
     "timestamp": 1489985044000
 }
 </pre>
-
+</section>
     <section>
       <h3>Server Side Filtering</h3>
       <p><a>Filters</a> may be specified to enable Server side filtering
