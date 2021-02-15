@@ -64,15 +64,15 @@
         Extending and describing multiple transport protocols becomes possible.
       </p>     
       <p>
-        The messages are exchanged between a <a>server</a> implementation holding the representation of data 
-        and a <a>client</a> using the data.
+        The messages are exchanged between a server implementation holding the representation of data 
+        and a client using the data.
       </p>
       <p>
         The VISSv2 messaging layer uses a RESTful design for all methods exchanged via the interface (<a href="#interface"></a>).
       </p>
       <p>
         The VISSv2 data structuring rules (<a href="http://genivi.github.io/vehicle_signal_specification/">VSS Rule set</a>) are the same through all transport protocols.
-        The basis for structuring data hold by a <a>server</a> is a tree.
+        The basis for structuring data hold by a server is a tree.
       </p>
     </section>
 
@@ -81,9 +81,39 @@
     <section id="terms">
       <h2>Terminology</h2>
       <p>The acronym 'VISSv2' is used to refer to this document, the VISS version 2 specification. 
-      The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance. 
-      The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.
+      The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is hosted by the GENIVI Alliance. 
+      The term 'WebSocket' when used in this document, is as defined in the <a href="https://www.w3.org/TR/websockets/">W3C WebSocket API</a> and [[RFC6455]], the WebSocket Protocol.
       </p>
+
+        <section id="definitions">
+          <h2>Definitions</h2>
+	<p></p>
+
+	<dl title="enum Defs" class="idl">
+	  <dt><b>client</b></dt>
+	  <dd>An entity that works with data managed by a server.</dd>
+	  <dt><dfn data-dfn-type="dfn" id="dfn-server">server</dfn></dt>
+	  <dd>An entity that manages and offers access to data.</dd>
+          <dt><dfn data-dfn-type="dfn" id="dfn-success-response">success response</dfn></dt>
+          <dd>The message being returned by the server to the client when no error is encountered. These are specific per request type</dd>
+	  <dt><dfn data-dfn-type="dfn" id="dfn-error-response">error response</dfn></dt>
+	  <dd>The message being returned by the server to the client when an error is encountered. These have a common format for all request types</dd>
+	  <dt><dfn data-dfn-type="dfn" id="dfn-error-notification">error notification</dfn></dt>
+	  <dd>The asynchronous message being returned by the server to the client when an error is encountered.</dd>
+	  <dt><dfn data-dfn-type="dfn" id="dfn-value">value</dfn></dt>
+	  <dd>The data that is associated with one or more VSS nodes. Regardless of its data type, a single data item is always represented as a string in message payloads.</dd>
+          <dt><dfn data-dfn-type="dfn" id="dfn-timestamp">timestamp</dfn></dt>
+          <dd>A date and time representation. See chapter <a href="#timestamp"></a>.</dd>
+	  <dt><dfn data-dfn-type="dfn" id="dfn-filter">filter</dfn></dt>
+	  <dd>Additional to help the server in the selection of data for the client.</dd>
+	  <dt><dfn data-dfn-type="dfn" id="dfn-authorization">authorization</dfn></dt>
+	  <dd>A token providing a verifiable proof that the client may be authorized access to the requested value(s).</dd>
+	  <dt><dfn data-dfn-type="dfn" id="dfn-subscription-id">subscriptionId</dfn></dt>
+	  <dd>A handle identifying a subscription session.</dd>
+	  <dt><dfn data-dfn-type="dfn" id="dfn-purpose-id">purpose</dfn></dt>
+	  <dd>A purpose is one of the short text entries from the <a href="#purpose-list"></a>.</dd>
+	</dl>
+      </section>
     </section>
 
     <section id="data-model">
@@ -109,44 +139,14 @@
         <p>The <dfn>path</dfn> consists of the slash delimited node names of the nodes traversed from the tree root to the tree leaf representing the data point. 
         E. g. the path expression from traversing the nodes Vehicle, Car, Engine, RPM would be "Vehicle/Car/Engine/RPM". The VSS data model uses a dot as delimiter, 
         the implementaion of this specification is expected to handle the necessary translation.</p>
-        <p>The <a>query</a> contains further information related to the request, see <a href="#filter-request"></a>.
+        <p>The <dfn>query</dfn> contains further information related to the request, see <a href="#filter-request"></a>.
       </section>
-
-        <section id="service-discovery">
-          <h2>Service Discovery</h2>
-          <p>The purpose of the data model is to provide a client with a description of the data that enables the client to make a request for desired vehicle data, 
-          and interpret the response. In order to obtain that description, the client MAY request that the server returns the VSS tree content, 
-          i. e. the metadata describing the accessible vehicle data. The client is able to request metadata from any point in the signal tree, 
-          such that only the metadata for the nodes within the given branch of the tree is returned. For example, 
-          only metadata for the chassis branch of the VSS tree is returned when the chassis path is specified. 
-          If the path is set to the VSS root, the response contains the metadata for the entire tree. If the server is able to satisfy the request it SHALL return a Response message. 
-          If an error occurs the server SHALL return an ErrorResponse message.<br>
-          Some parts of the VSS tree may not be accessible to the Client due to restrictions defined in the <a href="#scope-list"></a>.<br>
-          A service discovery request has the format of a read, where the path is appended with a query component, 
-          see <a href="#capture-filter-operation"></a> for the details.<br>The key data components of these messagess are defined below:</p>
-          <ul>
-            <li>Request message parameters:</li>
-            <ul>  
-              <li>Path: The address to one or more nodes in the VSS tree, followed by the query component specifying the service discovery.</li>
-            </ul>  
-            <li>Response message parameters:</li>
-            <ul>  
-              <li>Metadata: The content of the VSS tree where the root is specified by the path.</li>
-              <li>Timestamp: A timestamp associated with the request.</li>
-            </ul>  
-            <li>ErrorResponse message parameters: </li>
-            <ul>  
-              <li>Error: Information describing the error reason.</li>
-              <li>Timestamp: A timestamp associated with the failed request.</li>
-            </ul>  
-          </ul>  
-        </section>
     </section>
 
     <section id="interface">
       <h2>Interface</h2>
       <p>
-        This chapter describes the different methods and its arguments that govern the communication between a <a>client</a> and the <a>server</a>.
+        This chapter describes the different methods and its arguments that govern the communication between a client and the server.
       </p>
 
       <section id="methods">
@@ -156,7 +156,7 @@
         </p>
         <section id="read">
           <h2><dfn>Read</dfn></h2>
-          <p>Purpose: Get one or more values addressed by the given path.</p>
+          <p><a>Purpose</a>: Get one or more values addressed by the given path.</p>
           <p>The client MAY have to obtain an <a>authorization</a> token before being able to access the values.
              If the server is able to satisfy the request it MUST return a <a>success response</a>.
              If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.</p>
@@ -177,7 +177,7 @@
 
         <section id="update">
           <h2><dfn>Update</dfn></h2>
-          <p>Purpose: Provide altered value to the vehicle signal(s) addressed by the <a>path</a></p>
+          <p><a>Purpose</a>: Provide altered value to the vehicle signal(s) addressed by the <a>path</a></p>
           <p>The client MAY have to obtain an authorization token before being able to update the vehicle signal(s).  
              If the server is able to satisfy the request it MUST return a <a>success response</a>. 
              If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.</p>
@@ -197,7 +197,7 @@
 
         <section id="subscribe">
           <h2><dfn>Subscribe</dfn></h2>
-          <p>Purpose: Get asynchronous messages containing the value(s) addressed by the path. The triggering rules for issuing the notification messages are set by the filter data.</p>
+          <p><a>Purpose</a>: Get asynchronous messages containing the value(s) addressed by the path. The triggering rules for issuing the notification messages are set by the filter data.</p>
           <p>The client MAY have to obtain an authorization token before being able to subscribe to the vehicle signal(s).
              The server MUST issue a notification if a trigger rule is fulfilled.
              If the server is able to satisfy the request it MUST return a <a>success response</a>.
@@ -219,7 +219,7 @@
         </section>
         <section id="unsubscribe">
           <h2><dfn>Unsubscribe</dfn></h2>
-          <p>Purpose: Termination of the subscription period started by a previous subscribe request.</p>
+          <p><a>Purpose</a>: Termination of the subscription period started by a previous subscribe request.</p>
           <p>If the server is able to satisfy the request it MUST return a <a>success response</a>, and it MUST stop issuing notifications associated to the subscription handle.
              If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.</p>
           <p>Arguments, of which subscriptionId is mandatory: 
@@ -236,7 +236,7 @@
         </section>
         <section id="subscription">
           <h2><dfn>Subscription</dfn></h2>
-          <p>Purpose: Asynchronous client notification according to the subscribe request trigger rules.</p>
+          <p><a>Purpose</a>: Asynchronous client notification according to the subscribe request trigger rules.</p>
           <p>The server MUST issue a notification message when a triggering rule associated with the subscription is met.
              If the server cannot fulfill the triggering rules it MUST issue an error notification and terminate the subscription. 
           </p>
@@ -285,36 +285,6 @@
            The exception to this is timestamps within tokens, which MUST conform to Unix time. 
         </p>
       </section>
-
-        <section id="definitions">
-          <h2>Definitions</h2>
-	<p></p>
-
-	<dl title="enum Defs" class="idl">
-	  <dt><dfn data-dfn-type="dfn" id="dfn-client">client</dfn></dt>
-	  <dd>An entity that works with data managed by a server.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-server">server</dfn></dt>
-	  <dd>An entity that manages and offers access to data.</dd>
-          <dt><dfn data-dfn-type="dfn" id="dfn-success-response">success response</dfn></dt>
-          <dd>The message being returned by the server to the client when no error is encountered. These are specific per request type</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-error-response">error response</dfn></dt>
-	  <dd>The message being returned by the server to the client when an error is encountered. These have a common format for all request types</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-error-notification">error notification</dfn></dt>
-	  <dd>The asynchronous message being returned by the server to the client when an error is encountered.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-value">value</dfn></dt>
-	  <dd>The data that is associated with one or more VSS nodes. Regardless of its data type, a single data item is always represented as a string in message payloads.</dd>
-          <dt><dfn data-dfn-type="dfn" id="dfn-timestamp">timestamp</dfn></dt>
-          <dd>A date and time representation. See chapter <a href="#timestamp"></a>.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-filter">filter</dfn></dt>
-	  <dd>Additional to help the server in the selection of data for the client.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-query">query</dfn></dt>
-	  <dd>A filter may consist of multiple query expressions.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-authorization">authorization</dfn></dt>
-	  <dd>A token providing a verifiable proof that the client may be authorized access to the requested value(s).</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-subscription-id">subscriptionId</dfn></dt>
-	  <dd>A handle identifying a subscription session.</dd>
-	</dl>
-      </section>
     </section>
 
 	
@@ -327,11 +297,11 @@
 	  <ul>
 	  <li>for the HTTP protocol:</li>
 	  <ul>
-	  <li>GET /vsspath?filter=json-expression</li>
+	  <li>GET /&lt;vsspath&gt;?filter=&lt;json-expression&gt;</li>
 	  </ul>
 	  <li>for the Websocket protocol:</li>
 	  <ul>
-	  <li>{"action":"get", "path":"vsspath", "filter":"JSON-expression"}</li>
+	  <li>{"action":"get", "path":"&lt;vsspath&gt;", "filter":"&lt;JSON-expression&gt;"}</li>
 	  </ul>
 	  </ul>
 	  where<br>
@@ -342,23 +312,24 @@
 	  <li>json-expression contains the filter instructions.</li>
 	  </ul>
 	  </ul>
-	  The JSON expression has the following format:<br>
+	  The JSON expression has the object format as shown below. For the case of an optional second object of this type, these are enclosed in an array expression.<br>
 	  <ul>
-	  <li>[{"op-type":"x", "op-value":["y", "z",..], "op-extra":{}}, {optional-object}]</li>
+	  <li>{"op-type":"&lt;x&gt;", "op-value":"&lt;y&gt;", "op-extra":{&lt;z&gt;}}</li>
 	  </ul>
 	  where<br>
 	  <ul>
-	  <li>op-type: the key name for the filter operation type, which can have one of the values:</li>
+	  <li><b>op-type</b>: the key name for the filter operation type, which can have one of the values:</li>
 	  <ul>
 	  <li>paths: the filtering is applied to the sub tree addressed by the vsspath,</li>
 	  <li>history: the filtering is applied to the historic data that the server may have available,</li>
 	  <li>capture: the filtering is applied to the data of the response to the request.</li>
+	  <li>metadata: the response contains the VSS metadata of the addressed sub-tree.</li>
 	  </ul>
-	  <li>op-value: the key name for the filter operation, which can have one of the values:</li>
+	  <li><b>op-value</b>: the key name for the filter operation, which can have one of the values:</li>
 	  <ul>
 	  <li>paths:</li>
 	  <ul>
-	  <li>one or more relative paths.</li>
+	  <li>one or more relative paths. In the case of several paths an array expression shall be used.</li>
 	  </ul>
 	  <li>history:</li>
 	  <ul>
@@ -372,10 +343,10 @@
 	  <li>curve-logic: captured data are processed according to the curve logic algorithm before being sent to client.</li>
 	  </ul>
 	  </ul>
-	  <li>op-extra: the key name for the optional configuration data that the filter operation requires. This data varies depending on the op-type and op-value, 
-	  and is described in the following chapters.</li>
+	  <li><b>op-extra</b>: the key name for the optional configuration data that the filter operation requires. The op-extra data varies depending on the op-type and op-value, 
+	  is enclosed in one object, or optionally an array of two objects, and is described in the following chapters.</li>
 	  </ul>
-	  In the JSON object, the key-value pairs "op-type" and "op-value" are mandatory, while "op-extra" is optional.
+	  In the JSON object, the key-value pairs "op-type" and "op-value" must always be present, while the "op-extra" presence depends on the "op-type" value.
 	  The JSON expression may consist of maximum one object with op-type "paths", plus maximum one object with op-type "capture", 
 	  which are then logically combined as with an AND operator.<br>
 	  The server SHALL support all combinations up to this maximum.<br>
@@ -443,7 +414,36 @@
 		Examples can be found in the TRANSPORT specification.
                </p>
         </section>
-
+ 
+   <section id="metadata-request">
+     <h2>Metadata Filter Operation</h2>
+	<p>
+	Metadata requests are used when the client instead of the data associated to VSS node(s) wants to retrieve meta data associated to the VSS node(s).<br>
+	Two categories of metadata are defined, "static-metadata" and "dynamic-metadata". 
+	The former contains the metadata found in the VSS tree as specified on the VSS repo, while the latter contains metadata that is additional to the referred VSS specification.<br>
+	The client selects which of the categories that is requested by setting the "op-value" to either "static" or "dynamic".
+	These requests are sometimes referred to as a signal discovery request.
+	The "dynamic-metadata" may change over time, which is not the case for the "static-metadata".
+	If the "op-extra" key value pair is not used, then all metadata that the server can retrieve for the respective category is returned, 
+	while if it used then only the selected metadata as expressed in the "op-extra" is returned. 
+	If the expression contains multiple metadata types, then they are concatenated with a plus sign (+) as delimiter. <br><br>
+	For the set of static metadata key names, see the <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a>.<br><br>
+	The set of dynamic metadata keynames are found in the list below. If a corresponding value to a key name is not present, the key-value pair is omitted in the response.
+	<ul>
+	<li>sample-rate: the native capture frequency in Hz that is used by the vehicle system.</li>
+	<li>capture-filter: the capture filter operation that the vehicle system is configured for.</li>
+	<li>availability: the current availability of a signal. The possible values are ["available", "temporary-unavailable", "permanently-unavailable"]. 
+	The temporary-unavailable is returned when the signal is inaccessible due to the current vehicle state. 
+	The permanently-unavailable is returned if the subsystem represented by the signal exists in the vehice, but is broken and requires repair.</li>
+	<li>validate: the access control rule that is applied to the node and its sub-tree. 
+	The server response shall conform to the inheritance rules, see the access control selection chapter.</li>
+	</ul>
+	A metadata request can be combined with a paths filter operation to address multiple nodes, but not with a capture filter operation.<br>
+	The response is a JSON formatted object with corresponding key-value pairs per addressed node.<br>
+	Examples can be found in the TRANSPORT specification.
+	</p>
+    </section>
+ 
      <section id="multiple-signals-request">
           <h2>Multiple Signals Request</h2>
 	    <p>
@@ -498,56 +498,10 @@
      </section>
    </section>
 
-   <section id="metadata-request">
-     <h2>Metadata Request</h2>
-	<p>
-	Metadata requests are used when the client instead of the data associated to a VSS node wants to retrieve meta data associated to the VSS node.<br>
-	A request for metadata has the following structure
-	<ul>
-	<li>for the HTTP protocol:</li>
-	<ul>
-	<li>GET /vsspath#metadata-type</li>
-	</ul>
-	<li>for the Websocket protocol:</li>
-	<ul>
-	<li>{"action":"get", "path":"vsspath", "metadata":"metadata-type"}</li>
-	</ul>
-	</ul>
-	where
-	<ul>
-	<li>Get is the transport protocol method,</li>
-	<li>vsspath is the VSS path,</li>
-	<li>metadata-type describes the type of metadata that is requested, which can have one of the values:</li>
-	<ul>
-	<li>static-metadata: the entire set of metadata that is stored in the VSS tree for the addressed node(s). This is referred to as a signal discovery request.</li>
-	<li>dynamic-metadata: current status of the addressed node(s). This is metadata that the server have access to that is not described in the VSS tree, 
-	and its vlue may ary over time. </li>
-	<li>Any metadata key name in the sets of static or dynamic metadata.</li>
-	</ul>
-	</ul>
-	For the set of static metadata key names, see the <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a>.<br><br>
-	The set of dynamic metadata keynames are found in the list below. If a corresponding value to a key name is not present, the key-value pair is omitted in the response.
-	<ul>
-	<li>sample-rate: the native capture frequency in Hz that is used by the vehicle system.</li>
-	<li>capture-filter: the capture filter operation that the vehicle system is configured for.</li>
-	<li>availability: the current availability of a signal. The possible values are ["available", "temporary-unavailable", "permanently-unavailable"]. 
-	The temporary-unavailable is returned when the signal is inaccessible due to the current vehicle state. 
-	The permanently-unavailable is returned if the subsystem represented by the signal exists in the vehice, but is broken and requires repair.</li>
-	<li>validate: the access control rule that is applied to the node and its sub-tree. 
-	The server response shall conform to the inheritance rules, see the access control selection chapter.</li>
-	<li>****Any more?****</li>
-	</ul>
-	Multiple key names can be combined in the same request by concatenating them with a plus sign (+) as delimiter.<br>
-	A metadata request can be combined with a paths filter operation to address multiple nodes, but not with a capture filter operation.<br>
-	The response is a JSON formatted object with corresponding key-value pairs per addressed node.<br>
-	Examples can be found in the TRANSPORT specification.
-	</p>
-    </section>
- 
     <section id="access-control-model">
       <h2>Access Control Model</h2>
       <p>
-      Access control MUST be supported. However, in this chapter only the sections that describe the interactions between the Client and the VISSv2 server are normative.
+      Access control MUST be supported. However, in this chapter only the sections that describe the interactions between the <a href="#client-def">client</a> and the VISSv2 server are normative.
       </p>
 
       <section id="architecture">
@@ -559,11 +513,11 @@
         <b>Client</b><br>
         An application making protected and authorized resource requests on behalf of its user.<br>
         <b>Access Grant server</b><br>
-        The server issuing the Access Grant credential after successfully authenticating the Client.<br>
+        The server issuing the Access Grant credential after successfully authenticating the <a href="#client-def">client</a>.<br>
         <b>Access Token server</b><br>
-        The server issuing the Access Token to the Client after successfully validating the request and obtaining authorization.<br>
+        The server issuing the <a href="#access-token-def">access token</a> to the <a href="#client-def">client</a> after successfully validating the request and obtaining authorization.<br>
         <b>VISSv2 server</b><br>
-        The server hosting the protected resources, capable of accepting and responding to protected resource requests using Access Tokens.<br><br>
+        The server hosting the protected resources, capable of accepting and responding to protected resource requests using <a href="#access-token-def">access tokens</a>.<br><br>
         The abstract protocol flow illustrated in the figure below describes the interaction between the four actors.<br>
         <figure id="fig-oauth2.0-flow">
           <img src="images/VISSv2-abstract-flow.jpg" alt="VISSv2 abstract protocol flow.">
@@ -575,7 +529,7 @@
         <b>Ecosystem manager</b><br>
         The entity managing the access control ecosystem. It controls the Policy documents, and manages the PKI ecosystem that the other actors may utilize.<br><br>
         The abstract protocol flow is implemented by two different flows, as will be described in the following chapters.<br>
-        The process to obtain the credentials needed for Client authentication is out-of-scope, as well as the installation procedures for the applications.
+        The process to obtain the credentials needed for <a href="#client-def">client</a> authentication is out-of-scope, as well as the installation procedures for the applications.
         </p>
       </section>
 
@@ -583,12 +537,12 @@
         <h2>Protocol Flows</h2>
         <p>
         <em>This section is non-normative.</em><br>
-        Two different flows are described. Which flow to use depends on the capabilities of the Client.<br>If a Client is able to run public key cryptographic primitives, 
+        Two different flows are described. Which flow to use depends on the capabilities of the <a href="#client-def">client</a>.<br>If a <a href="#client-def">client</a> is able to run public key cryptographic primitives, 
         i.e. key pair generation and signatures, and has access to some kind of trusted execution environment where private keys are protected from the regular execution environment, 
-        then it can use the Long term flow. Clients that do not have access to these capabilities, or do not want to use them, must select the Short term flow.<br>
-        The advantage of using the Long term flow is that the Client can be trusted with longer expiry times of Access Grant tokens. 
-        In the Short term flow the Client must due to a shorter expiry time contact the Access Grant Server (AGS) more often to obtain a new Access Grant token.<br>
-        A Client selects the type of flow by either submitting a public key in the AG message, or not. The latter leading to an Short term flow.
+        then it can use the long term flow. <a href="#client-def">Clients</a> that do not have access to these capabilities, or do not want to use them, must select the short term flow.<br>
+        The advantage of using the long term flow is that the <a href="#client-def">client</a> can be trusted with longer expiry times of <a href="#access-grant-token-def">access grant tokens</a>. 
+        In the short term flow the <a href="#client-def">client</a> must due to a shorter expiry time contact the <a href="#access-grant-server-def">access grant server</a> more often to obtain a new <a href="#access-grant-token-def">access grant token</a>.<br>
+        A <a href="#client-def">client</a> selects the type of flow by either submitting a public key in the <a href="#access-grant-request-def">access grant request</a>, or not. The latter leading to an short term flow.
         </p>
       </section>
 
@@ -597,40 +551,41 @@
         <em>This section is non-normative.</em><br>
         This chapter describes the payloads of the messages used in the protocol flow.
 
-        <section id="authorization-grant-request">
+        <dfn id="access-grant-request-def"></dfn>
+        <section id="access-grant-request">
           <h2>Access Grant Request</h2>
           <p>
           The request shall contain the first three parameters below, the last is optional:
           <ul>
             <li>VIN: The vehicle identification number. This may be a pseudo-VIN, or any other identity that uniquely links to the vehicle in the access control ecosystem.</li>
-            <li>Context: The context associated to the Client. The context consists of a triplet of roles for User, App permissions, and Device characteristics.</li>
-            <li>Proof: A proof mechanism that is used by the Client to attest its context to the AG server. This is indeed a composed proof for the User role, App permissions, 
+            <li><a href="#client-context-def">Context</a>: The context associated to the <a href="#client-def">client</a>. The context consists of a triplet of roles for User, App permissions, and Device characteristics.</li>
+            <li><a href="#proof-of-possession-def">Proof</a>: A proof mechanism that is used by the <a href="#client-def">client</a> to attest its context to the <a href="#access-grant-server-def">access grant server</a>. This is indeed a composed proof for the User role, App permissions, 
             and Device characteristics.</li>
-            <li>Public key: If this parameter is present, the client will receive a Long Term Access Grant Token in return.</li>
+            <li>Public key: If this parameter is present, the client will receive a long term <a href="#access-grant-token-def">access grant token</a> in return.</li>
           </ul> 
           </p>
           <p>
-            Depending on the kind of Proofs included in the request, the client and the server may need to run an interactive protocol to verify them. 
-            The protocol may involve also third parties, such as the Ecosystem manager or the resource owner. The protocol is out of scope for this specification.
+            Depending on the kind of <a href="#proof-of-possession-def">proofs</a> included in the request, the client and the server may need to run an interactive protocol to verify them. 
+            The protocol may involve also third parties, such as the <a href="#ecosystem-manager-def">ecosystem manager</a> or the <a href="#resource-owner-def">resource owner</a>. The protocol is out of scope for this specification.
           </p>
         </section>
 
-<section id="authorization-grant-response">
+<section id="access-grant-response">
           <h2>Access Grant Response</h2>
           <p>
           The response shall contain the parameter below:
           <ul>
-            <li>AG token: A signed token with claims needed for the validation of the Client request.</li>
+            <li><a href="#access-grant-token-def">Access grant token</a>: A signed token with claims needed for the validation of the <a href="#client-def">client</a> request.</li>
           </ul> 
-          The response for a successful access grant request is a Short or Long term Access Grant token, depending on the input in the request message. 
-          The only difference between both kind of tokens is that Long term Access Grant token would include the public key used in the request.
+          The response for a successful <a href="#access-grant-request-def">access grant request</a> is a short or long term <a href="#access-grant-token-def">access grant token</a>, depending on the input in the request message. 
+          The only difference between both kind of tokens is that long term <a href="#access-grant-token-def">access grant token</a> would include the public key used in the request.
           <br>
-          The Access Grant token is a digitally signed document issued by the AG Server including all relevant information needed to issue Access Tokens.
+          The <a href="#access-grant-token-def">access grant token</a> is a digitally signed document issued by the <a href="#access-grant-server-def">access grant server</a> including all relevant information needed to issue <a href="#access-token-def">access tokens</a>.
         </p>
         <p>
           An error response shall contain the parameter:
           <ul>
-            <li>Error code: The error code shall be informative in order for the Client to understand what it needs to correct to become successful.</li>
+            <li>Error code: The error code shall be informative in order for the <a href="#client-def">client</a> to understand what it needs to correct to become successful.</li>
           </ul> 
         </p>
 
@@ -643,14 +598,14 @@
           <p>
           The request shall contain at least these two parameters below:
           <ul>
-            <li>AG token: A signed token with claims needed for the validation of the Client request.</li>
-            <li>Purpose: The Purpose shall be one of the short text entries from the <a href="#purpose-list"></a>.</li>
+            <li><a href="#access-grant-token-def">Access grant token</a>: A signed token with claims needed for the validation of the <a href="#client-def">client</a> request.</li>
+            <li><a>Purpose</a>: The intended client usage of the requested data.</li>
           </ul> 
-            Short term Access Grant tokens can be used as direct input to the Access Token server, but Long term AG tokens should be accompanied by a Proof of Possession (PoP) 
-            for the private key corresponding to the public key included in the token, see chapter <a href="#proof-of-possession"></a>.
+            Short term <a href="#access-grant-token-def">access grant token</a>s can be used as direct input to the <a href="#access-token-server-def">access token server</a>, but long term <a href="#access-grant-token-def">access grant tokens</a> should be accompanied by a <a href="#proof-of-possession-def">proof of possession</a> (PoP) 
+            for the private key corresponding to the public key included in the token.
           </p>
           <p>
-            The Access Token server acts as a Policy Enforcement Point, making decisions on whether to grant access to the protected resource based on the provided AG Token and Purpose.
+            The <a href="#access-token-server-def">access token server</a> acts as a Policy Enforcement Point, making decisions on whether to grant access to the protected resource based on the provided <a href="#access-grant-token-def">access grant token</a> and <a>purpose</a>.
           </p>
 
         </section>
@@ -660,11 +615,11 @@
           <p>
           A successful response shall contain the parameter:
           <ul>
-            <li>Access token: The Access token to be used in Client requests to the VISSv2 server for Protected Resources.</li>
+            <li><a href="#access-token-def">Access token</a>: The token to be used in <a href="#client-def">client</a> requests to the VISSv2 server for Protected Resources.</li>
           </ul> 
           An error response shall contain the parameter:
           <ul>
-            <li>Error code: The error code shall be informative in order for the Client to understand what it needs to correct to become successful.</li>
+            <li>Error code: The error code shall be informative in order for the <a href="#client-def">client</a> to understand what it needs to correct to become successful.</li>
           </ul> 
           </p>
         </section>
@@ -672,15 +627,16 @@
         <section id="protected-resource-request">
           <h2>Protected Resource Request</h2>
           <p>
-          This is the VISSv2 request including an Access token that is described in general in the <a href="#interface"></a> chapter, 
-          and for different transport protocols in the VISSv2 CORE document.
+          This is a VISSv2 request including an <a href="#access-token-def">access token</a> as described in general in the <a href="#methods"></a> chapter, 
+          and for different transport protocols in the VISSv2 TRANSPORT document.
           </p>
         </section>
 
         <section id="protected-resource-response">
           <h2>Protected Resource Response</h2>
           <p>
-          This is the VISSv2 response that is described in general in the <a href="#interface"></a> chapter, and for different transport protocols in the VISSv2 CORE document.
+          This is a VISSv2 response as described in general in the <a href="#methods"></a> chapter, and for different transport protocols in the VISSv2 TRANSPORT document.
+          It does not differ from the response to an unprotected resource request.
           </p>
         </section>
       </section>
@@ -688,11 +644,12 @@
       <section id="actors">
         <h2>Actors</h2>
 
+      <dfn id="client-def"></dfn>
       <section id="client">
         <h2>Client</h2>
         <p>
         <em>This section is non-normative.</em><br>
-          The Client is an abstract representation of three sub-actors: 
+          The client is an abstract representation of three sub-actors: 
           <ul>
             <li>The Device. It is in charge of running the Apps that make requests to the VISSv2 server</li>
             <li>The App. It runs requests on behalf of the User.</li>
@@ -702,85 +659,85 @@
         </p>
       </section>
 
+      <dfn id="access-grant-server-def"></dfn>
       <section id="access-grant-server">
         <h2>Access Grant Server</h2>
         <p>
         <em>This section is non-normative.</em><br>
-          The Access Grant server (AGS) is in charge of producing Access Grants to Clients.<br>
-          Depending on the capabilities of the Client, the specification supports two types of Access Grant Tokens: Short term and Long term AG Tokens.<br>
-          Long term Access Grant Tokens, are supported for those Clients able to run public key cryptographic primitives, i.e. key pair generation and signatures, 
-          and is the recommended choice for Clients with access to a trusted execution environment where private keys are protected from the regular execution environment. 
-          The specification also supports Short term Access Grant Tokens that require no extra capabilities in the client, 
-          but due to its shorter expiry time it forces the client to contact the AGS more often before Access Token Server (ATS) requests for an Access Token.<br>
-          The Client request shall contain the following:
+          The access arant server is in charge of producing <a href="#access-grant-token-def">access grant tokens</a> to <a href="#client-def">clients</a>.<br>
+          Depending on the capabilities of the <a href="#client-def">client</a>, the specification supports two types of <a href="#access-grant-token-def">access grant tokens</a>: Short term and long term <a href="#access-grant-token-def">access grant tokens</a>.<br>
+          Long term <a href="#access-grant-token-def">access grant tokens</a>, are supported for those <a href="#client-def">clients</a> able to run public key cryptographic primitives, i.e. key pair generation and signatures, 
+          and is the recommended choice for <a href="#client-def">clients</a> with access to a trusted execution environment where private keys are protected from the regular execution environment. 
+          The specification also supports short term <a href="#access-grant-token-def">access grant tokens</a> that require no extra capabilities in the client, 
+          but due to its shorter expiry time it forces the client to contact the access grant server more often before <a href="#access-token-server-def">access token server</a> requests for an <a href="#access-token-def">access token</a>.<br>
+          The <a href="#client-def">client</a> request shall contain the following:
           <ul>
             <li>A VIN.</li>
-            <li>A Context.</li>
-            <li>A set of Proofs.</li>
+            <li>A <a href="#client-context-def">client context</a>.</li>
+            <li>A set of <a href="#proof-of-possession-def">proofs</a>.</li>
           </ul> 
-          If the Client needs a Long term AG token, then the request shall also contain:
+          If the <a href="#client-def">client</a> needs a long term <a href="#access-grant-token-def">access grant token</a>, then the request shall also contain:
           <ul>
             <li>A public key.</li>
           </ul> 
-          The Vehicle identification number shall be for the vehicle that the Client wants to access.<br>
-          The Context contains all relevant information from the client, i.e. for each of the three sub-actors that the Client represents.<br>
-          The Proofs are to be used for verifying the Context of the Client.<br>
-          The public key shall be generated by the Client, and the associated private key must be under control of the Client.<br><br>
-        The main responsibilities of the Access Grant server are:
+          The Vehicle identification number shall be for the vehicle that the <a href="#client-def">client</a> wants to access.<br>
+          The <a href="#client-context-def">client context</a> contains all relevant information from the client, i.e. for each of the three sub-actors that the <a href="#client-def">client</a> represents.<br>
+          The <a href="#proof-of-possession-def">proofs</a> are to be used for verifying the <a href="#client-context-def">client context</a>.<br>
+          The public key shall be generated by the <a href="#client-def">client</a>, and the associated private key must be under control of the <a href="#client-def">client</a>.<br><br>
+        The main responsibilities of the access grant server are:
           <ul>
-            <li>To verify the <a href="#client-context"></a>, and assess that their respective role request can be granted.</li>
+            <li>To verify the <a href="#client-context-def"> client context</a>, and assess that their respective role request can be granted.</li>
             <li>To check that the vehicle represented by the VIN belong to this Ecosystem, and is accessible.</li>
-            <li>To create an Access Grant token.</li>
+            <li>To create an <a href="#access-grant-token-def">access grant token</a>.</li>
           </ul>
-          The proofs may include certificates from a Certificate Authority known by the AG server. For example, 
+          The <a href="#proof-of-possession-def">proofs</a> may include certificates from a Certificate Authority known by the access grant server. For example, 
           users might authenticate themselves using X.509 identity certificates and roles might be issued using attribute certificates. In those cases, as part of the authentication protocol, 
-          the AG server shall also validate the certificates signatures.<br>
-          The AG server may contact the Ecosystem manager for checking the VIN.<br>
-          The Access Grant token generation is defined in the corresponding chapter.
+          the access grant server shall also validate the certificates signatures.<br>
+          The access grant server may contact the <a href="#ecosystem-manager-def">ecosystem manager</a> for checking the VIN.<br>
+          The <a href="#access-grant-token-def">access grant token</a> generation is defined in the corresponding chapter.
         </p>
           </p>
         </section>
 
-       
+      <dfn id="access-token-server-def"></dfn>
       <section id="access-token-server">
         <h2>Access Token Server</h2>
         <p>
         <em>This section is non-normative.</em><br>
-        The Client shall after a successful interaction with the AG server request an Access token from the Access Token server. 
-        The Client request shall contain at least these two parameters below.
+        The <a href="#client-def">client</a> shall after a successful interaction with the <a href="#access-grant-server-def">access grant server</a> request an <a href="#access-token-def">access token</a> from the access token server. 
+        The <a href="#client-def">client</a> request shall contain at least these two parameters below.
           <ul>
-            <li>Access Grant token.</li>
-            <li>Purpose.</li>
+            <li><a href="#access-grant-token-def">Access grant token</a>.</li>
+            <li><a>Purpose</a>.</li>
           </ul>
-        For Long term Access Grant tokens, i.e. those including a public key, the Client must also include a PoP, for the corresponding private key, in the request.<br>
-        The Purpose must be supported by the Ecosystem manager, and thus be on the Purpose list, see the chapter <a href="#purpose-list"></a>. 
-        The Purpose list associates a set of accessible signals to the Purpose, thus realizing the principle of least privilege.<br>
-        The main responsibilities of the Access Token server are:
+        For long term <a href="#access-grant-token-def">access grant tokens</a>, i.e. those including a public key, the <a href="#client-def">client</a> must also include a <a href="#proof-of-possession-def">proof of possession</a>, for the corresponding private key, in the request.<br>
+        The <a>purpose</a> must be supported by the <a href="#ecosystem-manager-def">ecosystem manager</a>, and thus be on the <a href="#purpose-list-def">purpose list</a>. 
+        The <a href="#purpose-list-def">purpose list</a> associates a set of accessible signals to the <a>purpose</a>, thus realizing the principle of least privilege.<br>
+        The main responsibilities of the access token server are:
           <ul>
-            <li>To validate the Access Grant token.</li>
-            <li>To validate that the Client context provides permission for the requested Purpose.</li>
-            <li>To create an Access Token.</li>
+            <li>To validate the <a href="#access-grant-token-def">access grant token</a>.</li>
+            <li>To validate that the <a href="#client-context-def">client context</a> provides permission for the requested <a>purpose</a>.</li>
+            <li>To create an <a href="#access-token-def">access token</a>.</li>
           </ul>
-        The validation of the AG token consists of at least the following:
+        The validation of the <a href="#access-grant-token-def">access grant token</a> consists of at least the following:
           <ul>
             <li>Signature validation.</li>
             <li>Expiry time check.</li>
           </ul>
-        Additionally, for Long term Access Grant tokens, the Access Token server needs to verify the PoP using the public key contained in the token, 
+        Additionally, for long term <a href="#access-grant-token-def">access grant tokens</a>, the access token server needs to verify the <a href="#proof-of-possession-def">proof of possession</a> using the public key contained in the token, 
         see chapter <a href="#proof-of-possession"></a>.<br>
-        The AG token signature validation is done with the AG server public key. 
+        The <a href="#access-grant-token-def">access grant token</a> signature validation is done with the <a href="#access-grant-server-def">access grant server</a> public key. 
         <br>
         To allow for some time synchronization inaccuracy and minor network latency, expiry times should be set to include potential modest margin of error, possibly as long as tens of seconds.<br>
-        If the Client context as declared in the AG token does not match in the set of allowed roles for the requested Purpose in the Purpose list document, 
-        then the client request for an Access token must be denied.<br>
-        The Access token to be generated is defined in the chapter <a href="#access-token"></a>.
+        If the <a href="#client-context-def">client context</a> as declared in the <a href="#access-grant-token-def">access grant token</a> does not match in the set of allowed roles for the requested <a>purpose</a> in the <a href="#purpose-list-def">purpose list</a>, 
+        then the <a href="#client-def">client</a> request for an <a href="#access-token-def">access token</a> must be denied.<br>
         </p>
       </section>
 
-      <section id="VISSv2-access-control-server">
-        <h2>VISSv2 Access Control Server</h2>
+      <section id="access-control-server">
+        <h2>Access Control Server</h2>
         <p>
-        The VISSv2 server MUST support validation of Access tokens.
+        The VISSv2 server MUST support validation of <a href="#access-token-def">access tokens</a>. The functionality needed for this is decribed in this chapter.
         This includes validation of at least the following:
           <ul>
             <li>Token signature.</li>
@@ -789,16 +746,16 @@
             <li>Token access mode.</li>
           </ul>
           If any of the mentioned validations above fail, the server MUST reject the access request.<br>
-          Token signature validation may be delegated to the AT server, if a secure communication link can be established.
-          If not delegated, then a preprovisioned common secret may be shared with the AT server, or other PKI based solutions may be used.<br>
+          Token signature validation may be delegated to the <a href="#access-token-server-def">access token server</a>, if a secure communication link can be established.
+          If not delegated, then a preprovisioned common secret may be shared with the <a href="#access-token-server-def">access token server</a>, or other PKI based solutions may be used.<br>
           The VISSv2 server SHALL have access to a secure system time, that cannot be modified by actors without system acknowledged credentials. 
           Time validation may allow for a time synchronization inaccuracy in the range of tens of seconds.<br>
           A successful scope validation requires that all the nodes addressed by the path in the request MUST 
-          be matched by the paths associated with the Purpose in the scope claim of the Access token.<br>
-          Validation of the Device and App roles may involve MAC address checks, message round-trip measurements, etc.<br>
+          be matched by the paths associated with the <a>purpose</a> in the scope claim of the <a href="#access-token-def">access token</a>.<br>
+          Validation of the Device and App roles may involve MAC address checks, or message round-trip measurements.<br>
           The access mode validation MUST have the outcome shown in the table below, 
-          when comparing the type of the Client request with the access control mode in the <a href="#purpose-list"></a> that is associated to the scope claim in the Access token.
-          If the Client request contains several signals, and one fails the validation, then the entire request MUST be rejected.<br><br>
+          when comparing the type of the <a href="#client-def">client</a> request with the access control mode in the <a href="#purpose-list-def">purpose list</a> that is associated to the scope claim in the <a href="#access-token-def">access token</a>.
+          If the <a href="#client-def">client</a> request contains several signals, and one fails the validation, then the entire request MUST be rejected.<br><br>
           <table class="simple">
           <thead>
             <tr><th>Validation</th><th>Read-only</th><th>Read-write</th></tr>
@@ -814,10 +771,10 @@
           </table>
         </p>
         <p>
-          The Access Token need to be refreshed periodically, which is controlled by the expiry time. If the AG token that the Client used to obtain the now expired Access token is not expired, 
-          then the Client can revisit the AT server with this AG token to obtain a new Access token.<br>
-          If the AG token is expired, then the Client must obtain a new AG token first, before revisiting the AT server.<br>
-          For Client requests that are not granted due to access control, the VISSv2 server MUST return one of the error codes shown in the table below.<br>
+          The <a href="#access-token-def">access token</a> need to be refreshed periodically, which is controlled by the expiry time. If the <a href="#access-grant-token-def">access grant token</a> that the <a href="#client-def">client</a> used to obtain the now expired <a href="#access-token-def">access token</a> is not expired, 
+          then the <a href="#client-def">client</a> can revisit the <a href="#access-token-server-def">access token server</a> with this <a href="#access-grant-token-def">access grant token</a> to obtain a new <a href="#access-token-def">access token</a>.<br>
+          If the <a href="#access-grant-token-def">access grant token</a> is expired, then the <a href="#client-def">client</a> must obtain a new <a href="#access-grant-token-def">access grant token</a> first, before revisiting the <a href="#access-token-server-def">access token server</a>.<br>
+          For <a href="#client-def">client</a> requests that are not granted due to access control, the VISSv2 server MUST return one of the error codes shown in the table below.<br>
         <table id="errorDefs" class="parameters">
 	  <tbody><tr>
 	    <th>Error&nbsp;Number&nbsp;(Code)</th>
@@ -827,38 +784,40 @@
 	  <tr>
 	    <td>401 (Unauthorized)</td>
 	    <td>missing_token</td>
-	    <td>One or more of the requested signals are access controlled, an access token must be included in the request.</td>
+	    <td>One or more of the requested signals are access controlled, an <a href="#access-token-def">access token</a> must be included in the request.</td>
 	  </tr>
 	  <tr>
 	    <td>406 (Not Acceptable)</td>
 	    <td>invalid_token</td>
-	    <td>A fresh access token must be obtained.</td>
+	    <td>A fresh <a href="#access-token-def">access token</a> must be obtained.</td>
 	  </tr>
 	  <tr>
 	    <td>406 (Not Acceptable)</td>
 	    <td>insufficient_priviledges</td>
-	    <td>The priviledges represented by the access token are not sufficient.</td>
+	    <td>The priviledges represented by the <a href="#access-token-def">access token</a> are not sufficient.</td>
 	  </tr>
 	  </tbody>
 	</table>
         </p>
       </section>
 
+      <dfn id="resource-owner-def"></dfn>
       <section id="resource-owner">
         <h2>Resource Owner</h2>
         <p>
         <em>This section is non-normative.</em><br>
-        The Resource owner is typically the owner and/or driver of the vehicle. If Consent is required for granting access to the protected resource, 
-        then it should be directed to the Resource owner. The process for this is out of scope for this specification.
+        The resource owner is typically the owner and/or driver of the vehicle. If Consent is required for granting access to the protected resource, 
+        then it should be directed to the resource owner. The process for this is out of scope for this specification.
         </p>
       </section>
 
+      <dfn id="ecosystem-manager-def"></dfn>
       <section id="ecosystem-manager">
         <h2>Ecosystem Manager</h2>
         <p>
         <em>This section is non-normative.</em><br>
-        The Ecosystem manager is the entity responsible for the functionality of the access control system. This typically includes the management of the Access Grant server, 
-        and the Access Token server, the Policy documents, and that there is a PKI domain for the other actors to utilize. 
+        The Ecosystem manager is the entity responsible for the functionality of the access control system. This typically includes the management of the <a href="#access-grant-server-def">access grant server</a>, 
+        and the <a href="#access-token-server-def">access token server</a>, the Policy documents, and that there is a PKI domain for the other actors to utilize. 
         </p>
       </section>
       </section>
@@ -872,22 +831,23 @@
           <h2>Client Authentication</h2>
           <p>
           <em>This section is non-normative.</em><br>
-          The three Client sub-actors must provide authentication credentials to the AG server. 
-          This may be certificates that the sub-actors have obtained from a Certificate Authority that is known by the AG server. 
+          The three <a href="#client-def">client</a> sub-actors must provide authentication credentials to the <a href="#access-grant-server-def">access grant server</a>. 
+          This may be certificates that the sub-actors have obtained from a Certificate Authority that is known by the <a href="#access-grant-server-def">access grant server</a>. 
           The interactions related to this are out of scope.
           </p>
         </section>
 
-        <section id="authorization-grant-token">
+        <dfn id="access-grant-token-def"></dfn>
+        <section id="access-grant-token">
           <h2>Access Grant Token</h2>
           <p>
           <em>This section is non-normative.</em>
           </p>
 
           <section id="ags-signed-agtoken">
-            <h2>Short Term AG Token</h2>
+            <h2>Short Term Access Grant Token</h2>
             <p>
-          The Short term Access Grant token shall have the following claims in header and payload.<br>
+          The short term access grant token shall have the following claims in header and payload.<br>
 	  <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>          
 	  {
             "alg": "ES256",
@@ -904,19 +864,19 @@
 	  </pre>
 	  Algorithm (alg) shall be set to a valid RSA or ECDSA algorithms according to [[RFC7518]].<br>
 	  Type (typ) shall be set to "JWT".<br>
-	  VIN (vin) shall be set to the vehicle identity provided by the Client.<br>
+	  VIN (vin) shall be set to the vehicle identity provided by the <a href="#client-def">client</a>.<br>
           Issued at (iat) shall be set to the time of token issuance, in Unix time.<br>
           Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
-          Client context (clx) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
+          <a href="#client-context-def">Client context</a> (clx) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
           Audience (aud) shall be set to the URL "w3.org/VISSv2".<br>
-          JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the Ecosystem manager.
+          JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the <a href="#ecosystem-manager-def">ecosystem manager</a>.
             </p>
           </section>
 
           <section id="client-signed-agtoken">
-            <h2>Long Term AG Token</h2>
+            <h2>Long Term Access Grant Token</h2>
             <p>
-          The Long term Access Grant token shall have the following claims in header and payload.<br>
+          The long term access grant token shall have the following claims in header and payload.<br>
 	  <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>          
 	  {
             "alg": "ES256",
@@ -934,17 +894,18 @@
 	  </pre>
 	  Algorithm (alg) shall be set to a valid RSA or ECDSA algorithms according to [[RFC7518]].<br>
 	  Type (typ) shall be set to "JWT".<br>
-	  VIN (vin) shall be set to the vehicle identity provided by the Client.<br>
+	  VIN (vin) shall be set to the vehicle identity provided by the <a href="#client-def">client</a>.<br>
           Issued at (iat) shall be set to the time of token issuance, in Unix time.<br>
           Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
-          Client context (clx) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
-          Public key (pub) shall be set to the public key that the Client provided in the AG request, using the JSON Web Key (JWK) data structure [[RFC7517]].<br>
+          <a href="#client-context-def">Client context</a> (clx) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
+          Public key (pub) shall be set to the public key that the <a href="#client-def">client</a> provided in the <a href="#access-grant-request-def">access grant request</a>, using the JSON Web Key (JWK) data structure [[RFC7517]].<br>
           Audience (aud) shall be set to the URL "w3.org/VISSv2".<br>
-          JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the Ecosystem manager.
+          JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the <a href="#ecosystem-manager-def">ecosystem manager</a>.
             </p>
           </section>
         </section>
 
+        <dfn id="access-token-def"></dfn>
         <section id="access-token">
           <h2>Access Token</h2>
           <p>
@@ -967,21 +928,22 @@
 	  Type (typ) shall be set to "JWT".<br>
           Issued at (iat) shall be set to the time of token issuance, in Unix time.<br>
           Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
-          Scope (scp) shall be set to the Purpose short name, which logically links to the signal scope as defined in the <a href="#purpose-list"></a>.<br>
-          Client context (clx) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
+          Scope (scp) shall be set to the <a href="#purpose-list-def">purpose list</a> short name, which logically links to the signal scope as defined in the <a href="#purpose-list-def">purpose list</a>.<br>
+          <a href="#client-context-def">Client context</a> (clx) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
           Audience (aud) shall be set to the URL "w3.org/VISSv2".<br>
-          JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the Ecosystem manager.
+          JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the <a href="#ecosystem-manager-def">ecosystem manager</a>.
           </p>
         </section>
 
+        <dfn id="proof-of-possession-def"></dfn>
         <section id="proof-of-possession">
           <h2>Proof of Possession</h2>
           <em>This section is non-normative.</em><br>
 
           <p>
-            Long term Access Grant tokens need to be accompanied by a Proof of Possession (PoP) for the private key corresponding to the public key included in the Access Grant token. 
+            Long term <a href="#access-grant-token-def">access grant tokens</a> need to be accompanied by a Proof of Possession (PoP) for the private key corresponding to the public key included in the <a href="#access-grant-token-def">access grant token</a>. 
             This requirement enables a longer validity for this kind of tokens, ranging from a few days to a even a year.
-            By adding the PoP, we prevent an eavesdropper to reuse an Access Token request, impersonating the client. Without a PoP, the longer the validity of an Access Grant token, 
+            By adding the PoP, we prevent an eavesdropper to reuse an <a href="#access-token-def">access token</a> request, impersonating the client. Without a PoP, the longer the validity of an <a href="#access-grant-token-def">access grant token</a>, 
             the higher the risk an attacker could intercept and reuse it.
             PoP for JWT are defined in [[RFC7800]], but in essence, a PoP enables the requester to proof to the server that it has access to a private key, without disclosing it. 
             Traditionally that would require the server to create a random challenge, or nonce, and ask the client to sign it with its private key. Along with the public key, 
@@ -997,18 +959,19 @@
             e.g. <a href="https://www.cloudflare.com/leagueofentropy/">Leage of Entropy</a> or 
             <a href="https://csrc.nist.gov/projects/interoperable-randomness-beacons">Interoperable Randomness Beacons</a>. 
             That would provide the server a mean to check freshness of the PoP but on the other hand, 
-            it would require the client to access the public source of randomness every time it needs to create a PoP which is against the main designs goal of the Long term Access Token grant.
+            it would require the client to access the public source of randomness every time it needs to create a PoP which is against the main design goals for the long term <a href="#access-grant-token-def">access grant token</a>.
               </li>
             </ul>
           </p>
         </section>
       </section>
 
+      <dfn id="client-context-def"></dfn>
       <section id="client-context">
         <h2>Client Context</h2>
         <p>
         <em>This section is non-normative.</em><br>
-        The Client actor described in the <a href="#client"></a> chapter is characterized by three subactors:
+        The <a href="#client-def">client</a> actor is characterized by three subactors:
           <ul>
             <li>The user of the application.</li>
             <li>The application.</li>
@@ -1017,16 +980,16 @@
           Each of these subactors is in turn characterized by a role, 
           building on the concept of a <a href="https://en.wikipedia.org/wiki/Role-based_access_control">Role Based Access Control (RBAC) model</a>. 
           The set of these three roles is called the Client context.<br>
-          VISSv2 specifies a rudimentary list of roles for each subactor, it is expected that these lists are augmented by the Ecosystem manager, hopefully in a cooperative effort.<br>
+          VISSv2 specifies a rudimentary list of roles for each subactor, it is expected that these lists are augmented by the <a href="#ecosystem-manager-def">ecosystem manager</a>, hopefully in a cooperative effort.<br>
           Using an RBAC model provides the following main purposes in the VISSv2 access control model:
           <ul>
-            <li>Input to the AG server in the Client authentication process.</li>
-            <li>Input to the AT server in the Purpose validation.</li>
+            <li>Input to the <a href="#access-grant-server-def">access grant server</a> in the <a href="#client-def">client</a> authentication process.</li>
+            <li>Input to the <a href="#access-token-server-def">access token server</a> in the <a>purpose</a> validation.</li>
           </ul>
-        The AG server must in the authentication process of the client possibly separately authenticate each of the three subactors. 
-        For the AG server to decide on which authentication method to use per subactor can be quite complex, but may be somewhat eased by the Client request for roles for each subactor.<br>
-        Following the principle of least priviledge, a Client should not have access to more vehicle signals than necessary. 
-        This is achieved by the Purpose document described in the <a href="#purpose-list"></a> chapter, that assigns only the for the Purpose relevant signals to the Client. 
+        The <a href="#access-grant-server-def">access grant server</a> must in the authentication process of the client possibly separately authenticate each of the three subactors. 
+        For the <a href="#access-grant-server-def">access grant server</a> to decide on which authentication method to use per subactor can be quite complex, but may be somewhat eased by the <a href="#client-def">client</a> request for roles for each subactor.<br>
+        Following the principle of least priviledge, a <a href="#client-def">client</a> should not have access to more vehicle signals than necessary. 
+        This is achieved by the <a href="#purpose-list-def">purpose list</a>, that assigns only the for the <a>purpose</a> relevant signals to the <a href="#client-def">client</a>. 
         </p>
 
         <section id="user-roles">
@@ -1083,17 +1046,18 @@
         <h2>Policy Documents</h2>
         <p>
         <em>This section is non-normative.</em><br>
-        The Policy documents are typically owned and created by the Ecosystem manager. They need to be handled securely to protect their integrity. 
-        The Ecosystem manager shall securely provision them to the Access Token servers in the access control ecosystem.
+        The Policy documents are typically owned and created by the <a href="#ecosystem-manager-def">ecosystem manager</a>. They need to be handled securely to protect their integrity. 
+        The <a href="#ecosystem-manager-def">ecosystem manager</a> shall securely provision them to the <a href="#access-token-server-def">access token servers</a> in the access control ecosystem.
         </p>
 
+          <dfn id="purpose-list-def"></dfn>
           <section id="purpose-list">
             <h2>Purpose List</h2>
             <p>
-        A Client shall provide a Purpose as input to a request for an Access token. A list of supported purposes needs to exist for a client to select from. 
-        The Ecosystem manager shall therefore provide means for Clients to survey the list to find a Purpose that fits its use case.<br>
-        Each entry in the list contains a short description of the purpose, which is what the Client shall provide as input to its request for an Access token. 
-        There is also a long description, which may be used in the dialogue for consent, if needed. Then there is a list of the Client contexts, i. e. the sub-actor role triplet, 
+        A <a href="#client-def">client</a> shall provide a <a>purpose</a> as input to a request for an <a href="#access-token-def">access token</a>. A list of supported purposes needs to exist for a client to select from. 
+        The <a href="#ecosystem-manager-def">ecosystem manager</a> shall therefore provide means for <a href="#client-def">clients</a> to survey the list to find a <a>purpose</a> that fits its use case.<br>
+        Each entry in the list contains a short description of the purpose, which is what the <a href="#client-def">client</a> shall provide as input to its request for an <a href="#access-token-def">access token</a>. 
+        There is also a long purpose description, which may be used in the dialogue for consent, if needed. Then there is a list of the <a href="#client-context-def">client context</a>, i. e. the sub-actor role triplet, 
         that can be granted this access, and last there is a list of  the signals that the client is given access to for this purpose, 
         with the allowed access mode. The list shall use a JSON format as shown in the example below.
         <pre><code>
@@ -1108,20 +1072,20 @@
             {}] 
         }
         </code></pre>
-        The Purpose list shall be securely provisioned to the AT server. The protocol for this is out-of-scope. 
-        The AT server must reject all requests for Access tokens if it is not in possession of a Purpose list.
+        The purpose list shall be securely provisioned to the <a href="#access-token-server-def">access token server</a>. The protocol for this is out-of-scope. 
+        The <a href="#access-token-server-def">access token server</a> must reject all requests for <a href="#access-token-def">access tokens</a> if it is not in possession of a purpose list.
             </p>
           </section>
 
           <section id="scope-list">
             <h2>Scope List</h2>
             <p>
-            The Scope list contains a list of the VSS tree nodes for which access shall be prohibited, per Client context. 
-            This prohibition is regardless of whether the Client has a valid Access token or not.<br>
-            The Scope list can also be used to limit the node metadata that is returned on a Client service discovery request.<br>
-            Each entry in the list contains a list of paths to nodes that should be excluded, and a list of the Client contexts, i. e. the sub-actor role triplet, 
+            The scope list contains a list of the VSS tree nodes for which access shall be prohibited, per <a href="#client-context-def">client context</a>. 
+            This prohibition is regardless of whether the <a href="#client-def">client</a> has a valid <a href="#access-token-def">access token</a> or not.<br>
+            The scope list can also be used to limit the node metadata that is returned on a service discovery request.<br>
+            Each entry in the list contains a list of paths to nodes that should be excluded, and a list of the <a href="#client-context-def">client contexts</a>, i. e. the sub-actor role triplet, 
             for which this exclusion should be made.<br>
-            The Scope list may contain an entry for a context with all three Roles set to "Undefined". 
+            The scope list may contain an entry for a context with all three Roles set to "Undefined". 
             The no-access scope of this entry shall then be used for signal discovery requests where no token is included.<br>
             The list shall use a JSON format as shown in the example below.
         <pre><code>
@@ -1135,8 +1099,8 @@
             {}] 
         }
         </code></pre>
-        The Scope list shall be securely provisioned to the AT server. The protocol for this is out-of-scope.
-        The AT server shall not restrict the scope for any Client context if it is not in possession of a Scope list.
+        The scope list shall be securely provisioned to the <a href="#access-token-server-def">access token server</a>. The protocol for this is out-of-scope.
+        The <a href="#access-token-server-def">access token server</a> shall not restrict the scope for any <a href="#client-context-def">client context</a> if it is not in possession of a scope list.
             </p>
           </section>
       </section>
@@ -1148,10 +1112,10 @@
         This chapter describes a complementary functionality to the access control model, the ability to apply it selectively to parts of the tree. 
         It can be used in cases where not all nodes of the tree are believed to require access control, 
         or read-only is sufficient instead of read-write access control for certain nodes.<br>
-        This functionality requires that the Access token specifies whether the access granted to the Client to a signal is read-only, or read-write.
+        This functionality requires that the <a href="#access-token-def">access token</a> specifies whether the access granted to the <a href="#client-def">client</a> to a signal is read-only, or read-write.
         It also requires that the metadata for the node in the VSS tree contains data specifying whether the access control verification should be carried out only for write request, 
         or for both read and write requests.<br>
-        The former requirement is realized as described in earlier chapters by that the Access token scope claim links to a Purpose entry in the <a href="#purpose-list"></a> 
+        The former requirement is realized as described in earlier chapters by that the <a href="#access-token-def">access token</a> scope claim links to a <a>purpose</a> 
         where the signals and their respective access mode are found.<br>
         The latter requirement is realized by adding to nodes in the VSS tree the key-value pair "validate":'access-control-mode', 
         where 'access-control-mode' is either the string "write-only", or "read-write".<br>
