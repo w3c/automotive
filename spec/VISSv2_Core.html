@@ -269,12 +269,6 @@
           </section>
       </section>
 
-      <section id="security">
-        <h2>Security</h2>
-        <p>
-        </p>
-      </section>
-
       <section id="timestamp">
         <h2>Timestamps</h2>
         <p>
@@ -287,7 +281,32 @@
       </section>
     </section>
 
-	
+      <section id="security">
+        <h2>Security</h2>
+        <p>
+        </p>
+
+      <section id="transport-security">
+        <h2>Transport security</h2>
+        <p>
+        Transport protocols supported by this specification MUST make use of TLS as defined in [[RFC5246]].
+        </p>
+      </section>
+
+      <section id="data-security">
+        <h2>Data security</h2>
+        <p>
+        The <a href="#access-control-model"></a> makes it possible to apply restrictions on the data access for clients that are granted access on the transport protocol level.
+        </p>
+      </section>
+
+      <section id="privacy">
+        <h2>Privacy</h2>
+        <p>
+        </p>
+      </section>
+      </section>
+
     <section id="filter-request">
       <h2>Filter Request</h2>
 	  <p>
@@ -511,7 +530,7 @@
         The VISSv2 access control model is inspired by the concepts of OAuth2.0 [[RFC6749]], but some deviations exist as is described in the following chapters.<br><br>
         Four actors are defined:<br>
         <b>Client</b><br>
-        An application making protected and authorized resource requests on behalf of its user.<br>
+        An <a href="#application-roles-def">application </a>making protected and authorized resource requests on behalf of its <a href="#user-roles-def">user</a>.<br>
         <b>Access Grant server</b><br>
         The server issuing the Access Grant credential after successfully authenticating the <a href="#client-def">client</a>.<br>
         <b>Access Token server</b><br>
@@ -529,7 +548,7 @@
         <b>Ecosystem manager</b><br>
         The entity managing the access control ecosystem. It controls the Policy documents, and manages the PKI ecosystem that the other actors may utilize.<br><br>
         The abstract protocol flow is implemented by two different flows, as will be described in the following chapters.<br>
-        The process to obtain the credentials needed for <a href="#client-def">client</a> authentication is out-of-scope, as well as the installation procedures for the applications.
+        The process to obtain the credentials needed for <a href="#client-def">client</a> authentication is out-of-scope, as well as the installation procedures for the <a href="#application-roles-def">applications</a>.
         </p>
       </section>
 
@@ -558,9 +577,9 @@
           The request shall contain the first three parameters below, the last is optional:
           <ul>
             <li>VIN: The vehicle identification number. This may be a pseudo-VIN, or any other identity that uniquely links to the vehicle in the access control ecosystem.</li>
-            <li><a href="#client-context-def">Context</a>: The context associated to the <a href="#client-def">client</a>. The context consists of a triplet of roles for User, App permissions, and Device characteristics.</li>
-            <li><a href="#proof-of-possession-def">Proof</a>: A proof mechanism that is used by the <a href="#client-def">client</a> to attest its context to the <a href="#access-grant-server-def">access grant server</a>. This is indeed a composed proof for the User role, App permissions, 
-            and Device characteristics.</li>
+            <li><a href="#client-context-def">Context</a>: The context associated to the <a href="#client-def">client</a>. The context consists of a triplet of roles for <a href="#user-roles-def">user</a>, <a href="#application-roles-def">app </a>permissions, and <a href="#device-roles-def">device</a> characteristics.</li>
+            <li><a href="#proof-of-possession-def">Proof</a>: A proof mechanism that is used by the <a href="#client-def">client</a> to attest its context to the <a href="#access-grant-server-def">access grant server</a>. This is indeed a composed proof for the User role, <a href="#application-roles-def">app </a>permissions, 
+            and <a href="#device-roles-def">device</a> characteristics.</li>
             <li>Public key: If this parameter is present, the client will receive a long term <a href="#access-grant-token-def">access grant token</a> in return.</li>
           </ul> 
           </p>
@@ -651,11 +670,11 @@
         <em>This section is non-normative.</em><br>
           The client is an abstract representation of three sub-actors: 
           <ul>
-            <li>The Device. It is in charge of running the Apps that make requests to the VISSv2 server</li>
-            <li>The App. It runs requests on behalf of the User.</li>
-            <li>The User. It delegates access rights to the App.</li>
+            <li>The <a href="#device-roles-def">device</a>. It is in charge of running the Apps that make requests to the VISSv2 server</li>
+            <li>The <a href="#application-roles-def">app. </a>It runs requests on behalf of the user.</li>
+            <li>The <a href="#user-roles-def">user</a>. It delegates access rights to the app.</li>
           </ul> 
-          All the information regarding the client is encoded in the Context of the request.
+          All the information regarding the client is encoded in the <a href="client-context-def">context</a> of the request.
         </p>
       </section>
 
@@ -724,8 +743,7 @@
             <li>Signature validation.</li>
             <li>Expiry time check.</li>
           </ul>
-        Additionally, for long term <a href="#access-grant-token-def">access grant tokens</a>, the access token server needs to verify the <a href="#proof-of-possession-def">proof of possession</a> using the public key contained in the token, 
-        see chapter <a href="#proof-of-possession"></a>.<br>
+        Additionally, for long term <a href="#access-grant-token-def">access grant tokens</a>, the access token server needs to verify the <a href="#proof-of-possession-def">proof of possession</a> using the public key contained in the token.<br>
         The <a href="#access-grant-token-def">access grant token</a> signature validation is done with the <a href="#access-grant-server-def">access grant server</a> public key. 
         <br>
         To allow for some time synchronization inaccuracy and minor network latency, expiry times should be set to include potential modest margin of error, possibly as long as tens of seconds.<br>
@@ -752,7 +770,7 @@
           Time validation may allow for a time synchronization inaccuracy in the range of tens of seconds.<br>
           A successful scope validation requires that all the nodes addressed by the path in the request MUST 
           be matched by the paths associated with the <a>purpose</a> in the scope claim of the <a href="#access-token-def">access token</a>.<br>
-          Validation of the Device and App roles may involve MAC address checks, or message round-trip measurements.<br>
+          Validation of the <a href="#device-roles-def">device</a> and <a href="#application-roles-def">app </a>roles may involve MAC address checks, or message round-trip measurements.<br>
           The access mode validation MUST have the outcome shown in the table below, 
           when comparing the type of the <a href="#client-def">client</a> request with the access control mode in the <a href="#purpose-list-def">purpose list</a> that is associated to the scope claim in the <a href="#access-token-def">access token</a>.
           If the <a href="#client-def">client</a> request contains several signals, and one fails the validation, then the entire request MUST be rejected.<br><br>
@@ -973,9 +991,9 @@
         <em>This section is non-normative.</em><br>
         The <a href="#client-def">client</a> actor is characterized by three subactors:
           <ul>
-            <li>The user of the application.</li>
-            <li>The application.</li>
-            <li>The device.</li>
+            <li>The <a href="#user-roles-def">user</a> of the application.</li>
+            <li>The <a href="#application-roles-def">application</a>.</li>
+            <li>The <a href="#device-roles-def">device</a>.</li>
           </ul>
           Each of these subactors is in turn characterized by a role, 
           building on the concept of a <a href="https://en.wikipedia.org/wiki/Role-based_access_control">Role Based Access Control (RBAC) model</a>. 
@@ -992,6 +1010,7 @@
         This is achieved by the <a href="#purpose-list-def">purpose list</a>, that assigns only the for the <a>purpose</a> relevant signals to the <a href="#client-def">client</a>. 
         </p>
 
+        <dfn id="user-roles-def"></dfn>
         <section id="user-roles">
           <h2>User Roles</h2>
           <p>
@@ -1013,6 +1032,7 @@
           </p>
         </section>
 
+        <dfn id="application-roles-def"></dfn>
         <section id="application-roles">
           <h2>Application Roles</h2>
           <p>
@@ -1026,6 +1046,7 @@
           </p>
         </section>
 
+        <dfn id="device-roles-def"></dfn>
         <section id="device-roles">
           <h2>Device Roles</h2>
           <p>
@@ -1035,9 +1056,9 @@
             <li>Nomadic</li>
             <li>Cloud</li>
           </ul>
-          A Vehicle role is used for applications that are deployed in-vehicle, in e. g. the center stack ECU.<br>
-          A Nomadic role is used for applications that are deployed in a User's mobile phone, laptop, etc, that uses short range radio communication like Bluetooth, or WiFi.<br>
-          A Cloud role is used for applications that are deployed in off-vehicle devices, and uses a long range radio communication like cellular in the connection to the vehicle.<br>
+          A Vehicle role is used for <a href="#application-roles-def">applications</a> that are deployed in-vehicle, in e. g. the center stack ECU.<br>
+          A Nomadic role is used for <a href="#application-roles-def">applications</a> that are deployed in a user's mobile phone, laptop, etc, that uses short range radio communication like Bluetooth, or WiFi.<br>
+          A Cloud role is used for <a href="#application-roles-def">applications</a> that are deployed in off-vehicle devices, and uses a long range radio communication like cellular in the connection to the vehicle.<br>
           </p>
         </section>
       </section>
