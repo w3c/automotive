@@ -136,9 +136,12 @@
         <p>The <dfn>scheme</dfn> describes the protocol to use to reach the addressed element.</p>
         <p>The <dfn>authority</dfn> describes where to reach the server holding and managing the data representation.
           Scheme and authority are defined within the protocol adaptation.</p>
-        <p>The <dfn>path</dfn> consists of the slash delimited node names of the nodes traversed from the tree root to the tree leaf representing the data point. 
-        E. g. the path expression from traversing the nodes Vehicle, Car, Engine, RPM would be "Vehicle/Car/Engine/RPM". The VSS data model uses a dot as delimiter, 
-        the implementaion of this specification is expected to handle the necessary translation.</p>
+        <p>The <dfn>path</dfn> consists a sequence of VSS node names separated by a delimiter. VSS specifies the dot (.) as delimiter, 
+        so that is the recommended choice also in this specification. 
+        However, in HTTP URLs the conventional delimiter is slash (/), therefore this delimiter is also supported. 
+        To exemplify this, the path expression from traversing the nodes Vehicle, Car, Engine, RPM can  be "Vehicle.Car.Engine.RPM", 
+        or "Vehicle/Car/Engine/RPM". A mix of delimiters in the same path expression SHOULD be avoided. 
+        .</p>
         <p>The <dfn>query</dfn> contains further information related to the request, see <a href="#filter-request"></a>.
       </section>
     </section>
