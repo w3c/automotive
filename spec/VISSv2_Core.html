@@ -362,7 +362,7 @@
 	  <li>time-based: data captures are done with a fixed period time,</li>
 	  <li>range: data captures are done when values are in the given range,</li>
 	  <li>change: data capture is done when the value since last capture has changed more than a fixed value,</li>
-	  <li>curve-logic: captured data are processed according to the curve logic algorithm before being sent to client.</li>
+	  <li>curve-logic: captured data are processed according to the curve logging algorithm before being sent to client.</li>
 	  </ul>
 	  </ul>
 	  <li><b>op-extra</b>: the key name for the optional configuration data that the filter operation requires. The op-extra data varies depending on the op-type and op-value, 
@@ -429,7 +429,7 @@
 		<li>curve-logic: the op-extra contains the maximum error limit, and the buffer size, {"max-err": "X", "buf-size":"Y"}, 
 		where X is a float value setting the max allowed error between any data sample and the simplified curve, 
 		and Y is the number of buffer elements. Data is processed when the buffer becomes full, and the essential data points are returned as a time series per signal. 
-		For more information on curve logic, please see "link-to-curve-logic-home".</li>
+		For more information on curve logging, please see <a href="https://github.com/Geotab/curve">Curve logging library</a>.</li>
 		</ul>
 		(**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
 		where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than", "lte" is "less than or equal".<br>
