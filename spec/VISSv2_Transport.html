@@ -27,7 +27,29 @@
   </head>
   <body>
     <section id='abstract'>
-      <p>This document, the VISS version 2 TRANSPORT specification, describes the VISSv2 transport protocols, and the mapping of the message layer on these transports. The companion specification VISSv2 CORE describes the messaging layer.</p>
+      <p>The Vehicle Information Service Specification (VISS) is a
+      service for accessing vehicle information, signals from sensors
+      on control units within a vehicle's network. It exposes this
+      information using a hierarchical tree like taxonomy defined in
+      GENIVI Vehicle Signals Specification (VSS). The service provides
+      this information in JSON format. The service may reside in the
+      vehicle for applications needing to analyse a high volume of
+      realtime data or on servers in the internet with information
+      already brought off the vehicle.</p>
+
+      <p>This specification describes a second version of VISS which
+      has been implemented and deployed on production vehicles. It
+      adds major new capabilities and improvements to the earlier
+      version. The first version of VISS only supported WebSocket as a
+      transport protocol, the second version is generalized to work
+      across different protocols as some are better suited for
+      different use cases. HTTP is now supported with additional
+      protocols used within the automotive industry being evaluated
+      for inclusion. Subscription capabilities have been improved and
+      access control has been added.</p>
+      
+      <p>
+        There are two parts to this specification, Core and Transport. This document, the VISS version 2 TRANSPORT specification, describes the VISSv2 transport protocols, and the mapping of the message layer on these transports. The companion specification VISSv2 CORE describes the messaging layer.</p>
     </section>
     <section id='sotd'>
       <p>
