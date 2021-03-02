@@ -46,8 +46,29 @@
   </head>
   <body>
     <section id='abstract'>
+      <p>The Vehicle Information Service Specification (VISS) is a
+      service for accessing vehicle information, signals from sensors
+      on control units within a vehicle's network. It exposes this
+      information using a hierarchical tree like taxonomy defined in
+      GENIVI Vehicle Signals Specification (VSS). The service provides
+      this information in JSON format. The service may reside in the
+      vehicle for applications needing to analyse a high volume of
+      realtime data or on servers in the internet with information
+      already brought off the vehicle.</p>
+
+      <p>This specification describes a second version of VISS which
+      has been implemented and deployed on production vehicles. It
+      adds major new capabilities and improvements to the earlier
+      version. The first version of VISS only supported WebSocket as a
+      transport protocol, the second version is generalized to work
+      across different protocols as some are better suited for
+      different use cases. HTTP is now supported with additional
+      protocols used within the automotive industry being evaluated
+      for inclusion. Subscription capabilities have been improved and
+      access control has been added.</p>
+      
       <p>
-        This document, the VISS version 2 CORE specification, describes the VISSv2 messaging layer. 
+        There are two parts to this specification, Core and Transport. This document, the VISS version 2 CORE specification, describes the VISSv2 messaging layer. 
         The companion specifications for the VISSv2 transport protocols detail the mapping of the messaging layer to selected transports.
         The ontologies based on the VISSv2 core specification are defined in documents for each specific domain
         (e.g. navigation, media, vehicle data). 
@@ -58,7 +79,7 @@
     <section id="introduction">
       <h2>Introduction</h2>
       <p>
-        This document describes the messaging API for VISSv2 protocol. 
+        This document describes the messaging API for VISS protocol. 
         This includes the messaging layer and set of rules for structuring data.
         The separation between payload encoding (transport) and messaging API (core) improves adaptability. 
         Extending and describing multiple transport protocols becomes possible.
