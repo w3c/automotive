@@ -157,9 +157,12 @@
         <p>The <dfn>scheme</dfn> describes the protocol to use to reach the addressed element.</p>
         <p>The <dfn>authority</dfn> describes where to reach the server holding and managing the data representation.
           Scheme and authority are defined within the protocol adaptation.</p>
-        <p>The <dfn>path</dfn> consists of the slash delimited node names of the nodes traversed from the tree root to the tree leaf representing the data point. 
-        E. g. the path expression from traversing the nodes Vehicle, Car, Engine, RPM would be "Vehicle/Car/Engine/RPM". The VSS data model uses a dot as delimiter, 
-        the implementaion of this specification is expected to handle the necessary translation.</p>
+        <p>The <dfn>path</dfn> consists a sequence of VSS node names separated by a delimiter. VSS specifies the dot (.) as delimiter, 
+        so that is the recommended choice also in this specification. 
+        However, in HTTP URLs the conventional delimiter is slash (/), therefore this delimiter is also supported. 
+        To exemplify this, the path expression from traversing the nodes Vehicle, Car, Engine, RPM can  be "Vehicle.Car.Engine.RPM", 
+        or "Vehicle/Car/Engine/RPM". A mix of delimiters in the same path expression SHOULD be avoided. 
+        .</p>
         <p>The <dfn>query</dfn> contains further information related to the request, see <a href="#filter-request"></a>.
       </section>
     </section>
@@ -380,7 +383,7 @@
 	  <li>time-based: data captures are done with a fixed period time,</li>
 	  <li>range: data captures are done when values are in the given range,</li>
 	  <li>change: data capture is done when the value since last capture has changed more than a fixed value,</li>
-	  <li>curve-logic: captured data are processed according to the curve logic algorithm before being sent to client.</li>
+	  <li>curve-loggging: captured data are processed according to the curve logging algorithm before being sent to client.</li>
 	  </ul>
 	  </ul>
 	  <li><b>op-extra</b>: the key name for the optional configuration data that the filter operation requires. The op-extra data varies depending on the op-type and op-value, 
@@ -390,7 +393,7 @@
 	  The JSON expression may consist of maximum one object with op-type "paths", plus maximum one object with op-type "capture", 
 	  which are then logically combined as with an AND operator.<br>
 	  The server SHALL support all combinations up to this maximum.<br>
-	  The capture types (time-based, range, change, curve-logic) are only applicable for subscription requests. 
+	  The capture types (time-based, range, change, curve-logging) are only applicable for subscription requests. 
 	  Subscription requests are only supported by the websocket transport protocol.<br>
 	  The restriction on how many objects that can be combined is also set by the URL size restriction on 1k characters (*).<br>
 	  (*) 1k is the "conservative limit, which should always be supported, a more liberal limit is 2k, which is supported in most cases.
@@ -444,10 +447,10 @@
 		The op-extra may be an array of two of these objects, combined through a logical AND to support expressions of a bounded range.</li>
 		<li>change: the op-extra contains the the logical operator for comparison of previous and current values, {"logic-op":"X", "diff":"Y"}, 
 		where X is one of the supported logical operators (**), and Y is the value of the required change.</li>
-		<li>curve-logic: the op-extra contains the maximum error limit, and the buffer size, {"max-err": "X", "buf-size":"Y"}, 
+		<li>curve-logging: the op-extra contains the maximum error limit, and the buffer size, {"max-err": "X", "buf-size":"Y"}, 
 		where X is a float value setting the max allowed error between any data sample and the simplified curve, 
 		and Y is the number of buffer elements. Data is processed when the buffer becomes full, and the essential data points are returned as a time series per signal. 
-		For more information on curve logic, please see "link-to-curve-logic-home".</li>
+		For more information on curve logging, please see <a href="https://github.com/Geotab/curve">Curve logging library</a>.</li>
 		</ul>
 		(**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
 		where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than", "lte" is "less than or equal".<br>

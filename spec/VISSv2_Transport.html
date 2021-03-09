@@ -888,7 +888,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
 	  <li>time-based: notifications are issued at a regular time interval,</li>
 	  <li>change: notifications are issued when the value has changed as specified,</li>
 	  <li>range: notifications are issued when the value is in the specified range,</li>
-	  <li>curve-logic: notifications are issued when the buffer is full, and then processed according to the curve logic algorithm.</li>
+	  <li>curve-logging: notifications are issued when the buffer is full, and then processed according to the curve logging algorithm.</li>
 	  </ul>
             </p>
 	<table class="simple">
@@ -1046,10 +1046,10 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
             </p>
           </section>
 
-          <section id="curve-logic-subscribe">
-            <h2>Curve Logic Subscribe</h2>
+          <section id="curve-logging-subscribe">
+            <h2>Curve Logging Subscribe</h2>
             <p>
-            Curve logic data compression by eliminating data points that are within a set error margin is activated via a subscription request. 
+            Curve logging data compression by eliminating data points that are within a set error margin is activated via a subscription request. 
             Notifications will be issued when the buffer becomes full, after insignificant data points have been eliminated.
             </p>
             <p>
@@ -1059,7 +1059,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "subscribe",
                 "path": "Vehicle/Drivetrain/FuelSystem/Level",
-                "filter": "{"op-type":"capture", "op-value":"curve-logic", "op-extra":{"max-err":"0.5", "buf-size":"100"}},
+                "filter": "{"op-type":"capture", "op-value":"curve-logging", "op-extra":{"max-err":"0.5", "buf-size":"100"}},
                 "requestId": "6578"
               }
                </code></pre>
