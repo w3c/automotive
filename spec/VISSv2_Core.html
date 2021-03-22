@@ -140,8 +140,10 @@
         so that is the recommended choice also in this specification. 
         However, in HTTP URLs the conventional delimiter is slash (/), therefore this delimiter is also supported. 
         To exemplify this, the path expression from traversing the nodes Vehicle, Car, Engine, RPM can  be "Vehicle.Car.Engine.RPM", 
-        or "Vehicle/Car/Engine/RPM". A mix of delimiters in the same path expression SHOULD be avoided. 
-        .</p>
+        or "Vehicle/Car/Engine/RPM". A mix of delimiters in the same path expression SHOULD be avoided.<br>
+        The path may contain the wildcard character (*) as a representative for one path segment. 
+        It MUST not be combined with other characters to express the path segment, such as "Vehicle.C*". Multiple wildcards may be used in the same path, such as "Vehicle.Cabin.Door.*.*.IsOpen".
+        </p>
         <p>The <dfn>query</dfn> contains further information related to the request, see <a href="#filter-request"></a>.
       </section>
     </section>
