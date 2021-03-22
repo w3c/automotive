@@ -326,8 +326,33 @@
 
       <section id="privacy">
         <h2>Privacy</h2>
-        <p>
+	<p>In addition to some privacy provisions within the
+	specification itself, the W3C Automotive Working Group has
+	created an accompanying <a href="@@@">In-Vehicle Application Best Practices</a>
+	document to provide further considerations for handling of
+	information. These Best Practices go beyond the narrow scope
+	of this specification and addresses several of the concerns
+	for the broader telematics ecosystems it is a part of. These
+	practices include reducing ability to fingerprint an
+	individual or vehicle from its data, providing data use
+	consent, revokation, integrity and use audit accountability. </p>
+
+        <p>This specification, unlike its predecessor, has granular
+	access control capabilities to limit what information an
+	application may access. All information sent from a VISS
+	service to client application must be encrypted. 
         </p>
+
+	<p>For an application to be installed and permitted to run on a vehicle it should
+	have consent from whoever is deemed authoritative for a given
+	jurisdiction and ownership situation. That consent should be
+	revocable. Consent and revoking it are outside the scope of
+	this specification, we expect that to be handled out of band
+	and in some cases by regulations and contractual commitments. Future version of this specification however may provide
+	mechanism for enabling and suspending application
+	authorization to access information.</p>
+	<p>Service providers must ensure they comply with applicable
+	privacy laws for the jurisdiction[s] the vehicle operates within.</p>
       </section>
       </section>
 
