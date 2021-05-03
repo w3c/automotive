@@ -408,7 +408,7 @@
 		The period goes from current time, excluding the current value, and backwards in time. 
 		The number of data points in the response depends on the period size, and the sample frequency. 
 		The latter can not be set by the client, so the client should have some understanding of its value to estimate the amount of data it may receive. 
-		A request for historic data will return a Not found error if historic data is unavailable. 
+		A request for historic data will return a Not found error (404) if historic data is unavailable. 
 		The period must conform to the [[ISO8601]] duration format, expressed with days, hour, minute, and second data, i. e. "op-value": "PdddDThhHmmMssS".
 		The number of days shall be less than 999. Only a single period can be expressed.<br>
 		The op-extra key-value pair is not used in history filter operations.<br>
@@ -456,9 +456,9 @@
 	<ul>
 	<li>sample-rate: the native capture frequency in Hz that is used by the vehicle system.</li>
 	<li>capture-filter: the capture filter operation that the vehicle system is configured for.</li>
-	<li>availability: the current availability of a signal. The possible values are ["available", "temporary-unavailable", "permanently-unavailable"]. 
-	The temporary-unavailable is returned when the signal is inaccessible due to the current vehicle state. 
-	The permanently-unavailable is returned if the subsystem represented by the signal exists in the vehice, but is broken and requires repair.</li>
+	<li>availability: the current availability of a signal. The possible values are ["available", "unavailable", "error"]. 
+	The unavailable status is returned when the signal is inaccessible due to the current vehicle state. 
+	The error status is returned if the subsystem represented by the signal exists in the vehice, but is broken and requires repair.</li>
 	<li>validate: the access control rule that is applied to the node and its sub-tree. 
 	The server response shall conform to the inheritance rules, see the access control selection chapter.</li>
 	</ul>
@@ -479,7 +479,7 @@
           <h2>Error Handling</h2>
 	    <p>
 	    A request addressing multiple nodes may address both valid nodes, and invalid nodes. 
-	    The latter case shall lead to a Not found error response message part that contains information about which node, or nodes, that are invalid. 
+	    The latter case shall lead to a Forbidden error (403) response message part that contains information about which node, or nodes, that are invalid. 
 	    The error response shall not contain data from any of the validly addressed nodes.
 	    </p>
      </section>
