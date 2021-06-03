@@ -31,7 +31,7 @@
       service for accessing vehicle information, signals from sensors
       on control units within a vehicle's network. It exposes this
       information using a hierarchical tree like taxonomy defined in
-      GENIVI Vehicle Signals Specification (VSS). The service provides
+      GENIVI Vehicle Signal Specification (VSS). The service provides
       this information in JSON format. The service may reside in the
       vehicle for applications needing to analyse a high volume of
       realtime data or on servers in the internet with information
@@ -51,11 +51,7 @@
       <p>
         There are two parts to this specification, Core and Transport. This document, the VISS version 2 TRANSPORT specification, describes the VISSv2 transport protocols, and the mapping of the message layer on these transports. The companion specification VISSv2 CORE describes the messaging layer.</p>
     </section>
-    <section id='sotd'>
-      <p>
-        This is required.
-      </p>
-    </section>
+    <section id='sotd'></section>
 
     <section id="introduction">
       <h2>Introduction</h2>
@@ -739,7 +735,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
             <h2>Service Discovery Read</h2>
             <p>A client may issue a service discovery read request to access dynamic metadata. 
                A successful response will contain the requested metadata from all nodes of the subtree defined by the subtree root node that is addressed by the path.
-              The static metadata, i. e. ther metadata in the VSS tree, is retrieved by the setting the "op-value" to  "static", and the "op-extra" to relevant static metadata.<br>
+              The static metadata, i. e. the metadata in the VSS tree, is retrieved by the setting the "op-value" to  "static", and the "op-extra" to relevant static metadata.<br>
             </p>
             <p>
               <b>Example:</b><br>
