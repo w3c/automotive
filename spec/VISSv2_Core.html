@@ -10,6 +10,7 @@
     <script class='remove'>
       var respecConfig = {
         group: "auto",
+        github: "https://github.com/w3c/automotive",
         specStatus: "ED",
         editors: [{
           name: "Ulf Bjorkengren",
@@ -373,14 +374,14 @@
 	  Filtering can be applied in read requests and in subscribe requests. 
 	  A request where filtering is applied has the following structure
 	  <ul>
-	  <li>for the HTTP protocol:</li>
+	  <li>for the HTTP protocol:
 	  <ul>
 	  <li>GET /&lt;vsspath&gt;?filter=&lt;json-expression&gt;</li>
-	  </ul>
-	  <li>for the Websocket protocol:</li>
+	  </ul></li>
+	  <li>for the Websocket protocol:
 	  <ul>
 	  <li>{"action":"get", "path":"&lt;vsspath&gt;", "filter":"&lt;JSON-expression&gt;"}</li>
-	  </ul>
+	  </ul></li>
 	  </ul>
 	  where<br>
 	  <ul>
