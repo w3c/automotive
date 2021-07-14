@@ -397,31 +397,31 @@
 	  </ul>
 	  where<br>
 	  <ul>
-	  <li><b>op-type</b>: the key name for the filter operation type, which can have one of the values:</li>
+	  <li><b>op-type</b>: the key name for the filter operation type, which can have one of the values:
 	  <ul>
 	  <li>paths: the filtering is applied to the sub tree addressed by the vsspath,</li>
 	  <li>history: the filtering is applied to the historic data that the server may have available,</li>
 	  <li>capture: the filtering is applied to the data of the response to the request.</li>
 	  <li>metadata: the response contains the VSS metadata of the addressed sub-tree.</li>
-	  </ul>
-	  <li><b>op-value</b>: the key name for the filter operation, which can have one of the values:</li>
+	  </ul></li>
+	  <li><b>op-value</b>: the key name for the filter operation, which can have one of the values:
 	  <ul>
-	  <li>paths:</li>
+	  <li>paths:
 	  <ul>
 	  <li>one or more relative paths. In the case of several paths an array expression shall be used.</li>
-	  </ul>
-	  <li>history:</li>
+	  </ul></li>
+	  <li>history:
 	  <ul>
 	  <li>the time period from current time and backwards in time.</li>
-	  </ul>
-	  <li>capture:</li>
+	  </ul></li>
+	  <li>capture:
 	  <ul>
 	  <li>time-based: data captures are done with a fixed period time,</li>
 	  <li>range: data captures are done when values are in the given range,</li>
 	  <li>change: data capture is done when the value since last capture has changed more than a fixed value,</li>
 	  <li>curve-loggging: captured data are processed according to the curve logging algorithm before being sent to client.</li>
-	  </ul>
-	  </ul>
+	  </ul></li>
+	  </ul></li>
 	  <li><b>op-extra</b>: the key name for the optional configuration data that the filter operation requires. The op-extra data varies depending on the op-type and op-value, 
 	  is enclosed in one object, or optionally an array of two objects, and is described in the following chapters.</li>
 	  </ul>
