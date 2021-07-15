@@ -4,13 +4,11 @@
     <meta charset='utf-8'>
     <title>VISS version 2-Transport</title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
-    <script type="text/javascript" src="plantuml/jquery.js"></script>
-    <script type="text/javascript" src="plantuml/jquery_plantuml.js"></script>
-    <script type="text/javascript" src="plantuml/rawdeflate.js"></script>	 
     <script class='remove'>
       var respecConfig = {
         specStatus: "ED",
-        group: "auto",      
+        group: "auto",
+        github: "https://github.com/w3c/automotive",	
         editors: [{
           name: "Ulf Bjorkengren",
           company: "Geotab (formerly Volvo Cars)",
@@ -600,7 +598,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
             </thead>
             <tbody>
-             <tr><th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-getsuccessresponse">getSuccessResponse</dfn></th></tr>
+             <tr><th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-getsuccessresponse">getSuccessResponse</dfn></th></tr>
              <tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
              <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
              <tr><td><a href="#dfn-value">data</a></td><td>object/array</td><td>Yes</td></tr>
@@ -713,7 +711,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
             </p>
           </section>
 
-          <section id="wss-search-read">
+          <section id="wss-history-read">
             <h2>History Read</h2>
             <p>A client may issue a history read request to access recorded data points. 
                This is realized by adding a "filter" object following the pattern described in the CORE spec, "Filtering" chapter.
@@ -941,7 +939,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
 	  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
 	</thead>
 	<tbody>
-	  <tr><th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-subscriptionnotification">subscriptionNotification</dfn></th></tr>
+	  <tr><th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-subscriptionnotification">subscriptionNotification</dfn></th></tr>
 	  <tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
 	  <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
 	  <tr><td><a href="#dfn-value">data</a></td><td>object/array</td><td>Yes</td></tr>
@@ -1216,12 +1214,12 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
 	    <td>A JWT formatted security token.</td>
 	  </tr>
 	  <tr>
-	    <td><dfn data-dfn-type="dfn" id="dfn-ts">data</dfn> </td>
+	    <td><dfn data-dfn-type="dfn" id="dfn-data">data</dfn> </td>
 	    <td>object/array</td>
 	    <td>Contains a path and one or more data points.</td>
 	  </tr>
 	  <tr>
-	    <td><dfn data-dfn-type="dfn" id="dfn-ts">dp</dfn> </td>
+	    <td><dfn data-dfn-type="dfn" id="dfn-dp">dp</dfn> </td>
 	    <td>object/array</td>
 	    <td>The data point contains a value and a timestamp.</td>
 	  </tr>
