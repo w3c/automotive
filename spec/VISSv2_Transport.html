@@ -450,7 +450,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               Connection: keep-alive
               Transfer-Encoding: chunked
               {
-                "message": "No match for path in tree."
+                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."}
               }
               </code></pre>
             </p>
@@ -644,7 +644,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "get",
                 "requestId": "8756",
-                "error": {"number": 404, "reason": "Not found", "message": "No match for path in tree."},
+                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."},
                 "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>
@@ -841,7 +841,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "set",
                 "requestId": "5687",
-                "error": {"number": 404, "reason": "Not found", "message": "No match for path in tree."},
+                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."},
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
@@ -983,7 +983,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "subscribe",
                 "requestId": "6578",
-                "error": {"number": 404, "reason": "Not found", "message": "No match for path in tree."},
+                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."},
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
@@ -1163,7 +1163,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "unsubscribe",
                 "requestId": "6578",
-                "error": {"number": 404, "reason": "Not found", "message": "No matching subscription Id."},
+                "error": {"number": 404, "reason": "invalid_subscriptionId", "message": "The specified subscription was not found"},
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
