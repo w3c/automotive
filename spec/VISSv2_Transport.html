@@ -282,12 +282,38 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
             </p>
             <p>
             The following example assumes <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds</code> is the actual token:
-            </p>
+            <br>
+            <b>Example:</b>
+            Request:		    
             <pre><code>
             GET /Vehicle/Drivetrain/InternalCombustionEngine/RPM   HTTP/1.1
             Host:127.0.0.1:1337
             Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds
             </code></pre>
+            Successful response:
+            <pre><code>
+            HTTP/1.1 200 OK
+            Content-Type: application/json; charset=utf-8
+	    ...
+            {
+              “data”:{“path”:”Vehicle/Drivetrain/InternalCombustionEngine/RPM”, 
+                      “dp”:{“value”:”2372”, “ts”:”2020-04-15T13:37:00Z”}
+                     }
+            }
+            </code></pre>
+            Error response:
+            <pre><code>
+            HTTP/1.1 401 Unauthorized
+            WWW-Authenticate: Bearer realm="127.0.0.1:1337",
+                                     error="invalid_token",
+                                     error_description="The access token is invalid or expired"	    
+            Content-Type: application/json; charset=utf-8
+	    ...
+            {
+              "error": {"number": 401, "reason": "token_invalid", "message": "Access token is invalid."}
+            }
+            </code></pre>
+	    </p>
           </section>
 
           <section id="https-search-read">
