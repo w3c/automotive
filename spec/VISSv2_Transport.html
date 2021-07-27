@@ -299,23 +299,14 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <pre><code>
               GET /Vehicle/Cabin/Door?filter={"op-type":"paths", "op-value":"*/*/IsOpen"}   HTTP/1.1
               Host: 127.0.0.1:1337
-              Connection: keep-alive
               Accept: application/json
-              User-Agent: Chrome/34.0.1847.137 Safari/537.36
-              Accept-Encoding: gzip,deflate
-              Accept-Language: en-US,en;q=0.8,de;q=0.6
+	      ...
               </code></pre>
               Response:
               <pre><code>
               HTTP/1.1 200 OK
-              X-Powered-By: Express
-              Vary: Accept-Encoding
               Content-Type: application/json; charset=utf-8
-              ETag: "-32550834"
-              Content-Encoding: gzip
-              Date: Tue, 13 Jun 2014 19:47:27 GMT
-              Connection: keep-alive
-              Transfer-Encoding: chunked
+	      ...
               {
                 “data”:[{“path”:”Vehicle/Cabin/Door/Row1/Left/IsOpen”, “dp”:{“value”:”false”, “ts”:”2020-04-15T13:37:00Z”}}, 
                         {...},… 
@@ -335,23 +326,14 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <pre><code>
               GET /Vehicle.Acceleration.Longitudinal?filter={"op-type":"history", "op-value":"P2DT12H"}   HTTP/1.1
               Host: 127.0.0.1:1337
-              Connection: keep-alive
               Accept: application/json
-              User-Agent: Chrome/34.0.1847.137 Safari/537.36
-              Accept-Encoding: gzip,deflate
-              Accept-Language: en-US,en;q=0.8,de;q=0.6
+	      ...
               </code></pre>
               Response:
               <pre><code>
               HTTP/1.1 200 OK
-              X-Powered-By: Express
-              Vary: Accept-Encoding
               Content-Type: application/json; charset=utf-8
-              ETag: "-32550834"
-              Content-Encoding: gzip
-              Date: Tue, 13 Jun 2014 19:47:27 GMT
-              Connection: keep-alive
-              Transfer-Encoding: chunked
+	      ...
               {
                 “data”:{“path”:”Vehicle.Acceleration.Longitudinal”, “dp”:[{“value”:”0.123”, “ts”:”2020-04-15T13:00:00Z”}, ..., {“value”:”0.125”, “ts”:”2020-04-15T13:37:00Z”}]}
               }
@@ -369,23 +351,14 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <pre><code>
               GET /Vehicle/Drivetrain/FuelSystem?filter={"op-type":"metadata", "op-value":"static"}   HTTP/1.1
               Host: 127.0.0.1:1337
-              Connection: keep-alive
               Accept: application/json
-              User-Agent: Chrome/34.0.1847.137 Safari/537.36
-              Accept-Encoding: gzip,deflate
-              Accept-Language: en-US,en;q=0.8,de;q=0.6
+	      ...
               </code></pre>
               Response:
               <pre><code>
               HTTP/1.1 200 OK
-              X-Powered-By: Express
-              Vary: Accept-Encoding
               Content-Type: application/json; charset=utf-8
-              ETag: "-32550834"
-              Content-Encoding: gzip
-              Date: Tue, 13 Jun 2014 19:47:27 GMT
-              Connection: keep-alive
-              Transfer-Encoding: chunked
+	      ...
               {
                 "metadata": {"FuelSystem":{"type":"branch","description":"Fuel system data.","children":{"HybridType, ... }}}
                 "ts": "2020-04-15T13:37:00Z"
@@ -408,11 +381,8 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <pre><code>
               POST /Vehicle/Drivetrain/Transmission/PerformanceMode   HTTP/1.1
               Host: 127.0.0.1:1337
-              Connection: keep-alive
               Accept: application/json
-              User-Agent: Chrome/34.0.1847.137 Safari/537.36
-              Accept-Encoding: gzip,deflate
-              Accept-Language: en-US,en;q=0.8,de;q=0.6
+	      ...
               {
                 "value": "sport"
               }
@@ -420,13 +390,8 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               Successful response:
               <pre><code>
               HTTP/1.1 200 OK
-              Vary: Accept-Encoding
               Content-Type: application/json; charset=utf-8
-              ETag: "-32550834"
-              Content-Encoding: gzip
-              Date: Tue, 07 Apr 1980 00:00:00 GMT
-              Connection: keep-alive
-              Transfer-Encoding: chunked
+	      ...
               {
                 "ts": "2020-04-15T13:37:00Z"
               }
@@ -435,9 +400,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <pre><code>
               HTTP/1.1 404 Not Found
               Content-Type: application/json; charset=utf-8
-              Date: Tue, 07 Apr 1980 00:00:00 GMT
-              Connection: keep-alive
-              Transfer-Encoding: chunked
+	      ...
               {
                 "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."}
               }
