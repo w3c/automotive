@@ -250,23 +250,14 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <pre><code>
               GET /Vehicle/Drivetrain/InternalCombustionEngine/RPM   HTTP/1.1
               Host: 127.0.0.1:1337
-              Connection: keep-alive
               Accept: application/json
-              User-Agent: Chrome/34.0.1847.137 Safari/537.36
-              Accept-Encoding: gzip,deflate
-              Accept-Language: en-US,en;q=0.8,de;q=0.6
+	      ...
               </code></pre>
               Successful response:
               <pre><code>
               HTTP/1.1 200 OK
-              X-Powered-By: Express
-              Vary: Accept-Encoding
               Content-Type: application/json; charset=utf-8
-              ETag: "-32550834"
-              Content-Encoding: gzip
-              Date: Tue, 13 Jun 2014 19:47:27 GMT
-              Connection: keep-alive
-              Transfer-Encoding: chunked
+	      ...
               {
                 “data”:{“path”:”Vehicle/Drivetrain/InternalCombustionEngine/RPM”, 
                         “dp”:{“value”:”2372”, “ts”:”2020-04-15T13:37:00Z”}
@@ -277,9 +268,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <pre><code>
               HTTP/1.1 404 Not Found
               Content-Type: application/json; charset=utf-8
-              Date: Tue, 13 Jun 2014 19:47:27 GMT
-              Connection: keep-alive
-              Transfer-Encoding: chunked
+	      ...
               {
                 "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."}
               }
