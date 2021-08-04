@@ -340,6 +340,15 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
                        ]
               }
               </code></pre>
+              Error response:
+              <pre><code>
+              HTTP/1.1 404 Not Found
+              Content-Type: application/json; charset=utf-8
+	      ...
+              {
+                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."}
+              }
+              </code></pre>		  
             </p>
           </section>
 
