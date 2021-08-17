@@ -429,7 +429,7 @@
 	  is enclosed in one object, or optionally an array of two objects, and is described in the following chapters.</li>
 	  </ul>
 	  In the JSON object, the key-value pairs "op-type" and "op-value" must always be present, while the "op-extra" presence depends on the "op-type" value.
-	  The JSON expression may consist of maximum one object with op-type "paths", plus maximum one object with op-type "capture", 
+	  The JSON expression may consist of maximum one object with op-type "paths", plus maximum one object with op-type "capture", or "history", 
 	  which are then logically combined as with an AND operator.<br>
 	  The server SHALL support all combinations up to this maximum.<br>
 	  The capture types (time-based, range, change, curve-logging) are only applicable for subscription requests. 
@@ -481,9 +481,10 @@
 		The op-extra key-value pair is used in capture filter operations, as described for the following capture types below.
 		<ul>
 		<li>time-based: the op-extra contains the period time X in between captures, {"period":"X"}.</li>
-		<li>range: the op-extra contains the range boundary, and the logical operator, {"logic-op":"X", "boundary": "Y"}, where X is one of the supported logical operators (**), 
-		and Y boundary of the range.
-		The op-extra may be an array of two of these objects, combined through a logical AND to support expressions of a bounded range.</li>
+		<li>range: the op-extra contains the range boundary, and the logical operator, {"logic-op":"X", "boundary": "Y"}, 
+		where X is one of the supported logical operators (**), and Y boundary of the range.
+		The op-extra may be an array of two of these objects, combined through a logical AND to support expressions of a bounded range. 
+		A range event is triggered both when the filter expression becomes "true", and when it becomes "false".</li>
 		<li>change: the op-extra contains the the logical operator for comparison of previous and current values, {"logic-op":"X", "diff":"Y"}, 
 		where X is one of the supported logical operators (**), and Y is the value of the required change.</li>
 		<li>curve-logging: the op-extra contains the maximum error limit, and the buffer size, {"max-err": "X", "buf-size":"Y"}, 
