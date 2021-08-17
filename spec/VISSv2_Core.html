@@ -4,28 +4,36 @@
     <meta charset='utf-8'>
     <title>VISS version 2 - Core</title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
-    <script type="text/javascript" src="plantuml/jquery.js"></script>
-    <script type="text/javascript" src="plantuml/jquery_plantuml.js"></script>
-    <script type="text/javascript" src="plantuml/rawdeflate.js"></script>	 
     <script class='remove'>
       var respecConfig = {
+        group: "auto",
+        github: "https://github.com/w3c/automotive",
         specStatus: "ED",
         editors: [{
           name: "Ulf Bjorkengren",
           company: "Geotab",
-          companyURL: "https://www.geotab.com"
-        },
-        {
-          name: "Ulf Bjorkengren",
-          company: "Volvo Cars",
-          companyURL: "https://www.volvocars.com/intl"
+          companyURL: "https://www.geotab.com",
+          w3cid: 103092	  
         },
         {
           name: "Isaac Agudo",
           company: "NICS Lab / University of Malaga",
-          companyURL: "https://www.nics.uma.es"
+          companyURL: "https://www.nics.uma.es",
+          w3cid: 111319
         },
-                {
+        {
+          name: "이원석(Wonsuk Lee)", company: "한국전자통신연구원(ETRI)",
+          url: "mailto:wonsuk.lee@etri.re.kr",
+	  companyURL: "https://etri.re.kr/eng/main/main.etri",
+	  w3cid: 34457
+        }],
+	formerEditors: [{
+          name: "Ulf Bjorkengren",
+          company: "Volvo Cars",
+          companyURL: "https://www.volvo.com",
+          w3cid: 103092	  
+        },
+	{
           name: "Patrick Lünnemann",
           company: "Volkswagen Group",
           companyURL: "https://www.volkswagenag.com",
@@ -46,8 +54,29 @@
   </head>
   <body>
     <section id='abstract'>
+      <p>The Vehicle Information Service Specification (VISS) is a
+      service for accessing vehicle information, signals from sensors
+      on control units within a vehicle's network. It exposes this
+      information using a hierarchical tree like taxonomy defined in
+      GENIVI Vehicle Signal Specification (VSS). The service provides
+      this information in JSON format. The service may reside in the
+      vehicle for applications needing to analyse a high volume of
+      realtime data or on servers in the internet with information
+      already brought off the vehicle.</p>
+
+      <p>This specification describes a second version of VISS which
+      has been implemented and deployed on production vehicles. It
+      adds major new capabilities and improvements to the earlier
+      version. The first version of VISS only supported WebSocket as a
+      transport protocol, the second version is generalized to work
+      across different protocols as some are better suited for
+      different use cases. HTTP is now supported with additional
+      protocols used within the automotive industry being evaluated
+      for inclusion. Subscription capabilities have been improved and
+      access control has been added.</p>
+      
       <p>
-        This document, the VISS version 2 CORE specification, describes the VISSv2 messaging layer. 
+        There are two parts to this specification, Core and Transport. This document, the VISS version 2 CORE specification, describes the VISSv2 messaging layer. 
         The companion specifications for the VISSv2 transport protocols detail the mapping of the messaging layer to selected transports.
         The ontologies based on the VISSv2 core specification are defined in documents for each specific domain
         (e.g. navigation, media, vehicle data). 
@@ -58,7 +87,7 @@
     <section id="introduction">
       <h2>Introduction</h2>
       <p>
-        This document describes the messaging API for VISSv2 protocol. 
+        This document describes the messaging API for VISS protocol. 
         This includes the messaging layer and set of rules for structuring data.
         The separation between payload encoding (transport) and messaging API (core) improves adaptability. 
         Extending and describing multiple transport protocols becomes possible.
@@ -307,8 +336,37 @@
 
       <section id="privacy">
         <h2>Privacy</h2>
-        <p>
+	<p>In addition to some privacy provisions within the
+	specification itself, the W3C Automotive Working Group is
+	creating an accompanying <a href="https://www.w3.org/community/autowebplatform/wiki/Best_Practices">In-Vehicle Application Best Practices</a>
+	document to provide further considerations for handling of
+	information. These Best Practices go beyond the narrow scope
+	of this specification and addresses several of the concerns
+	for the broader telematics ecosystems it is a part of. These
+	practices include reducing ability to fingerprint an
+	individual or vehicle from its data, providing data use
+	consent, revokation, integrity and use audit accountability.</p>
+
+	<p>For some uses, such as when information is only referenced within the vehicle not sent
+	off nor persisting between restarts, there should be little to
+	no privacy concerns.</p>
+	
+        <p>This specification, unlike its predecessor, has granular
+        access control capabilities to limit what information an
+        application may access. All information sent from a VISS
+        service to client application must be transported over an
+        encrypted protocol to help protect privacy.
         </p>
+
+	<p>For an application to be installed and permitted to run on a vehicle it should
+	have consent from whoever is deemed authoritative for a given
+	jurisdiction and ownership situation. That consent should be
+	revocable. Consent and revoking it are outside the scope of
+	this specification, we expect that to be handled out of band
+	and in some cases by regulations and contractual commitments. Future version of this specification however may provide
+	mechanism for enabling and suspending application
+	authorization to access information.</p>
+	
       </section>
       </section>
 
@@ -319,14 +377,14 @@
 	  Filtering can be applied in read requests and in subscribe requests. 
 	  A request where filtering is applied has the following structure
 	  <ul>
-	  <li>for the HTTP protocol:</li>
+	  <li>for the HTTP protocol:
 	  <ul>
 	  <li>GET /&lt;vsspath&gt;?filter=&lt;json-expression&gt;</li>
-	  </ul>
-	  <li>for the Websocket protocol:</li>
+	  </ul></li>
+	  <li>for the Websocket protocol:
 	  <ul>
 	  <li>{"action":"get", "path":"&lt;vsspath&gt;", "filter":"&lt;JSON-expression&gt;"}</li>
-	  </ul>
+	  </ul></li>
 	  </ul>
 	  where<br>
 	  <ul>
@@ -342,31 +400,31 @@
 	  </ul>
 	  where<br>
 	  <ul>
-	  <li><b>op-type</b>: the key name for the filter operation type, which can have one of the values:</li>
+	  <li><b>op-type</b>: the key name for the filter operation type, which can have one of the values:
 	  <ul>
 	  <li>paths: the filtering is applied to the sub tree addressed by the vsspath,</li>
 	  <li>history: the filtering is applied to the historic data that the server may have available,</li>
 	  <li>capture: the filtering is applied to the data of the response to the request.</li>
 	  <li>metadata: the response contains the VSS metadata of the addressed sub-tree.</li>
-	  </ul>
-	  <li><b>op-value</b>: the key name for the filter operation, which can have one of the values:</li>
+	  </ul></li>
+	  <li><b>op-value</b>: the key name for the filter operation, which can have one of the values:
 	  <ul>
-	  <li>paths:</li>
+	  <li>paths:
 	  <ul>
 	  <li>one or more relative paths. In the case of several paths an array expression shall be used.</li>
-	  </ul>
-	  <li>history:</li>
+	  </ul></li>
+	  <li>history:
 	  <ul>
 	  <li>the time period from current time and backwards in time.</li>
-	  </ul>
-	  <li>capture:</li>
+	  </ul></li>
+	  <li>capture:
 	  <ul>
 	  <li>time-based: data captures are done with a fixed period time,</li>
 	  <li>range: data captures are done when values are in the given range,</li>
 	  <li>change: data capture is done when the value since last capture has changed more than a fixed value,</li>
 	  <li>curve-loggging: captured data are processed according to the curve logging algorithm before being sent to client.</li>
-	  </ul>
-	  </ul>
+	  </ul></li>
+	  </ul></li>
 	  <li><b>op-extra</b>: the key name for the optional configuration data that the filter operation requires. The op-extra data varies depending on the op-type and op-value, 
 	  is enclosed in one object, or optionally an array of two objects, and is described in the following chapters.</li>
 	  </ul>
@@ -484,7 +542,7 @@
 	    </p>
      </section>
 
-     <section id="error-handling">
+     <section id="response-syntax">
           <h2>Response syntax</h2>
 	    <p>
 	    A response may contain multiple values, due to either that multiple nodes are addressed, or to that multiple values for one signal is returned.
@@ -679,7 +737,7 @@
             <li>The <a href="#application-roles-def">app. </a>It runs requests on behalf of the user.</li>
             <li>The <a href="#user-roles-def">user</a>. It delegates access rights to the app.</li>
           </ul> 
-          All the information regarding the client is encoded in the <a href="client-context-def">context</a> of the request.
+          All the information regarding the client is encoded in the <a href="#client-context-def">context</a> of the request.
         </p>
       </section>
 
@@ -1029,7 +1087,7 @@
             <li>Passenger</li>
           </ul>
           An OEM user is anyone representing the vehicle brand.<br>
-          A Dealer user is anyone representing a normally OEM affiliated organisation that provice sale and workshop services for the vehicle.<br>
+          A Dealer user is anyone representing a normally OEM affiliated organisation that provide sale and workshop services for the vehicle.<br>
           An Independent user is anyone representing a normally OEM independent organisation that provide after-market services for the vehicle.<br>
           An Owner user is anyone representing the organisation owning the vehicle.<br>
           A Driver user is anyone driving the vehicle.<br>

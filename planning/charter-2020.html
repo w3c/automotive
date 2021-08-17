@@ -71,13 +71,13 @@
 
 
     <main>
-      <h1 id="title">Automotive Working Group Charter</h1>
+      <h1 id="title">PROPOSED Automotive Working Group Charter</h1>
       <!-- delete PROPOSED after AC review completed -->
 
       <p class="mission">The <strong>mission</strong> of the <a
-      href="/auto/wg">Automotive Working Group</a> is to develop Open
-      Web Platform specifications for in-vehicle and cloud based
-      uses, in particular through defining vehicle data access and service protocols.</p>
+      href="https://www.w3.org/auto/wg">Automotive Working Group</a> is to develop
+      specifications for exposing information services for in-vehicle and cloud
+      based uses.</p>
 
       <div class="noprint">
         <p class="join"><a href="https://www.w3.org/2004/01/pp-impl/76043/join">Join the Automotive Working Group.</a></p>
@@ -86,9 +86,9 @@
          <p style="padding: 0.5ex; border: 1px solid green"> This proposed charter is available
       on <a href="https://github.com/w3c/automotive/blob/gh-pages/planning/charter-2020.html">GitHub</a>.
 
-    Feel free to raise <a href="https://github.com/w3c/automotive/issues">issues</a></i>.
+    Feel free to raise <a href="https://github.com/w3c/automotive/issues">issues</a>.
           </p>
-
+	
       <section id="details">
         <table class="summary-table">
           <tr id="Duration">
@@ -96,7 +96,7 @@
               Start date
             </th>
             <td>
-              <i class="todo">[dd monthname yyyy] (date of the "Call for Participation", when the charter is approved)</i>
+              <i>TBD</i>
             </td>
           </tr>
           <tr id="CharterEnd">
@@ -104,7 +104,7 @@
               End date
             </th>
             <td>
-              <i>31 December 2022</i>
+              <i>TBD + 2 years</i>
             </td>
           </tr>
 <!--
@@ -146,24 +146,25 @@
 
       </section>
 
-
-
       <section id="scope" class="scope">
         <h2>Scope</h2>
-	<p>This group will develop service specifications for exposing vehicle data and other information around vehicle centric functions.</p>
+
+	<p>This group will develop information service specifications for exposing
+	vehicle telematics data, other data following similar
+	taxonomies as well as exposing vehicle centric functions.</p>
 
 <p>Members of the Working Group should review other working groups' deliverables that are identified as being relevant to the Working Group's mission.</p>
 
 <p>Services may include but are not limited to</p><ul>
-				<li>Vehicle Data</li>
-				<ul><li>vehicle brand, model, year, fuel type, transmission type, steering wheel position, tire pressure, oil level, wiper position, lights, doors, windows and seat settings as well as navigation, trip computer data, climate control data, speed, RPMs, acceleration, gears, &#8230;</li></ul>
+				<li>Vehicle Telematics Data
+				<ul><li>vehicle brand, model, year, fuel type, transmission type, steering wheel position, tire pressure, oil level, wiper position, lights, doors, windows and seat settings as well as navigation, trip computer data, climate control data, speed, RPMs, acceleration, gears, &#8230;</li></ul></li>
 				<li>A named remote procedure API with
 				accompanying functions to be
 				defined collaboratively in GENIVI's <a href="https://github.com/GENIVI/vehicle_service_catalog">Vehicle Service Catalog</a>
 				(digital key, remote delivery,
 				electric vehicle charging, geofencing)
 				</li>
-
+			      
 			</ul>
 
 
@@ -193,9 +194,25 @@
           <p>
             The Working Group will deliver the following W3C normative specifications:
           </p>
-
+	  <dl>
+	    <dt id="viss1 class="spec"><a href="https://www.w3.org/TR/vehicle-information-service/">Vehicle
+	      Information Service Specification</a></dt>
+	    <dd>
+	      <p>VISS is a lightweight API for accessing vehicle
+	      signals information via WebSocket. It is currently in production vehicles.</p>
+              <p class="draft-status"><b>Draft state:</b>Candidate Recommendation</p>
+              <p class="milestone"><b>Expected completion:</b> <i>[Q3 2021]</i></p>
+              <p><b>Adopted Draft:</b> <a href='https://www.w3.org/TR/2018/CR-vehicle-information-service-20180213/'>Vehicle Information Service Specification
+                13 February 2018</a>
+              <p><b>Exclusion Draft:</b> <a href='https://www.w3.org/TR/2018/CR-vehicle-information-service-20180213/'>Vehicle Information Service Specification
+                13 February 2018</a>, W3C Candidate Recommendation<br>
+                Exclusion period <b>began</b> on 06-Mar-2018
+                  <b>ended</b> on 05-May-2018.
+              <p><b>Other Charter:</b> <a href='https://www.w3.org/2014/automotive/charter-2016.html'>https://www.w3.org/2014/automotive/charter-2016.html</a>
+                </dd>
+	  </dl>
           <dl>
-            <dt id="viss2" class="spec"><a href="https://w3c.github.io/automotive/spec/Gen2_Core.html">
+            <dt id="viss2c" class="spec"><a href="https://w3c.github.io/automotive/spec/VISSv2_Core.html">
 	    Vehicle Information Service Specification (VISS) version 2
 	    Core</a></dt>
             <dd>
@@ -209,11 +226,11 @@
 	      CORE addresses the messaging layer.</p>
 
               <p class="draft-status"><b>Draft state:</b> Editor's Draft</p>
-              <p class="milestone"><b>Expected completion:</b> <i>[Q1 2022]</i></p>
+              <p class="milestone"><b>Expected completion:</b> <i>[Q1 2023]</i></p>
 	    </dd>
 	  </dl>
           <dl>
-            <dt id="viss2" class="spec"><a href="https://w3c.github.io/automotive/spec/Gen2_Transport.html">
+            <dt id="viss2t" class="spec"><a href="https://w3c.github.io/automotive/spec/VISSv2_Transport.html">
 	    Vehicle Information Service Specification (VISS) version 2
 	    Transport</a></dt>
             <dd>
@@ -229,7 +246,7 @@
 	      Transport addresses the transportation protocols.</p>
 
               <p class="draft-status"><b>Draft state:</b> Editor's Draft</p>
-              <p class="milestone"><b>Expected completion:</b> <i>[Q1 2022]</i></p>
+              <p class="milestone"><b>Expected completion:</b> <i>[Q1 2023]</i></p>
 	    </dd>
 	  </dl>
 
@@ -252,7 +269,7 @@
 	      example functions will be used in order to inform
 	      selection of RPC protocol. The Working Group will document the overall RPC architecture, including its authorization mechanism.</p>
               <p class="draft-status"><b>Draft state:</b> No draft</p>
-              <p class="milestone"><b>Expected completion:</b> <i>[Q3 2022]</i></p>
+              <p class="milestone"><b>Expected completion:</b> <i>[Q4 2022]</i></p>
 	    </dd>
 	  </dl>
 
@@ -272,11 +289,6 @@ Ontology (SSN)</a> and contained Sensor, Observation, Sample, and Actuator (SOSA
               <p class="milestone"><b>Expected completion:</b> <i>[Q3 2022]</i></p>
 	    </dd>
 	  </dl>
-<dt>
-
-  <p>The group will perform any maintenance required for <a href="https://www.w3.org/TR/vehicle-information-service/">Vehicle
-  Information Service Specification</a> version 1 which is currently
-  in production vehicles.</p>
 
         </section>
 
@@ -285,30 +297,32 @@ Ontology (SSN)</a> and contained Sensor, Observation, Sample, and Actuator (SOSA
             Other Deliverables
           </h3>
           <p>
-            Other non-normative documents may be created such as:
+            The Working Group will deliver the following W3C non-normative documents:
           </p>
           <ul>
-            <li>Use case and requirement documents;</li>
-            <li>Test suite and implementation report for the specification;</li>
-            <li>Primer or Best Practice documents to support web developers when designing applications.</li>
-          </ul>
-	  <p>The group intends to deliver In-Vehicle Application Best
+            <li>Use case and requirement documents</li>
+            <li>Test suite and implementation report for the
+	    specification</li>
+	    <li>High level architecture for information flows to facilitate understanding of the different standard and proprietary solutions being used within the industry and to further discussions on data privacy considerations throughout</li>
+	    <li>In-Vehicle Application Best
 	  Practices to address many of the issues arising from allowing
-	  applications to reside and run on vehicles.</p>
+	  applications to reside and run on vehicles including but not limited to security, privacy and safety considerations beyond the confines of specifications being delivered.</li></ul>
         </section>
 
         <section id="timeline">
           <h3>Timeline</h3>
             <ul>
-              <li>January 2021: First teleconference</li>
-              <li>March 2021: First face-to-face meeting</li>
-              <li>March 2021: Requirements and Use Cases for Vehicle
+              <li>April 2021: First teleconference</li>
+              <li>June 2021: First face-to-face meeting</li>
+              <li>June 2021: Requirements and Use Cases for Vehicle
 	      Remote Procedure Call</li>
-              <li>March 2021: FPWD for VISS version 2 Core and Transport</li>
-              <li>June 2021: Publish In-Vehicle Application Best Practices</li>
-              <li>June 2021: FPWD VSSo</li>
+	      <li>June 2021 Information Flow Architecture document</li>
+              <li>April 2021: FPWD for VISS version 2 Core and Transport</li>
+              <li>April 2021: Publish In-Vehicle Application Best Practices</li>
+              <li>August 2021: FPWD VSSo</li>
             </ul>
         </section>
+
       </section>
 
 	<section id="success-criteria">
@@ -317,7 +331,7 @@ Ontology (SSN)</a> and contained Sensor, Observation, Sample, and Actuator (SOSA
 
 <p>Each specification should contain a section on accessibility that describes the benefits and impacts, including ways specification features can be used to address them, and recommendations for maximising accessibility in implementations.</p>
 	  <p>There should be testing plans for each specification, starting from the earliest drafts.</p>
-	  <p>Each specification should contain a section detailing any known security or privacy implications for implementers, Web authors, and end users.</p>
+	  <p>Each specification should contain sections detailing any known security or privacy implications for implementers, Web authors, and end users.</p>
 	  <p>To promote interoperability, all changes made to
 	  specifications should have <a
 	  href='https://www.w3.org/2019/02/testing-policy.html'>tests</a>
@@ -327,7 +341,7 @@ Ontology (SSN)</a> and contained Sensor, Observation, Sample, and Actuator (SOSA
       <section id="coordination">
         <h2>Coordination</h2>
         <p>For all specifications, this Working Group will seek <a
-        href="https://www.w3.org/Guide/process/charter.html#horizontal-review">horizontal
+        href="https://www.w3.org/Guide/documentreview/#how_to_get_horizontal_review">horizontal
         review</a> for accessibility, internationalization,
         performance, privacy, and security with the relevant Working
         and Interest Groups, and with the <a
@@ -355,17 +369,18 @@ Ontology (SSN)</a> and contained Sensor, Observation, Sample, and Actuator (SOSA
 	              <dt><a href="http://www.w3.org/community/autowebplatform/">Automotive
               and Transportation Business Group</a></dt>
           <dd>This group developed the initial version of the Vehicle
-            Information &amp; Vehicle Data APIs and will likely continue to
-            explore new use cases and other automotive and web related topics. </dd>
+            Information &amp; Vehicle Data APIs and continues to
+            explore various automotive and broader transportation
+topics, some of its <a
+href="https://www.w3.org/2020/auto-transportation-charter.html">chartered</a>
+work is transitioning into the Automotive Working Group. </dd>
           <dt><a href="http://www.w3.org/2009/dap/">Device and Sensors Working Group</a>
           </dt>
           <dd>The Device and Sensors Working Group defines the Network Service
             Discovery API that addresses some of the use cases that are in scope
             of the Automotive Working Group.</dd>
           <dt><a href="http://www.w3.org/Privacy/">Privacy Interest Group</a></dt>
-          <dd>The Automotive API Working Group intends to secure reviews on its
-            deliverables from the Privacy Interest Group to ensure they offer
-            the right level of protection to users.</dd>
+          <dd>The Automotive Working Group will organize an open discussion with the Privacy Interest Group to explain standards it is creating, ecosystem it will be utilized in and seek input on its deliverables for protecting personal information.</dd>
           <dt><a href="https://www.w3.org/WAI/APA/">Accessible Platform Architectures Working Group</a> </dt>
           <dd>To ensure the Vehicle Information and Data APIs support
             accessibility requirements, particularly with regard to
@@ -375,26 +390,12 @@ Ontology (SSN)</a> and contained Sensor, Observation, Sample, and Actuator (SOSA
             ways that support accessibility requirements. The APAWG will also
             coordinate review from the <a href="http://www.w3.org/WAI/GL/mobile-a11y-tf/">Mobile
               Accessibility Task Force</a>.</dd>
-          <dt><a href="https://www.w3.org/WebPlatform/WG/">Web Platform Working
-              Group</a></dt>
-          <dd>This group defines <a href="https://w3c.github.io/charter-html/group-charter.html#deliverables">relevant or potentially relevant specifications</a>
-            including <a href="http://w3c.github.io/manifest//">Manifest for Web applications</a>, <a href="http://www.w3.org/TR/webmessaging/">HTML5
-              Web Messaging</a>, <a
-	      href="http://w3c.github.io/ServiceWorker/spec/service_worker/">Service
-	      Worker</a> and <a href="http://www.w3.org/TR/websockets/">The
-              Web Socket API</a>.</dd>
           <dt><a href="http://www.w3.org/2011/webappsec/">Web Application
               Security Working Group</a></dt>
           <dd>The Web Application Security Working Group is developing security
             and policy mechanisms to improve the security of Web Applications
             and enable secure cross-site communication.</dd>
-          <dt><a href="http://www.w3.org/Security/wiki/IG">Web Security Interest
-              Group</a></dt>
-          <dd>The Automotive Working Group intends to secure reviews on its
-            deliverables from the Web Security Interest Group to ensure they
-            offer the right level of security. </dd>
 
-@@@	    
             <dt><a href="https://www.w3.org/2017/sdwig/">Spatial Data
 	    on the Web (SDW) Interest Group</a></dt>
             <dd>The Spatial Data on the Web Interest Group maintains
@@ -502,7 +503,7 @@ Ontology (SSN)</a> and contained Sensor, Observation, Sample, and Actuator (SOSA
         The meetings themselves are not open to public participation, however.
         </p>
         <p>
-          Information about the group (including details about deliverables, issues, actions, status, participants, and meetings) will be available from the <a href="/auto/wg">Automotive Working Group home page.</a>
+          Information about the group (including details about deliverables, issues, actions, status, participants, and meetings) will be available from the <a href="https://www.w3.org/auto/wg">Automotive Working Group home page.</a>
         </p>
         <p>
           Most Automotive Working Group teleconferences will focus on discussion of particular specifications, and will be conducted on an as-needed basis.
@@ -531,7 +532,7 @@ Ontology (SSN)</a> and contained Sensor, Observation, Sample, and Actuator (SOSA
         <p>
           To afford asynchronous decisions and organizational deliberation, any resolution (including publication decisions) taken in a face-to-face meeting or teleconference will be considered provisional.
 
-          A call for consensus (CfC) will be issued for all resolutions (for example, via email, GitHub issue or web-based survey), with a response period from <span id='cfc'>one week</span>, depending on the chair's evaluation of the group consensus on the issue.
+          A call for consensus (CfC) will be issued for all resolutions (for example, via email, GitHub issue or web-based survey), with a response period of <span id='cfc'>one week</span>, depending on the chair's evaluation of the group consensus on the issue.
 
           If no objections are raised by the end of the response period, the resolution will be considered to have consensus as a resolution of the Working Group.
         </p>

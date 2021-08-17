@@ -4,22 +4,35 @@
     <meta charset='utf-8'>
     <title>VISS version 2-Transport</title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
-    <script type="text/javascript" src="plantuml/jquery.js"></script>
-    <script type="text/javascript" src="plantuml/jquery_plantuml.js"></script>
-    <script type="text/javascript" src="plantuml/rawdeflate.js"></script>	 
     <script class='remove'>
       var respecConfig = {
         specStatus: "ED",
+        group: "auto",
+        github: "https://github.com/w3c/automotive",	
         editors: [{
           name: "Ulf Bjorkengren",
-          company: "Geotab",
-          companyURL: "https://www.geotab.com"
+          company: "Geotab (formerly Volvo Cars)",
+          companyURL: "https://www.geotab.com",
+          w3cid: 103092	  
         },
         {
+          name: "이원석(Wonsuk Lee)", company: "한국전자통신연구원(ETRI)",
+          url: "mailto:wonsuk.lee@etri.re.kr",
+	  companyURL: "https://etri.re.kr/eng/main/main.etri",
+	  w3cid: 34457
+        }],
+	formerEditors: [{
           name: "Ulf Bjorkengren",
           company: "Volvo Cars",
-          companyURL: "https://www.volvocars.com/intl"
-        }],
+          companyURL: "https://www.volvo.com",
+          w3cid: 103092	  
+        },
+	{
+          name: "Patrick Lünnemann",
+          company: "Volkswagen Group",
+          companyURL: "https://www.volkswagenag.com",
+          w3cid: 95844
+        }],	  
         edDraftURI: "https://github.com/w3c/automotive/blob/gh-pages/spec/VISSv2_Transport.html",
         shortName: "VISSv2-TRANSPORT"
       };
@@ -27,13 +40,31 @@
   </head>
   <body>
     <section id='abstract'>
-      <p>This document, the VISS version 2 TRANSPORT specification, describes the VISSv2 transport protocols, and the mapping of the message layer on these transports. The companion specification VISSv2 CORE describes the messaging layer.</p>
-    </section>
-    <section id='sotd'>
+      <p>The Vehicle Information Service Specification (VISS) is a
+      service for accessing vehicle information, signals from sensors
+      on control units within a vehicle's network. It exposes this
+      information using a hierarchical tree like taxonomy defined in
+      GENIVI Vehicle Signal Specification (VSS). The service provides
+      this information in JSON format. The service may reside in the
+      vehicle for applications needing to analyse a high volume of
+      realtime data or on servers in the internet with information
+      already brought off the vehicle.</p>
+
+      <p>This specification describes a second version of VISS which
+      has been implemented and deployed on production vehicles. It
+      adds major new capabilities and improvements to the earlier
+      version. The first version of VISS only supported WebSocket as a
+      transport protocol, the second version is generalized to work
+      across different protocols as some are better suited for
+      different use cases. HTTP is now supported with additional
+      protocols used within the automotive industry being evaluated
+      for inclusion. Subscription capabilities have been improved and
+      access control has been added.</p>
+      
       <p>
-        This is required.
-      </p>
+        There are two parts to this specification, Core and Transport. This document, the VISS version 2 TRANSPORT specification, describes the VISSv2 transport protocols, and the mapping of the message layer on these transports. The companion specification VISSv2 CORE describes the messaging layer.</p>
     </section>
+    <section id='sotd'></section>
 
     <section id="introduction">
       <h2>Introduction</h2>
@@ -225,23 +256,14 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <pre><code>
               GET /Vehicle/Drivetrain/InternalCombustionEngine/RPM   HTTP/1.1
               Host: 127.0.0.1:1337
-              Connection: keep-alive
               Accept: application/json
-              User-Agent: Chrome/34.0.1847.137 Safari/537.36
-              Accept-Encoding: gzip,deflate
-              Accept-Language: en-US,en;q=0.8,de;q=0.6
+	      ...
               </code></pre>
               Successful response:
               <pre><code>
               HTTP/1.1 200 OK
-              X-Powered-By: Express
-              Vary: Accept-Encoding
               Content-Type: application/json; charset=utf-8
-              ETag: "-32550834"
-              Content-Encoding: gzip
-              Date: Tue, 13 Jun 2014 19:47:27 GMT
-              Connection: keep-alive
-              Transfer-Encoding: chunked
+	      ...
               {
                 “data”:{“path”:”Vehicle/Drivetrain/InternalCombustionEngine/RPM”, 
                         “dp”:{“value”:”2372”, “ts”:”2020-04-15T13:37:00Z”}
@@ -252,11 +274,9 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <pre><code>
               HTTP/1.1 404 Not Found
               Content-Type: application/json; charset=utf-8
-              Date: Tue, 13 Jun 2014 19:47:27 GMT
-              Connection: keep-alive
-              Transfer-Encoding: chunked
+	      ...
               {
-                "message": "No match for path in tree."
+                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."}
               }
               </code></pre>
             </p>
@@ -268,12 +288,38 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
             </p>
             <p>
             The following example assumes <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds</code> is the actual token:
-            </p>
+            <br>
+            <b>Example:</b>
+            Request:		    
             <pre><code>
             GET /Vehicle/Drivetrain/InternalCombustionEngine/RPM   HTTP/1.1
             Host:127.0.0.1:1337
             Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds
             </code></pre>
+            Successful response:
+            <pre><code>
+            HTTP/1.1 200 OK
+            Content-Type: application/json; charset=utf-8
+	    ...
+            {
+              “data”:{“path”:”Vehicle/Drivetrain/InternalCombustionEngine/RPM”, 
+                      “dp”:{“value”:”2372”, “ts”:”2020-04-15T13:37:00Z”}
+                     }
+            }
+            </code></pre>
+            Error response:
+            <pre><code>
+            HTTP/1.1 401 Unauthorized
+            WWW-Authenticate: Bearer realm="127.0.0.1:1337",
+                                     error="invalid_token",
+                                     error_description="The access token is invalid or expired"	    
+            Content-Type: application/json; charset=utf-8
+	    ...
+            {
+              "error": {"number": 401, "reason": "token_invalid", "message": "Access token is invalid."}
+            }
+            </code></pre>
+	    </p>
           </section>
 
           <section id="https-search-read">
@@ -285,23 +331,14 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <pre><code>
               GET /Vehicle/Cabin/Door?filter={"op-type":"paths", "op-value":"*/*/IsOpen"}   HTTP/1.1
               Host: 127.0.0.1:1337
-              Connection: keep-alive
               Accept: application/json
-              User-Agent: Chrome/34.0.1847.137 Safari/537.36
-              Accept-Encoding: gzip,deflate
-              Accept-Language: en-US,en;q=0.8,de;q=0.6
+	      ...
               </code></pre>
               Response:
               <pre><code>
               HTTP/1.1 200 OK
-              X-Powered-By: Express
-              Vary: Accept-Encoding
               Content-Type: application/json; charset=utf-8
-              ETag: "-32550834"
-              Content-Encoding: gzip
-              Date: Tue, 13 Jun 2014 19:47:27 GMT
-              Connection: keep-alive
-              Transfer-Encoding: chunked
+	      ...
               {
                 “data”:[{“path”:”Vehicle/Cabin/Door/Row1/Left/IsOpen”, “dp”:{“value”:”false”, “ts”:”2020-04-15T13:37:00Z”}}, 
                         {...},… 
@@ -309,6 +346,15 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
                        ]
               }
               </code></pre>
+              Error response:
+              <pre><code>
+              HTTP/1.1 404 Not Found
+              Content-Type: application/json; charset=utf-8
+	      ...
+              {
+                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."}
+              }
+              </code></pre>		  
             </p>
           </section>
 
@@ -321,23 +367,14 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <pre><code>
               GET /Vehicle.Acceleration.Longitudinal?filter={"op-type":"history", "op-value":"P2DT12H"}   HTTP/1.1
               Host: 127.0.0.1:1337
-              Connection: keep-alive
               Accept: application/json
-              User-Agent: Chrome/34.0.1847.137 Safari/537.36
-              Accept-Encoding: gzip,deflate
-              Accept-Language: en-US,en;q=0.8,de;q=0.6
+	      ...
               </code></pre>
               Response:
               <pre><code>
               HTTP/1.1 200 OK
-              X-Powered-By: Express
-              Vary: Accept-Encoding
               Content-Type: application/json; charset=utf-8
-              ETag: "-32550834"
-              Content-Encoding: gzip
-              Date: Tue, 13 Jun 2014 19:47:27 GMT
-              Connection: keep-alive
-              Transfer-Encoding: chunked
+	      ...
               {
                 “data”:{“path”:”Vehicle.Acceleration.Longitudinal”, “dp”:[{“value”:”0.123”, “ts”:”2020-04-15T13:00:00Z”}, ..., {“value”:”0.125”, “ts”:”2020-04-15T13:37:00Z”}]}
               }
@@ -355,23 +392,14 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <pre><code>
               GET /Vehicle/Drivetrain/FuelSystem?filter={"op-type":"metadata", "op-value":"static"}   HTTP/1.1
               Host: 127.0.0.1:1337
-              Connection: keep-alive
               Accept: application/json
-              User-Agent: Chrome/34.0.1847.137 Safari/537.36
-              Accept-Encoding: gzip,deflate
-              Accept-Language: en-US,en;q=0.8,de;q=0.6
+	      ...
               </code></pre>
               Response:
               <pre><code>
               HTTP/1.1 200 OK
-              X-Powered-By: Express
-              Vary: Accept-Encoding
               Content-Type: application/json; charset=utf-8
-              ETag: "-32550834"
-              Content-Encoding: gzip
-              Date: Tue, 13 Jun 2014 19:47:27 GMT
-              Connection: keep-alive
-              Transfer-Encoding: chunked
+	      ...
               {
                 "metadata": {"FuelSystem":{"type":"branch","description":"Fuel system data.","children":{"HybridType, ... }}}
                 "ts": "2020-04-15T13:37:00Z"
@@ -394,11 +422,8 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <pre><code>
               POST /Vehicle/Drivetrain/Transmission/PerformanceMode   HTTP/1.1
               Host: 127.0.0.1:1337
-              Connection: keep-alive
               Accept: application/json
-              User-Agent: Chrome/34.0.1847.137 Safari/537.36
-              Accept-Encoding: gzip,deflate
-              Accept-Language: en-US,en;q=0.8,de;q=0.6
+	      ...
               {
                 "value": "sport"
               }
@@ -406,13 +431,8 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               Successful response:
               <pre><code>
               HTTP/1.1 200 OK
-              Vary: Accept-Encoding
               Content-Type: application/json; charset=utf-8
-              ETag: "-32550834"
-              Content-Encoding: gzip
-              Date: Tue, 07 Apr 1980 00:00:00 GMT
-              Connection: keep-alive
-              Transfer-Encoding: chunked
+	      ...
               {
                 "ts": "2020-04-15T13:37:00Z"
               }
@@ -421,11 +441,9 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <pre><code>
               HTTP/1.1 404 Not Found
               Content-Type: application/json; charset=utf-8
-              Date: Tue, 07 Apr 1980 00:00:00 GMT
-              Connection: keep-alive
-              Transfer-Encoding: chunked
+	      ...
               {
-                "message": "No match for path in tree."
+                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."}
               }
               </code></pre>
             </p>
@@ -573,7 +591,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
             </thead>
             <tbody>
-             <tr><th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-getsuccessresponse">getSuccessResponse</dfn></th></tr>
+             <tr><th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-getsuccessresponse">getSuccessResponse</dfn></th></tr>
              <tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
              <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
              <tr><td><a href="#dfn-value">data</a></td><td>object/array</td><td>Yes</td></tr>
@@ -619,7 +637,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "get",
                 "requestId": "8756",
-                "error": {"number": 404, "reason": "Not found", "message": "No match for path in tree."},
+                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."},
                 "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>
@@ -686,7 +704,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
             </p>
           </section>
 
-          <section id="wss-search-read">
+          <section id="wss-history-read">
             <h2>History Read</h2>
             <p>A client may issue a history read request to access recorded data points. 
                This is realized by adding a "filter" object following the pattern described in the CORE spec, "Filtering" chapter.
@@ -717,7 +735,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
             <h2>Service Discovery Read</h2>
             <p>A client may issue a service discovery read request to access dynamic metadata. 
                A successful response will contain the requested metadata from all nodes of the subtree defined by the subtree root node that is addressed by the path.
-              The static metadata, i. e. ther metadata in the VSS tree, is retrieved by the setting the "op-value" to  "static", and the "op-extra" to relevant static metadata.<br>
+              The static metadata, i. e. the metadata in the VSS tree, is retrieved by the setting the "op-value" to  "static", and the "op-extra" to relevant static metadata.<br>
             </p>
             <p>
               <b>Example:</b><br>
@@ -816,7 +834,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "set",
                 "requestId": "5687",
-                "error": {"number": 404, "reason": "Not found", "message": "No match for path in tree."},
+                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."},
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
@@ -914,7 +932,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
 	  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
 	</thead>
 	<tbody>
-	  <tr><th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-subscriptionnotification">subscriptionNotification</dfn></th></tr>
+	  <tr><th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-subscriptionnotification">subscriptionNotification</dfn></th></tr>
 	  <tr><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
 	  <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
 	  <tr><td><a href="#dfn-value">data</a></td><td>object/array</td><td>Yes</td></tr>
@@ -958,7 +976,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "subscribe",
                 "requestId": "6578",
-                "error": {"number": 404, "reason": "Not found", "message": "No match for path in tree."},
+                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."},
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
@@ -1138,7 +1156,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "unsubscribe",
                 "requestId": "6578",
-                "error": {"number": 404, "reason": "Not found", "message": "No matching subscription Id."},
+                "error": {"number": 404, "reason": "invalid_subscriptionId", "message": "The specified subscription was not found"},
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
@@ -1189,12 +1207,12 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
 	    <td>A JWT formatted security token.</td>
 	  </tr>
 	  <tr>
-	    <td><dfn data-dfn-type="dfn" id="dfn-ts">data</dfn> </td>
+	    <td><dfn data-dfn-type="dfn" id="dfn-data">data</dfn> </td>
 	    <td>object/array</td>
 	    <td>Contains a path and one or more data points.</td>
 	  </tr>
 	  <tr>
-	    <td><dfn data-dfn-type="dfn" id="dfn-ts">dp</dfn> </td>
+	    <td><dfn data-dfn-type="dfn" id="dfn-dp">dp</dfn> </td>
 	    <td>object/array</td>
 	    <td>The data point contains a value and a timestamp.</td>
 	  </tr>
