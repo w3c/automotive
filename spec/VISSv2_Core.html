@@ -203,7 +203,8 @@
           </p>
           <p>Success response:
             <ul>  
-              <li><a>value</a> The value(s) associated with the addressed VSS nodes.</li>
+              <li><a>value</a> The latest available value(s). 
+              Please note that for actuators this does not return a target value that might have been set, but not yet fully actuated.</li>
               <li><a>timestamp</a> The sample time of the value.</li>
             </ul>
           </p>
@@ -212,9 +213,12 @@
         <section id="update">
           <h2><dfn>Update</dfn></h2>
           <p><a>Purpose</a>: Provide altered value to the vehicle signal(s) addressed by the <a>path</a></p>
-          <p>The client MAY have to obtain an authorization token before being able to update the vehicle signal(s).  
-             If the server is able to satisfy the request it MUST return a <a>success response</a>. 
-             If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.</p>
+          <p>The client MAY have to obtain an authorization token before being able to update the vehicle signal(s). 
+          If the server is able to satisfy the request it MUST return a <a>success response</a>, else it MUST return an <a>error response</a>. 
+          Please note that for actuator updates a success response does not guarantee that the actuation attempt 
+          to change to the updated target value has, or will, succeed. 
+          A client may monitor the actuation progress through subsequent reads of the actuator value.
+          </p>
           <p>Arguments, of which path and value are mandatory: 
             <ul>
               <li><a>path</a> The path as defined in VSS to a single node in the VSS tree.</li>
