@@ -554,14 +554,84 @@
 		<li>Request for a single value from multiple nodes.</li>
 		<li>Request for multiple values from multiple nodes.</li>
 		</ul>
-		The syntax to accomodate these four cases have a common structure where a data point ("dp") consists of one or more objects containing a "value" and a timestamp ("ts"), 
+		The syntax to accomodate these four cases have a common structure where a data point ("dp") consists of one or more objects containing a "value" and a timestamp ("ts"),
 		and the complete aggregation ("data"), consists of one or more objects containing a "path" and a data point (dp"). The syntax of the four cases are shown below.
-              <pre><code>
-		“data”:{“path”:”X”, “dp”:{“value”:”Y”, “ts”:”Z”}}
-		“data”:{“path”:”X”, “dp”: [{“value”:”Y1”, “ts”:”Z1”}, …, {“value”:”Yn”, “ts”:”Zn”}]}
-		“data”:[{“path”:”X1”, “dp”:{“value”:”Y1”, “ts”:”Z1”}}, …, {“path”:”Xm”, “dp”:{“value”:”Ym”, “ts”:”Zm”}}]
-		“data”:[{“path”:”X1”, “dp”:[{“value”:”Y11”, “ts”:”Z11”}, …, {“value”:”Y1n”, “ts”:”Z1n”}]}, …, {“path”:”Xm”, “dp”:[{“value”:”Ym1”, “ts”:”Zm1”}, …, {“value”:”Ymn”, “ts”:”Zmn”}]}]
-              </code></pre>
+		<p>Response for a single value from a single node:
+        <pre class="highlight hljs javascript" aria-busy="false">         
+  "data": {
+    "dp": {
+      "ts": "Z",
+      "value": "Y"
+    },
+    "path": "X"
+  }
+   		</pre></p>
+   		<p>Response for multiple values from a single node:
+		<pre class="highlight hljs javascript" aria-busy="false">
+  "data": {
+    "dp": [
+      {
+        "ts": "Z1",
+        "value": "Y1"
+      },
+      {
+        "ts": "Zn",
+        "value": "Yn"
+      }
+    ],
+    "path": "X"
+  }
+		</pre></p>
+		<p>Response for a single value from multiple nodes:
+		<pre class="highlight hljs javascript" aria-busy="false">        
+  "data": [
+    {
+      "dp": {
+        "ts": "Z1",
+        "value": "Y1"
+      },
+      "path": "X1"
+    },
+    {
+      "dp": {
+        "ts": "Zm",
+        "value": "Ym"
+      },
+      "path": "Xm"
+    }
+  ]
+		</pre></p>
+		<p>Response for multiple values from multiple nodes:
+		<pre class="highlight hljs javascript" aria-busy="false">         
+  "data": [
+    {
+      "dp": [
+        {
+          "ts": "Z11",
+          "value": "Y11"
+        },
+        {
+          "ts": "Z1n",
+          "value": "Y1n"
+        }
+      ],
+      "path": "X1"
+    },
+    {
+      "dp": [
+        {
+          "ts": "Zm1",
+          "value": "Ym1"
+        },
+        {
+          "ts": "Zmn",
+          "value": "Ymn"
+        }
+      ],
+      "path": "Xm"
+    }
+  ]
+        </pre></p>
                In the case of a request for multiple values from multiple nodes, the datapoint for different paths may contain single or multiple objects, 
                as the vehicle system may not have multiple values recorded for all requested signals.
 	    </p>
