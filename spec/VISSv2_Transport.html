@@ -287,7 +287,9 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
             JWT tokens will be sent in the <code>Authorization</code> header, following with term <code>Bearer</code> and a space character.
             </p>
             <p>
-            The following example assumes <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds</code> is the actual token:
+            The following example assumes 
+            <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds</code> 
+            is the actual token. A token header can be combined with all types of read requests. 
             <br>
             <b>Example:</b>
             Request:		    
@@ -454,7 +456,9 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
             JWT tokens will be sent in the <code>Authorization</code> header, following with term <code>Bearer</code> and a space character.
             </p>
             <p>
-            The following example assumes <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds</code> is the actual token:
+            The following example assumes 
+            <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds</code> 
+            is the actual token. A token header can be combined with all types of update requests.
             </p>
             <pre><code>
             POST /Vehicle/Drivetrain/Transmission/PerformanceMode   HTTP/1.1
@@ -1006,7 +1010,8 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
             <p>
             If the operation on the VSS node that is addressed requires authorization, 
             then the request must contain the field "authorization" with its value being a JWT token.
-            The token validation must be successful for a subscribeSuccessResponse to be returned, else a subscribeErrorResponse is returned.
+            The token validation must be successful for a subscribeSuccessResponse to be returned, else a subscribeErrorResponse is returned. 
+            An "authorization" key-value pair can be combined with all types of subscription requests.
             </p>
             <p>
               <b>Example:</b><br>
