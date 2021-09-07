@@ -129,6 +129,8 @@
 	  <dd>The message being returned by the server to the client when an error is encountered. These have a common format for all request types</dd>
 	  <dt><dfn data-dfn-type="dfn" id="dfn-error-notification">error notification</dfn></dt>
 	  <dd>The asynchronous message being returned by the server to the client when an error is encountered.</dd>
+	  <dt><dfn data-dfn-type="dfn" id="dfn-data-point">data point</dfn></dt>
+	  <dd>A structure containing one or more value, timestamp tuplets.</dd>
 	  <dt><dfn data-dfn-type="dfn" id="dfn-value">value</dfn></dt>
 	  <dd>The data that is associated with one or more VSS nodes. Regardless of its data type, a single data item is always represented as a string in message payloads.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-timestamp">timestamp</dfn></dt>
@@ -202,9 +204,14 @@
           </ul>
           </p>
           <p>Success response:
-            <ul>  
-              <li><a>value</a> The value(s) associated with the addressed VSS nodes.</li>
-              <li><a>timestamp</a> The sample time of the value.</li>
+            <ul>
+              <li><a>data</a> The data structure contains one or more sets of a path and a data point structure.</li>
+              <li style="margin-left: 40px"><a>path</a> The path for the associated data point structure.</li>
+              <li style="margin-left: 40px"><a>data point</a> A structure containing one or more tuplets of value and timestamp.</li>
+              <li style="margin-left: 80px"><a>value</a> The latest available value. 
+              Please note that also for actuators this returns the current value, and not a target value that might have been set.</li>
+              <li style="margin-left: 80px"><a>timestamp</a> The capture time of the value.</li>
+              <li><a>timestamp</a> The time of the server request execution.</li>
             </ul>
           </p>
         </section>
@@ -212,9 +219,12 @@
         <section id="update">
           <h2><dfn>Update</dfn></h2>
           <p><a>Purpose</a>: Provide altered value to the vehicle signal(s) addressed by the <a>path</a></p>
-          <p>The client MAY have to obtain an authorization token before being able to update the vehicle signal(s).  
-             If the server is able to satisfy the request it MUST return a <a>success response</a>. 
-             If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.</p>
+          <p>The client MAY have to obtain an authorization token before being able to update the vehicle signal(s). 
+          If the server is able to satisfy the request it MUST return a <a>success response</a>, else it MUST return an <a>error response</a>. 
+          Only actuator type signals can be updated.
+          Please note that a success response does not guarantee that the actuation attempt to change to the updated target value has, or will, succeed. 
+          A client may monitor the actuation progress through subsequent reads of the actuator value. 
+          </p>
           <p>Arguments, of which path and value are mandatory: 
             <ul>
               <li><a>path</a> The path as defined in VSS to a single node in the VSS tree.</li>
@@ -224,7 +234,7 @@
           </p>
           <p>Success response:
             <ul>  
-              <li><a>timestamp</a> The time for updating of the vehicle signals.</li>
+              <li><a>timestamp</a> The time of the server request execution. This may not be the same as the final update time of the signal.</li>
             </ul>
           </p>
         </section>
@@ -277,8 +287,12 @@
           <p>Arguments: 
             <ul>
               <li><a>subscriptionId</a> Handle identifying the subscription.</li>
-              <li><a>value</a> The value(s) associated with the node(s) being addressed in the subscribe request.</li>
-              <li><a>timestamp</a> The time for the trigger activation.</li>
+              <li><a>data</a> The data structure contains one or more sets of a path and a data point structure.</li>
+              <li style="margin-left: 40px"><a>path</a> The path for the associated data point structure.</li>
+              <li style="margin-left: 40px"><a>data point</a> A structure containing one or more tuplets of value and timestamp.</li>
+              <li style="margin-left: 80px"><a>value</a> The value associated with the filter expression.</li>
+              <li style="margin-left: 80px"><a>timestamp</a> The capture time of the value.</li>
+              <li><a>timestamp</a> The time of the server subscription execution.</li>
             </ul>
           </p>
         </section>
