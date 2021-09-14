@@ -51,6 +51,64 @@
         }
       };
     </script>
+    <style>
+      table.parameters, table.exceptions {
+          border-spacing: 0;
+          border-collapse:    collapse;
+          margin: 0.5em 0;
+          width:  100%;
+      }
+      table.parameters { border-bottom:  1px solid #90b8de; }
+      table.exceptions { border-bottom:  1px solid #deb890; }
+
+      .parameters th, .exceptions th {
+          color:  inherit;
+          padding:    3px 5px;
+          text-align: left;
+          font-weight:    normal;
+      }
+      .parameters th { color: #fff; background: #005a9c; }
+      .exceptions th { background: #deb890; }
+
+      .parameters td, .exceptions td {
+          padding:    3px 10px;
+          border-top: 1px solid #ddd;
+          vertical-align: top;
+      }
+
+      .parameters tr:first-child td, .exceptions tr:first-child td {
+          border-top: none;
+      }
+
+      .parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {
+          width:  100px;
+      }
+
+      .parameters td.prmType {
+          width:  120px;
+      }
+
+      table.exceptions table {
+          border-spacing: 0;
+          border-collapse:    collapse;
+          width:  100%;
+      }
+
+      .simple {
+        width:100%;
+      }
+
+      thead th{
+        border-bottom: 1px solid black;
+      }
+
+      .simple tbody th{
+        width:33%;
+        background: white;
+        color: black;        
+      }
+      pre { white-space: pre-wrap;}
+  </style>    
   </head>
   <body>
     <section id='abstract'>
