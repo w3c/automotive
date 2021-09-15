@@ -998,6 +998,7 @@
           The <a href="#access-token-def">access token</a> need to be refreshed periodically, which is controlled by the expiry time. If the <a href="#access-grant-token-def">access grant token</a> that the <a href="#client-def">client</a> used to obtain the now expired <a href="#access-token-def">access token</a> is not expired, 
           then the <a href="#client-def">client</a> can revisit the <a href="#access-token-server-def">access token server</a> with this <a href="#access-grant-token-def">access grant token</a> to obtain a new <a href="#access-token-def">access token</a>.<br>
           If the <a href="#access-grant-token-def">access grant token</a> is expired, then the <a href="#client-def">client</a> must obtain a new <a href="#access-grant-token-def">access grant token</a> first, before revisiting the <a href="#access-token-server-def">access token server</a>.<br>
+          In case the server suppports caching of <a href="#access-token-def">access token</a>, after a first suscesfull request, the client can decide to include only the jti claim in following requests.
           For <a href="#client-def">client</a> requests that are not granted due to access control, the VISSv2 server MUST return one of the error codes shown in the table below.<br>
         <table id="errorDefs" class="parameters">
 	  <tbody><tr>
@@ -1008,7 +1009,7 @@
 	  <tr>
 	    <td>401 (Unauthorized)</td>
 	    <td>missing_token</td>
-	    <td>One or more of the requested signals are access controlled, an <a href="#access-token-def">access token</a> must be included in the request.</td>
+	    <td>One or more of the requested signals are access controlled, an <a href="#access-token-def">access token</a> or its jti, must be included in the request.</td>
 	  </tr>
 	  <tr>
 	    <td>406 (Not Acceptable)</td>
@@ -1155,7 +1156,7 @@
           Scope (scp) shall be set to the <a href="#purpose-list-def">purpose list</a> short name, which logically links to the signal scope as defined in the <a href="#purpose-list-def">purpose list</a>.<br>
           <a href="#client-context-def">Client context</a> (clx) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
           Audience (aud) shall be set to the URL "w3.org/VISSv2".<br>
-          JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the <a href="#ecosystem-manager-def">ecosystem manager</a>.
+          JWT ID (jti) shall be set to an unguessable UUID that is unique within the domain controlled by the <a href="#ecosystem-manager-def">ecosystem manager</a>.
           </p>
         </section>
 
