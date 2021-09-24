@@ -389,7 +389,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <b>Example:</b>
               Request:
               <pre><code>
-              GET /Vehicle/Cabin/Door?filter={"op-type":"paths", "op-value":"*/*/IsOpen"}   HTTP/1.1
+              GET /Vehicle/Cabin/Door?filter={"type":"paths", "value":"*/*/IsOpen"}   HTTP/1.1
               Host: 127.0.0.1:1337
               Accept: application/json
 	      ...
@@ -425,7 +425,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <b>Example:</b>
               Request:
               <pre><code>
-              GET /Vehicle.Acceleration.Longitudinal?filter={"op-type":"history", "op-value":"P2DT12H"}   HTTP/1.1
+              GET /Vehicle.Acceleration.Longitudinal?filter={"type":"history", "value":"P2DT12H"}   HTTP/1.1
               Host: 127.0.0.1:1337
               Accept: application/json
 	      ...
@@ -445,12 +445,14 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
           <section id="https-service-discovery-read">
             <h2>Service Discovery Read</h2>
             <p>
-              The service discovery request uses the URL fragment pattern as described in the CORE document to retrieve the static metadata, i. e. the metadata defined in the VSS tree.
-              The dynamic metadata, i. e. any other metadata kept by the vehicle system, is retrieved by the setting the "op-value" to  "dynamic".<br>
+              The service discovery request uses the URL fragment pattern as described in the CORE document to retrieve the static metadata, 
+              i. e. the metadata defined in the VSS tree.
+              The dynamic metadata, i. e. any other metadata kept by the vehicle system, 
+              is retrieved by the setting the "type" to  "dynamic-metadata".<br>
               <b>Example:</b>
               Request:
               <pre><code>
-              GET /Vehicle/Drivetrain/FuelSystem?filter={"op-type":"metadata", "op-value":"static"}   HTTP/1.1
+              GET /Vehicle/Drivetrain/FuelSystem?filter={"type":"static-metadata", "value":""}   HTTP/1.1
               Host: 127.0.0.1:1337
               Accept: application/json
 	      ...
@@ -710,8 +712,10 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
             <h2>Authorized Read</h2>
             <p> If the operation on the VSS node that is addressed requires authorization, 
                then the request must contain the field "authorization" with its value being a JWT token.
-               The token validation must be successful for a <a href="#dfn-getsuccessresponse" class="internalDFN" data-link-type="dfn">getSuccessResponse</a>
-	       to be returned, else a <a href="#dfn-geterrorresponse" class="internalDFN" data-link-type="dfn">getErrorResponse</a> is returned. A token can be combined with all types of read requests.
+               The token validation must be successful for a 
+               <a href="#dfn-getsuccessresponse" class="internalDFN" data-link-type="dfn">getSuccessResponse</a>
+	       to be returned, else a <a href="#dfn-geterrorresponse" class="internalDFN" data-link-type="dfn">getErrorResponse</a> is returned. 
+	       A token can be combined with all types of read requests.
             </p>
             <p>
               <b>Example:</b><br>
@@ -748,8 +752,8 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <pre><code>
               {
                 "action": "get",
-                "path": "Vehicle/Cabin,
-                "filter": {"op-type":"paths", "op-value":["Door/*/*/IsOpen", "DriverPosition"]}
+                "path": "Vehicle/Cabin",
+                "filter": {"type":"paths", "value":["Door/*/*/IsOpen", "DriverPosition"]}
                 "requestId": "5688"
               }
               </code></pre>
@@ -780,7 +784,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "get",
                 "path": "Vehicle.Acceleration.Longitudinal",
-                "filter": {"op-type":"history", "op-value":"P2DT12H"}
+                "filter": {"type":"history", "value":"P2DT12H"},
                 "requestId": "5688"
               }
               </code></pre>
@@ -788,8 +792,8 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <pre><code>
               {
                 "action": "get",
-                “data”:{“path”:”Vehicle.Acceleration.Longitudinal”, “dp”:[{“value”:”0.123”, “ts”:”2020-04-15T13:00:00Z”}, ..., {“value”:”0.125”, “ts”:”2020-04-15T13:37:00Z”}]},
-                "requestId": "5688",
+                “data”: {“path”: ”Vehicle.Acceleration.Longitudinal”, “dp”: [{“value”: ”0.123”, “ts”: ”2020-04-15T13:00:00Z”}, {“value”: ”0.125”, “ts”: ”2020-04-15T13:37:00Z”}]},
+                "requestId": "5688"
               }
               </code></pre>
             </p>
@@ -798,8 +802,10 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
           <section id="wss-service-discovery-read">
             <h2>Service Discovery Read</h2>
             <p>A client may issue a service discovery read request to access dynamic metadata. 
-               A successful response will contain the requested metadata from all nodes of the subtree defined by the subtree root node that is addressed by the path.
-              The static metadata, i. e. the metadata in the VSS tree, is retrieved by the setting the "op-value" to  "static", and the "op-extra" to relevant static metadata.<br>
+               A successful response will contain the requested metadata from all nodes of the subtree defined by 
+               the subtree root node that is addressed by the path.
+              The static metadata, i. e. the metadata in the VSS tree, is retrieved by the setting the "type" to  "static-metadata", 
+              and the "value" to relevant static metadata.<br>
             </p>
             <p>
               <b>Example:</b><br>
@@ -808,7 +814,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "get",
                 "path": "Vehicle/Drivetrain/FuelSystem",
-                "filter":"{"op-type":"metadata", "op-value":"dynamic", "op-extra":["availability", "validate"]}
+                "filter":{"type":"dynamic-metadata", "value":["availability", "validate"]}
                 "requestId": "5687"
               }
               </code></pre>
@@ -817,7 +823,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "get",
                 "requestId": "5687",
-                "metadata": {"FuelSystem":{"availability":"available","validate":"read-write","children":{"HybridType, ... }}}
+                "metadata": {"FuelSystem":{"availability":"available","validate":"read-write","children":{"HybridType", ... }}}
                 "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>
@@ -1023,7 +1029,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "subscribe",
                 "path": "Vehicle/Drivetrain/FuelSystem/Level",
-                "filter": {"op-type":"capture", "op-value":"time-based", "op-extra":{"period":"3"}}
+                "filter": {"type":"timebased", "value":{"period":"3"}}
                 "requestId": "6578"
               }
                </code></pre>
@@ -1050,9 +1056,10 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                “data”:{“path”:”Vehicle/Drivetrain/FuelSystem/Level”, 
-                        “dp”:{“value”:”50”, “ts”:”2020-04-15T13:37:00Z”}
-                       }
+                “data”: {“path”: ”Vehicle/Drivetrain/FuelSystem/Level”, 
+                        “dp”: {“value”: ”50”, “ts”: ”2020-04-15T13:37:00Z”}
+                },
+                "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
               Error notification:
@@ -1082,7 +1089,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "subscribe",
                 "path": "Vehicle/Drivetrain/FuelSystem/Level",
-                "filter": "{"op-type":"capture", "op-value":"range", "op-extra":[{"logic-op":"gt", "boundary":"49"}, {"logic-op":"lt", "boundary":"51"}]},
+                "filter": {"type":"range", "value":[{"logic-op":"gt", "boundary":"49"}, {"logic-op":"lt", "boundary":"51"}]},
                 "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds",
                 "requestId": "6578"
               }
@@ -1101,9 +1108,10 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                “data”:{“path”:”Vehicle/Drivetrain/FuelSystem/Level”, 
-                        “dp”:{“value”:”50”, “ts”:”2020-04-15T13:37:00Z”}
-                       }
+                “data”: {“path”: ”Vehicle/Drivetrain/FuelSystem/Level”, 
+                        “dp”: {“value”: ”50”, “ts”: ”2020-04-15T13:37:00Z”}
+                },
+                "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
             </p>
@@ -1122,7 +1130,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "subscribe",
                 "path": "Vehicle/Drivetrain/FuelSystem/Level",
-                "filter": "{"op-type":"capture", "op-value":"curve-logging", "op-extra":{"max-err":"0.5", "buf-size":"100"}},
+                "filter": {"type":"curvelog", "value":{"maxerr":"0.5", "bufsize":"100"}},
                 "requestId": "6578"
               }
                </code></pre>
@@ -1140,9 +1148,10 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                “data”:{“path”:”Vehicle/Drivetrain/FuelSystem/Level”, 
-                        “dp”:[{“value”:”50”, “ts”:”2020-04-15T13:00:00Z”}, ..., {“value”:”25”, “ts”:”2020-04-15T13:37:00Z”}]
-                       }
+                “data”:{“path”: ”Vehicle/Drivetrain/FuelSystem/Level”, 
+                        “dp”:[{“value”: ”50”, “ts”: ”2020-04-15T13:00:00Z”}, ..., {“value”: ”25”, “ts”: ”2020-04-15T13:37:00Z”}]
+                },
+                "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
             </p>
@@ -1435,9 +1444,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
   </table>
         </section>
       </section>
-    </section>
 
-    <section id="tof" class="appendix"></section>
-
+    <div id="tof" class="appendix"></div>
   </body>
 </html>

@@ -468,43 +468,54 @@
 	  </ul>
 	  The JSON expression has the object format as shown below. For the case of an optional second object of this type, these are enclosed in an array expression.<br>
 	  <ul>
-	  <li>{"op-type":"&lt;x&gt;", "op-value":"&lt;y&gt;", "op-extra":{&lt;z&gt;}}</li>
+	  <li>{"type":"&lt;x&gt;", "value":"&lt;y&gt;"}</li>
 	  </ul>
 	  where<br>
 	  <ul>
-	  <li><b>op-type</b>: the key name for the filter operation type, which can have one of the values:
-	  <ul>
-	  <li>paths: the filtering is applied to the sub tree addressed by the vsspath,</li>
-	  <li>history: the filtering is applied to the historic data that the server may have available,</li>
-	  <li>capture: the filtering is applied to the data of the response to the request.</li>
-	  <li>metadata: the response contains the VSS metadata of the addressed sub-tree.</li>
-	  </ul></li>
-	  <li><b>op-value</b>: the key name for the filter operation, which can have one of the values:
+	  <li><b>type</b>: the key name for the filter operation type, which can have one of the values:
 	  <ul>
 	  <li>paths:
 	  <ul>
 	  <li>one or more relative paths. In the case of several paths an array expression shall be used.</li>
 	  </ul></li>
+	  <li>timebased:
+	  <ul>
+	  <li>data is captured repeatedly with a fixed period time.</li>
+	  </ul></li>
+	  <li>range:
+	  <ul>
+	  <li>data is captured when values are in the given range.</li>
+	  </ul></li>
+	  <li>change:
+	  <ul>
+	  <li>data is captured when the value since last capture has changed more than a fixed value.</li>
+	  </ul></li>
+	  <li>curvelog:
+	  <ul>
+	  <li>captured data is processed according to the curve logging algorithm before being sent to client.</li>
+	  </ul></li>
 	  <li>history:
 	  <ul>
 	  <li>the time period from current time and backwards in time.</li>
 	  </ul></li>
-	  <li>capture:
+	  <li>static-metadata:
 	  <ul>
-	  <li>time-based: data captures are done with a fixed period time,</li>
-	  <li>range: data captures are done when values are in the given range,</li>
-	  <li>change: data capture is done when the value since last capture has changed more than a fixed value,</li>
-	  <li>curve-loggging: captured data are processed according to the curve logging algorithm before being sent to client.</li>
+	  <li>the response contains the VSS metadata of the addressed sub-tree.</li>
+	  </ul></li>
+	  <li>dynamic-metadata:
+	  <ul>
+	  <li>the response contains metadata additional to the VSS specification.</li>
 	  </ul></li>
 	  </ul></li>
-	  <li><b>op-extra</b>: the key name for the optional configuration data that the filter operation requires. The op-extra data varies depending on the op-type and op-value, 
+	  <li><b>value</b>: the key name for the optional configuration data that the filter operation requires. 
+	  The value data varies depending on the type, 
 	  is enclosed in one object, or optionally an array of two objects, and is described in the following chapters.</li>
 	  </ul>
-	  In the JSON object, the key-value pairs "op-type" and "op-value" must always be present, while the "op-extra" presence depends on the "op-type" value.
-	  The JSON expression may consist of maximum one object with op-type "paths", plus maximum one object with op-type "capture", or "history", 
+	  In the JSON object, the key-value pairs "type" and "value" must always be present.
+	  The JSON expression may consist of maximum one object with type "paths", plus maximum one object with any of the other types, 
 	  which are then logically combined as with an AND operator.<br>
 	  The server SHALL support all combinations up to this maximum.<br>
-	  The capture types (time-based, range, change, curve-logging) are only applicable for subscription requests. 
+	  The types time-based, range, change, and curvelog are only applicable for subscription requests. 
 	  Subscription requests are only supported by the websocket transport protocol.<br>
 	  The restriction on how many objects that can be combined is also set by the URL size restriction on 1k characters (*).<br>
 	  (*) 1k is the "conservative limit, which should always be supported, a more liberal limit is 2k, which is supported in most cases.
@@ -514,14 +525,16 @@
         <h2>Paths Filter Operation</h2>
 		<p>
 		The paths filter operation is used when a single request is used to retrieve signal data from multiple data points in the VSS tree. 
-		The vsspath shall point to the last node in the tree that is common for the relative paths in the filter op-value, that start off from this node. 
-		If the end point of a path in the filter op-value is a branch, then all leaf nodes in the sub-tree below this branch are addressed.
-		A path in the filter op-value may contain the wildcard character (*) as a representative for a path segment.<br>
-		Every path element in an op-value array must address at least one node in the tree, or else an error response is returned.<br>
-		If the path in the filter op-value ends with one or more wildcards, then only the leaf nodes with path segments matching the number of wildcards are addressed. 
-		Different elements of the op-value array may address the same node, in which case it is the responsibility of the server to resolve this to a singleton in the notifications.<br>
-		If the op-value contains a single path then it shall not be enclosed with JSON array brackets.<br>
-		The op-extra key-value pair is not used in paths filter operations.<br>
+		The vsspath shall point to the last node in the tree that is common for the relative paths in the filter value, 
+		that start off from this node. 
+		If the end point of a path in the filter value is a branch, then all leaf nodes in the sub-tree below this branch are addressed.
+		A path in the filter value may contain the wildcard character (*) as a representative for a path segment.<br>
+		Every path element in an value array must address at least one node in the tree, or else an error response is returned.<br>
+		If the path in the filter value ends with one or more wildcards, 
+		then only the leaf nodes with path segments matching the number of wildcards are addressed. 
+		Different elements of the value array may address the same node, 
+		in which case it is the responsibility of the server to resolve this to a singleton in the notifications.<br>
+		If the value contains a single path then it shall not be enclosed with JSON array brackets.<br>
 		Examples can be found in the TRANSPORT specification.
 		</p>
         </section>
@@ -533,67 +546,107 @@
 		However, it may for various reasons at least temporarily have access to also older data points. 
 		A scenario where this could occur is when a vehicle temporarily loses its connectivity, 
 		maybe because it enters into a tunnel. Assuming that the vehicle detects the loss of connectivity, it may then start to record data. 
-		If recorded, this data may then be accessed using the history op-type. 
+		If recorded, this data may then be accessed using the history type. 
 		The vehicle system makes its own decision whether to record any data, and for how long this data will be kept in storage. 
 		The period goes from current time, excluding the current value, and backwards in time. 
 		The number of data points in the response depends on the period size, and the sample frequency. 
-		The latter can not be set by the client, so the client should have some understanding of its value to estimate the amount of data it may receive. 
+		The latter can not be set by the client, 
+		so the client should have some understanding of its value to estimate the amount of data it may receive. 
 		A request for historic data will return a Not found error (404) if historic data is unavailable. 
-		The period must conform to the [[ISO8601]] duration format, expressed with days, hour, minute, and second data, i. e. "op-value": "PdddDThhHmmMssS".
+		The period must conform to the [[ISO8601]] duration format, expressed with days, hour, minute, 
+		and second data, i. e. "value": "PdddDThhHmmMssS".
 		The number of days shall be less than 999. Only a single period can be expressed.<br>
-		The op-extra key-value pair is not used in history filter operations.<br>
 		Examples can be found in the TRANSPORT specification.
 		</p>
         </section>
 
-     <section id="capture-filter-operation">
-          <h2>Capture Filter Operation</h2>
+     <section id="timebased-filter-operation">
+          <h2>Time Based Filter Operation</h2>
 		<p>
-		The capture filter operation is used when the client want to restrict the amount of data that will be returned. 
-		The op-extra key-value pair is used in capture filter operations, as described for the following capture types below.
-		<ul>
-		<li>time-based: the op-extra contains the period time X in between captures, {"period":"X"}.</li>
-		<li>range: the op-extra contains the range boundary, and the logical operator, {"logic-op":"X", "boundary": "Y"}, 
-		where X is one of the supported logical operators (**), and Y boundary of the range.
-		The op-extra may be an array of two of these objects, combined through a logical AND to support expressions of a bounded range. 
-		A range event is triggered both when the filter expression becomes "true", and when it becomes "false".</li>
-		<li>change: the op-extra contains the the logical operator for comparison of previous and current values, {"logic-op":"X", "diff":"Y"}, 
-		where X is one of the supported logical operators (**), and Y is the value of the required change.</li>
-		<li>curve-logging: the op-extra contains the maximum error limit, and the buffer size, {"max-err": "X", "buf-size":"Y"}, 
-		where X is a float value setting the max allowed error between any data sample and the simplified curve, 
-		and Y is the number of buffer elements. Data is processed when the buffer becomes full, and the essential data points are returned as a time series per signal. 
-		For more information on curve logging, please see <a href="https://github.com/Geotab/curve">Curve logging library</a>.</li>
-		</ul>
-		(**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
-		where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than", "lte" is "less than or equal".<br>
+		The value contains the period time X in between captures, {"period":"X"}.
+		X is an integer and represents the period time in milliseconds.
 		Examples can be found in the TRANSPORT specification.
                </p>
         </section>
  
-   <section id="metadata-request">
-     <h2>Metadata Filter Operation</h2>
+     <section id="range-filter-operation">
+          <h2>Range Filter Operation</h2>
+		<p>
+		The value contains the range boundary, and the logical operator, {"logic-op":"X", "boundary": "Y"}, 
+		where X is one of the supported logical operators (**), and Y is the boundary of the range.
+		The value may be an array of two of these objects, combined through a logical AND to support expressions of a bounded range. 
+		A range event is triggered both when the filter expression becomes "true", and when it becomes "false".<br><br>
+		(**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
+		where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than", 
+		"lte" is "less than or equal".<br>
+		Examples can be found in the TRANSPORT specification.
+               </p>
+        </section>
+ 
+     <section id="change-filter-operation">
+          <h2>Change Filter Operation</h2>
+		<p>
+		The value contains the logical operator for comparison of previous and current values, {"logic-op":"X", "diff":"Y"}, 
+		where X is one of the supported logical operators (**), and Y is the value of the required change.<br><br>
+		(**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
+		where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", 
+		"lt" is "less than", "lte" is "less than or equal".<br>
+		Examples can be found in the TRANSPORT specification.
+               </p>
+        </section>
+ 
+     <section id="curvelog-filter-operation">
+          <h2>Curve logging Filter Operation</h2>
+		<p>
+		The value contains the maximum error limit, and the buffer size, {"maxerr": "X", "bufsize":"Y"}, 
+		where X is a float value setting the max allowed error between any data sample and the simplified curve, 
+		and Y is the number of buffer elements. Data is processed when the buffer becomes full, 
+		and the essential data points are returned as a time series per signal.<br>
+		Examples can be found in the TRANSPORT specification.
+               </p>
+        </section>
+ 
+   <section id="static-metadata-request">
+     <h2>Static Metadata Filter Operation</h2>
 	<p>
-	Metadata requests are used when the client instead of the data associated to VSS node(s) wants to retrieve meta data associated to the VSS node(s).<br>
-	Two categories of metadata are defined, "static-metadata" and "dynamic-metadata". 
-	The former contains the metadata found in the VSS tree as specified on the VSS repo, while the latter contains metadata that is additional to the referred VSS specification.<br>
-	The client selects which of the categories that is requested by setting the "op-value" to either "static" or "dynamic".
-	These requests are sometimes referred to as a signal discovery request.
-	The "dynamic-metadata" may change over time, which is not the case for the "static-metadata".
-	If the "op-extra" key value pair is not used, then all metadata that the server can retrieve for the respective category is returned, 
-	while if it used then only the selected metadata as expressed in the "op-extra" is returned. 
+	The static metadata request is used when the client instead of the data associated to VSS node(s) 
+	wants to retrieve meta data associated to the VSS node(s).<br>
+	The metadata is retrieved from the VSS tree that is deployed in the vehicle.
+	This type of request is sometimes referred to as a signal discovery request.
+	If the "value" key contains an empty string, then all metadata that the server can retrieve for the for the addressed node(s) are returned, 
+	while if it contains metadata key name(s) then only the selected metadata is returned. 
 	If the expression contains multiple metadata types, then they are represented as array elements. <br><br>
-	For the set of static metadata key names, see the <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a>.<br><br>
-	The set of dynamic metadata keynames are found in the list below. If a corresponding value to a key name is not present, the key-value pair is omitted in the response.
+	For the set of static metadata key names, 
+	see the <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a>.<br>
+	The vsspath in the request may point to either a leaf node, or to a branch node. 
+	In the latter case then the response will contain static metadata from the entire sub-tree having this branch as the root.<br>
+	A static metadata request can be combined with a paths filter operation to address multiple nodes, 
+	but cannot be combined with any other filter type.<br>
+	The response is a JSON formatted object with corresponding key-value pairs per addressed node.<br>
+	Examples can be found in the TRANSPORT specification.
+	</p>
+    </section>
+ 
+   <section id="dynamic-metadata-request">
+     <h2>Dynamic Metadata Filter Operation</h2>
+	<p>
+	Dynamic metadata requests are used when the client instead of the data associated to VSS node(s) wants to 
+	retrieve metadata that is additional to the VSS specification.<br>
+	The dynamic metadata may change over time, which is not the case for the static metadata.
+	If the "value" key contains an empty string, then all metadata that the server can retrieve for the for the addressed node(s) are returned, 
+	while if it contains metadata key name(s) then only the selected metadata is returned. 
+	If the expression contains multiple metadata types, then they are represented as array elements. <br><br>
+	The set of dynamic metadata keynames are found in the list below.
 	<ul>
-	<li>sample-rate: the native capture frequency in Hz that is used by the vehicle system.</li>
-	<li>capture-filter: the capture filter operation that the vehicle system is configured for.</li>
-	<li>availability: the current availability of a signal. The possible values are ["available", "unavailable", "error"]. 
+	<li>samplerate: the native capture frequency in Hz that is used by the vehicle system.</li>
+	<li>availability: the current availability of the signal(s). The possible values are ["available", "unavailable", "error"]. 
 	The unavailable status is returned when the signal is inaccessible due to the current vehicle state. 
 	The error status is returned if the subsystem represented by the signal exists in the vehice, but is broken and requires repair.</li>
 	<li>validate: the access control rule that is applied to the node and its sub-tree. 
 	The server response shall conform to the inheritance rules, see the access control selection chapter.</li>
 	</ul>
-	A metadata request can be combined with a paths filter operation to address multiple nodes, but not with a capture filter operation.<br>
+	A dynamic metadata request can be combined with a paths filter operation to address multiple nodes, 
+	but not with any other filter type.<br>
 	The response is a JSON formatted object with corresponding key-value pairs per addressed node.<br>
 	Examples can be found in the TRANSPORT specification.
 	</p>
@@ -712,11 +765,14 @@
      <section id="subscription-notification-triggering">
           <h2>Subscription Notification Triggering</h2>
 	    <p>
-	    A subscription request must always contain a capture filter operation that describes the trigger event that leads to that the server dispatches an asynchronous notification message.
-	    For the capture types "range" or "change", the triggering is dependent on the signal value. 
-	    When the request addresses multiple signals, the triggering condition shall only be evaluated on one of the signals, which is the first signal in the op-value array of paths. 
+	    A subscription request must always contain a filter operation that describes the trigger event that leads to 
+	    that the server dispatches an asynchronous notification message.
+	    For the filter types "range" or "change", the triggering is dependent on the signal value. 
+	    When the request addresses multiple signals, the triggering condition shall only be evaluated on one of the signals, 
+	    which is the first signal in the value array of paths. 
 	    The first path in the array must therefore not contain wildcards to address multiple signals. 
-	    In this case one of the path addresses in the wildcard expression must be selected as the first array element, which can then be followed by the wildcard expression. 
+	    In this case one of the path addresses in the wildcard expression must be selected as the first array element, 
+	    which can then be followed by the wildcard expression. 
 	    The duplicate reference to one signal that this leads to shall be resolved by the server to a singleton in the notifications.
 	    </p>
      </section>
@@ -1293,8 +1349,8 @@
             "long": "Fuel level and remaining range.", 
             "contexts":[{"user":"Independent","app":["OEM", "Third party"], "device":"Cloud"}, {"user":"Owner", "app":"Third party", "device":"Nomadic"}, {"user":"Driver", "app":"OEM", "device":"Vehicle"}], 
             "signal_access":
-                [{"path": "Vehicle.Powertrain.EnergyStorage.FuelSystem.Level", "access_mode": "read-only"}, 
-                {"path": "Vehicle.Powertrain.EnergyStorage.FuelSystem.Range", "access_mode": "read-only"}] 
+                [{"path": "Vehicle.Powertrain.FuelSystem.Level", "access_mode": "read-only"}, 
+                {"path": "Vehicle.Powertrain.FuelSystem.Range", "access_mode": "read-only"}] 
             }, 
             {}] 
         }
@@ -1320,8 +1376,8 @@
             [{"contexts":[ { "user":["Driver", "Passenger"], "app":"Third party", "device":"Vehicle"}, { } ], 
             "no_access":
                 ["Vehicle.Drivetrain.Transmission.Speed", 
-                "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Latitude", 
-                "Vehicle.Cabin.Infotainment.Navigation.CurrentLocation.Longitude"]
+                "Vehicle.CurrentLocation.Latitude", 
+                "Vehicle.CurrentLocation.Longitude"]
             }, 
             {}] 
         }
