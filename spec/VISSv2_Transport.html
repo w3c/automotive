@@ -312,7 +312,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               <b>Example:</b>
               Request:
               <pre><code>
-              GET /Vehicle/Drivetrain/InternalCombustionEngine/RPM   HTTP/1.1
+              GET /Vehicle/Cabin/SeatPosCount   HTTP/1.1
               Host: 127.0.0.1:1337
               Accept: application/json
 	      ...
@@ -323,8 +323,8 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                “data”:{“path”:”Vehicle/Drivetrain/InternalCombustionEngine/RPM”, 
-                        “dp”:{“value”:”2372”, “ts”:”2020-04-15T13:37:00Z”}
+                “data”:{“path”:”Vehicle.Cabin.SeatPosCount”, 
+                        “dp”:{“value”:[”2”, "3", "2"], “ts”:”2020-04-15T13:37:00Z”}
                        }
               }
               </code></pre>

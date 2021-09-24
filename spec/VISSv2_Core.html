@@ -231,9 +231,24 @@
         To exemplify this, the path expression from traversing the nodes Vehicle, Car, Engine, RPM can  be "Vehicle.Car.Engine.RPM", 
         or "Vehicle/Car/Engine/RPM". A mix of delimiters in the same path expression SHOULD be avoided.<br>
         The path may contain the wildcard character (*) as a representative for one path segment. 
-        It MUST not be combined with other characters to express the path segment, such as "Vehicle.C*". Multiple wildcards may be used in the same path, such as "Vehicle.Cabin.Door.*.*.IsOpen".
+        It MUST not be combined with other characters to express the path segment, such as "Vehicle.C*". 
+        Multiple wildcards may be used in the same path, such as "Vehicle.Cabin.Door.*.*.IsOpen".
         </p>
         <p>The <dfn>query</dfn> contains further information related to the request, see <a href="#filter-request"></a>.
+      </section>
+      <section id="data-representation">
+        <h2>Data representation</h2>
+        <p>
+          This specification excludes "number" and "null" from the list of supported values that [[RFC8259]] declares. 
+          The supported JSON value alternatives are thus:<br>
+          value = false / true / object / array / string<br>
+          A consequence of this is that number values MUST be represented as strings. 
+          The format of these number strings MUST follow the number formats as specified in [[RFC8259]].
+          If data is represented incorrectly, then an error message with number 400, and reason "Bad data" MUST be returned. 
+          A specific case of this is if an array of data elements does not contain the number expected by the server. 
+          The server MAY then respond successfully, and follow a proprietary recovery policy, 
+          or it MAY respond with error number 400, and reason "Invalid array size".
+        </p>
       </section>
     </section>
 
