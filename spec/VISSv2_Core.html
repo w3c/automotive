@@ -1037,23 +1037,23 @@
           <ul>
             <li>Token signature.</li>
             <li>Token expiry time.</li>
-            <li>Token scope.</li>
-            <li>Token access mode.</li>
+            <li>Token signal scope.</li>
+            <li>Token access permission.</li>
           </ul>
           If any of the mentioned validations above fail, the server MUST reject the access request.<br>
           Token signature validation may be delegated to the <a href="#access-token-server-def">access token server</a>, if a secure communication link can be established.
           If not delegated, then a preprovisioned common secret may be shared with the <a href="#access-token-server-def">access token server</a>, or other PKI based solutions may be used.<br>
           The VISSv2 server SHALL have access to a secure system time, that cannot be modified by actors without system acknowledged credentials. 
           Time validation may allow for a time synchronization inaccuracy in the range of tens of seconds.<br>
-          A successful scope validation requires that all the nodes addressed by the path in the request MUST 
-          be matched by the paths associated with the <a>purpose</a> in the scope claim of the <a href="#access-token-def">access token</a>.<br>
+          A successful signal scope validation requires that all the nodes addressed by the path in the request MUST 
+          be matched by the paths associated with the <a>purpose</a> in the purpose claim of the <a href="#access-token-def">access token</a>.<br>
           Validation of the <a href="#device-roles-def">device</a> and <a href="#application-roles-def">app </a>roles may involve MAC address checks, or message round-trip measurements.<br>
-          The access mode validation MUST have the outcome shown in the table below, 
-          when comparing the type of the <a href="#client-def">client</a> request with the access control mode in the <a href="#purpose-list-def">purpose list</a> that is associated to the scope claim in the <a href="#access-token-def">access token</a>.
+          The access permission validation MUST have the outcome shown in the table below, 
+          when comparing the type of the <a href="#client-def">client</a> request with the access control mode in the <a href="#purpose-list-def">purpose list</a> that is associated to the purpose claim in the <a href="#access-token-def">access token</a>.
           If the <a href="#client-def">client</a> request contains several signals, and one fails the validation, then the entire request MUST be rejected.<br><br>
           <table class="simple">
           <thead>
-            <tr><th>Validation</th><th>Read-only</th><th>Read-write</th></tr>
+            <tr><th>Permission</th><th>read-only</th><th>read-write</th></tr>
           </thead>
           <tbody>
             <tr>
@@ -1213,7 +1213,7 @@
           {
             "iat": 1609452095,
             "exp": 1609459199,
-            "scp": "PurposeX",
+            "pur": "PurposeX",
             "clx": "user+app+dev",
             "aud": "w3.org/VISSv2",
             "jti": "5967e93f-40f9-5f39-893e-cc0da890db2e"
@@ -1223,7 +1223,7 @@
 	  Type (typ) shall be set to "JWT".<br>
           Issued at (iat) shall be set to the time of token issuance, in Unix time.<br>
           Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
-          Scope (scp) shall be set to the <a href="#purpose-list-def">purpose list</a> short name, which logically links to the signal scope as defined in the <a href="#purpose-list-def">purpose list</a>.<br>
+          Purpose (pur) shall be set to the <a href="#purpose-list-def">purpose list</a> short name, which logically links to the signal scope as defined in the <a href="#purpose-list-def">purpose list</a>.<br>
           <a href="#client-context-def">Client context</a> (clx) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
           Audience (aud) shall be set to the URL "w3.org/VISSv2".<br>
           JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the <a href="#ecosystem-manager-def">ecosystem manager</a>.
@@ -1357,15 +1357,15 @@
         Each entry in the list contains a short description of the purpose, which is what the <a href="#client-def">client</a> shall provide as input to its request for an <a href="#access-token-def">access token</a>. 
         There is also a long purpose description, which may be used in the dialogue for consent, if needed. Then there is a list of the <a href="#client-context-def">client context</a>, i. e. the sub-actor role triplet, 
         that can be granted this access, and last there is a list of  the signals that the client is given access to for this purpose, 
-        with the allowed access mode. The list shall use a JSON format as shown in the example below.
+        with the allowed access permission. The list shall use a JSON format as shown in the example below.
         <pre><code>
         {"purposes":
             [{"short": "fuel-status", 
             "long": "Fuel level and remaining range.", 
             "contexts":[{"user":"Independent","app":["OEM", "Third party"], "device":"Cloud"}, {"user":"Owner", "app":"Third party", "device":"Nomadic"}, {"user":"Driver", "app":"OEM", "device":"Vehicle"}], 
             "signal_access":
-                [{"path": "Vehicle.Powertrain.FuelSystem.Level", "access_mode": "read-only"}, 
-                {"path": "Vehicle.Powertrain.FuelSystem.Range", "access_mode": "read-only"}] 
+                [{"path": "Vehicle.Powertrain.FuelSystem.Level", "access_permission": "read-only"}, 
+                {"path": "Vehicle.Powertrain.FuelSystem.Range", "access_permission": "read-only"}] 
             }, 
             {}] 
         }
@@ -1409,12 +1409,12 @@
         <em>This section is non-normative.</em><br>
         This chapter describes a complementary functionality to the access control model, the ability to apply it selectively to parts of the tree. 
         It can be used in cases where not all nodes of the tree are believed to require access control, 
-        or read-only is sufficient instead of read-write access control for certain nodes.<br>
-        This functionality requires that the <a href="#access-token-def">access token</a> specifies whether the access granted to the <a href="#client-def">client</a> to a signal is read-only, or read-write.
+        or where write-only validation is sufficient instead of read-write validation for certain nodes.<br>
+        This functionality requires that the <a href="#access-token-def">access token</a> specifies whether the access permission granted to the <a href="#client-def">client</a> to a signal is read-only, or read-write.
         It also requires that the metadata for the node in the VSS tree contains data specifying whether the access control verification should be carried out only for write request, 
         or for both read and write requests.<br>
-        The former requirement is realized as described in earlier chapters by that the <a href="#access-token-def">access token</a> scope claim links to a <a>purpose</a> 
-        where the signals and their respective access mode are found.<br>
+        The former requirement is realized as described in earlier chapters by that the <a href="#access-token-def">access token</a> 
+        purpose claim links to a <a>purpose</a> where the signals and their respective access permission are found.<br>
         The latter requirement is realized by adding to nodes in the VSS tree the key-value pair "validate":'access-control-mode', 
         where 'access-control-mode' is either the string "write-only", or "read-write".<br>
         <figure id="fig-access-control-selection">
