@@ -106,7 +106,8 @@
       this information in JSON format. The service may reside in the
       vehicle for applications needing to analyse a high volume of
       realtime data or on servers in the internet with information
-      already brought off the vehicle.</p>
+      already brought off the vehicle.
+      </p>
 
       <p>This specification describes a second version of VISS which
       has been implemented and deployed on production vehicles. It
@@ -117,17 +118,24 @@
       different use cases. HTTP is now supported with additional
       protocols used within the automotive industry being evaluated
       for inclusion. Subscription capabilities have been improved and
-      access control has been added.</p>
+      access control has been added.
+      </p>
       
       <p>
-        There are two parts to this specification, Core and Transport. This document, the VISS version 2 TRANSPORT specification, describes the VISSv2 transport protocols, and the mapping of the message layer on these transports. The companion specification VISSv2 CORE describes the messaging layer.</p>
+        There are two parts to this specification, Core and Transport. This document, the VISS version 2 TRANSPORT specification, 
+        describes the VISSv2 transport protocols, and the mapping of the message layer on these transports. 
+        The companion specification VISSv2 CORE describes the messaging layer.
+      </p>
     </section>
     <section id='sotd'></section>
 
     <section id="introduction">
       <h2>Introduction</h2>
-      <p>This document describes the transport bindings of the Vehicle Service Interface. The split between transport bindings and messaging layer specifications improves readability and simplify
-extending VISSv2 to further transports in the future. The VISSv2 supports multiple transport bindings, namely HTTPS and secure WebSockets.</p>
+      <p>This document describes the transport bindings of the Vehicle Information Service Specification, version 2. 
+      The split between transport bindings and messaging layer specifications improves readability and simplifies 
+      extending the specification to further transports in the future. 
+      This specification supports multiple transport bindings, namely HTTPS, secure WebSockets, and MQTT.
+      </p>
     </section>
 
     <section id="conformance"></section>
@@ -135,8 +143,9 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
     <section id="terminology">
       <h2>Terminology</h2>
       <p>The acronym 'VISSv2' is used to refer to this document, the VISS version 2 specification.
- The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance.
- The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.</p>
+         The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance.
+         The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.
+      </p>
     </section>
 
     <section id="transport-common-defs">
@@ -264,12 +273,17 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
 
       <section id="transport-payload">
         <h2>Transport Payload</h2>
-        <p>The payload SHALL have JSON format. See <a href='#json-def'></a> for the payload format of the messages for the different transport protocols.</p>
+        <p>The payload SHALL have JSON format. 
+        See <a href='#json-def'></a> for the payload format of the messages for the different transport protocols.
+        </p>
       </section>
 
       <section id="authorization">
         <h2>Authorization</h2>
-          <p>Clients must provide a token to the server in order to verify that it is correctly authorized for the service it requests (see CORE document).Tokens are integrated in HTTP requests in the <code>Authorization</code> header. For WebSockets requests an optional <code>authorization</code> property in the payload can be used.</p>
+          <p>Clients must provide a token to the server in order to verify that it is correctly authorized for the service it requests 
+          (see CORE document).Tokens are integrated in HTTP requests in the <code>Authorization</code> header. 
+          For WebSockets requests an optional <code>authorization</code> property in the payload can be used.
+          </p>
       </section>
     </section>
 
@@ -281,7 +295,10 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
 
       <section id="https">
         <h2>HTTPS</h2>
-        <p>The message data components described in the CORE document are in the first hand mapped to required HTTP parameters, and only when there is no appropriate mapping it is mapped to the payload. The subscribe/unsubscribe messages are not supported by this transport protocol.</p>
+        <p>The message data components described in the CORE document are in the first hand mapped to required HTTP parameters, 
+        and only when there is no appropriate mapping it is mapped to the payload. 
+        The subscribe/unsubscribe messages are not supported by this transport protocol.
+        </p>
 
         <section id="https-life-time-mngmnt">
           <h2>Session Life Time Management</h2>
@@ -385,7 +402,8 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
           <section id="https-search-read">
             <h2>Search Read</h2>
             <p>
-              The search read request uses the query pattern described in the CORE document to provide one or more path expressions, relative to the path in the GET URL.<br>
+              The search read request uses the query pattern described in the CORE document to provide one or more path expressions, 
+              relative to the path in the GET URL.<br>
               <b>Example:</b>
               Request:
               <pre><code>
@@ -421,7 +439,8 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
           <section id="https-history-read">
             <h2>History Read</h2>
             <p>
-              The history read request uses the query pattern described in the CORE document to read recorded values for a given period backwards in time.<br>
+              The history read request uses the query pattern described in the CORE document to read recorded values 
+              for a given period backwards in time.<br>
               <b>Example:</b>
               Request:
               <pre><code>
@@ -474,10 +493,12 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
           <section id="https-update">
             <h2>Update</h2>
             <p>
-            The client may request that the server sets the value of one or more signals e.g. to lock one or more doors or open a window by sending an HTTPS POST request to the server. 
+            The client may request that the server sets the value of one or more signals e.g. to lock one or more doors or 
+            open a window by sending an HTTPS POST request to the server. 
             In the case of several signals being set, they MUST all be of the same data type, and be set to the same value. 
             If the server is able to satisfy the request its response SHALL have a 200 OK status code set. 
-            If an error occurs e.g. because the client is not authorized to set the requested value, or the value is read-only, the server response SHALL have the status code set to indicate error.
+            If an error occurs e.g. because the client is not authorized to set the requested value, or the value is read-only, 
+            the server response SHALL have the status code set to indicate error.
             </p>
             <p>
               <b>Example:</b>
@@ -536,8 +557,9 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
       <section id="secure-websockets">
         <h2>Secure WebSockets</h2>
         <p>
-        As the WebSocket protocol does not implicitly provide a logical association between the request and response messages described here a key-value pair with the keyname "requestId" 
-        is added to the data components described in the CORE document. As the WebSockets protocol neither specifies a set of explicit methods, 
+        As the WebSocket protocol does not implicitly provide a logical association between the request and response messages 
+        described here a key-value pair with the keyname "requestId" is added to the data components described in the CORE document. 
+        As the WebSockets protocol neither specifies a set of explicit methods, 
         another key-value pair with the keyname "action" is also added. See <a href='#action-def'></a> for the declaration of these new key-value pairs. 
         All data components are mapped to the payload.
         </p>
@@ -571,7 +593,8 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
 	default port 443. The hostname 'wwwVISSv2' may locally be mapped to the localhost
 	IP address 127.0.0.1 e.g. by adding an entry to the /etc/hosts file.</p>
 
-	<p>The sub-protocol name <em class="rfc2119" title="SHALL">SHALL</em> be 'VISSv2' with the digit 2 being the version number. The sub-protocol version will
+	<p>The sub-protocol name <em class="rfc2119" title="SHALL">SHALL</em> be 'VISSv2' with the digit 2 being the version number. 
+	The sub-protocol version will
 	be associated with exactly one VISS Server Specification version so that the client and server can 
 	correctly validate and parse request and response message packets.</p>
         <pre><code>
@@ -584,23 +607,28 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
 	      
         <p>This specification assumes that a single WebSocket is used to enable communication between a client application
         and the server. The client MAY open more than one websocket.
-        However, the server <em class="rfc2119" title="MAY">MAY</em> refuse to open a subsequent WebSocket connection and the client is responsible for handling this
-        gracefully.</p>
+        However, the server <em class="rfc2119" title="MAY">MAY</em> refuse to open a subsequent WebSocket connection and 
+        the client is responsible for handling this gracefully.
+        </p>
 
         <p>If more than one WebSocket connection is established between a client application and the server then each connection
-        <em class="rfc2119" title="MUST">MUST</em> be managed independently. For example, subscriptions created using a particular WebSocket connection shall only trigger
-        notifications via that connection and the client <em class="rfc2119" title="MUST">MUST</em> use that WebSocket connection to unsubscribe. </p>
+        <em class="rfc2119" title="MUST">MUST</em> be managed independently. For example, subscriptions created using a particular 
+        WebSocket connection shall only trigger notifications via that connection and the client 
+        <em class="rfc2119" title="MUST">MUST</em> use that WebSocket connection to unsubscribe. 
+        </p>
 
         <p>If more than one WebSocket connection has been established
         between one or more clients and a particular server instance, there
         is a risk that race conditions and concurrency issues could occur.
         An example of this would be where two or more WebSocket connections
-        are used to update a particular setting at the same time.</p>
+        are used to update a particular setting at the same time.
+        </p>
 
         <p>Unless explicitly stated otherwise, the client <em class="rfc2119" title="MAY">MAY</em> only assume
         that the server implements a simple concurrency model where lost
         updates and dirty reads could potentially occur if the server has
-        more than one WebSocket connection open.</p>	 
+        more than one WebSocket connection open.
+        </p>	 
           </section>
 
           <section id="wss-closure">
@@ -633,8 +661,9 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
             message to the server to get the value of one or more vehicle signals. 
             If the server is able to satisfy the request it <em class="rfc2119" title="SHALL">SHALL</em> return a 
             <a href="#dfn-getsuccessresponse" class="internalDFN" data-link-type="dfn">getSuccessResponse</a> message. 
-            If the server is unable to fulfil the request, e.g. because the client is not authorized to retrieve one or more of the signals, then the server 
-            <em class="rfc2119" title="SHALL">SHALL</em> return a <a href="#dfn-geterrorresponse" class="internalDFN" data-link-type="dfn">getErrorResponse</a> message. 
+            If the server is unable to fulfil the request, e.g. because the client is not authorized to retrieve one or more of the signals, 
+            then the server <em class="rfc2119" title="SHALL">SHALL</em> return a 
+            <a href="#dfn-geterrorresponse" class="internalDFN" data-link-type="dfn">getErrorResponse</a> message. 
             The structure of these message objects is defined below.
             </p><br>
             <table class="simple">
@@ -840,7 +869,8 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
             If the server is able to satisfy the request it <em class="rfc2119" title="SHALL">SHALL</em> return a 
             <a href="#dfn-setsuccessresponse" class="internalDFN" data-link-type="dfn">setSuccessResponse</a> message. 
             If an error occurs e.g. because the client is not authorized to set the requested value, or the value is read-only, 
-            the server <em class="rfc2119" title="SHALL">SHALL</em> return a <a href="#dfn-seterrorresponse" class="internalDFN" data-link-type="dfn">setErrorResponse</a> message.
+            the server <em class="rfc2119" title="SHALL">SHALL</em> return a 
+            <a href="#dfn-seterrorresponse" class="internalDFN" data-link-type="dfn">setErrorResponse</a> message.
             </p>
 	<table class="simple">
 	<thead>
@@ -913,8 +943,10 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
             <h2>Authorized Update</h2>
             <p>If the operation on the VSS node that is addressed requires authorization, 
                then the request must contain the field "authorization" with its value being a JWT token.
-               The token validation must be successful for a <a href="#dfn-setsuccessresponse" class="internalDFN" data-link-type="dfn">setSuccessResponse</a> 
-	       to be returned, else a <a href="#dfn-seterrorresponse" class="internalDFN" data-link-type="dfn">setErrorResponse</a> is returned. A token can be combined with all types of update requests.
+               The token validation must be successful for a 
+               <a href="#dfn-setsuccessresponse" class="internalDFN" data-link-type="dfn">setSuccessResponse</a> 
+	       to be returned, else a <a href="#dfn-seterrorresponse" class="internalDFN" data-link-type="dfn">setErrorResponse</a> is returned. 
+	       A token can be combined with all types of update requests.
             </p>
             <p>
               <b>Example:</b><br>
@@ -943,11 +975,15 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
           <section id="subscribe">
             <h2>Subscribe</h2>
             <p>
-            The client may send a <a href="#dfn-subscriberequest" class="internalDFN" data-link-type="dfn">subscribeRequest</a> message to request a subscription to one or more signals, 
-            thereby requesting the server to repeatedly return subscription notification messages, as specified by the "filter" query (see CORE, "Filtering" chapter). 
-            The server <em class="rfc2119" title="MAY">MAY</em> reduce the number of <a href="#dfn-subscriptionnotification" class="internalDFN" data-link-type="dfn">subcriptionNotification</a> 
+            The client may send a <a href="#dfn-subscriberequest" class="internalDFN" data-link-type="dfn">subscribeRequest</a> message 
+            to request a subscription to one or more signals, 
+            thereby requesting the server to repeatedly return subscription notification messages, as specified by the "filter" query 
+            (see CORE, "Filtering" chapter). 
+            The server <em class="rfc2119" title="MAY">MAY</em> reduce the number of 
+            <a href="#dfn-subscriptionnotification" class="internalDFN" data-link-type="dfn">subcriptionNotification</a> 
             messages sent to the client in order to reduce processing demands.<br>
-            If the server is able to satisfy the request it SHALL return a <a href="#dfn-subscribesuccessresponse" class="internalDFN" data-link-type="dfn">subscribeSuccessResponse</a> message. 
+            If the server is able to satisfy the request it SHALL return a 
+            <a href="#dfn-subscribesuccessresponse" class="internalDFN" data-link-type="dfn">subscribeSuccessResponse</a> message. 
             If an error occurs e.g. because the client is not authorized to set the requested value, the server SHALL return a 
             <a href="#dfn-subscribeerrorresponse" class="internalDFN" data-link-type="dfn">subscribeErrorResponse</a> message.<br>
             The subscription variants are, as described in the CORE document:
@@ -1078,8 +1114,10 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
             <p>
             If the operation on the VSS node that is addressed requires authorization, 
             then the request must contain the field "authorization" with its value being a JWT token.
-            The token validation must be successful for a <a href="#dfn-subscribesuccessresponse" class="internalDFN" data-link-type="dfn">subscribeSuccessResponse</a>
-            to be returned, else a <a href="#dfn-subscribeerrorresponse" class="internalDFN" data-link-type="dfn">subscribeErrorResponse</a> is returned. 
+            The token validation must be successful for a 
+            <a href="#dfn-subscribesuccessresponse" class="internalDFN" data-link-type="dfn">subscribeSuccessResponse</a>
+            to be returned, else a 
+            <a href="#dfn-subscribeerrorresponse" class="internalDFN" data-link-type="dfn">subscribeErrorResponse</a> is returned. 
             An "authorization" key-value pair can be combined with all types of subscription requests.
             </p>
             <p>
@@ -1163,12 +1201,13 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
             <p>
             To unsubscribe from a subscription, the client <em class="rfc2119" title="SHALL">SHALL</em> send an 
             <a href="#dfn-unsubscriberequest" class="internalDFN" data-link-type="dfn">unsubscribeRequest</a> message to the server. 
-            If the server is able to satisfy the request it returns an <a href="#dfn-unsubscribesuccessresponse" class="internalDFN" data-link-type="dfn">unsubscribeSuccessResponse</a> message. 
+            If the server is able to satisfy the request it returns an 
+            <a href="#dfn-unsubscribesuccessresponse" class="internalDFN" data-link-type="dfn">unsubscribeSuccessResponse</a> message. 
             If an error occurs, for example because an invalid subscriptionId is passed to the server, an 
             <a href="#dfn-unsubscribeerrorresponse" class="internalDFN" data-link-type="dfn">unsubscribeErrorResponse</a> message is returned.
             <br>
-            If the client has created more than one WebSocket instance, it <em class="rfc2119" title="MUST">MUST</em> always unsubscribe using the same WebSocket instance 
-            that was originally used to create the subscription.
+            If the client has created more than one WebSocket instance, it <em class="rfc2119" title="MUST">MUST</em> always unsubscribe 
+            using the same WebSocket instance that was originally used to create the subscription.
             </p>
 	<table class="simple">
 	  <thead>
@@ -1242,6 +1281,66 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
       </section>
 
       <section id="Defs">
+        <h2>MQTT</h2>
+
+        <section id="term-def">
+          <h2>Application Level Protocol</h2>
+          <p>
+            For MQTT to support the complete VISSv2 interface, as decribed in the "Interface" chapter of the CORE specification, 
+            an application level protocol that runs on top of MQTT is added. 
+            It is described in the following, please also see the sequence diagram below. 
+            To emulate the client-server pattern that is described in the CORE specification, the vehicle server, via its vehicle client, 
+            issues a subscribe request to the broker on a topic named VINXXX/Vehicle, where VINXXX is a unique identity of the vehicle, 
+            a "pseudo-VIN" generated by calculating the SHA256 hash of the vehicle VIN concatenated with the string "W3C-VISSv2", 
+            then taking the most significant 32 bytes of its hex representation.<br>
+            The client on the "cloud side" of the broker is expected to have access to this pseudo-VIN. 
+            How it obtains it is out of scope for this specification. 
+            When the client wants to issue a request to the vehicle server it first generates a unique topic name, 
+            which it subscribes to at the broker. It then generates a JSON formatted payload with the general structure<br>
+            {"topic":"aUniqueTopic", "request":"aVissv2Request"}<br>
+            where "aUniqueTopic" is the uniques topic name it just subscribed to, and "aVissv2Request" is the request for the vehicle server. 
+            This request MUST follow the payload format that is specified in the Websocket chapter of this specification.
+            This JSON message is then issued to the broker, associated to the topic VINXXX/Vehicle. 
+            This message will then be forwarded by the broker to the vehicle client, which forwards the string being the value of the 
+            "request" key in the message to the vehicle server. When the vehicle client receives the response to this request, 
+            it publishes it to the broker associated with the topic name that was the string value of the "topic" key name in the 
+            message it previously received from the broker.<br>
+            The broker will then forward this message to the cloud side client that earlier subscribed to this topic name, 
+            which concludes the clent-server based request-response as described in the CORE specification.<br>
+            In the case of subscription requests the vehicle client needs to save the subscriptionId found in the subscribe response, 
+            together with the topic name associated to the subscribe request. When the vehicle server later issues notifications, 
+            the vehicle client must parse the subscriptionId from it, and retrieve the topic name associated to it. 
+            The client shall delete the saved topic name and subscriptionId when it receives an unsubscribe request in a message from the broker.<br>
+            In following requests from the cloud side client, the client may reuse the unique topic name from the previous request-response cycle, 
+            or it may generate a new unique topic name. If a new topic name is generated, and unsubscribe should be issued on the old topic name. 
+            The vehicle client does not need to reissue its topic name.<br>
+            The payload format of the responses/notifications that the client receives follow the payload format that is specified 
+            in the Websocket chapter of this specification.
+          <img src="images/mqtt_vissv2_protocol.jpg" alt="VISSv2 over MQTT.">
+          </p>
+        </section>
+
+        <section id="term-def">
+          <h2>Security Aspects</h2>
+          <p>
+            The MQTT architecture mandates a "broker" that acts as a middleman in between the client and server endpoints 
+            (the subscriber and the publisher in MQTT terminology). 
+            This broker has full access to the plaintext communication between the two endpoints as each of the endpoint's 
+            TLS channel terminates at the broker. This aspect should be considered when selecting to use the MQTT protocol.
+          </p>
+        </section>
+
+        <section id="term-def">
+          <h2>Transport Messages</h2>
+          <p>
+            As mentioned in the "Application Level Protocol" chapter, the "request" messages issued to the broker contains two 
+            JSON formatted key-value pairs, where the value of the "request" key is a string that contains the request the vehicle server 
+            will receive. The format of this request MUST follow the payload format that is specified in the Websocket chapter of this specification.
+          </p>
+        </section>
+      </section>
+
+      <section id="Defs">
         <h2>Definitions</h2>
 
         <section id="term-def">
@@ -1261,8 +1360,7 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
 	    <td> <dfn data-dfn-type="dfn" id="dfn-path">path</dfn></td>
 	    <td>String</td>
 	    <td>The path to a node in the VSS tree, as defined by the
-	    <a href="https://github.com/GENIVI/vehicle_signal_specification">
-	    	Vehicle Signal Specification (VSS)</a>.</td>
+	    <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification (VSS)</a>.</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn data-dfn-type="dfn" id="dfn-requestid">requestId</dfn></td>
@@ -1323,8 +1421,10 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
         <section id="json-def">
           <h2>JSON Schema Definitions</h2>
           <p>
-          The payload that is sent over the supported transport protocols SHALL use the JSON definitions in this appendix, unless otherwise specified in the VISSv2 TRANSPORT specification.<br>
-          The definitions within this section describe the datatypes referenced within the JSON Schema for the VISSv2 WebSocket interfaces, and for the VISSv2 HTTP payloads.
+          The payload that is sent over the supported transport protocols SHALL use the JSON definitions in this appendix, 
+          unless otherwise specified in the VISSv2 TRANSPORT specification.<br>
+          The definitions within this section describe the datatypes referenced within the JSON Schema for the VISSv2 WebSocket interfaces, 
+          and for the VISSv2 HTTP payloads.
           </p>
               <pre><code>
 {
@@ -1406,8 +1506,10 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
         <section id="action-def">
           <h2>Action Definitions</h2>
 	<p>The Action enumeration is used to define the type of action requested by the client.
-	All client messages <em class="rfc2119" title="MUST">MUST</em> contain a JSON structure that has an <a href="#dfn-action" class="internalDFN" data-link-type="dfn">action</a> name/value pair and the
-	value of the <a href="#dfn-action" class="internalDFN" data-link-type="dfn">action</a> property <em class="rfc2119" title="MUST">MUST</em> be one of the values specified in the enumeration:</p>
+	All client messages <em class="rfc2119" title="MUST">MUST</em> contain a JSON structure that has an 
+	<a href="#dfn-action" class="internalDFN" data-link-type="dfn">action</a> name/value pair and the
+	value of the <a href="#dfn-action" class="internalDFN" data-link-type="dfn">action</a> property 
+	<em class="rfc2119" title="MUST">MUST</em> be one of the values specified in the enumeration:</p>
 
 	<dl title="enum Action" class="idl">
 	  <dt><dfn data-dfn-type="dfn" id="dfn-get">get</dfn></dt>
@@ -1427,7 +1529,9 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
 
         <section id="error-def">
           <h2>Error Definitions</h2>
-          <p>The error number SHOULD be a status code defined in [[RFC2616]], c. f. chapter "Status codes". The error reason SHOULD be the corresponding reason-phrase from [[RFC2616]]. The error message is meant to give a more precise description of the error.
+          <p>The error number SHOULD be a status code defined in [[RFC2616]], c. f. chapter "Status codes". 
+          The error reason SHOULD be the corresponding reason-phrase from [[RFC2616]]. 
+          The error message is meant to give a more precise description of the error.
           </p>
 <table class="simple">
   <thead>
