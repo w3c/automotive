@@ -1213,7 +1213,7 @@
           {
             "iat": 1609452095,
             "exp": 1609459199,
-            "pur": "PurposeX",
+            "scp": "PurposeX",
             "clx": "user+app+dev",
             "aud": "w3.org/VISSv2",
             "jti": "5967e93f-40f9-5f39-893e-cc0da890db2e"
@@ -1223,8 +1223,10 @@
 	  Type (typ) shall be set to "JWT".<br>
           Issued at (iat) shall be set to the time of token issuance, in Unix time.<br>
           Expiry (exp) shall be set to the time when the token expires, in Unix time.<br>
-          Purpose (pur) shall be set to the <a href="#purpose-list-def">purpose list</a> short name, which logically links to the signal scope as defined in the <a href="#purpose-list-def">purpose list</a>.<br>
-          <a href="#client-context-def">Client context</a> (clx) shall be set to the role triplet the client has been assigned. The delimiter separating the roles is a plus sign (+).<br>
+          The scope (scp) shall be set to the <a href="#purpose-list-def">purpose list</a> short name, 
+          which logically links to the signal scope as defined in the <a href="#purpose-list-def">purpose list</a>.<br>
+          <a href="#client-context-def">Client context</a> (clx) shall be set to the role triplet the client has been assigned. 
+          The delimiter separating the roles is a plus sign (+).<br>
           Audience (aud) shall be set to the URL "w3.org/VISSv2".<br>
           JWT ID (jti) shall be set to a UUID that is unique within the domain controlled by the <a href="#ecosystem-manager-def">ecosystem manager</a>.
           </p>
@@ -1414,7 +1416,7 @@
         It also requires that the metadata for the node in the VSS tree contains data specifying whether the access control verification should be carried out only for write request, 
         or for both read and write requests.<br>
         The former requirement is realized as described in earlier chapters by that the <a href="#access-token-def">access token</a> 
-        purpose claim links to a <a>purpose</a> where the signals and their respective access permission are found.<br>
+        scope claim links to a <a>purpose</a> where the signals and their respective access permission are found.<br>
         The latter requirement is realized by adding to nodes in the VSS tree the key-value pair "validate":'access-control-mode', 
         where 'access-control-mode' is either the string "write-only", or "read-write".<br>
         <figure id="fig-access-control-selection">
