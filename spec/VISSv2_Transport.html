@@ -169,6 +169,11 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
 	    <td>filter_invalid</td>
 	    <td>Filter requested on non-primitive type.</td>
 	  </tr>
+    <tr>
+	    <td>400 (Bad Request)</td>
+	    <td>invalid_duration</td>
+	    <td>The time duration is invalid.</td>
+	  </tr>
 	  <tr>
 	    <td>401 (Unauthorized)</td>
 	    <td>token_expired</td>
@@ -223,6 +228,11 @@ extending VISSv2 to further transports in the future. The VISSv2 supports multip
 	    <td>404 (Not Found)</td>
 	    <td>private_path</td>
 	    <td>The specified data path is private and the request is not authorized to access signals on this path.</td>
+	  </tr>
+    <tr>
+	    <td>404 (Not Found)</td>
+	    <td>unavailable_data</td>
+	    <td>The requested historic data was not found.</td>
 	  </tr>
 	  <tr>
 	    <td>404 (Not Found)</td>
