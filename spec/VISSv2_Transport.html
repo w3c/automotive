@@ -1295,7 +1295,7 @@
             then taking the most significant 32 bytes of its hex representation.<br>
             The client on the "cloud side" of the broker is expected to have access to this pseudo-VIN. 
             How it obtains it is out of scope for this specification. 
-            When the client wants to issue a request to the vehicle server it first generates a unique topic name, 
+            When the cloud client wants to issue a request to the vehicle server it first generates a unique topic name, 
             which it subscribes to at the broker. It then generates a JSON formatted payload with the general structure<br>
             {"topic":"aUniqueTopic", "request":"aVissv2Request"}<br>
             where "aUniqueTopic" is the uniques topic name it just subscribed to, and "aVissv2Request" is the request for the vehicle server. 
@@ -1306,16 +1306,21 @@
             it publishes it to the broker associated with the topic name that was the string value of the "topic" key name in the 
             message it previously received from the broker.<br>
             The broker will then forward this message to the cloud side client that earlier subscribed to this topic name, 
-            which concludes the clent-server based request-response as described in the CORE specification.<br>
+            which concludes the client-server based request-response as described in the CORE specification.<br>
             In the case of subscription requests the vehicle client needs to save the subscriptionId found in the subscribe response, 
             together with the topic name associated to the subscribe request. When the vehicle server later issues notifications, 
             the vehicle client must parse the subscriptionId from it, and retrieve the topic name associated to it. 
-            The client shall delete the saved topic name and subscriptionId when it receives an unsubscribe request in a message from the broker.<br>
-            In following requests from the cloud side client, the client may reuse the unique topic name from the previous request-response cycle, 
-            or it may generate a new unique topic name. If a new topic name is generated, and unsubscribe should be issued on the old topic name. 
-            The vehicle client does not need to reissue its topic name.<br>
-            The payload format of the responses/notifications that the client receives follow the payload format that is specified 
-            in the Websocket chapter of this specification.
+            The vehicle client shall delete the saved topic name and subscriptionId when it receives 
+            an unsubscribe request in a message from the broker.<br>
+            In following requests from the cloud side client, the unique topic name may be reused from the previous request-response cycle, 
+            or a new unique topic name may be generated. If a new topic name is generated, an unsubscribe should be issued on the old topic name. 
+            The vehicle client can continue to use the topic name it subscribes to.<br>
+            The payload format of the responses/notifications SHALL follow the payload format that is specified 
+            in the Websocket chapter of this specification. 
+            The access control model is applicable also over this transport alternative. 
+            The Access Token server should then implement its own version of the application level protocol described here, 
+            using the topic name "VINXXX/ATS". The Access Grant Token server may also do the same, with the topic name "VINXXX/AGTS", 
+            or if it is deployed in the cloud it may expose the HTTP interface that is defined in this specification.
           <img src="images/mqtt_vissv2_protocol.jpg" alt="VISSv2 over MQTT.">
           </p>
         </section>
