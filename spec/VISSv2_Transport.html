@@ -1291,7 +1291,8 @@
             It is described in the following, please also see the sequence diagram below. 
             To emulate the client-server pattern that is described in the CORE specification, the vehicle server, via its vehicle client, 
             issues a subscribe request to the broker on a topic named VID/Vehicle, 
-            where VID is an identity that uniquely links to the vehicle in the access control ecosystem.<br>
+            where VID is an identity that uniquely links to the vehicle in the access control ecosystem. 
+            This vehicle identity is not necessarily the manufacturer's Vehicle Identification Number (VIN).<br>
             The client on the "cloud side" of the broker is expected to have access to this vehicle identity. 
             How it obtains it is out of scope for this specification. 
             When the cloud client wants to issue a request to the vehicle server it first generates a unique topic name, 
