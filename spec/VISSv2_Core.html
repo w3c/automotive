@@ -13,7 +13,7 @@
           name: "Ulf Bjorkengren",
           company: "Geotab",
           companyURL: "https://www.geotab.com",
-          w3cid: 103092	  
+          w3cid: 103092          
         },
         {
           name: "Isaac Agudo",
@@ -24,16 +24,16 @@
         {
           name: "이원석(Wonsuk Lee)", company: "한국전자통신연구원(ETRI)",
           url: "mailto:wonsuk.lee@etri.re.kr",
-	  companyURL: "https://etri.re.kr/eng/main/main.etri",
-	  w3cid: 34457
+          companyURL: "https://etri.re.kr/eng/main/main.etri",
+          w3cid: 34457
         }],
-	formerEditors: [{
+        formerEditors: [{
           name: "Ulf Bjorkengren",
           company: "Volvo Cars",
           companyURL: "https://www.volvo.com",
-          w3cid: 103092	  
+          w3cid: 103092          
         },
-	{
+        {
           name: "Patrick Lünnemann",
           company: "Volkswagen Group",
           companyURL: "https://www.volkswagenag.com",
@@ -134,7 +134,8 @@
       access control has been added.</p>
       
       <p>
-        There are two parts to this specification, Core and Transport. This document, the VISS version 2 CORE specification, describes the VISSv2 messaging layer. 
+        There are two parts to this specification, Core and Transport. This document, the VISS version 2 CORE specification, 
+        describes the VISSv2 messaging layer. 
         The companion specifications for the VISSv2 transport protocols detail the mapping of the messaging layer to selected transports.
         The ontologies based on the VISSv2 core specification are defined in documents for each specific domain
         (e.g. navigation, media, vehicle data). 
@@ -158,7 +159,8 @@
         The VISSv2 messaging layer uses a RESTful design for all methods exchanged via the interface (<a href="#interface"></a>).
       </p>
       <p>
-        The VISSv2 data structuring rules (<a href="http://genivi.github.io/vehicle_signal_specification/">VSS Rule set</a>) are the same through all transport protocols.
+        The VISSv2 data structuring rules (<a href="http://genivi.github.io/vehicle_signal_specification/">VSS Rule set</a>) 
+        are the same through all transport protocols.
         The basis for structuring data hold by a server is a tree.
       </p>
     </section>
@@ -169,50 +171,52 @@
       <h2>Terminology</h2>
       <p>The acronym 'VISSv2' is used to refer to this document, the VISS version 2 specification. 
       The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is hosted by the GENIVI Alliance. 
-      The term 'WebSocket' when used in this document, is as defined in the <a href="https://www.w3.org/TR/websockets/">W3C WebSocket API</a> and [[RFC6455]], the WebSocket Protocol.
+      The term 'WebSocket' when used in this document, is as defined in the 
+      <a href="https://www.w3.org/TR/websockets/">W3C WebSocket API</a> and [[RFC6455]], the WebSocket Protocol.
       </p>
 
         <section id="definitions">
           <h2>Definitions</h2>
-	<p></p>
+        <p></p>
 
-	<dl title="enum Defs" class="idl">
-	  <dt><b>client</b></dt>
-	  <dd>An entity that works with data managed by a server.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-server">server</dfn></dt>
-	  <dd>An entity that manages and offers access to data.</dd>
+        <dl title="enum Defs" class="idl">
+          <dt><b>client</b></dt>
+          <dd>An entity that works with data managed by a server.</dd>
+          <dt><dfn data-dfn-type="dfn" id="dfn-server">server</dfn></dt>
+          <dd>An entity that manages and offers access to data.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-success-response">success response</dfn></dt>
           <dd>The message being returned by the server to the client when no error is encountered. These are specific per request type</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-error-response">error response</dfn></dt>
-	  <dd>The message being returned by the server to the client when an error is encountered. These have a common format for all request types</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-error-notification">error notification</dfn></dt>
-	  <dd>The asynchronous message being returned by the server to the client when an error is encountered.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-data-point">data point</dfn></dt>
-	  <dd>A structure containing one or more value, timestamp tuplets.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-value">value</dfn></dt>
-	  <dd>The data that is associated with one or more VSS nodes. Regardless of its data type, a single data item is always represented as a string in message payloads.</dd>
+          <dt><dfn data-dfn-type="dfn" id="dfn-error-response">error response</dfn></dt>
+          <dd>The message being returned by the server to the client when an error is encountered. These have a common format for all request types</dd>
+          <dt><dfn data-dfn-type="dfn" id="dfn-error-notification">error notification</dfn></dt>
+          <dd>The asynchronous message being returned by the server to the client when an error is encountered.</dd>
+          <dt><dfn data-dfn-type="dfn" id="dfn-data-point">data point</dfn></dt>
+          <dd>A structure containing one or more value, timestamp tuplets.</dd>
+          <dt><dfn data-dfn-type="dfn" id="dfn-value">value</dfn></dt>
+          <dd>The data that is associated with one or more VSS nodes. Regardless of its data type, 
+          a single data item is always represented as a string in message payloads.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-timestamp">timestamp</dfn></dt>
           <dd>A date and time representation. See chapter <a href="#timestamp"></a>.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-filter">filter</dfn></dt>
-	  <dd>Additional to help the server in the selection of data for the client.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-authorization">authorization</dfn></dt>
-	  <dd>A token providing a verifiable proof that the client may be authorized access to the requested value(s).</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-subscription-id">subscriptionId</dfn></dt>
-	  <dd>A handle identifying a subscription session.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-purpose-id">purpose</dfn></dt>
-	  <dd>A purpose is one of the short text entries from the <a href="#purpose-list"></a>.</dd>
-	</dl>
+          <dt><dfn data-dfn-type="dfn" id="dfn-filter">filter</dfn></dt>
+          <dd>Additional to help the server in the selection of data for the client.</dd>
+          <dt><dfn data-dfn-type="dfn" id="dfn-authorization">authorization</dfn></dt>
+          <dd>A token providing a verifiable proof that the client may be authorized access to the requested value(s).</dd>
+          <dt><dfn data-dfn-type="dfn" id="dfn-subscription-id">subscriptionId</dfn></dt>
+          <dd>A handle identifying a subscription session.</dd>
+          <dt><dfn data-dfn-type="dfn" id="dfn-purpose-id">purpose</dfn></dt>
+          <dd>A purpose is one of the short text entries from the <a href="#purpose-list"></a>.</dd>
+        </dl>
       </section>
     </section>
 
     <section id="data-model">
       <h2>Data Model</h2>
-		<p>The service is intended for use with a tree-like logical taxonomy to represent the vehicle data. 
-		An illustrative example of such a tree structure is shown in <a href="#fig-example-vss-tree">Figure 1</a>. 
-		While it is meant to support conforming taxonomies it was created principally with the 
-		<a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a> (VSS) in mind. 
-		For more details, see the <a href="http://genivi.github.io/vehicle_signal_specification/">VSS documentation</a>.
-		</p>
+                <p>The service is intended for use with a tree-like logical taxonomy to represent the vehicle data. 
+                An illustrative example of such a tree structure is shown in <a href="#fig-example-vss-tree">Figure 1</a>. 
+                While it is meant to support conforming taxonomies it was created principally with the 
+                <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a> (VSS) in mind. 
+                For more details, see the <a href="http://genivi.github.io/vehicle_signal_specification/">VSS documentation</a>.
+                </p>
         <figure id="fig-example-vss-tree">
           <img src="images/vss-tree.jpg" alt="example-vss-tree">
           <figcaption> <span class="fig-title">Diagram showing an example VSS 2.0 tree.</span></figcaption>
@@ -261,7 +265,8 @@
       <section id="methods">
         <h2>Methods</h2>
         <p>
-          The transport protocols used to implement these methods MUST implement the Read and Update methods, and MAY implement the Subscribe, Unsubscribe, and Subscription methods. 
+          The transport protocols used to implement these methods MUST implement the Read and Update methods, 
+          and MAY implement the Subscribe, Unsubscribe, and Subscription methods. 
         </p>
         <section id="read">
           <h2><dfn>Read</dfn></h2>
@@ -314,7 +319,8 @@
 
         <section id="subscribe">
           <h2><dfn>Subscribe</dfn></h2>
-          <p><a>Purpose</a>: Get asynchronous messages containing the value(s) addressed by the path. The triggering rules for issuing the notification messages are set by the filter data.</p>
+          <p><a>Purpose</a>: Get asynchronous messages containing the value(s) addressed by the path. 
+          The triggering rules for issuing the notification messages are set by the filter data.</p>
           <p>The client MAY have to obtain an authorization token before being able to subscribe to the vehicle signal(s).
              The server MUST issue a notification if a trigger rule is fulfilled.
              If the server is able to satisfy the request it MUST return a <a>success response</a>.
@@ -337,8 +343,9 @@
         <section id="unsubscribe">
           <h2><dfn>Unsubscribe</dfn></h2>
           <p><a>Purpose</a>: Termination of the subscription period started by a previous subscribe request.</p>
-          <p>If the server is able to satisfy the request it MUST return a <a>success response</a>, and it MUST stop issuing notifications associated to the subscription handle.
-             If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.</p>
+          <p>If the server is able to satisfy the request it MUST return a <a>success response</a>, 
+          and it MUST stop issuing notifications associated to the subscription handle.
+          If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.</p>
           <p>Arguments, of which subscriptionId is mandatory: 
             <ul>
               <li><a>subscriptionId</a> Handle identifying the subscription.</li>
@@ -373,14 +380,14 @@
 
       <section id="error-information">
         <h2>Error Information</h2>
-        <p>The server MUST inform a client about errors ocurring in interactions between the two, whether it is in a synchronous <a>error response</a> to a request message, 
-        or an asynchronous <a>error notification</a> message.
+        <p>The server MUST inform a client about errors ocurring in interactions between the two, whether it is in a synchronous 
+        <a>error response</a> to a request message, or an asynchronous <a>error notification</a> message.
         </p>
 
         <section id="error-format">
           <h2>Error Format</h2>
-          <p>The error information has three components - a <a>number</a>, a <a>reason</a>, and a <a>message</a>. The number MUST always be part of the error information, 
-             while the reason and message components MAY be a part of it.
+          <p>The error information has three components - a <a>number</a>, a <a>reason</a>, and a <a>message</a>. 
+          The number MUST always be part of the error information, while the reason and message components MAY be a part of it.
             <ul>
               <li><dfn data-dfn-type="dfn" id="dfn-error-number">number</dfn> See VISSv2:TRANSPORT, "Status code" chapter.</li>
               <li><dfn data-dfn-type="dfn" id="dfn-error-reason">reason</dfn> See VISSv2:TRANSPORT, "Status code" chapter.</li>
@@ -417,27 +424,28 @@
       <section id="data-security">
         <h2>Data security</h2>
         <p>
-        The <a href="#access-control-model"></a> makes it possible to apply restrictions on the data access for clients that are granted access on the transport protocol level.
+        The <a href="#access-control-model"></a> makes it possible to apply restrictions on the data access for clients that are 
+        granted access on the transport protocol level.
         </p>
       </section>
 
       <section id="privacy">
         <h2>Privacy</h2>
-	<p>In addition to some privacy provisions within the
-	specification itself, the W3C Automotive Working Group is
-	creating an accompanying <a href="https://www.w3.org/community/autowebplatform/wiki/Best_Practices">In-Vehicle Application Best Practices</a>
-	document to provide further considerations for handling of
-	information. These Best Practices go beyond the narrow scope
-	of this specification and addresses several of the concerns
-	for the broader telematics ecosystems it is a part of. These
-	practices include reducing ability to fingerprint an
-	individual or vehicle from its data, providing data use
-	consent, revokation, integrity and use audit accountability.</p>
+        <p>In addition to some privacy provisions within the
+        specification itself, the W3C Automotive Working Group is
+        creating an accompanying <a href="https://www.w3.org/community/autowebplatform/wiki/Best_Practices">In-Vehicle Application Best Practices</a>
+        document to provide further considerations for handling of
+        information. These Best Practices go beyond the narrow scope
+        of this specification and addresses several of the concerns
+        for the broader telematics ecosystems it is a part of. These
+        practices include reducing ability to fingerprint an
+        individual or vehicle from its data, providing data use
+        consent, revokation, integrity and use audit accountability.</p>
 
-	<p>For some uses, such as when information is only referenced within the vehicle not sent
-	off nor persisting between restarts, there should be little to
-	no privacy concerns.</p>
-	
+        <p>For some uses, such as when information is only referenced within the vehicle not sent
+        off nor persisting between restarts, there should be little to
+        no privacy concerns.</p>
+        
         <p>This specification, unlike its predecessor, has granular
         access control capabilities to limit what information an
         application may access. All information sent from a VISS
@@ -445,258 +453,262 @@
         encrypted protocol to help protect privacy.
         </p>
 
-	<p>For an application to be installed and permitted to run on a vehicle it should
-	have consent from whoever is deemed authoritative for a given
-	jurisdiction and ownership situation. That consent should be
-	revocable. Consent and revoking it are outside the scope of
-	this specification, we expect that to be handled out of band
-	and in some cases by regulations and contractual commitments. Future version of this specification however may provide
-	mechanism for enabling and suspending application
-	authorization to access information.</p>
-	
+        <p>For an application to be installed and permitted to run on a vehicle it should
+        have consent from whoever is deemed authoritative for a given
+        jurisdiction and ownership situation. That consent should be
+        revocable. Consent and revoking it are outside the scope of
+        this specification, we expect that to be handled out of band
+        and in some cases by regulations and contractual commitments. Future version of this specification however may provide
+        mechanism for enabling and suspending application
+        authorization to access information.</p>
+        
       </section>
       </section>
 
     <section id="filter-request">
       <h2>Filter Request</h2>
-	  <p>
-	  Filtering is a mechanism to refine a client request, in order to more precisely control what is returned in a response. 
-	  Filtering can be applied in read requests and in subscribe requests. 
-	  A request where filtering is applied has the following structure
-	  <ul>
-	  <li>for the HTTP protocol:
-	  <ul>
-	  <li>GET /&lt;vsspath&gt;?filter=&lt;json-expression&gt;</li>
-	  </ul></li>
-	  <li>for the Websocket protocol:
-	  <ul>
-	  <li>{"action":"get", "path":"&lt;vsspath&gt;", "filter":"&lt;JSON-expression&gt;"}</li>
-	  </ul></li>
-	  </ul>
-	  where<br>
-	  <ul>
-	  <li>Get is the transport protocol method,</li>
-	  <li>vsspath is the path starting from the tree root,</li>
-	  <li>filter is the key name for the filter expression,</li>
-	  <li>json-expression contains the filter instructions.</li>
-	  </ul>
-	  </ul>
-	  The JSON expression has the object format as shown below. For the case of an optional second object of this type, these are enclosed in an array expression.<br>
-	  <ul>
-	  <li>{"type":"&lt;x&gt;", "value":"&lt;y&gt;"}</li>
-	  </ul>
-	  where<br>
-	  <ul>
-	  <li><b>type</b>: the key name for the filter operation type, which can have one of the values:
-	  <ul>
-	  <li>paths:
-	  <ul>
-	  <li>one or more relative paths. In the case of several paths an array expression shall be used.</li>
-	  </ul></li>
-	  <li>timebased:
-	  <ul>
-	  <li>data is captured repeatedly with a fixed period time.</li>
-	  </ul></li>
-	  <li>range:
-	  <ul>
-	  <li>data is captured when values are in the given range.</li>
-	  </ul></li>
-	  <li>change:
-	  <ul>
-	  <li>data is captured when the value since last capture has changed more than a fixed value.</li>
-	  </ul></li>
-	  <li>curvelog:
-	  <ul>
-	  <li>captured data is processed according to the curve logging algorithm before being sent to client.</li>
-	  </ul></li>
-	  <li>history:
-	  <ul>
-	  <li>the time period from current time and backwards in time.</li>
-	  </ul></li>
-	  <li>static-metadata:
-	  <ul>
-	  <li>the response contains the VSS metadata of the addressed sub-tree.</li>
-	  </ul></li>
-	  <li>dynamic-metadata:
-	  <ul>
-	  <li>the response contains metadata additional to the VSS specification.</li>
-	  </ul></li>
-	  </ul></li>
-	  <li><b>value</b>: the key name for the optional configuration data that the filter operation requires. 
-	  The value data varies depending on the type, 
-	  is enclosed in one object, or optionally an array of two objects, and is described in the following chapters.</li>
-	  </ul>
-	  In the JSON object, the key-value pairs "type" and "value" must always be present.
-	  The JSON expression may consist of maximum one object with type "paths", plus maximum one object with any of the other types, 
-	  which are then logically combined as with an AND operator.<br>
-	  The server SHALL support all combinations up to this maximum.<br>
-	  The types time-based, range, change, and curvelog are only applicable for subscription requests. 
-	  Subscription requests are only supported by the websocket transport protocol.<br>
-	  The restriction on how many objects that can be combined is also set by the URL size restriction on 1k characters (*).<br>
-	  (*) 1k is the "conservative limit, which should always be supported, a more liberal limit is 2k, which is supported in most cases.
-	  </p> 
+          <p>
+          Filtering is a mechanism to refine a client request, in order to more precisely control what is returned in a response. 
+          Filtering can be applied in read requests and in subscribe requests. 
+          A request where filtering is applied has the following structure
+          <ul>
+          <li>for the HTTP protocol:
+          <ul>
+          <li>GET /&lt;vsspath&gt;?filter=&lt;json-expression&gt;</li>
+          </ul></li>
+          <li>for the Websocket protocol:
+          <ul>
+          <li>{"action":"get", "path":"&lt;vsspath&gt;", "filter":"&lt;JSON-expression&gt;"}</li>
+          </ul></li>
+          </ul>
+          where<br>
+          <ul>
+          <li>Get is the transport protocol method,</li>
+          <li>vsspath is the path starting from the tree root,</li>
+          <li>filter is the key name for the filter expression,</li>
+          <li>json-expression contains the filter instructions.</li>
+          </ul>
+          </ul>
+          The JSON expression has the object format as shown below. For the case of an optional second object of this type, 
+          these are enclosed in an array expression.<br>
+          <ul>
+          <li>{"type":"&lt;x&gt;", "value":"&lt;y&gt;"}</li>
+          </ul>
+          where<br>
+          <ul>
+          <li><b>type</b>: the key name for the filter operation type, which can have one of the values:
+          <ul>
+          <li>paths:
+          <ul>
+          <li>one or more relative paths. In the case of several paths an array expression shall be used.</li>
+          </ul></li>
+          <li>timebased:
+          <ul>
+          <li>data is captured repeatedly with a fixed period time.</li>
+          </ul></li>
+          <li>range:
+          <ul>
+          <li>data is captured when values are in the given range.</li>
+          </ul></li>
+          <li>change:
+          <ul>
+          <li>data is captured when the value since last capture has changed more than a fixed value.</li>
+          </ul></li>
+          <li>curvelog:
+          <ul>
+          <li>captured data is processed according to the curve logging algorithm before being sent to client.</li>
+          </ul></li>
+          <li>history:
+          <ul>
+          <li>the time period from current time and backwards in time.</li>
+          </ul></li>
+          <li>static-metadata:
+          <ul>
+          <li>the response contains the VSS metadata of the addressed sub-tree.</li>
+          </ul></li>
+          <li>dynamic-metadata:
+          <ul>
+          <li>the response contains metadata additional to the VSS specification.</li>
+          </ul></li>
+          </ul></li>
+          <li><b>value</b>: the key name for the optional configuration data that the filter operation requires. 
+          The value data varies depending on the type, 
+          is enclosed in one object, or optionally an array of two objects, and is described in the following chapters.</li>
+          </ul>
+          In the JSON object, the key-value pairs "type" and "value" must always be present.
+          The JSON expression may consist of maximum one object with type "paths", plus maximum one object with any of the other types, 
+          which are then logically combined as with an AND operator.<br>
+          The server SHALL support all combinations up to this maximum.<br>
+          The types time-based, range, change, and curvelog are only applicable for subscription requests. 
+          Subscription requests are only supported by the websocket transport protocol.<br>
+          The restriction on how many objects that can be combined is also set by the URL size restriction on 1k characters (*).<br>
+          (*) 1k is the "conservative limit, which should always be supported, a more liberal limit is 2k, which is supported in most cases.
+          </p> 
 
      <section id="paths-filter-operation">
         <h2>Paths Filter Operation</h2>
-		<p>
-		The paths filter operation is used when a single request is used to retrieve signal data from multiple data points in the VSS tree. 
-		The vsspath shall point to the last node in the tree that is common for the relative paths in the filter value, 
-		that start off from this node. 
-		If the end point of a path in the filter value is a branch, then all leaf nodes in the sub-tree below this branch are addressed.
-		A path in the filter value may contain the wildcard character (*) as a representative for a path segment.<br>
-		Every path element in an value array must address at least one node in the tree, or else an error response is returned.<br>
-		If the path in the filter value ends with one or more wildcards, 
-		then only the leaf nodes with path segments matching the number of wildcards are addressed. 
-		Different elements of the value array may address the same node, 
-		in which case it is the responsibility of the server to resolve this to a singleton in the notifications.<br>
-		If the value contains a single path then it shall not be enclosed with JSON array brackets.<br>
-		Examples can be found in the TRANSPORT specification.
-		</p>
+                <p>
+                The paths filter operation is used when a single request is used to retrieve signal data from multiple data points in the VSS tree. 
+                The vsspath shall point to the last node in the tree that is common for the relative paths in the filter value, 
+                that start off from this node. 
+                If the end point of a path in the filter value is a branch, then all leaf nodes in the sub-tree below this branch are addressed.
+                A path in the filter value may contain the wildcard character (*) as a representative for a path segment.<br>
+                Every path element in an value array must address at least one node in the tree, or else an error response is returned.<br>
+                If the path in the filter value ends with one or more wildcards, 
+                then only the leaf nodes with path segments matching the number of wildcards are addressed. 
+                Different elements of the value array may address the same node, 
+                in which case it is the responsibility of the server to resolve this to a singleton in the notifications.<br>
+                If the value contains a single path then it shall not be enclosed with JSON array brackets.<br>
+                Examples can be found in the TRANSPORT specification.
+                </p>
         </section>
 
      <section id="history-filter-operation">
         <h2>History Filter Operation</h2>
-		<p>
-		The server typically have access only to the latest, most fresh data point representing a signal. 
-		However, it may for various reasons at least temporarily have access to also older data points. 
-		A scenario where this could occur is when a vehicle temporarily loses its connectivity, 
-		maybe because it enters into a tunnel. Assuming that the vehicle detects the loss of connectivity, it may then start to record data. 
-		If recorded, this data may then be accessed using the history type. 
-		The vehicle system makes its own decision whether to record any data, and for how long this data will be kept in storage. 
-		The period goes from current time, excluding the current value, and backwards in time. 
-		The number of data points in the response depends on the period size, and the sample frequency. 
-		The latter can not be set by the client, 
-		so the client should have some understanding of its value to estimate the amount of data it may receive. 
-		A request for historic data will return a Not found error (404) if historic data is unavailable. 
-		The period must conform to the [[ISO8601]] duration format, expressed with days, hour, minute, 
-		and second data, i. e. "value": "PdddDThhHmmMssS".
-		The number of days shall be less than 999. Only a single period can be expressed.<br>
-		Examples can be found in the TRANSPORT specification.
-		</p>
+                <p>
+                The server typically have access only to the latest, most fresh data point representing a signal. 
+                However, it may for various reasons at least temporarily have access to also older data points. 
+                A scenario where this could occur is when a vehicle temporarily loses its connectivity, 
+                maybe because it enters into a tunnel. Assuming that the vehicle detects the loss of connectivity, it may then start to record data. 
+                If recorded, this data may then be accessed using the history type. 
+                The vehicle system makes its own decision whether to record any data, and for how long this data will be kept in storage. 
+                The period goes from current time, excluding the current value, and backwards in time. 
+                The number of data points in the response depends on the period size, and the sample frequency. 
+                The latter can not be set by the client, 
+                so the client should have some understanding of its value to estimate the amount of data it may receive. 
+                A request for historic data will return a Not found error (404) if historic data is unavailable. 
+                The period must conform to the [[ISO8601]] duration format, expressed with days, hour, minute, 
+                and second data, i. e. "value": "PdddDThhHmmMssS".
+                The number of days shall be less than 999. Only a single period can be expressed.<br>
+                Examples can be found in the TRANSPORT specification.
+                </p>
         </section>
 
      <section id="timebased-filter-operation">
           <h2>Time Based Filter Operation</h2>
-		<p>
-		The value contains the period time X in between captures, {"period":"X"}.
-		X is an integer and represents the period time in milliseconds.
-		Examples can be found in the TRANSPORT specification.
+                <p>
+                The value contains the period time X in between captures, {"period":"X"}.
+                X is an integer and represents the period time in milliseconds.
+                Examples can be found in the TRANSPORT specification.
                </p>
         </section>
  
      <section id="range-filter-operation">
           <h2>Range Filter Operation</h2>
-		<p>
-		The value contains the range boundary, and the logical operator, {"logic-op":"X", "boundary": "Y"}, 
-		where X is one of the supported logical operators (**), and Y is the boundary of the range.
-		The value may be an array of two of these objects, combined through a logical AND to support expressions of a bounded range. 
-		A range event is triggered both when the filter expression becomes "true", and when it becomes "false".<br><br>
-		(**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
-		where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than", 
-		"lte" is "less than or equal".<br>
-		Examples can be found in the TRANSPORT specification.
+                <p>
+                The value contains the range boundary, and the logical operator, {"logic-op":"X", "boundary": "Y"}, 
+                where X is one of the supported logical operators (**), and Y is the boundary of the range.
+                The value may be an array of two of these objects, combined through a logical AND to support expressions of a bounded range. 
+                A range event is triggered both when the filter expression becomes "true", and when it becomes "false".<br><br>
+                (**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
+                where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than", 
+                "lte" is "less than or equal".<br>
+                Examples can be found in the TRANSPORT specification.
                </p>
         </section>
  
      <section id="change-filter-operation">
           <h2>Change Filter Operation</h2>
-		<p>
-		The value contains the logical operator for comparison of previous and current values, {"logic-op":"X", "diff":"Y"}, 
-		where X is one of the supported logical operators (**), and Y is the value of the required change.<br><br>
-		(**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
-		where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", 
-		"lt" is "less than", "lte" is "less than or equal".<br>
-		Examples can be found in the TRANSPORT specification.
+                <p>
+                The value contains the logical operator for comparison of previous and current values, {"logic-op":"X", "diff":"Y"}, 
+                where X is one of the supported logical operators (**), and Y is the value of the required change.<br><br>
+                (**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
+                where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", 
+                "lt" is "less than", "lte" is "less than or equal".<br>
+                Examples can be found in the TRANSPORT specification.
                </p>
         </section>
  
      <section id="curvelog-filter-operation">
           <h2>Curve logging Filter Operation</h2>
-		<p>
-		The value contains the maximum error limit, and the buffer size, {"maxerr": "X", "bufsize":"Y"}, 
-		where X is a float value setting the max allowed error between any data sample and the simplified curve, 
-		and Y is the number of buffer elements. Data is processed when the buffer becomes full, 
-		and the essential data points are returned as a time series per signal.<br>
-		Examples can be found in the TRANSPORT specification.
+                <p>
+                The value contains the maximum error limit, and the buffer size, {"maxerr": "X", "bufsize":"Y"}, 
+                where X is a float value setting the max allowed error between any data sample and the simplified curve, 
+                and Y is the number of buffer elements. Data is processed when the buffer becomes full, 
+                and the essential data points are returned as a time series per signal.<br>
+                Examples can be found in the TRANSPORT specification.
                </p>
         </section>
  
    <section id="static-metadata-request">
      <h2>Static Metadata Filter Operation</h2>
-	<p>
-	The static metadata request is used when the client instead of the data associated to VSS node(s) 
-	wants to retrieve meta data associated to the VSS node(s).<br>
-	The metadata is retrieved from the VSS tree that is deployed in the vehicle.
-	This type of request is sometimes referred to as a signal discovery request.
-	If the "value" key contains an empty string, then all metadata that the server can retrieve for the for the addressed node(s) are returned, 
-	while if it contains metadata key name(s) then only the selected metadata is returned. 
-	If the expression contains multiple metadata types, then they are represented as array elements. <br><br>
-	For the set of static metadata key names, 
-	see the <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a>.<br>
-	The vsspath in the request may point to either a leaf node, or to a branch node. 
-	In the latter case then the response will contain static metadata from the entire sub-tree having this branch as the root.<br>
-	A static metadata request can be combined with a paths filter operation to address multiple nodes, 
-	but cannot be combined with any other filter type.<br>
-	The response is a JSON formatted object with corresponding key-value pairs per addressed node.<br>
-	Examples can be found in the TRANSPORT specification.
-	</p>
+        <p>
+        The static metadata request is used when the client instead of the data associated to VSS node(s) 
+        wants to retrieve meta data associated to the VSS node(s).<br>
+        The metadata is retrieved from the VSS tree that is deployed in the vehicle.
+        This type of request is sometimes referred to as a signal discovery request.
+        If the "value" key contains an empty string, then all metadata that the server can retrieve for the for the addressed node(s) are returned, 
+        while if it contains metadata key name(s) then only the selected metadata is returned. 
+        If the expression contains multiple metadata types, then they are represented as array elements. <br><br>
+        For the set of static metadata key names, 
+        see the <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a>.<br>
+        The vsspath in the request may point to either a leaf node, or to a branch node. 
+        In the latter case then the response will contain static metadata from the entire sub-tree having this branch as the root.<br>
+        A static metadata request can be combined with a paths filter operation to address multiple nodes, 
+        but cannot be combined with any other filter type.<br>
+        The response is a JSON formatted object with corresponding key-value pairs per addressed node.<br>
+        Examples can be found in the TRANSPORT specification.
+        </p>
     </section>
  
    <section id="dynamic-metadata-request">
      <h2>Dynamic Metadata Filter Operation</h2>
-	<p>
-	Dynamic metadata requests are used when the client instead of the data associated to VSS node(s) wants to 
-	retrieve metadata that is additional to the VSS specification.<br>
-	The dynamic metadata may change over time, which is not the case for the static metadata.
-	If the "value" key contains an empty string, then all metadata that the server can retrieve for the for the addressed node(s) are returned, 
-	while if it contains metadata key name(s) then only the selected metadata is returned. 
-	If the expression contains multiple metadata types, then they are represented as array elements. <br><br>
-	The set of dynamic metadata keynames are found in the list below.
-	<ul>
-	<li>samplerate: the native capture frequency in Hz that is used by the vehicle system.</li>
-	<li>availability: the current availability of the signal(s). The possible values are ["available", "unavailable", "error"]. 
-	The unavailable status is returned when the signal is inaccessible due to the current vehicle state. 
-	The error status is returned if the subsystem represented by the signal exists in the vehice, but is broken and requires repair.</li>
-	<li>validate: the access control rule that is applied to the node and its sub-tree. 
-	The server response shall conform to the inheritance rules, see the access control selection chapter.</li>
-	</ul>
-	A dynamic metadata request can be combined with a paths filter operation to address multiple nodes, 
-	but not with any other filter type.<br>
-	The response is a JSON formatted object with corresponding key-value pairs per addressed node.<br>
-	Examples can be found in the TRANSPORT specification.
-	</p>
+        <p>
+        Dynamic metadata requests are used when the client instead of the data associated to VSS node(s) wants to 
+        retrieve metadata that is additional to the VSS specification.<br>
+        The dynamic metadata may change over time, which is not the case for the static metadata.
+        If the "value" key contains an empty string, then all metadata that the server can retrieve for the for the addressed node(s) are returned, 
+        while if it contains metadata key name(s) then only the selected metadata is returned. 
+        If the expression contains multiple metadata types, then they are represented as array elements. <br><br>
+        The set of dynamic metadata keynames are found in the list below.
+        <ul>
+        <li>samplerate: the native capture frequency in Hz that is used by the vehicle system.</li>
+        <li>availability: the current availability of the signal(s). The possible values are ["available", "unavailable", "error"]. 
+        The unavailable status is returned when the signal is inaccessible due to the current vehicle state. 
+        The error status is returned if the subsystem represented by the signal exists in the vehice, but is broken and requires repair.</li>
+        <li>validate: the access control rule that is applied to the node and its sub-tree. 
+        The server response shall conform to the inheritance rules, see the access control selection chapter.</li>
+        </ul>
+        A dynamic metadata request can be combined with a paths filter operation to address multiple nodes, 
+        but not with any other filter type.<br>
+        The response is a JSON formatted object with corresponding key-value pairs per addressed node.<br>
+        Examples can be found in the TRANSPORT specification.
+        </p>
     </section>
  
      <section id="multiple-signals-request">
           <h2>Multiple Signals Request</h2>
-	    <p>
-	    The filtering operations may be used to address multiple tree nodes in one request. 
-	    This may lead to specific issues in certain situations, as described below.
-	    </p>
+            <p>
+            The filtering operations may be used to address multiple tree nodes in one request. 
+            This may lead to specific issues in certain situations, as described below.
+            </p>
 
      <section id="error-handling">
           <h2>Error Handling</h2>
-	    <p>
-	    A request addressing multiple nodes may address both valid nodes, and invalid nodes. 
-	    The latter case shall lead to a Forbidden error (403) response message part that contains information about which node, or nodes, that are invalid. 
-	    The error response shall not contain data from any of the validly addressed nodes.
-	    </p>
+            <p>
+            A request addressing multiple nodes may address both valid nodes, and invalid nodes. 
+            The latter case shall lead to a Forbidden error (403) response message part that contains information about which node, or nodes, 
+            that are invalid. 
+            The error response shall not contain data from any of the validly addressed nodes.
+            </p>
      </section>
 
      <section id="response-syntax">
           <h2>Response syntax</h2>
-	    <p>
-	    A response may contain multiple values, due to either that multiple nodes are addressed, or to that multiple values for one signal is returned.
-	    These two reasons can be combined, leading to four different cases.
-		<ul>
-		<li>Request for a single value from a single node.</li>
-		<li>Request for multiple values from a single node.</li>
-		<li>Request for a single value from multiple nodes.</li>
-		<li>Request for multiple values from multiple nodes.</li>
-		</ul>
-		The syntax to accomodate these four cases have a common structure where a data point ("dp") consists of one or more objects containing a "value" and a timestamp ("ts"),
-		and the complete aggregation ("data"), consists of one or more objects containing a "path" and a data point (dp"). The syntax of the four cases are shown below.
-		<p>Response for a single value from a single node:
+            <p>
+            A response may contain multiple values, due to either that multiple nodes are addressed, 
+            or to that multiple values for one signal is returned.
+            These two reasons can be combined, leading to four different cases.
+                <ul>
+                <li>Request for a single value from a single node.</li>
+                <li>Request for multiple values from a single node.</li>
+                <li>Request for a single value from multiple nodes.</li>
+                <li>Request for multiple values from multiple nodes.</li>
+                </ul>
+                The syntax to accomodate these four cases have a common structure where a data point ("dp") consists of one or more objects 
+                containing a "value" and a timestamp ("ts"), and the complete aggregation ("data"), 
+                consists of one or more objects containing a "path" and a data point (dp"). The syntax of the four cases are shown below.
+                <p>Response for a single value from a single node:
         <pre class="highlight hljs javascript" aria-busy="false">         
   "data": {
     "dp": {
@@ -705,9 +717,9 @@
     },
     "path": "X"
   }
-   		</pre></p>
-   		<p>Response for multiple values from a single node:
-		<pre class="highlight hljs javascript" aria-busy="false">
+                   </pre></p>
+                   <p>Response for multiple values from a single node:
+                <pre class="highlight hljs javascript" aria-busy="false">
   "data": {
     "dp": [
       {
@@ -721,9 +733,9 @@
     ],
     "path": "X"
   }
-		</pre></p>
-		<p>Response for a single value from multiple nodes:
-		<pre class="highlight hljs javascript" aria-busy="false">        
+                </pre></p>
+                <p>Response for a single value from multiple nodes:
+                <pre class="highlight hljs javascript" aria-busy="false">        
   "data": [
     {
       "dp": {
@@ -740,9 +752,9 @@
       "path": "Xm"
     }
   ]
-		</pre></p>
-		<p>Response for multiple values from multiple nodes:
-		<pre class="highlight hljs javascript" aria-busy="false">         
+                </pre></p>
+                <p>Response for multiple values from multiple nodes:
+                <pre class="highlight hljs javascript" aria-busy="false">         
   "data": [
     {
       "dp": [
@@ -774,22 +786,22 @@
         </pre></p>
                In the case of a request for multiple values from multiple nodes, the datapoint for different paths may contain single or multiple objects, 
                as the vehicle system may not have multiple values recorded for all requested signals.
-	    </p>
+            </p>
      </section>
 
      <section id="subscription-notification-triggering">
           <h2>Subscription Notification Triggering</h2>
-	    <p>
-	    A subscription request must always contain a filter operation that describes the trigger event that leads to 
-	    that the server dispatches an asynchronous notification message.
-	    For the filter types "range" or "change", the triggering is dependent on the signal value. 
-	    When the request addresses multiple signals, the triggering condition shall only be evaluated on one of the signals, 
-	    which is the first signal in the value array of paths. 
-	    The first path in the array must therefore not contain wildcards to address multiple signals. 
-	    In this case one of the path addresses in the wildcard expression must be selected as the first array element, 
-	    which can then be followed by the wildcard expression. 
-	    The duplicate reference to one signal that this leads to shall be resolved by the server to a singleton in the notifications.
-	    </p>
+            <p>
+            A subscription request must always contain a filter operation that describes the trigger event that leads to 
+            that the server dispatches an asynchronous notification message.
+            For the filter types "range" or "change", the triggering is dependent on the signal value. 
+            When the request addresses multiple signals, the triggering condition shall only be evaluated on one of the signals, 
+            which is the first signal in the value array of paths. 
+            The first path in the array must therefore not contain wildcards to address multiple signals. 
+            In this case one of the path addresses in the wildcard expression must be selected as the first array element, 
+            which can then be followed by the wildcard expression. 
+            The duplicate reference to one signal that this leads to shall be resolved by the server to a singleton in the notifications.
+            </p>
      </section>
      </section>
    </section>
@@ -797,23 +809,28 @@
     <section id="access-control-model">
       <h2>Access Control Model</h2>
       <p>
-      Access control MUST be supported. However, in this chapter only the sections that describe the interactions between the <a href="#client-def">client</a> and the VISSv2 server are normative.
+      Access control MUST be supported. However, in this chapter only the sections that describe the interactions between the 
+      <a href="#client-def">client</a> and the VISSv2 server are normative.
       </p>
 
       <section id="architecture">
         <h2>Architecture</h2>
         <p>
         <em>This section is non-normative.</em><br>
-        The VISSv2 access control model is inspired by the concepts of OAuth2.0 [[RFC6749]], but some deviations exist as is described in the following chapters.<br><br>
+        The VISSv2 access control model is inspired by the concepts of OAuth2.0 [[RFC6749]], 
+        but some deviations exist as is described in the following chapters.<br><br>
         Four actors are defined:<br>
         <b>Client</b><br>
-        An <a href="#application-roles-def">application </a>making protected and authorized resource requests on behalf of its <a href="#user-roles-def">user</a>.<br>
+        An <a href="#application-roles-def">application </a>making protected and authorized resource requests on behalf of its 
+        <a href="#user-roles-def">user</a>.<br>
         <b>Access Grant server</b><br>
         The server issuing the Access Grant credential after successfully authenticating the <a href="#client-def">client</a>.<br>
         <b>Access Token server</b><br>
-        The server issuing the <a href="#access-token-def">access token</a> to the <a href="#client-def">client</a> after successfully validating the request and obtaining authorization.<br>
+        The server issuing the <a href="#access-token-def">access token</a> to the <a href="#client-def">client</a> 
+        after successfully validating the request and obtaining authorization.<br>
         <b>VISSv2 server</b><br>
-        The server hosting the protected resources, capable of accepting and responding to protected resource requests using <a href="#access-token-def">access tokens</a>.<br><br>
+        The server hosting the protected resources, capable of accepting and responding to protected resource requests using 
+        <a href="#access-token-def">access tokens</a>.<br><br>
         The abstract protocol flow illustrated in the figure below describes the interaction between the four actors.<br>
         <figure id="fig-oauth2.0-flow">
           <img src="images/VISSv2-abstract-flow.jpg" alt="VISSv2 abstract protocol flow.">
@@ -823,9 +840,11 @@
         <b>Resource owner</b><br>
         This is typically the driver of the vehicle, who may be asked for consent before access is granted.<br>
         <b>Ecosystem manager</b><br>
-        The entity managing the access control ecosystem. It controls the Policy documents, and manages the PKI ecosystem that the other actors may utilize.<br><br>
+        The entity managing the access control ecosystem. It controls the Policy documents, 
+        and manages the PKI ecosystem that the other actors may utilize.<br><br>
         The abstract protocol flow is implemented by two different flows, as will be described in the following chapters.<br>
-        The process to obtain the credentials needed for <a href="#client-def">client</a> authentication is out-of-scope, as well as the installation procedures for the <a href="#application-roles-def">applications</a>.
+        The process to obtain the credentials needed for <a href="#client-def">client</a> authentication is out-of-scope, 
+        as well as the installation procedures for the <a href="#application-roles-def">applications</a>.
         </p>
       </section>
 
@@ -833,12 +852,19 @@
         <h2>Protocol Flows</h2>
         <p>
         <em>This section is non-normative.</em><br>
-        Two different flows are described. Which flow to use depends on the capabilities of the <a href="#client-def">client</a>.<br>If a <a href="#client-def">client</a> is able to run public key cryptographic primitives, 
-        i.e. key pair generation and signatures, and has access to some kind of trusted execution environment where private keys are protected from the regular execution environment, 
-        then it can use the long term flow. <a href="#client-def">Clients</a> that do not have access to these capabilities, or do not want to use them, must select the short term flow.<br>
-        The advantage of using the long term flow is that the <a href="#client-def">client</a> can be trusted with longer expiry times of <a href="#access-grant-token-def">access grant tokens</a>. 
-        In the short term flow the <a href="#client-def">client</a> must due to a shorter expiry time contact the <a href="#access-grant-server-def">access grant server</a> more often to obtain a new <a href="#access-grant-token-def">access grant token</a>.<br>
-        A <a href="#client-def">client</a> selects the type of flow by either submitting a public key in the <a href="#access-grant-request-def">access grant request</a>, or not. The latter leading to an short term flow.
+        Two different flows are described. Which flow to use depends on the capabilities of the <a href="#client-def">client</a>.<br>
+        If a <a href="#client-def">client</a> is able to run public key cryptographic primitives, 
+        i.e. key pair generation and signatures, 
+        and has access to some kind of trusted execution environment where private keys are protected from the regular execution environment, 
+        then it can use the long term flow. <a href="#client-def">Clients</a> that do not have access to these capabilities, 
+        or do not want to use them, must select the short term flow.<br>
+        The advantage of using the long term flow is that the <a href="#client-def">client</a> can be trusted with longer expiry times of 
+        <a href="#access-grant-token-def">access grant tokens</a>. 
+        In the short term flow the <a href="#client-def">client</a> must due to a shorter expiry time contact the 
+        <a href="#access-grant-server-def">access grant server</a> more often to obtain a new 
+        <a href="#access-grant-token-def">access grant token</a>.<br>
+        A <a href="#client-def">client</a> selects the type of flow by either submitting a public key in the 
+        <a href="#access-grant-request-def">access grant request</a>, or not. The latter leading to an short term flow.
         </p>
       </section>
 
@@ -985,7 +1011,7 @@
         <h2>Access Grant Server</h2>
         <p>
         <em>This section is non-normative.</em><br>
-          The access arant server is in charge of producing <a href="#access-grant-token-def">access grant tokens</a> to 
+          The access grant server is in charge of producing <a href="#access-grant-token-def">access grant tokens</a> to 
           <a href="#client-def">clients</a>.<br>
           Depending on the capabilities of the <a href="#client-def">client</a>, the specification supports two types of 
           <a href="#access-grant-token-def">access grant tokens</a>: Short term and long term 
@@ -1075,8 +1101,8 @@
         <br>
         To allow for some time synchronization inaccuracy and minor network latency, 
         expiry times should be set to include potential modest margin of error, possibly as long as tens of seconds.<br>
-	If a vehicle identity claim (vin) is present in the <a href="#access-grant-token-def">access grant token</a>, 
-	the vehicle identity (vin) claim SHALL be included in the access token.<br>
+        If a vehicle identity claim (vin) is present in the <a href="#access-grant-token-def">access grant token</a>, 
+        the vehicle identity (vin) claim SHALL be included in the access token.<br>
         If the <a href="#client-context-def">client context</a> as declared in the <a href="#access-grant-token-def">access grant token</a> 
         does not match in the set of allowed roles for the requested <a>purpose</a> in the <a href="#purpose-list-def">purpose list</a>, 
         then the <a href="#client-def">client</a> request for an <a href="#access-token-def">access token</a> must be denied.<br>
@@ -1138,36 +1164,36 @@
           The server SHOULD support caching of a limited number of <a href="#access-token-def">access tokens</a>. 
           The <a href="#access-token-def">access token</a> MUST be included in the cache after a first successful request and 
           MUST be removed once they expire. 
-	  The client can decide to include only the jti claim in following requests in order to save bandwith. 
-	  At any point the server might decide to remove any token from the cache. In this case the client will get a "401, 
-	  missing_token" error and will be forced to send the whole <a href="#access-token-def">access token</a> again.
+          The client can decide to include only the jti claim in following requests in order to save bandwith. 
+          At any point the server might decide to remove any token from the cache. In this case the client will get a "401, 
+          missing_token" error and will be forced to send the whole <a href="#access-token-def">access token</a> again.
           For <a href="#client-def">client</a> requests that are not granted due to access control, 
           the VISSv2 server MUST return one of the error codes shown in the table below.<br>
         <table id="errorDefs" class="parameters">
-	  <tbody><tr>
-	    <th>Error&nbsp;Number&nbsp;(Code)</th>
-	    <th>Error Reason</th>
-	    <th>Error Message</th>
-	  </tr>
-	  <tr>
-	    <td>401 (Unauthorized)</td>
-	    <td>missing_token</td>
-	    <td>One or more of the requested signals are access controlled, an <a href="#access-token-def">access token</a> or its jti, 
-	    must be included in the request.</td>
-	  </tr>
-	  <tr>
-	    <td>406 (Not Acceptable)</td>
-	    <td>invalid_token</td>
-	    <td>In case the request included an <a href="#access-token-def">access token</a>, a fresh one must be obtained. 
-	    In case the request included just the jti, the whole <a href="#access-token-def">access token</a> needs to be send again.</td>
-	  </tr>
-	  <tr>
-	    <td>406 (Not Acceptable)</td>
-	    <td>insufficient_priviledges</td>
-	    <td>The priviledges represented by the <a href="#access-token-def">access token</a> are not sufficient.</td>
-	  </tr>
-	  </tbody>
-	</table>
+          <tbody><tr>
+            <th>Error&nbsp;Number&nbsp;(Code)</th>
+            <th>Error Reason</th>
+            <th>Error Message</th>
+          </tr>
+          <tr>
+            <td>401 (Unauthorized)</td>
+            <td>missing_token</td>
+            <td>One or more of the requested signals are access controlled, an <a href="#access-token-def">access token</a> or its jti, 
+            must be included in the request.</td>
+          </tr>
+          <tr>
+            <td>406 (Not Acceptable)</td>
+            <td>invalid_token</td>
+            <td>In case the request included an <a href="#access-token-def">access token</a>, a fresh one must be obtained. 
+            In case the request included just the jti, the whole <a href="#access-token-def">access token</a> needs to be send again.</td>
+          </tr>
+          <tr>
+            <td>406 (Not Acceptable)</td>
+            <td>insufficient_priviledges</td>
+            <td>The priviledges represented by the <a href="#access-token-def">access token</a> are not sufficient.</td>
+          </tr>
+          </tbody>
+        </table>
         </p>
       </section>
 
@@ -1223,8 +1249,8 @@
             <p>
           The short term access grant token shall have the following claims in header and payload, 
           where all but the vehicle identity (vin) claim are mandatory.<br>
-	  <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>          
-	  {
+          <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>          
+          {
             "alg": "ES256",
             "typ": "JWT"
           },
@@ -1236,11 +1262,11 @@
             "aud": "w3.org/VISSv2",
             "jti": "5967e92e-40e8-5f39-892d-cc0da890db1d"
           }
-	  </pre>
-	  The algorithm (alg) claim shall be set to a valid RSA or ECDSA algorithms according to [[RFC7518]].<br>
-	  The type (typ) claim shall be set to "JWT".<br>
-	  The vehicle identity (vin) claim may be present or not, depending on input to the 
-	  <a href="#access-grant-server-def">access grant server</a>.<br>
+          </pre>
+          The algorithm (alg) claim shall be set to a valid RSA or ECDSA algorithms according to [[RFC7518]].<br>
+          The type (typ) claim shall be set to "JWT".<br>
+          The vehicle identity (vin) claim may be present or not, depending on input to the 
+          <a href="#access-grant-server-def">access grant server</a>.<br>
           The issued at (iat) claim shall be set to the time of token issuance, in Unix time.<br>
           The expiry (exp) claim shall be set to the time when the token expires, in Unix time.<br>
           The <a href="#client-context-def">Client context</a> (clx) claim shall be set to the role triplet the client has been assigned. 
@@ -1256,8 +1282,8 @@
             <p>
           Except for the vehicle identity (vin) claim that is optional, 
           the long term access grant token SHALL have the following claims in header and payload.<br>
-	  <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>          
-	  {
+          <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>          
+          {
             "alg": "ES256",
             "typ": "JWT"
           },
@@ -1270,11 +1296,11 @@
             "aud": "w3.org/VISSv2",
             "jti": "5967e92e-40e8-5f39-892d-cc0da890db1d"
           }
-	  </pre>
-	  The algorithm (alg) claim shall be set to a valid RSA or ECDSA algorithms according to [[RFC7518]].<br>
-	  The type (typ) claim shall be set to "JWT".<br>
-	  The vehicle identity (vin) claim may be present or not, depending on input to the 
-	  <a href="#access-grant-server-def">access grant server</a>.<br>
+          </pre>
+          The algorithm (alg) claim shall be set to a valid RSA or ECDSA algorithms according to [[RFC7518]].<br>
+          The type (typ) claim shall be set to "JWT".<br>
+          The vehicle identity (vin) claim may be present or not, depending on input to the 
+          <a href="#access-grant-server-def">access grant server</a>.<br>
           The issued at (iat) claim shall be set to the time of token issuance, in Unix time.<br>
           The expiry (exp) claim shall be set to the time when the token expires, in Unix time.<br>
           The <a href="#client-context-def">Client context</a> (clx) claim shall be set to the role triplet the client has been assigned. 
@@ -1293,8 +1319,8 @@
           <h2>Access Token</h2>
           <p>
           Except for the vehicle identity (vin) claim that is optional, the Access token SHALL have the following claims in header and payload.<br>
-	  <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>          
-	  {
+          <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>          
+          {
             "alg": "HS256",
             "typ": "JWT"
           },
@@ -1307,11 +1333,11 @@
             "aud": "w3.org/VISSv2",
             "jti": "5967e93f-40f9-5f39-893e-cc0da890db2e"
           }
-	  </pre>
-	  The algorithm (alg) claim shall be set to any valid algorithms according to [[RFC7518]].<br>
-	  The type (typ) claim shall be set to "JWT".<br>
-	  The vehicle identity claim (vin) may be present or not, depending on its presence in the 
-	  <a href="#access-grant-token-def">access grant token</a>.<br>
+          </pre>
+          The algorithm (alg) claim shall be set to any valid algorithms according to [[RFC7518]].<br>
+          The type (typ) claim shall be set to "JWT".<br>
+          The vehicle identity claim (vin) may be present or not, depending on its presence in the 
+          <a href="#access-grant-token-def">access grant token</a>.<br>
           The issued at (iat) claim shall be set to the time of token issuance, in Unix time.<br>
           The expiry (exp) claim shall be set to the time when the token expires, in Unix time.<br>
           The scope (scp) claim shall be set to the <a href="#purpose-list-def">purpose list</a> short name, 
