@@ -27,7 +27,7 @@ JavaScript should be written using the [JSCS](http://jscs.info/) rule set define
 
 ## Contribution Guidelines
 
-In order to join the W3C Automotive Working Group please read our [Charter](http://www.w3.org/2014/automotive/charter) and visit [Join](http://www.w3.org/2004/01/pp-impl/76043/instructions) for further instructions.
+In order to join the W3C Automotive Working Group please read our [Charter](https://www.w3.org/2021/05/autowg-charter.html) and visit [Join](https://www.w3.org/groups/wg/auto/instructions) for further instructions.
 
 - Issues can be submitted [here](https://github.com/w3c/automotive/issues).
 - Commit history can be found [here](https://github.com/w3c/automotive/commits).
