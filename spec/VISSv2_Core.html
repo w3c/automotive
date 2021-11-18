@@ -224,22 +224,71 @@
 
       <section id="address">
         <h2>Addressing</h2>
-        <p>Addressing of elements is done using URIs as defined in [[RFC3986]].</p>
-        <blockquote><a>scheme</a>:<a>authority</a>/<a>path</a>?<a>query</a></blockquote>
-        <p>The <dfn>scheme</dfn> describes the protocol to use to reach the addressed element.</p>
-        <p>The <dfn>authority</dfn> describes where to reach the server holding and managing the data representation.
-          Scheme and authority are defined within the protocol adaptation.</p>
-        <p>The <dfn>path</dfn> consists a sequence of VSS node names separated by a delimiter. VSS specifies the dot (.) as delimiter, 
-        so that is the recommended choice also in this specification. 
-        However, in HTTP URLs the conventional delimiter is slash (/), therefore this delimiter is also supported. 
-        To exemplify this, the path expression from traversing the nodes Vehicle, Car, Engine, RPM can  be "Vehicle.Car.Engine.RPM", 
-        or "Vehicle/Car/Engine/RPM". A mix of delimiters in the same path expression SHOULD be avoided.<br>
-        The path may contain the wildcard character (*) as a representative for one path segment. 
-        It MUST not be combined with other characters to express the path segment, such as "Vehicle.C*". 
-        Multiple wildcards may be used in the same path, such as "Vehicle.Cabin.Door.*.*.IsOpen".
+        <p>Addressing of resources is done using URIs as defined in [[RFC3986]].<br>
+        <blockquote><a>scheme</a>://<a>authority</a>/<a>path</a>?<a>query</a></blockquote>
+        The <dfn>scheme</dfn> describes the protocol to use to reach the addressed resource.
+        For supported protocols, see the TRANSPORT specification.<br>
+        The <dfn>authority</dfn> describes where to reach the resource, for more details see <a href="#authority-component"></a>.<br>
+        The <dfn>path</dfn> addresses a specific service within the resource, for more details see <a href="#path-component"></a>.<br>
+        The <dfn>query</dfn> contains further information related to the addressed service, see <a href="#filter-request"></a>.<br>
+        There are potentially three resources for which a client needs a URI, see <a href="#architecture"></a>:<br>
+        <ul>
+            <li>VISSv2 server.</li>
+            <li>Access grant token server.</li>
+            <li>Access token server.</li>
+        </ul>
         </p>
-        <p>The <dfn>query</dfn> contains further information related to the request, see <a href="#filter-request"></a>.
+
+      <section id="authority-component">
+        <h2>Authority URI Component</h2>
+        <p>
+          The authority component of the URI consists of an IP address or a domain name followed by a colon and a port number. 
+        </p>
+
+        <section id="ip-address-domain-name">
+          <h2>IP address / domain name</h2>
+          <p>
+          Depending on the deployment of a resource, either in the cloud or in a vehicle, they will have a domain name or an IP address, respectively. 
+          A client is expected to obtain this part of the authority component via an interaction with the owner/manager of the vehicle
+          fleet. The details of this interaction is out of scope for this specification.
+          </p>
+        </section>
+
+        <section id="port-number">
+          <h2>Port number</h2>
+          <em>This section is non-normative.</em><br>
+          <p>
+          The VISSv2 server shall use the following port numbers for the different transport protocols.
+          <ul>
+            <li>HTTP port number = 443.</li>
+            <li>Websocket port number = 6443.</li>
+            <li>MQTT port number = 8883.</li>
+          </ul>
+          The access grant token server shall use the port number 7443.<br>
+          The access token server shall use the port number 8443.<br>
+          A client may be provisioned with other port numbers than the above specified in its interaction 
+          to obtain the other parts of the authority component, see <a href="#ip-address-domain-name"></a>.
+          </p>
+        </section>
       </section>
+
+      <section id="path-component">
+        <h2>Path URI Component</h2>
+        <p>
+          The path URI component definition differs between the three resources.<br>
+          For the <b>VISSv2 server</b> the definition is as follows.<br>
+          The path consists a sequence of VSS node names separated by a delimiter. VSS specifies the dot (.) as delimiter, 
+          which therefore is the recommended choice also in this specification. 
+          However, in HTTP URLs the conventional delimiter is slash (/), therefore also this delimiter is supported. 
+          To exemplify, the path expression from traversing the nodes Vehicle, Car, Engine, RPM can  be "Vehicle.Car.Engine.RPM", 
+          or "Vehicle/Car/Engine/RPM". A mix of delimiters in the same path expression SHOULD be avoided.<br>
+          The path MUST not contain any wildcard characters ("*"), for such needs see <a href="#paths-filter-operation"></a>.<br>
+          For the <b>access grant token server</b> the path is "agts".<br>
+          For the <b>access token server</b> the path is "ats".<br>
+        </p>
+      </section>
+      </section>
+
       <section id="data-representation">
         <h2>Data representation</h2>
         <p>
@@ -823,9 +872,9 @@
         <b>Client</b><br>
         An <a href="#application-roles-def">application </a>making protected and authorized resource requests on behalf of its 
         <a href="#user-roles-def">user</a>.<br>
-        <b>Access Grant server</b><br>
+        <b>Access grant token server</b><br>
         The server issuing the Access Grant credential after successfully authenticating the <a href="#client-def">client</a>.<br>
-        <b>Access Token server</b><br>
+        <b>Access token server</b><br>
         The server issuing the <a href="#access-token-def">access token</a> to the <a href="#client-def">client</a> 
         after successfully validating the request and obtaining authorization.<br>
         <b>VISSv2 server</b><br>
@@ -861,7 +910,7 @@
         The advantage of using the long term flow is that the <a href="#client-def">client</a> can be trusted with longer expiry times of 
         <a href="#access-grant-token-def">access grant tokens</a>. 
         In the short term flow the <a href="#client-def">client</a> must due to a shorter expiry time contact the 
-        <a href="#access-grant-server-def">access grant server</a> more often to obtain a new 
+        <a href="#access-grant-server-def">access grant token server</a> more often to obtain a new 
         <a href="#access-grant-token-def">access grant token</a>.<br>
         A <a href="#client-def">client</a> selects the type of flow by either submitting a public key in the 
         <a href="#access-grant-request-def">access grant request</a>, or not. The latter leading to an short term flow.
@@ -885,7 +934,7 @@
             The context consists of a triplet of roles for <a href="#user-roles-def">user</a>, <a href="#application-roles-def">app </a>permissions, 
             and <a href="#device-roles-def">device</a> characteristics.</li>
             <li><a href="#proof-of-possession-def">Proof</a>: A proof mechanism that is used by the <a href="#client-def">client</a> 
-            to attest its context to the <a href="#access-grant-server-def">access grant server</a>. 
+            to attest its context to the <a href="#access-grant-server-def">access grant token server</a>. 
             This is indeed a composed proof for the User role, <a href="#application-roles-def">app </a>permissions, 
             and <a href="#device-roles-def">device</a> characteristics.</li>
             <li>Public key: If this parameter is present, the client will receive a long term 
@@ -897,7 +946,7 @@
             the client and the server may need to run an interactive protocol to verify them. 
             The protocol may involve also third parties, such as the <a href="#ecosystem-manager-def">ecosystem manager</a> or the 
             <a href="#resource-owner-def">resource owner</a>. The protocol is out of scope for this specification.<br>
-            In scenarios where both the client and the <a href="#access-grant-server-def">access grant server</a> 
+            In scenarios where both the client and the <a href="#access-grant-server-def">access grant token server</a> 
             are deployed in-vehicle the VIN parameter may be omitted, in all other deployment scenarios it shall be present.
           </p>
         </section>
@@ -916,7 +965,7 @@
           would include the public key used in the request.
           <br>
           The <a href="#access-grant-token-def">access grant token</a> is a digitally signed document issued by the 
-          <a href="#access-grant-server-def">access grant server</a> including all relevant information needed to issue 
+          <a href="#access-grant-server-def">access grant token server</a> including all relevant information needed to issue 
           <a href="#access-token-def">access tokens</a>.
         </p>
         <p>
@@ -1008,10 +1057,10 @@
 
       <dfn id="access-grant-server-def"></dfn>
       <section id="access-grant-server">
-        <h2>Access Grant Server</h2>
+        <h2>Access Grant Token Server</h2>
         <p>
         <em>This section is non-normative.</em><br>
-          The access grant server is in charge of producing <a href="#access-grant-token-def">access grant tokens</a> to 
+          The access grant token server is in charge of producing <a href="#access-grant-token-def">access grant tokens</a> to 
           <a href="#client-def">clients</a>.<br>
           Depending on the capabilities of the <a href="#client-def">client</a>, the specification supports two types of 
           <a href="#access-grant-token-def">access grant tokens</a>: Short term and long term 
@@ -1023,14 +1072,14 @@
           private keys are protected from the regular execution environment. 
           The specification also supports short term <a href="#access-grant-token-def">access grant tokens</a> that require 
           no extra capabilities in the client, 
-          but due to its shorter expiry time it forces the client to contact the access grant server more often before 
+          but due to its shorter expiry time it forces the client to contact the access grant token server more often before 
           <a href="#access-token-server-def">access token server</a> requests for an <a href="#access-token-def">access token</a>.<br>
           The <a href="#client-def">client</a> request shall contain the following:
           <ul>
             <li>A <a href="#client-context-def">client context</a>.</li>
             <li>A set of <a href="#proof-of-possession-def">proofs</a>.</li>
           </ul>
-          In scenarios where both the client and the Access Grant server are deployed in-vehicle the VIN parameter may be omitted, 
+          In scenarios where both the client and the access grant token server are deployed in-vehicle the VIN parameter may be omitted, 
           in all other deployment scenarios it shall be present.
           <ul>
             <li>A VIN.</li>
@@ -1048,17 +1097,18 @@
           The <a href="#proof-of-possession-def">proofs</a> are to be used for verifying the <a href="#client-context-def">client context</a>.<br>
           The public key shall be generated by the <a href="#client-def">client</a>, 
           and the associated private key must be under control of the <a href="#client-def">client</a>.<br><br>
-          The main responsibilities of the access grant server are:
+          The main responsibilities of the access grant token server are:
           <ul>
             <li>To verify the <a href="#client-context-def"> client context</a>, and assess that their respective role request can be granted.</li>
             <li>To check that the vehicle represented by the VIN belong to this Ecosystem, and is accessible.</li>
             <li>To create an <a href="#access-grant-token-def">access grant token</a>.</li>
           </ul>
-          The <a href="#proof-of-possession-def">proofs</a> may include certificates from a Certificate Authority known by the access grant server. 
+          The <a href="#proof-of-possession-def">proofs</a> may include certificates from a Certificate Authority known by the 
+          access grant token server. 
           For example, users might authenticate themselves using X.509 identity certificates and roles might be issued using attribute certificates. 
           In those cases, as part of the authentication protocol, 
-          the access grant server shall also validate the certificates signatures.<br>
-          The access grant server may contact the <a href="#ecosystem-manager-def">ecosystem manager</a> for checking the VIN.<br>
+          the access grant token server shall also validate the certificates signatures.<br>
+          The access grant token server may contact the <a href="#ecosystem-manager-def">ecosystem manager</a> for checking the VIN.<br>
           The <a href="#access-grant-token-def">access grant token</a> generation is defined in the corresponding chapter.
         </p>
           </p>
@@ -1069,7 +1119,8 @@
         <h2>Access Token Server</h2>
         <p>
         <em>This section is non-normative.</em><br>
-        The <a href="#client-def">client</a> shall after a successful interaction with the <a href="#access-grant-server-def">access grant server</a> 
+        The <a href="#client-def">client</a> shall after a successful interaction with the 
+        <a href="#access-grant-server-def">access grant token server</a> 
         request an <a href="#access-token-def">access token</a> from the access token server. 
         The <a href="#client-def">client</a> request shall contain at least these two parameters below.
           <ul>
@@ -1097,7 +1148,7 @@
         Additionally, for long term <a href="#access-grant-token-def">access grant tokens</a>, the access token server needs to verify the 
         <a href="#proof-of-possession-def">proof of possession</a> using the public key contained in the token.<br>
         The <a href="#access-grant-token-def">access grant token</a> signature validation is done with the 
-        <a href="#access-grant-server-def">access grant server</a> public key. 
+        <a href="#access-grant-server-def">access grant token server</a> public key. 
         <br>
         To allow for some time synchronization inaccuracy and minor network latency, 
         expiry times should be set to include potential modest margin of error, possibly as long as tens of seconds.<br>
@@ -1213,7 +1264,7 @@
         <p>
         <em>This section is non-normative.</em><br>
         The Ecosystem manager is the entity responsible for the functionality of the access control system. 
-        This typically includes the management of the <a href="#access-grant-server-def">access grant server</a>, 
+        This typically includes the management of the <a href="#access-grant-server-def">access grant token server</a>, 
         and the <a href="#access-token-server-def">access token server</a>, the Policy documents, 
         and that there is a PKI domain for the other actors to utilize. 
         </p>
@@ -1230,9 +1281,9 @@
           <p>
           <em>This section is non-normative.</em><br>
           The three <a href="#client-def">client</a> sub-actors must provide authentication credentials to the 
-          <a href="#access-grant-server-def">access grant server</a>. 
+          <a href="#access-grant-server-def">access grant token server</a>. 
           This may be certificates that the sub-actors have obtained from a Certificate Authority that is known by the 
-          <a href="#access-grant-server-def">access grant server</a>. 
+          <a href="#access-grant-server-def">access grant token server</a>. 
           The interactions related to this are out of scope.
           </p>
         </section>
@@ -1266,7 +1317,7 @@
           The algorithm (alg) claim shall be set to a valid RSA or ECDSA algorithms according to [[RFC7518]].<br>
           The type (typ) claim shall be set to "JWT".<br>
           The vehicle identity (vin) claim may be present or not, depending on input to the 
-          <a href="#access-grant-server-def">access grant server</a>.<br>
+          <a href="#access-grant-server-def">access grant token server</a>.<br>
           The issued at (iat) claim shall be set to the time of token issuance, in Unix time.<br>
           The expiry (exp) claim shall be set to the time when the token expires, in Unix time.<br>
           The <a href="#client-context-def">Client context</a> (clx) claim shall be set to the role triplet the client has been assigned. 
@@ -1300,7 +1351,7 @@
           The algorithm (alg) claim shall be set to a valid RSA or ECDSA algorithms according to [[RFC7518]].<br>
           The type (typ) claim shall be set to "JWT".<br>
           The vehicle identity (vin) claim may be present or not, depending on input to the 
-          <a href="#access-grant-server-def">access grant server</a>.<br>
+          <a href="#access-grant-server-def">access grant token server</a>.<br>
           The issued at (iat) claim shall be set to the time of token issuance, in Unix time.<br>
           The expiry (exp) claim shall be set to the time when the token expires, in Unix time.<br>
           The <a href="#client-context-def">Client context</a> (clx) claim shall be set to the role triplet the client has been assigned. 
@@ -1405,12 +1456,13 @@
           <a href="#ecosystem-manager-def">ecosystem manager</a>, hopefully in a cooperative effort.<br>
           Using an RBAC model provides the following main purposes in the VISSv2 access control model:
           <ul>
-            <li>Input to the <a href="#access-grant-server-def">access grant server</a> in the <a href="#client-def">client</a> authentication process.</li>
+            <li>Input to the <a href="#access-grant-server-def">access grant token server</a> in the 
+            <a href="#client-def">client</a> authentication process.</li>
             <li>Input to the <a href="#access-token-server-def">access token server</a> in the <a>purpose</a> validation.</li>
           </ul>
-        The <a href="#access-grant-server-def">access grant server</a> must in the authentication process of the client 
+        The <a href="#access-grant-server-def">access grant token server</a> must in the authentication process of the client 
         possibly separately authenticate each of the three subactors. 
-        For the <a href="#access-grant-server-def">access grant server</a> to decide on which authentication method to use per subactor 
+        For the <a href="#access-grant-server-def">access grant token server</a> to decide on which authentication method to use per subactor 
         can be quite complex, but may be somewhat eased by the <a href="#client-def">client</a> request for roles for each subactor.<br>
         Following the principle of least priviledge, a <a href="#client-def">client</a> should not have access to more vehicle signals than necessary. 
         This is achieved by the <a href="#purpose-list-def">purpose list</a>, that assigns only the for the 
