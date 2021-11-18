@@ -848,24 +848,53 @@
         </p>
       </section>
 
-      <section id="access-control-flows">
+      <section id="protocol-flows">
         <h2>Protocol Flows</h2>
         <p>
         <em>This section is non-normative.</em><br>
-        Two different flows are described. Which flow to use depends on the capabilities of the <a href="#client-def">client</a>.<br>
-        If a <a href="#client-def">client</a> is able to run public key cryptographic primitives, 
+        Two different flows are described. Two of them follow the abstract protocol flow shown in Figure 1, 
+        while for the third the flow is left unspecified, with only the access token being specified.
+        </p>
+
+        <section id="long-term-flow">
+        <h2>Long Term Flow</h2>
+        <p>
+        <em>This section is non-normative.</em><br>
+        This flow requires that a <a href="#client-def">client</a> is able to run public key cryptographic primitives, 
         i.e. key pair generation and signatures, 
-        and has access to some kind of trusted execution environment where private keys are protected from the regular execution environment, 
-        then it can use the long term flow. <a href="#client-def">Clients</a> that do not have access to these capabilities, 
-        or do not want to use them, must select the short term flow.<br>
+        and has access to some kind of trusted execution environment where private keys are protected from the regular execution environment.
         The advantage of using the long term flow is that the <a href="#client-def">client</a> can be trusted with longer expiry times of 
         <a href="#access-grant-token-def">access grant tokens</a>. 
+        A <a href="#client-def">client</a> selects the long term flow by including a public key in the 
+        <a href="#access-grant-request-def">access grant request</a>. 
+        </p>
+        </section>
+
+        <section id="short-term-flow">
+        <h2>Short Term Flow</h2>
+        <p>
+        <em>This section is non-normative.</em><br>
+        This flow does not require the <a href="#client-def">Client</a> to have access to the capabilities needed for the long term flow. 
         In the short term flow the <a href="#client-def">client</a> must due to a shorter expiry time contact the 
         <a href="#access-grant-server-def">access grant server</a> more often to obtain a new 
         <a href="#access-grant-token-def">access grant token</a>.<br>
-        A <a href="#client-def">client</a> selects the type of flow by either submitting a public key in the 
-        <a href="#access-grant-request-def">access grant request</a>, or not. The latter leading to an short term flow.
+        A <a href="#client-def">client</a> selects the short term flow by excluding a public key in the 
+        <a href="#access-grant-request-def">access grant request</a>.
         </p>
+        </section>
+
+        <section id="open-flow">
+        <h2>Open Flow</h2>
+        <p>
+        <em>This section is non-normative.</em><br>
+        The open flow differs from the long and short term flows in that it does not specify the steps 
+        that a client needs to perform to obtain an access token.<br>
+        The access token used in this flow also differs from the other flows, 
+        the Scope and Client context claims are removed, and replaced by a Signal access claim, as shown in <a href="#access-token"></a>.<br>
+        This means that the only chapters of the Access Control model that relates to the Open flow, besides this chapter, 
+        are <a href="#open-access-token"></a> and <a href="#access-control-selection"></a>.
+        </p>
+        </section>
       </section>
 
       <section id="protocol-messages">
@@ -1277,7 +1306,7 @@
             </p>
           </section>
 
-          <section id="client-signed-agtoken">
+          <section id="long-term-agtoken">
             <h2>Long Term Access Grant Token</h2>
             <p>
           Except for the vehicle identity (vin) claim that is optional, 
@@ -1318,7 +1347,16 @@
         <section id="access-token">
           <h2>Access Token</h2>
           <p>
-          Except for the vehicle identity (vin) claim that is optional, the Access token SHALL have the following claims in header and payload.<br>
+          The access token format differ between the long term/short term flows and the Open Flow. 
+          The difference is that the access token for the former flows contains the claims "scp" and "clx", 
+          while for the latter flow these are replaced with the "sac" claim.
+          </p>
+
+        <section id="long-short-term-access-token">
+          <h2>Long/Short Term Flow Access Token</h2>
+          <p>
+          Except for the vehicle identity (vin) claim that is optional, 
+          the Access token for long term and short term flows SHALL have the following claims in header and payload.<br>
           <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>          
           {
             "alg": "HS256",
@@ -1348,6 +1386,43 @@
           The JSON Web Token identity (jti) claim shall be set to an unguessable UUID that is unique within the domain controlled by the 
           <a href="#ecosystem-manager-def">ecosystem manager</a>.
           </p>
+        </section>
+
+        <section id="open-access-token">
+          <h2>Open Flow Access Token</h2>
+          <p>
+          Except for the vehicle identity (vin) claim that is optional, 
+          the Access token for the open flow SHALL have the following claims in header and payload.<br>
+          <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>          
+          {
+            "alg": "HS256",
+            "typ": "JWT"
+          },
+          {
+            "vin": "vehicle-id",
+            "iat": 1609452095,
+            "exp": 1609459199,
+            "sac": signal-set,
+            "aud": "w3.org/VISSv2",
+            "jti": "5967e93f-40f9-5f39-893e-cc0da890db2e"
+          }
+          </pre>
+          The algorithm (alg) claim shall be set to any valid algorithms according to [[RFC7518]].<br>
+          The type (typ) claim shall be set to "JWT".<br>
+          The vehicle identity claim (vin) may be present or not, depending on its presence in the 
+          <a href="#access-grant-token-def">access grant token</a>.<br>
+          The issued at (iat) claim shall be set to the time of token issuance, in Unix time.<br>
+          The expiry (exp) claim shall be set to the time when the token expires, in Unix time.<br>
+          The signal access (sac) claim shall define the set of signals that the token permits access to. 
+          Each signal is defined as a JSON object containing the signal path, and the signal permission as shown below.<br>
+          {"path":"vss-path", "access_permission":"permission"}<br>
+          where "vss-path" is the VSS path, and "permission" is either "read-only" or "read-write". 
+          In the case of multiple signals a JSON array of such objects is used.<br>
+          The audience (aud) claim shall be set to the URL "w3.org/VISSv2".<br>
+          The JSON Web Token identity (jti) claim shall be set to an unguessable UUID that is unique within the domain controlled by the 
+          <a href="#ecosystem-manager-def">ecosystem manager</a>.
+          </p>
+        </section>
         </section>
 
         <dfn id="proof-of-possession-def"></dfn>
@@ -1494,8 +1569,10 @@
         shall provide as input to its request for an <a href="#access-token-def">access token</a>. 
         There is also a long purpose description, which may be used in the dialogue for consent, if needed. 
         Then there is a list of the <a href="#client-context-def">client context</a>, i. e. the sub-actor role triplet, 
-        that can be granted this access, and last there is a list of  the signals that the client is given access to for this purpose, 
-        with the allowed access permission. The list shall use a JSON format as shown in the example below.
+        that can be granted this access. Finally the signals that the client is given access to for this purpose are defined. 
+        Each signal is defined by an object containing the signal path and its access permission, 
+        the latter being either "read-only", or "read-write". 
+        For multiple signals a JSON array is used, as shown in the example below.
         <pre><code>
         {"purposes":
             [{"short": "fuel-status", 
