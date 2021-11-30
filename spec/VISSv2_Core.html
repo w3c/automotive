@@ -1118,8 +1118,6 @@
           <ul>
             <li>Token signature.</li>
             <li>Token expiry time.</li>
-            <li>Token signal scope.</li>
-            <li>Token access permission.</li>
           </ul>
           If a vehicle identity claim (vin) is present in the token, then it MUST be validated to match the identity of this vehicle.<br>
           If any of the mentioned validations fail, the server MUST reject the access request.<br>
@@ -1129,13 +1127,16 @@
           or other PKI based solutions may be used.<br>
           The VISSv2 server SHALL have access to a secure system time, that cannot be modified by actors without system acknowledged credentials. 
           Time validation may allow for a time synchronization inaccuracy in the range of tens of seconds.<br>
-          A successful signal scope validation requires that all the nodes addressed by the path in the request MUST 
-          be matched by the paths associated with the <a>purpose</a> in the purpose claim of the <a href="#access-token-def">access token</a>.<br>
+          After a successful token validation, the server MUST check that the scope of the token is compatible with the request.
+          If the scope claim of the <a href="#access-token-def">access token</a> contains a <a>purpose</a> short-name, successful validation requires that all the nodes addressed by the path in the request MUST 
+          be matched by the paths associated with the <a>purpose</a> in the <a href="#purpose-list-def">purpose list</a> .<br>
+          If the scope claim of the <a href="#access-token-def">access token</a> contains a explicit list of signals, successful validation requires that all the nodes addressed by the path in the request MUST 
+          be matched by the one of the signals included in the token.<br>
           Validation of the <a href="#device-roles-def">device</a> and <a href="#application-roles-def">app </a>roles may involve MAC address checks, 
           or message round-trip measurements.<br>
           The access permission validation MUST have the outcome shown in the table below, 
-          when comparing the type of the <a href="#client-def">client</a> request with the access control mode in the 
-          <a href="#purpose-list-def">purpose list</a> that is associated to the purpose claim in the <a href="#access-token-def">access token</a>.
+          when comparing the type of the <a href="#client-def">client</a> request with the access control mode either in the 
+          <a href="#purpose-list-def">purpose list</a> or the explicit signals that are associated to the scope claim in the <a href="#access-token-def">access token</a>.
           If the <a href="#client-def">client</a> request contains several signals, and one fails the validation, 
           then the entire request MUST be rejected.<br><br>
           <table class="simple">
@@ -1328,7 +1329,7 @@
             "vin": "vehicle-id",
             "iat": 1609452095,
             "exp": 1609459199,
-            "scp": "PurposeX",
+            "scp": "PurposeX" || signal-set,
             "clx": "user+app+dev",
             "aud": "w3.org/VISSv2",
             "jti": "5967e93f-40f9-5f39-893e-cc0da890db2e"
@@ -1340,8 +1341,10 @@
           <a href="#access-grant-token-def">access grant token</a>.<br>
           The issued at (iat) claim shall be set to the time of token issuance, in Unix time.<br>
           The expiry (exp) claim shall be set to the time when the token expires, in Unix time.<br>
-          The scope (scp) claim shall be set to the <a href="#purpose-list-def">purpose list</a> short name, 
-          which logically links to the signal scope as defined in the <a href="#purpose-list-def">purpose list</a>.<br>
+          The scope (scp) claim shall be set to either a <a href="#purpose-list-def">purpose list</a> short name, 
+          which logically links to the signal scope as defined in the <a href="#purpose-list-def">purpose list</a>, or to a set of signals that the token permits access to. 
+          Each signal is defined as a JSON object containing the signal path, and the signal permission as shown below.<br>
+          {"path":"vss-path", "access_permission":"permission"}<br>
           The <a href="#client-context-def">Client context</a> (clx) claim shall be set to the role triplet the client has been assigned. 
           The delimiter separating the roles is a plus sign (+).<br>
           The audience (aud) claim shall be set to the URL "w3.org/VISSv2".<br>
