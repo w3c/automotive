@@ -1370,7 +1370,8 @@
         <section id="access-token">
           <h2>Access Token</h2>
           <p>
-          Except for the vehicle identity (vin) claim that is optional, the Access token SHALL have the following claims in header and payload.<br>
+          Except for the vehicle identity (vin), and client context (clx) claims that are optional, 
+          the Access token SHALL have the following claims in header and payload.<br>
           <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>          
           {
             "alg": "HS256",
@@ -1393,9 +1394,11 @@
           The issued at (iat) claim shall be set to the time of token issuance, in Unix time.<br>
           The expiry (exp) claim shall be set to the time when the token expires, in Unix time.<br>
           The scope (scp) claim shall be set to either a <a href="#purpose-list-def">purpose list</a> short name, 
-          which logically links to the signal scope as defined in the <a href="#purpose-list-def">purpose list</a>, or to a set of signals that the token permits access to. 
+          which logically links to the signal scope as defined in the <a href="#purpose-list-def">purpose list</a>, 
+          or to a set of signals that the token permits access to. 
           Each signal is defined as a JSON object containing the signal path, and the signal permission as shown below.<br>
           {"path":"vss-path", "access_permission":"permission"}<br>
+          If the scope claim is set to a purpose, the client context claim MUST be present in the token.<br>
           The <a href="#client-context-def">Client context</a> (clx) claim shall be set to the role triplet the client has been assigned. 
           The delimiter separating the roles is a plus sign (+).<br>
           The audience (aud) claim shall be set to the URL "w3.org/VISSv2".<br>
