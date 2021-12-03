@@ -219,7 +219,7 @@
                 </p>
         <figure id="fig-example-vss-tree">
           <img src="images/vss-tree.jpg" alt="example-vss-tree">
-          <figcaption> <span class="fig-title">Diagram showing an example VSS 2.0 tree.</span></figcaption>
+          <figcaption> <span class="fig-title">Example VSS 2.0 tree.</span></figcaption>
         </figure>
 
       <section id="address">
@@ -547,35 +547,35 @@
           <ul>
           <li><b>type</b>: the key name for the filter operation type, which can have one of the values:
           <ul>
-          <li>paths:
+          <li><u>paths</u>:
           <ul>
           <li>one or more relative paths. In the case of several paths an array expression shall be used.</li>
           </ul></li>
-          <li>timebased:
+          <li><u>timebased</u>:
           <ul>
           <li>data is captured repeatedly with a fixed period time.</li>
           </ul></li>
-          <li>range:
+          <li><u>range</u>:
           <ul>
           <li>data is captured when values are in the given range.</li>
           </ul></li>
-          <li>change:
+          <li><u>change</u>:
           <ul>
           <li>data is captured when the value since last capture has changed more than a fixed value.</li>
           </ul></li>
-          <li>curvelog:
+          <li><u>curvelog</u>:
           <ul>
           <li>captured data is processed according to the curve logging algorithm before being sent to client.</li>
           </ul></li>
-          <li>history:
+          <li><u>history</u>:
           <ul>
           <li>the time period from current time and backwards in time.</li>
           </ul></li>
-          <li>static-metadata:
+          <li><u>static-metadata</u>:
           <ul>
           <li>the response contains the VSS metadata of the addressed sub-tree.</li>
           </ul></li>
-          <li>dynamic-metadata:
+          <li><u>dynamic-metadata</u>:
           <ul>
           <li>the response contains metadata additional to the VSS specification.</li>
           </ul></li>
@@ -584,11 +584,11 @@
           The value data varies depending on the type, 
           is enclosed in one object, or optionally an array of two objects, and is described in the following chapters.</li>
           </ul>
+          The server MUST support the timebased and change types, the other types are optional.<br>
           In the JSON object, the key-value pairs "type" and "value" must always be present.
-          The JSON expression may consist of maximum one object with type "paths", plus maximum one object with any of the other types, 
+          The JSON expression may consist of maximum one object with type "paths", plus maximum one object with any other supported type, 
           which are then logically combined as with an AND operator.<br>
-          The server SHALL support all combinations up to this maximum.<br>
-          The types time-based, range, change, and curvelog are only applicable for subscription requests. 
+          The types timebased, range, change, and curvelog are only applicable for subscription requests. 
           Subscription requests are only supported by the websocket transport protocol.<br>
           The restriction on how many objects that can be combined is also set by the URL size restriction on 1k characters (*).<br>
           (*) 1k is the "conservative limit, which should always be supported, a more liberal limit is 2k, which is supported in most cases.
@@ -695,7 +695,8 @@
         In the latter case then the response will contain static metadata from the entire sub-tree having this branch as the root.<br>
         A static metadata request can be combined with a paths filter operation to address multiple nodes, 
         but cannot be combined with any other filter type.<br>
-        The response is a JSON formatted object with corresponding key-value pairs per addressed node.<br>
+        The response is a JSON formatted object with corresponding key-value pairs per addressed node. 
+        The server MAY support the static metadata request.<br>
         Examples can be found in the TRANSPORT specification.
         </p>
     </section>
@@ -711,16 +712,22 @@
         If the expression contains multiple metadata types, then they are represented as array elements. <br><br>
         The set of dynamic metadata keynames are found in the list below.
         <ul>
-        <li>samplerate: the native capture frequency in Hz that is used by the vehicle system.</li>
-        <li>availability: the current availability of the signal(s). The possible values are ["available", "unavailable", "error"]. 
+        <li><u>samplerate</u>: The native capture frequency in Hz that is used by the vehicle system.
+        The response uses the same syntax as for ordinary data responses, with "value" representing the sample rate.</li>
+        <li><u>availability</u>: The current availability of the signal(s). The possible values are ["available", "unavailable", "error"]. 
         The unavailable status is returned when the signal is inaccessible due to the current vehicle state. 
-        The error status is returned if the subsystem represented by the signal exists in the vehice, but is broken and requires repair.</li>
-        <li>validate: the access control rule that is applied to the node and its sub-tree. 
-        The server response shall conform to the inheritance rules, see the access control selection chapter.</li>
+        The error status is returned if the subsystem represented by the signal exists in the vehice, but is broken and requires repair. 
+        The response uses the same syntax as for ordinary data responses, with "value" representing the availability.</li>
+        <li><u>validate</u>: The access control rule that is applied to the node and its sub-tree. 
+        The possible values are ["write-only", "read-write"]. 
+        The response uses the same syntax as for ordinary data responses, with "value" representing the validate tag. 
+        The server applies the validate data according to the inheritance rules described in the access control selection chapter.</li>
+        <li><u>opt-cap</u>: The optional capabilities that the server supports. 
+        See Appendix: Optional Server Capabilities for how this is expressed in the response.</li>
         </ul>
         A dynamic metadata request can be combined with a paths filter operation to address multiple nodes, 
         but not with any other filter type.<br>
-        The response is a JSON formatted object with corresponding key-value pairs per addressed node.<br>
+        The optional server capabilities request and the validate request MUST be supported.<br>
         Examples can be found in the TRANSPORT specification.
         </p>
     </section>
@@ -859,7 +866,10 @@
       <h2>Access Control Model</h2>
       <p>
       Access control MUST be supported. However, in this chapter only the sections that describe the interactions between the 
-      <a href="#client-def">client</a> and the VISSv2 server are normative.
+      <a href="#client-def">client</a> and the VISSv2 server are normative.<br>
+      Access control SHALL not be applied to the VSS nodes containing the VSS version data, 
+      and not to client requests for dynamic metadata about the server optional capabilities, 
+      or about the access control selection tags applied to the VSS tree.
       </p>
 
       <section id="architecture">
@@ -1650,5 +1660,93 @@
     </section>
 
     <section id="tof" class="appendix"></section>
+
+    <section id="optional-server-capabilities" class="appendix">
+        <h2>Optional Server Capabilities</h2>
+        <p>
+        On receiving a dynamic-metadata request on optional capabilities the server SHALL respond with a JSON object that for each of the keys
+        in the list below contains the associated values in the list that the server supports. 
+        Both the keys and the values are represented as strings, if a key has more than one value, these are represented as an array, 
+        see example below.<br>
+        {"flt": ["paths", "clog"], "acc": ["sterm", "lterm", "open"], "trp": "wss"}
+        <table  style="width:50%">
+          <tr>
+            <th>Key name</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>flt</td>
+            <td>Filtering</td>
+          </tr>
+          <tr>
+            <td>acc</td>
+            <td>Access control</td>
+          </tr>
+          <tr>
+            <td>trp</td>
+            <td>Transport protocol</td>
+          </tr>
+        </table><br>
+        <table  style="width:50%">
+          <tr>
+            <th>flt value</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>paths</td>
+            <td>Paths filter</td>
+          </tr>
+          <tr>
+            <td>range</td>
+            <td>Range filter</td>
+          </tr>
+          <tr>
+            <td>clog</td>
+            <td>Curve logging filter</td>
+          </tr>
+          <tr>
+            <td>hist</td>
+            <td>History filter</td>
+          </tr>
+          <tr>
+            <td>static</td>
+            <td>Static metadata filter</td>
+          </tr>
+        </table><br>
+        <table  style="width:50%">
+          <tr>
+            <th>acc value</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>sterm</td>
+            <td>Short term flow</td>
+          </tr>
+          <tr>
+            <td>lterm</td>
+            <td>Long term flow</td>
+          </tr>
+          <tr>
+            <td>sset</td>
+            <td>Signal set as access token scope claim</td>
+          </tr>
+        </table><br>
+        <table  style="width:50%">
+          <tr>
+            <th>trp value</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>wss</td>
+            <td>Secure websocket transport protocol</td>
+          </tr>
+          <tr>
+            <td>mqtts</td>
+            <td>Secure MQTT transport protocol</td>
+          </tr>
+        </table>
+
+        </p>
+    </section>
   </body>
 </html>
