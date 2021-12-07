@@ -706,11 +706,8 @@
         <p>
         Dynamic metadata requests are used when the client instead of the data associated to VSS node(s) wants to 
         retrieve metadata that is additional to the VSS specification.<br>
-        The dynamic metadata may change over time, which is not the case for the static metadata.
-        If the "value" key contains an empty string, then all metadata that the server can retrieve for the for the addressed node(s) are returned, 
-        while if it contains metadata key name(s) then only the selected metadata is returned. 
-        If the expression contains multiple metadata types, then they are represented as array elements. <br><br>
-        The set of dynamic metadata keynames are found in the list below.
+        The dynamic metadata may change over time.
+        The request filter "value" key MUST only contain one of the metadata key names from the list of dynamic metadata key names below.<br>
         <ul>
         <li><u>samplerate</u>: The native capture frequency in Hz that is used by the vehicle system.
         The response uses the same syntax as for ordinary data responses, with "value" representing the sample rate.</li>
