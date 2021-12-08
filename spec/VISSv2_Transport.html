@@ -474,12 +474,14 @@
           </section>
 
           <section id="https-service-discovery-read">
-            <h2>Service Discovery Read</h2>
+            <h2>Signal Discovery Read</h2>
             <p>
-              The service discovery request uses the URL fragment pattern as described in the CORE document to retrieve the static metadata, 
+              The signal discovery request uses the URL fragment pattern as described in the CORE document to retrieve the static metadata, 
               i. e. the metadata defined in the VSS tree.
-              The dynamic metadata, i. e. any other metadata kept by the vehicle system, 
-              is retrieved by the setting the "type" to  "dynamic-metadata".<br>
+              If the value is set to an empty string, then all metadata in the addressed VSS nodes is returned. 
+              If only specific metadata is desired, the value can be set to this, e. g. "value":["type", "datatype"]. 
+              The values must be the names as defined in the VSS specification.<br>
+              <br>
               <b>Example:</b>
               Request:
               <pre><code>
@@ -494,7 +496,38 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                "metadata": {"FuelSystem":{"type":"branch","description":"Fuel system data.","children":{"HybridType, ... }}}
+                "metadata": {"FuelSystem":{"type":"branch","description":"Fuel system data.","children":{"HybridType, ... }}},
+                "ts": "2020-04-15T13:37:00Z"
+              }
+              </code></pre>
+            </p>
+          </section>
+
+          <section id="https-service-discovery-read">
+            <h2>Dynamic metadata Read</h2>
+            <p>
+              The dynamic metadata, i. e. any other metadata kept by the vehicle system, 
+              is retrieved by the setting the "type" to  "dynamic-metadata".
+              If the value is set to an empty string, then all dynamic metadata is returned. 
+              If only specific metadata is desired, 
+              the "value" can be set to the domain names as specified in the CORE:Appendix Optional Server Capabilities, 
+              e. g. "value":["filter", "access_ctrl"].<br>
+              <br>
+              <b>Example:</b>
+              Request:
+              <pre><code>
+              GET /Vehicle?filter={"type":"dynamic-metadata", "value":""}   HTTP/1.1
+              Host: 127.0.0.1:1337
+              Accept: application/json
+	      ...
+              </code></pre>
+              Response:
+              <pre><code>
+              HTTP/1.1 200 OK
+              Content-Type: application/json; charset=utf-8
+	      ...
+              {
+                "metadata": {"filter":["timebased", "change", "paths", "curve_log", "dynamic_metadata"], "acc": ["short_term", "signalset_claim"], "trp": "https"},
                 "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>
@@ -841,8 +874,8 @@
           </section>
 
           <section id="wss-service-discovery-read">
-            <h2>Service Discovery Read</h2>
-            <p>A client may issue a service discovery read request to access dynamic metadata. 
+            <h2>Signal Discovery Read</h2>
+            <p>A client may issue a signal discovery read request to access dynamic metadata. 
                A successful response will contain the requested metadata from all nodes of the subtree defined by 
                the subtree root node that is addressed by the path.
               The static metadata, i. e. the metadata in the VSS tree, is retrieved by the setting the "type" to  "static-metadata", 
@@ -1451,29 +1484,27 @@
             "enum": [ "get", "set", "subscribe", "subscription", "unsubscribe"],
             "description": "The type of action requested by the client and/or delivered by the server",
         },
-        "requestId": {
-            "description": "Returned by the server in the response and used by the client to link the request and response messages.",
-            "type": "string"
-        },
         "path": {
             "description": "The path to the desired vehicle signal(s), as defined by the metadata schema.",
             "type": "string"
         },
         "ts": {
-            "description": "The Coordinated Universal Time (UTC) time that represents the capture of the data (see chapter Timestamps in CORE).",
+            "description": "The Coordinated Universal Time (UTC) time that represents the capture of the data (see CORE: Timestamps chapter).",
             "type": "string"
         },
         "filter": {
             "description": "May be specified in order to throttle the demands of subscriptions on the server. See CORE:Filtering chapter",
-            "type": "string"
-        },
-        "subscriptionId":{
-            "description": "Integer handle value which is used to uniquely identify the subscription.",
-            "type": "string"
-        },
-        "metadata":{
-            "description": "Metadata describing the potentially available signal tree.",
-            "type": "object"
+            "type": "object/array",
+            "properties": {
+                "type": {
+                    "description": "The different filter types.",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "Parameter(s) for the different filter types",
+                    "type": "object/array",
+                }
+            }
         },
         "data": {
             "description": "Data including path and one or more data point(s).",
@@ -1485,7 +1516,7 @@
                 },
                 "dp": {
                     "description": "Data point including one or more value and time samp",
-                    "type": "object/array"                   
+                    "type": "object/array",
                     "properties": {
                         "value": {
                             "description": "The value related to the associated path.",
@@ -1495,8 +1526,21 @@
                             "description": "Timestamp associated with the value capture.",
                             "type": "string"                    
                         }
+                    }
                 }
             }   
+        },
+        "subscriptionId":{
+            "description": "Integer handle value which is used to uniquely identify a subscription session.",
+            "type": "string"
+        },
+        "metadata":{
+            "description": "Static or dynamic metadata.",
+            "type": "object"
+        },
+        "requestId": {
+            "description": "Returned by the server in the response and used by the client to link the request and response messages.",
+            "type": "string"
         },
         "error": {
             "description": "Server response for error cases",

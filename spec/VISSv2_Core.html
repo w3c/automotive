@@ -719,12 +719,13 @@
         The possible values are ["write-only", "read-write"]. 
         The response uses the same syntax as for ordinary data responses, with "value" representing the validate tag. 
         The server applies the validate data according to the inheritance rules described in the access control selection chapter.</li>
-        <li><u>opt-cap</u>: The optional capabilities that the server supports. 
-        See Appendix: Optional Server Capabilities for how this is expressed in the response.</li>
+        <li><u>server_capabilities</u>: The capabilities that the server supports. 
+        See Appendix: Server Capabilities for how this is expressed in the response.</li>
         </ul>
         A dynamic metadata request can be combined with a paths filter operation to address multiple nodes, 
         but not with any other filter type.<br>
-        The optional server capabilities request and the validate request MUST be supported.<br>
+        The server capabilities request MUST be supported, the others on the list are optional.. 
+        For the server capabilities request the vsspath SHALL be set to "Vehicle", and the paths filter MUST not be used.<br>
         Examples can be found in the TRANSPORT specification.
         </p>
     </section>
@@ -1587,7 +1588,7 @@
             <a href="#client-context-def">client context</a>. 
             This prohibition is regardless of whether the <a href="#client-def">client</a> has a valid 
             <a href="#access-token-def">access token</a> or not.<br>
-            The scope list can also be used to limit the node metadata that is returned on a service discovery request.<br>
+            The scope list can also be used to limit the node metadata that is returned on a signal discovery request.<br>
             Each entry in the list contains a list of paths to nodes that should be excluded, and a list of the 
             <a href="#client-context-def">client contexts</a>, i. e. the sub-actor role triplet, 
             for which this exclusion should be made.<br>
@@ -1658,36 +1659,46 @@
 
     <section id="tof" class="appendix"></section>
 
-    <section id="optional-server-capabilities" class="appendix">
-        <h2>Optional Server Capabilities</h2>
+    <section id="server-capabilities" class="appendix">
+        <h2>Server Capabilities</h2>
         <p>
-        On receiving a dynamic-metadata request on optional capabilities the server SHALL respond with a JSON object that for each of the keys
+        On receiving a dynamic-metadata request on server capabilities the server SHALL respond with a JSON object that for each of the keys
         in the list below contains the associated values in the list that the server supports. 
-        Both the keys and the values are represented as strings, if a key has more than one value, these are represented as an array, 
-        see example below.<br>
-        {"flt": ["paths", "clog"], "acc": ["sterm", "lterm", "open"], "trp": "wss"}
+        Both the keys and the values are represented as strings, if a key has more than one value, these are represented as an array.<br>
+        The "value" key in a request may have an empty string, 
+        in which case the response shall contain metadata for all the key names in the table below, or it may have one or more of the key names. 
+        A key name refers to a functional domain of the specification, and the tables below contain the capabilities of these domains. 
+        The ones marked as underlined are mandatory, the others are optional. 
         <table  style="width:50%">
           <tr>
             <th>Key name</th>
             <th>Description</th>
           </tr>
           <tr>
-            <td>flt</td>
+            <td>filter</td>
             <td>Filtering</td>
           </tr>
           <tr>
-            <td>acc</td>
+            <td>access_ctrl</td>
             <td>Access control</td>
           </tr>
           <tr>
-            <td>trp</td>
-            <td>Transport protocol</td>
+            <td>transport_protocol</td>
+            <td>Transport protocols</td>
           </tr>
         </table><br>
         <table  style="width:50%">
           <tr>
-            <th>flt value</th>
+            <th>filter value</th>
             <th>Description</th>
+          </tr>
+          <tr>
+            <td><u>timebased</u></td>
+            <td>Time based filter</td>
+          </tr>
+          <tr>
+            <td><u>change</u></td>
+            <td>Change filter</td>
           </tr>
           <tr>
             <td>paths</td>
@@ -1698,40 +1709,48 @@
             <td>Range filter</td>
           </tr>
           <tr>
-            <td>clog</td>
+            <td>curve_log</td>
             <td>Curve logging filter</td>
           </tr>
           <tr>
-            <td>hist</td>
+            <td>history</td>
             <td>History filter</td>
           </tr>
           <tr>
-            <td>static</td>
+            <td>static_metadata</td>
             <td>Static metadata filter</td>
+          </tr>
+          <tr>
+            <td><u>dynamic_metadata</u></td>
+            <td>Dynamic metadata filter</td>
           </tr>
         </table><br>
         <table  style="width:50%">
           <tr>
-            <th>acc value</th>
+            <th>access_ctrl value</th>
             <th>Description</th>
           </tr>
           <tr>
-            <td>sterm</td>
+            <td>short_term</td>
             <td>Short term flow</td>
           </tr>
           <tr>
-            <td>lterm</td>
+            <td>long_term</td>
             <td>Long term flow</td>
           </tr>
           <tr>
-            <td>sset</td>
+            <td>signalset_claim</td>
             <td>Signal set as access token scope claim</td>
           </tr>
         </table><br>
         <table  style="width:50%">
           <tr>
-            <th>trp value</th>
+            <th>transport_protocol value</th>
             <th>Description</th>
+          </tr>
+          <tr>
+            <td><u>https</u></td>
+            <td>Secure HTTP transport protocol</td>
           </tr>
           <tr>
             <td>wss</td>
