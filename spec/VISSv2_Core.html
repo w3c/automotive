@@ -589,7 +589,7 @@
           The JSON expression may consist of maximum one object with type "paths", plus maximum one object with any other supported type, 
           which are then logically combined as with an AND operator.<br>
           The types timebased, range, change, and curvelog are only applicable for subscription requests. 
-          Subscription requests are only supported by the websocket transport protocol.<br>
+          Subscription requests are supported by the websocket and the MQTT transport protocols.<br>
           The restriction on how many objects that can be combined is also set by the URL size restriction on 1k characters (*).<br>
           (*) 1k is the "conservative limit, which should always be supported, a more liberal limit is 2k, which is supported in most cases.
           </p> 
