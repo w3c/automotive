@@ -134,7 +134,7 @@
       <p>This document describes the transport bindings of the Vehicle Information Service Specification, version 2. 
       The split between transport bindings and messaging layer specifications improves readability and simplifies 
       extending the specification to further transports in the future. 
-      This specification supports multiple transport bindings, namely HTTPS, secure WebSockets, and MQTT.
+      This specification supports multiple transport bindings, the secure versions of HTTP, WebSocket, and MQTT.
       </p>
     </section>
 
@@ -292,16 +292,16 @@
         <h2>Authorization</h2>
           <p>Clients must provide a token to the server in order to verify that it is correctly authorized for the service it requests 
           (see CORE document).Tokens are integrated in HTTP requests in the <code>Authorization</code> header. 
-          For WebSockets requests an optional <code>authorization</code> property in the payload can be used.
+          For WebSocket requests an optional <code>authorization</code> property in the payload can be used.
           </p>
       </section>
     </section>
 
     <section id="transport-protocols">
       <h2>Transport Protocols</h2>
-      <p>The transport protocols supported are the secure versions of the HTTP and WebSockets protocols, 
-      and the MQTT protocol, on which a thin application layer protocol is applied.<br>
-      The server MUST support the HTTP protocol, the other protocols are optional. <br>
+      <p>The transport protocols supported are the secure versions of HTTP, WebSocket, and MQTT, 
+      the latter on which a thin application layer protocol is applied.<br>
+      The server MUST support the HTTP and WebSocket protocols, other protocols are optional. <br>
       Further transport protocols may be supported in future versions of this specification. 
       </p>
 
@@ -363,7 +363,8 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."}
+                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."},
+                "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>
             </p>
@@ -405,7 +406,8 @@
             Content-Type: application/json; charset=utf-8
 	    ...
             {
-              "error": {"number": 401, "reason": "token_invalid", "message": "Access token is invalid."}
+              "error": {"number": 401, "reason": "token_invalid", "message": "Access token is invalid."},
+              "ts": "2020-04-15T13:37:00Z"
             }
             </code></pre>
 	    </p>
@@ -442,7 +444,8 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."}
+                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."},
+                "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>		  
             </p>
@@ -510,7 +513,7 @@
               is retrieved by the setting the "type" to  "dynamic-metadata".
               If the value is set to an empty string, then all dynamic metadata is returned. 
               If only specific metadata is desired, 
-              the "value" can be set to the domain names as specified in the CORE:Appendix Optional Server Capabilities, 
+              the "value" can be set to the domain names as specified in the CORE: Server Capabilities, 
               e. g. "value":["filter", "access_ctrl"].<br>
               <br>
               <b>Example:</b>
@@ -527,7 +530,7 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                "metadata": {"filter":["timebased", "change", "paths", "curve_log", "dynamic_metadata"], "acc": ["short_term", "signalset_claim"], "trp": "https"},
+                "metadata": {"filter":["timebased", "change", "paths", "curvelog", "dynamic_metadata"], "access_ctrl": ["short_term", "signalset_claim"], "transport_protocol": "https", "wss"},
                 "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>
@@ -571,7 +574,8 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."}
+                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."},
+                "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>
             </p>
@@ -599,12 +603,12 @@
         </section>
       </section>
 
-      <section id="secure-websockets">
-        <h2>Secure WebSockets</h2>
+      <section id="secure-websocket">
+        <h2>Secure WebSocket</h2>
         <p>
         As the WebSocket protocol does not implicitly provide a logical association between the request and response messages 
         described here a key-value pair with the keyname "requestId" is added to the data components described in the CORE document. 
-        As the WebSockets protocol neither specifies a set of explicit methods, 
+        As the WebSocket protocol neither specifies a set of explicit methods, 
         another key-value pair with the keyname "action" is also added. See <a href='#action-def'></a> for the declaration of these new key-value pairs. 
         All data components are mapped to the payload.
         </p>
@@ -1454,7 +1458,7 @@
     <tr>
       <td> <dfn data-dfn-type="dfn" id="dfn-filter">filter</dfn> </td>
       <td> string </td>
-      <td>Provides a filtering mechanism to reduce the demands of a subscription on the server. Query format, see CORE:Filtering chapter.</td>
+      <td>Provides a filtering mechanism to reduce the demands of a subscription on the server. Query format, see CORE:Filter Request.</td>
     </tr>
     <tr>
       <td> <dfn data-dfn-type="dfn" id="dfn-metadata">metadata</dfn> </td>
@@ -1485,15 +1489,15 @@
             "description": "The type of action requested by the client and/or delivered by the server",
         },
         "path": {
-            "description": "The path to the desired vehicle signal(s), as defined by the metadata schema.",
+            "description": "The path to the desired vehicle signal(s). It may require synthesis with additional path data, see CORE:Paths Filter Operation",
             "type": "string"
         },
         "ts": {
-            "description": "The Coordinated Universal Time (UTC) time that represents the capture of the data (see CORE: Timestamps chapter).",
+            "description": "The time of the issuance of the message. For its format, see CORE: Timestamps.",
             "type": "string"
         },
         "filter": {
-            "description": "May be specified in order to throttle the demands of subscriptions on the server. See CORE:Filtering chapter",
+            "description": "May be specified in order to throttle the demands of subscriptions on the server. See CORE:Filter Request",
             "type": "object/array",
             "properties": {
                 "type": {
@@ -1507,11 +1511,11 @@
             }
         },
         "data": {
-            "description": "Data including path and one or more data point(s).",
+            "description": "Data including path(s) and one or more data point(s).",
             "type": "object/array",
             "properties": {
                 "path": {
-                    "description": "The path to the desired vehicle signal(s), as defined by the metadata schema.",
+                    "description": "The path to the vehicle signal.",
                     "type": "string"
                 },
                 "dp": {
@@ -1523,7 +1527,7 @@
                             "type": "string"                    
                         },
                         "ts": {
-                            "description": "Timestamp associated with the value capture.",
+                            "description": "Time of the value capture. For its format, see CORE: Timestamps.",
                             "type": "string"                    
                         }
                     }

@@ -186,10 +186,9 @@
           <dd>An entity that manages and offers access to data.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-success-response">success response</dfn></dt>
           <dd>The message being returned by the server to the client when no error is encountered. These are specific per request type</dd>
-          <dt><dfn data-dfn-type="dfn" id="dfn-error-response">error response</dfn></dt>
-          <dd>The message being returned by the server to the client when an error is encountered. These have a common format for all request types</dd>
-          <dt><dfn data-dfn-type="dfn" id="dfn-error-notification">error notification</dfn></dt>
-          <dd>The asynchronous message being returned by the server to the client when an error is encountered.</dd>
+          <dt><dfn data-dfn-type="dfn" id="dfn-error-message">error message</dfn></dt>
+          <dd>The message being returned by the server to the client when an error is encountered. It can be a synchronous response message, 
+          or an asynchrounous notification message.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-data-point">data point</dfn></dt>
           <dd>A structure containing one or more value, timestamp tuplets.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-value">value</dfn></dt>
@@ -322,7 +321,7 @@
           <p><a>Purpose</a>: Get one or more values addressed by the given path.</p>
           <p>The client MAY have to obtain an <a>authorization</a> token before being able to access the values.
              If the server is able to satisfy the request it MUST return a <a>success response</a>.
-             If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.</p>
+             If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error response</a>.</p>
           <p>Arguments, of which path is mandatory: 
           <ul>
             <li><a>path</a> The path as defined in VSS to one or more nodes in the VSS tree.</li>
@@ -347,7 +346,7 @@
           <h2><dfn>Update</dfn></h2>
           <p><a>Purpose</a>: Provide altered value to the vehicle signal(s) addressed by the <a>path</a></p>
           <p>The client MAY have to obtain an authorization token before being able to update the vehicle signal(s). 
-          If the server is able to satisfy the request it MUST return a <a>success response</a>, else it MUST return an <a>error response</a>. 
+          If the server is able to satisfy the request it MUST return a <a>success response</a>, else it MUST return an <a>error message</a>. 
           Only actuator type signals can be updated.
           Please note that a success response does not guarantee that the actuation attempt to change to the updated target value has, or will, succeed. 
           A client may monitor the actuation progress through subsequent reads of the actuator value. 
@@ -373,8 +372,8 @@
           <p>The client MAY have to obtain an authorization token before being able to subscribe to the vehicle signal(s).
              The server MUST issue a notification if a trigger rule is fulfilled.
              If the server is able to satisfy the request it MUST return a <a>success response</a>.
-             If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.
-             If an error occurs during the subscription period, the server SHOULD return an <a>error notification</a>.</p>
+             If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error response</a>.
+             If an error occurs during the subscription period, the server SHOULD return an <a href="#error-message">error notification</a>.</p>
           <p>Arguments, of which path and filter are mandatory: 
             <ul>
               <li><a>path</a> The path as defined in VSS to one or more nodes in the VSS tree.</li>
@@ -394,7 +393,7 @@
           <p><a>Purpose</a>: Termination of the subscription period started by a previous subscribe request.</p>
           <p>If the server is able to satisfy the request it MUST return a <a>success response</a>, 
           and it MUST stop issuing notifications associated to the subscription handle.
-          If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.</p>
+          If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error response</a>.</p>
           <p>Arguments, of which subscriptionId is mandatory: 
             <ul>
               <li><a>subscriptionId</a> Handle identifying the subscription.</li>
@@ -427,20 +426,26 @@
         </section>
       </section>
 
-      <section id="error-information">
-        <h2>Error Information</h2>
+      <section id="error-message">
+        <h2>Error Message</h2>
         <p>The server MUST inform a client about errors ocurring in interactions between the two, whether it is in a synchronous 
-        <a>error response</a> to a request message, or an asynchronous <a>error notification</a> message.
+        error response, or an asynchronous error notification as a result of a previous subscribe.
         </p>
+          <p>Arguments: 
+            <ul>
+              <li><a>error message</a> <a href="#error-information"></a></li>
+              <li><a>timestamp</a> The time of the server execution leading to the error.</li>
+            </ul>
+          </p>
 
-        <section id="error-format">
-          <h2>Error Format</h2>
-          <p>The error information has three components - a <a>number</a>, a <a>reason</a>, and a <a>message</a>. 
+        <section id="error-information">
+          <h2>Error Information</h2>
+          <p>The error information has three components - a number, a reason, and a message. 
           The number MUST always be part of the error information, while the reason and message components MAY be a part of it.
             <ul>
-              <li><dfn data-dfn-type="dfn" id="dfn-error-number">number</dfn> See VISSv2:TRANSPORT, "Status code" chapter.</li>
-              <li><dfn data-dfn-type="dfn" id="dfn-error-reason">reason</dfn> See VISSv2:TRANSPORT, "Status code" chapter.</li>
-              <li><dfn data-dfn-type="dfn" id="dfn-error-message">message</dfn> See VISSv2:TRANSPORT, "Status code" chapter.</li>
+              <li><b>number</b> See VISSv2:TRANSPORT, "Status code" chapter.</li>
+              <li><b>reason</b> See VISSv2:TRANSPORT, "Status code" chapter.</li>
+              <li><b>message</b> See VISSv2:TRANSPORT, "Status code" chapter.</li>
             </ul>
           </p>
           </section>
@@ -1669,22 +1674,22 @@
         in which case the response shall contain metadata for all the key names in the table below, or it may have one or more of the key names. 
         A key name refers to a functional domain of the specification, and the tables below contain the capabilities of these domains. 
         The ones marked as underlined are mandatory, the others are optional. 
-        <table  style="width:50%">
+        <table  style="width:60%">
           <tr>
             <th>Key name</th>
             <th>Description</th>
           </tr>
           <tr>
             <td>filter</td>
-            <td>Filtering</td>
+            <td><a href="#filter-request"></a></td>
           </tr>
           <tr>
             <td>access_ctrl</td>
-            <td>Access control</td>
+            <td><a href="#access-control-model"></a></td>
           </tr>
           <tr>
             <td>transport_protocol</td>
-            <td>Transport protocols</td>
+            <td>TRANSPORT:Transport protocols</td>
           </tr>
         </table><br>
         <table  style="width:50%">
@@ -1694,35 +1699,35 @@
           </tr>
           <tr>
             <td><u>timebased</u></td>
-            <td>Time based filter</td>
+            <td><a href="#timebased-filter-operation"></a></td>
           </tr>
           <tr>
             <td><u>change</u></td>
-            <td>Change filter</td>
+            <td><a href="#change-filter-operation"></a></td>
           </tr>
           <tr>
             <td>paths</td>
-            <td>Paths filter</td>
+            <td><a href="#paths-filter-operation"></a></td>
           </tr>
           <tr>
             <td>range</td>
-            <td>Range filter</td>
+            <td><a href="#range-filter-operation"></a></td>
           </tr>
           <tr>
-            <td>curve_log</td>
-            <td>Curve logging filter</td>
+            <td>curvelog</td>
+            <td><a href="#curvelog-filter-operation"></a></td>
           </tr>
           <tr>
             <td>history</td>
-            <td>History filter</td>
+            <td><a href="#history-filter-operation"></a></td>
           </tr>
           <tr>
             <td>static_metadata</td>
-            <td>Static metadata filter</td>
+            <td><a href="#static-metadata-request"></a></td>
           </tr>
           <tr>
             <td><u>dynamic_metadata</u></td>
-            <td>Dynamic metadata filter</td>
+            <td><a href="#dynamic-metadata-request"></a></td>
           </tr>
         </table><br>
         <table  style="width:50%">
@@ -1732,15 +1737,15 @@
           </tr>
           <tr>
             <td>short_term</td>
-            <td>Short term flow</td>
+            <td><a href="#access-control-flows"></a></td>
           </tr>
           <tr>
             <td>long_term</td>
-            <td>Long term flow</td>
+            <td><a href="#access-control-flows"></a></td>
           </tr>
           <tr>
             <td>signalset_claim</td>
-            <td>Signal set as access token scope claim</td>
+            <td><a href="#access-token"></a></td>
           </tr>
         </table><br>
         <table  style="width:50%">
@@ -1750,15 +1755,15 @@
           </tr>
           <tr>
             <td><u>https</u></td>
-            <td>Secure HTTP transport protocol</td>
+            <td>TRANSPORT:Transport protocols:HTTPS</td>
           </tr>
           <tr>
-            <td>wss</td>
-            <td>Secure websocket transport protocol</td>
+            <td><u>wss</u></td>
+            <td>TRANSPORT:Transport protocols:Secure Websocket</td>
           </tr>
           <tr>
             <td>mqtts</td>
-            <td>Secure MQTT transport protocol</td>
+            <td>TRANSPORT:Transport protocols:MQTT</td>
           </tr>
         </table>
 
