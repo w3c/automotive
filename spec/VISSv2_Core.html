@@ -186,10 +186,9 @@
           <dd>An entity that manages and offers access to data.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-success-response">success response</dfn></dt>
           <dd>The message being returned by the server to the client when no error is encountered. These are specific per request type</dd>
-          <dt><dfn data-dfn-type="dfn" id="dfn-error-response">error response</dfn></dt>
-          <dd>The message being returned by the server to the client when an error is encountered. These have a common format for all request types</dd>
-          <dt><dfn data-dfn-type="dfn" id="dfn-error-notification">error notification</dfn></dt>
-          <dd>The asynchronous message being returned by the server to the client when an error is encountered.</dd>
+          <dt><dfn data-dfn-type="dfn" id="dfn-error-message">error message</dfn></dt>
+          <dd>The message being returned by the server to the client when an error is encountered. It can be a synchronous response message, 
+          or an asynchrounous notification message.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-data-point">data point</dfn></dt>
           <dd>A structure containing one or more value, timestamp tuplets.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-value">value</dfn></dt>
@@ -219,7 +218,7 @@
                 </p>
         <figure id="fig-example-vss-tree">
           <img src="images/vss-tree.jpg" alt="example-vss-tree">
-          <figcaption> <span class="fig-title">Diagram showing an example VSS 2.0 tree.</span></figcaption>
+          <figcaption> <span class="fig-title">Example VSS 2.0 tree.</span></figcaption>
         </figure>
 
       <section id="address">
@@ -322,7 +321,7 @@
           <p><a>Purpose</a>: Get one or more values addressed by the given path.</p>
           <p>The client MAY have to obtain an <a>authorization</a> token before being able to access the values.
              If the server is able to satisfy the request it MUST return a <a>success response</a>.
-             If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.</p>
+             If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error response</a>.</p>
           <p>Arguments, of which path is mandatory: 
           <ul>
             <li><a>path</a> The path as defined in VSS to one or more nodes in the VSS tree.</li>
@@ -347,7 +346,7 @@
           <h2><dfn>Update</dfn></h2>
           <p><a>Purpose</a>: Provide altered value to the vehicle signal(s) addressed by the <a>path</a></p>
           <p>The client MAY have to obtain an authorization token before being able to update the vehicle signal(s). 
-          If the server is able to satisfy the request it MUST return a <a>success response</a>, else it MUST return an <a>error response</a>. 
+          If the server is able to satisfy the request it MUST return a <a>success response</a>, else it MUST return an <a>error message</a>. 
           Only actuator type signals can be updated.
           Please note that a success response does not guarantee that the actuation attempt to change to the updated target value has, or will, succeed. 
           A client may monitor the actuation progress through subsequent reads of the actuator value. 
@@ -373,8 +372,8 @@
           <p>The client MAY have to obtain an authorization token before being able to subscribe to the vehicle signal(s).
              The server MUST issue a notification if a trigger rule is fulfilled.
              If the server is able to satisfy the request it MUST return a <a>success response</a>.
-             If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.
-             If an error occurs during the subscription period, the server SHOULD return an <a>error notification</a>.</p>
+             If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error response</a>.
+             If an error occurs during the subscription period, the server SHOULD return an <a href="#error-message">error notification</a>.</p>
           <p>Arguments, of which path and filter are mandatory: 
             <ul>
               <li><a>path</a> The path as defined in VSS to one or more nodes in the VSS tree.</li>
@@ -394,7 +393,7 @@
           <p><a>Purpose</a>: Termination of the subscription period started by a previous subscribe request.</p>
           <p>If the server is able to satisfy the request it MUST return a <a>success response</a>, 
           and it MUST stop issuing notifications associated to the subscription handle.
-          If the server is unable to fulfil the request, then the server MUST return an <a>error response</a>.</p>
+          If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error response</a>.</p>
           <p>Arguments, of which subscriptionId is mandatory: 
             <ul>
               <li><a>subscriptionId</a> Handle identifying the subscription.</li>
@@ -427,20 +426,26 @@
         </section>
       </section>
 
-      <section id="error-information">
-        <h2>Error Information</h2>
+      <section id="error-message">
+        <h2>Error Message</h2>
         <p>The server MUST inform a client about errors ocurring in interactions between the two, whether it is in a synchronous 
-        <a>error response</a> to a request message, or an asynchronous <a>error notification</a> message.
+        error response, or an asynchronous error notification as a result of a previous subscribe.
         </p>
+          <p>Arguments: 
+            <ul>
+              <li><a>error message</a> <a href="#error-information"></a></li>
+              <li><a>timestamp</a> The time of the server execution leading to the error.</li>
+            </ul>
+          </p>
 
-        <section id="error-format">
-          <h2>Error Format</h2>
-          <p>The error information has three components - a <a>number</a>, a <a>reason</a>, and a <a>message</a>. 
+        <section id="error-information">
+          <h2>Error Information</h2>
+          <p>The error information has three components - a number, a reason, and a message. 
           The number MUST always be part of the error information, while the reason and message components MAY be a part of it.
             <ul>
-              <li><dfn data-dfn-type="dfn" id="dfn-error-number">number</dfn> See VISSv2:TRANSPORT, "Status code" chapter.</li>
-              <li><dfn data-dfn-type="dfn" id="dfn-error-reason">reason</dfn> See VISSv2:TRANSPORT, "Status code" chapter.</li>
-              <li><dfn data-dfn-type="dfn" id="dfn-error-message">message</dfn> See VISSv2:TRANSPORT, "Status code" chapter.</li>
+              <li><b>number</b> See VISSv2:TRANSPORT, "Status code" chapter.</li>
+              <li><b>reason</b> See VISSv2:TRANSPORT, "Status code" chapter.</li>
+              <li><b>message</b> See VISSv2:TRANSPORT, "Status code" chapter.</li>
             </ul>
           </p>
           </section>
@@ -547,35 +552,35 @@
           <ul>
           <li><b>type</b>: the key name for the filter operation type, which can have one of the values:
           <ul>
-          <li>paths:
+          <li><u>paths</u>:
           <ul>
           <li>one or more relative paths. In the case of several paths an array expression shall be used.</li>
           </ul></li>
-          <li>timebased:
+          <li><u>timebased</u>:
           <ul>
           <li>data is captured repeatedly with a fixed period time.</li>
           </ul></li>
-          <li>range:
+          <li><u>range</u>:
           <ul>
           <li>data is captured when values are in the given range.</li>
           </ul></li>
-          <li>change:
+          <li><u>change</u>:
           <ul>
           <li>data is captured when the value since last capture has changed more than a fixed value.</li>
           </ul></li>
-          <li>curvelog:
+          <li><u>curvelog</u>:
           <ul>
           <li>captured data is processed according to the curve logging algorithm before being sent to client.</li>
           </ul></li>
-          <li>history:
+          <li><u>history</u>:
           <ul>
           <li>the time period from current time and backwards in time.</li>
           </ul></li>
-          <li>static-metadata:
+          <li><u>static-metadata</u>:
           <ul>
           <li>the response contains the VSS metadata of the addressed sub-tree.</li>
           </ul></li>
-          <li>dynamic-metadata:
+          <li><u>dynamic-metadata</u>:
           <ul>
           <li>the response contains metadata additional to the VSS specification.</li>
           </ul></li>
@@ -584,12 +589,12 @@
           The value data varies depending on the type, 
           is enclosed in one object, or optionally an array of two objects, and is described in the following chapters.</li>
           </ul>
+          The server MUST support the timebased and change types, the other types are optional.<br>
           In the JSON object, the key-value pairs "type" and "value" must always be present.
-          The JSON expression may consist of maximum one object with type "paths", plus maximum one object with any of the other types, 
+          The JSON expression may consist of maximum one object with type "paths", plus maximum one object with any other supported type, 
           which are then logically combined as with an AND operator.<br>
-          The server SHALL support all combinations up to this maximum.<br>
-          The types time-based, range, change, and curvelog are only applicable for subscription requests. 
-          Subscription requests are only supported by the websocket transport protocol.<br>
+          The types timebased, range, change, and curvelog are only applicable for subscription requests. 
+          Subscription requests are supported by the websocket and the MQTT transport protocols.<br>
           The restriction on how many objects that can be combined is also set by the URL size restriction on 1k characters (*).<br>
           (*) 1k is the "conservative limit, which should always be supported, a more liberal limit is 2k, which is supported in most cases.
           </p> 
@@ -695,7 +700,8 @@
         In the latter case then the response will contain static metadata from the entire sub-tree having this branch as the root.<br>
         A static metadata request can be combined with a paths filter operation to address multiple nodes, 
         but cannot be combined with any other filter type.<br>
-        The response is a JSON formatted object with corresponding key-value pairs per addressed node.<br>
+        The response is a JSON formatted object with corresponding key-value pairs per addressed node. 
+        The server MAY support the static metadata request.<br>
         Examples can be found in the TRANSPORT specification.
         </p>
     </section>
@@ -705,22 +711,26 @@
         <p>
         Dynamic metadata requests are used when the client instead of the data associated to VSS node(s) wants to 
         retrieve metadata that is additional to the VSS specification.<br>
-        The dynamic metadata may change over time, which is not the case for the static metadata.
-        If the "value" key contains an empty string, then all metadata that the server can retrieve for the for the addressed node(s) are returned, 
-        while if it contains metadata key name(s) then only the selected metadata is returned. 
-        If the expression contains multiple metadata types, then they are represented as array elements. <br><br>
-        The set of dynamic metadata keynames are found in the list below.
+        The dynamic metadata may change over time.
+        The request filter "value" key MUST only contain one of the metadata key names from the list of dynamic metadata key names below.<br>
         <ul>
-        <li>samplerate: the native capture frequency in Hz that is used by the vehicle system.</li>
-        <li>availability: the current availability of the signal(s). The possible values are ["available", "unavailable", "error"]. 
+        <li><u>samplerate</u>: The native capture frequency in Hz that is used by the vehicle system.
+        The response uses the same syntax as for ordinary data responses, with "value" representing the sample rate.</li>
+        <li><u>availability</u>: The current availability of the signal(s). The possible values are ["available", "unavailable", "error"]. 
         The unavailable status is returned when the signal is inaccessible due to the current vehicle state. 
-        The error status is returned if the subsystem represented by the signal exists in the vehice, but is broken and requires repair.</li>
-        <li>validate: the access control rule that is applied to the node and its sub-tree. 
-        The server response shall conform to the inheritance rules, see the access control selection chapter.</li>
+        The error status is returned if the subsystem represented by the signal exists in the vehice, but is broken and requires repair. 
+        The response uses the same syntax as for ordinary data responses, with "value" representing the availability.</li>
+        <li><u>validate</u>: The access control rule that is applied to the node and its sub-tree. 
+        The possible values are ["write-only", "read-write"]. 
+        The response uses the same syntax as for ordinary data responses, with "value" representing the validate tag. 
+        The server applies the validate data according to the inheritance rules described in the access control selection chapter.</li>
+        <li><u>server_capabilities</u>: The capabilities that the server supports. 
+        See Appendix: Server Capabilities for how this is expressed in the response.</li>
         </ul>
         A dynamic metadata request can be combined with a paths filter operation to address multiple nodes, 
         but not with any other filter type.<br>
-        The response is a JSON formatted object with corresponding key-value pairs per addressed node.<br>
+        The server capabilities request MUST be supported, the others on the list are optional.. 
+        For the server capabilities request the vsspath SHALL be set to "Vehicle", and the paths filter MUST not be used.<br>
         Examples can be found in the TRANSPORT specification.
         </p>
     </section>
@@ -859,7 +869,10 @@
       <h2>Access Control Model</h2>
       <p>
       Access control MUST be supported. However, in this chapter only the sections that describe the interactions between the 
-      <a href="#client-def">client</a> and the VISSv2 server are normative.
+      <a href="#client-def">client</a> and the VISSv2 server are normative.<br>
+      Access control SHALL not be applied to the VSS nodes containing the VSS version data, 
+      and not to client requests for dynamic metadata about the server optional capabilities, 
+      or about the access control selection tags applied to the VSS tree.
       </p>
 
       <section id="architecture">
@@ -1580,7 +1593,7 @@
             <a href="#client-context-def">client context</a>. 
             This prohibition is regardless of whether the <a href="#client-def">client</a> has a valid 
             <a href="#access-token-def">access token</a> or not.<br>
-            The scope list can also be used to limit the node metadata that is returned on a service discovery request.<br>
+            The scope list can also be used to limit the node metadata that is returned on a signal discovery request.<br>
             Each entry in the list contains a list of paths to nodes that should be excluded, and a list of the 
             <a href="#client-context-def">client contexts</a>, i. e. the sub-actor role triplet, 
             for which this exclusion should be made.<br>
@@ -1650,5 +1663,111 @@
     </section>
 
     <section id="tof" class="appendix"></section>
+
+    <section id="server-capabilities" class="appendix">
+        <h2>Server Capabilities</h2>
+        <p>
+        On receiving a dynamic-metadata request on server capabilities the server SHALL respond with a JSON object that for each of the keys
+        in the list below contains the associated values in the list that the server supports. 
+        Both the keys and the values are represented as strings, if a key has more than one value, these are represented as an array.<br>
+        The "value" key in a request may have an empty string, 
+        in which case the response shall contain metadata for all the key names in the table below, or it may have one or more of the key names. 
+        A key name refers to a functional domain of the specification, and the tables below contain the capabilities of these domains. 
+        The ones marked as underlined are mandatory, the others are optional. 
+        <table  style="width:60%">
+          <tr>
+            <th>Key name</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>filter</td>
+            <td><a href="#filter-request"></a></td>
+          </tr>
+          <tr>
+            <td>access_ctrl</td>
+            <td><a href="#access-control-model"></a></td>
+          </tr>
+          <tr>
+            <td>transport_protocol</td>
+            <td>TRANSPORT:Transport protocols</td>
+          </tr>
+        </table><br>
+        <table  style="width:50%">
+          <tr>
+            <th>filter value</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><u>timebased</u></td>
+            <td><a href="#timebased-filter-operation"></a></td>
+          </tr>
+          <tr>
+            <td><u>change</u></td>
+            <td><a href="#change-filter-operation"></a></td>
+          </tr>
+          <tr>
+            <td>paths</td>
+            <td><a href="#paths-filter-operation"></a></td>
+          </tr>
+          <tr>
+            <td>range</td>
+            <td><a href="#range-filter-operation"></a></td>
+          </tr>
+          <tr>
+            <td>curvelog</td>
+            <td><a href="#curvelog-filter-operation"></a></td>
+          </tr>
+          <tr>
+            <td>history</td>
+            <td><a href="#history-filter-operation"></a></td>
+          </tr>
+          <tr>
+            <td>static_metadata</td>
+            <td><a href="#static-metadata-request"></a></td>
+          </tr>
+          <tr>
+            <td><u>dynamic_metadata</u></td>
+            <td><a href="#dynamic-metadata-request"></a></td>
+          </tr>
+        </table><br>
+        <table  style="width:50%">
+          <tr>
+            <th>access_ctrl value</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>short_term</td>
+            <td><a href="#access-control-flows"></a></td>
+          </tr>
+          <tr>
+            <td>long_term</td>
+            <td><a href="#access-control-flows"></a></td>
+          </tr>
+          <tr>
+            <td>signalset_claim</td>
+            <td><a href="#access-token"></a></td>
+          </tr>
+        </table><br>
+        <table  style="width:50%">
+          <tr>
+            <th>transport_protocol value</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><u>https</u></td>
+            <td>TRANSPORT:Transport protocols:HTTPS</td>
+          </tr>
+          <tr>
+            <td><u>wss</u></td>
+            <td>TRANSPORT:Transport protocols:Secure Websocket</td>
+          </tr>
+          <tr>
+            <td>mqtts</td>
+            <td>TRANSPORT:Transport protocols:MQTT</td>
+          </tr>
+        </table>
+
+        </p>
+    </section>
   </body>
 </html>

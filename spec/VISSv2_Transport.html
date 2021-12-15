@@ -134,7 +134,7 @@
       <p>This document describes the transport bindings of the Vehicle Information Service Specification, version 2. 
       The split between transport bindings and messaging layer specifications improves readability and simplifies 
       extending the specification to further transports in the future. 
-      This specification supports multiple transport bindings, namely HTTPS, secure WebSockets, and MQTT.
+      This specification supports multiple transport bindings, the secure versions of HTTP, WebSocket, and MQTT.
       </p>
     </section>
 
@@ -297,15 +297,17 @@
         <h2>Authorization</h2>
           <p>Clients must provide a token to the server in order to verify that it is correctly authorized for the service it requests 
           (see CORE document).Tokens are integrated in HTTP requests in the <code>Authorization</code> header. 
-          For WebSockets requests an optional <code>authorization</code> property in the payload can be used.
+          For WebSocket requests an optional <code>authorization</code> property in the payload can be used.
           </p>
       </section>
     </section>
 
     <section id="transport-protocols">
       <h2>Transport Protocols</h2>
-      <p>The transport protocols supported are the secure versions of the HTTP and WebSockets protocols. 
-      Further transport protocols may be supported in future versions of this specification.
+      <p>The transport protocols supported are the secure versions of HTTP, WebSocket, and MQTT, 
+      the latter on which a thin application layer protocol is applied.<br>
+      The server MUST support the HTTP and WebSocket protocols, other protocols are optional. <br>
+      Further transport protocols may be supported in future versions of this specification. 
       </p>
 
       <section id="https">
@@ -366,7 +368,8 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."}
+                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."},
+                "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>
             </p>
@@ -408,7 +411,8 @@
             Content-Type: application/json; charset=utf-8
 	    ...
             {
-              "error": {"number": 401, "reason": "token_invalid", "message": "Access token is invalid."}
+              "error": {"number": 401, "reason": "token_invalid", "message": "Access token is invalid."},
+              "ts": "2020-04-15T13:37:00Z"
             }
             </code></pre>
 	    </p>
@@ -445,7 +449,8 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."}
+                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."},
+                "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>		  
             </p>
@@ -477,12 +482,14 @@
           </section>
 
           <section id="https-service-discovery-read">
-            <h2>Service Discovery Read</h2>
+            <h2>Signal Discovery Read</h2>
             <p>
-              The service discovery request uses the URL fragment pattern as described in the CORE document to retrieve the static metadata, 
+              The signal discovery request uses the URL fragment pattern as described in the CORE document to retrieve the static metadata, 
               i. e. the metadata defined in the VSS tree.
-              The dynamic metadata, i. e. any other metadata kept by the vehicle system, 
-              is retrieved by the setting the "type" to  "dynamic-metadata".<br>
+              If the value is set to an empty string, then all metadata in the addressed VSS nodes is returned. 
+              If only specific metadata is desired, the value can be set to this, e. g. "value":["type", "datatype"]. 
+              The values must be the names as defined in the VSS specification.<br>
+              <br>
               <b>Example:</b>
               Request:
               <pre><code>
@@ -497,7 +504,38 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                "metadata": {"FuelSystem":{"type":"branch","description":"Fuel system data.","children":{"HybridType, ... }}}
+                "metadata": {"FuelSystem":{"type":"branch","description":"Fuel system data.","children":{"HybridType, ... }}},
+                "ts": "2020-04-15T13:37:00Z"
+              }
+              </code></pre>
+            </p>
+          </section>
+
+          <section id="https-service-discovery-read">
+            <h2>Dynamic metadata Read</h2>
+            <p>
+              The dynamic metadata, i. e. any other metadata kept by the vehicle system, 
+              is retrieved by the setting the "type" to  "dynamic-metadata".
+              If the value is set to an empty string, then all dynamic metadata is returned. 
+              If only specific metadata is desired, 
+              the "value" can be set to the domain names as specified in the CORE: Server Capabilities, 
+              e. g. "value":["filter", "access_ctrl"].<br>
+              <br>
+              <b>Example:</b>
+              Request:
+              <pre><code>
+              GET /Vehicle?filter={"type":"dynamic-metadata", "value":""}   HTTP/1.1
+              Host: 127.0.0.1:1337
+              Accept: application/json
+	      ...
+              </code></pre>
+              Response:
+              <pre><code>
+              HTTP/1.1 200 OK
+              Content-Type: application/json; charset=utf-8
+	      ...
+              {
+                "metadata": {"filter":["timebased", "change", "paths", "curvelog", "dynamic_metadata"], "access_ctrl": ["short_term", "signalset_claim"], "transport_protocol": "https", "wss"},
                 "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>
@@ -541,7 +579,8 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."}
+                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."},
+                "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>
             </p>
@@ -569,12 +608,12 @@
         </section>
       </section>
 
-      <section id="secure-websockets">
-        <h2>Secure WebSockets</h2>
+      <section id="secure-websocket">
+        <h2>Secure WebSocket</h2>
         <p>
         As the WebSocket protocol does not implicitly provide a logical association between the request and response messages 
         described here a key-value pair with the keyname "requestId" is added to the data components described in the CORE document. 
-        As the WebSockets protocol neither specifies a set of explicit methods, 
+        As the WebSocket protocol neither specifies a set of explicit methods, 
         another key-value pair with the keyname "action" is also added. See <a href='#action-def'></a> for the declaration of these new key-value pairs. 
         All data components are mapped to the payload.
         </p>
@@ -844,8 +883,8 @@
           </section>
 
           <section id="wss-service-discovery-read">
-            <h2>Service Discovery Read</h2>
-            <p>A client may issue a service discovery read request to access dynamic metadata. 
+            <h2>Signal Discovery Read</h2>
+            <p>A client may issue a signal discovery read request to access dynamic metadata. 
                A successful response will contain the requested metadata from all nodes of the subtree defined by 
                the subtree root node that is addressed by the path.
               The static metadata, i. e. the metadata in the VSS tree, is retrieved by the setting the "type" to  "static-metadata", 
@@ -1080,7 +1119,7 @@
               {
                 "action": "subscribe",
                 "path": "Vehicle/Drivetrain/FuelSystem/Level",
-                "filter": {"type":"timebased", "value":{"period":"3"}}
+                "filter": {"type":"timebased", "value":{"period":"500"}}
                 "requestId": "6578"
               }
                </code></pre>
@@ -1424,7 +1463,7 @@
     <tr>
       <td> <dfn data-dfn-type="dfn" id="dfn-filter">filter</dfn> </td>
       <td> string </td>
-      <td>Provides a filtering mechanism to reduce the demands of a subscription on the server. Query format, see CORE:Filtering chapter.</td>
+      <td>Provides a filtering mechanism to reduce the demands of a subscription on the server. Query format, see CORE:Filter Request.</td>
     </tr>
     <tr>
       <td> <dfn data-dfn-type="dfn" id="dfn-metadata">metadata</dfn> </td>
@@ -1454,52 +1493,63 @@
             "enum": [ "get", "set", "subscribe", "subscription", "unsubscribe"],
             "description": "The type of action requested by the client and/or delivered by the server",
         },
-        "requestId": {
-            "description": "Returned by the server in the response and used by the client to link the request and response messages.",
-            "type": "string"
-        },
         "path": {
-            "description": "The path to the desired vehicle signal(s), as defined by the metadata schema.",
+            "description": "The path to the desired vehicle signal(s). It may require synthesis with additional path data, see CORE:Paths Filter Operation",
             "type": "string"
         },
         "ts": {
-            "description": "The Coordinated Universal Time (UTC) time that represents the capture of the data (see chapter Timestamps in CORE).",
+            "description": "The time of the issuance of the message. For its format, see CORE: Timestamps.",
             "type": "string"
         },
         "filter": {
-            "description": "May be specified in order to throttle the demands of subscriptions on the server. See CORE:Filtering chapter",
-            "type": "string"
-        },
-        "subscriptionId":{
-            "description": "Integer handle value which is used to uniquely identify the subscription.",
-            "type": "string"
-        },
-        "metadata":{
-            "description": "Metadata describing the potentially available signal tree.",
-            "type": "object"
+            "description": "May be specified in order to throttle the demands of subscriptions on the server. See CORE:Filter Request",
+            "type": "object/array",
+            "properties": {
+                "type": {
+                    "description": "The different filter types.",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "Parameter(s) for the different filter types",
+                    "type": "object/array",
+                }
+            }
         },
         "data": {
-            "description": "Data including path and one or more data point(s).",
+            "description": "Data including path(s) and one or more data point(s).",
             "type": "object/array",
             "properties": {
                 "path": {
-                    "description": "The path to the desired vehicle signal(s), as defined by the metadata schema.",
+                    "description": "The path to the vehicle signal.",
                     "type": "string"
                 },
                 "dp": {
                     "description": "Data point including one or more value and time samp",
-                    "type": "object/array"                   
+                    "type": "object/array",
                     "properties": {
                         "value": {
                             "description": "The value related to the associated path.",
                             "type": "string"                    
                         },
                         "ts": {
-                            "description": "Timestamp associated with the value capture.",
+                            "description": "Time of the value capture. For its format, see CORE: Timestamps.",
                             "type": "string"                    
                         }
+                    }
                 }
             }   
+        },
+        "subscriptionId":{
+            "description": "Integer handle value which is used to uniquely identify a subscription session.",
+            "type": "string"
+        },
+        "metadata":{
+            "description": "Static or dynamic metadata.",
+            "type": "object"
+        },
+        "requestId": {
+            "description": "Returned by the server in the response and used by the client to link the request and response messages.",
+            "type": "string"
         },
         "error": {
             "description": "Server response for error cases",
