@@ -429,11 +429,13 @@
       <section id="error-message">
         <h2>Error Message</h2>
         <p>The server MUST inform a client about errors ocurring in interactions between the two, whether it is in a synchronous 
-        error response, or an asynchronous error notification as a result of a previous subscribe.
+        error response, or an asynchronous error notification as a result of a previous subscribe. The error message has three arguments, 
+        of which subscriptionId is optional.
         </p>
           <p>Arguments: 
             <ul>
               <li><a>error message</a> <a href="#error-information"></a></li>
+              <li><a>subscriptionId</a> The subscriptionId shall be present in error notifications.</li>
               <li><a>timestamp</a> The time of the server execution leading to the error.</li>
             </ul>
           </p>
