@@ -1236,9 +1236,47 @@
                 "action": "subscription",
                 "subscriptionId": "12345",
                 “data”:{“path”: ”Vehicle/Drivetrain/FuelSystem/Level”, 
-                        “dp”:[{“value”: ”50”, “ts”: ”2020-04-15T13:00:00Z”}, ..., {“value”: ”25”, “ts”: ”2020-04-15T13:37:00Z”}]
+                        “dp”:[{“value”: ”50”, “ts”: ”2020-04-15T13:38:00Z”}, ..., {“value”: ”25”, “ts”: ”2020-04-15T13:39:30Z”}]
                 },
                 "ts": "2020-04-15T13:37:00Z"
+              }
+               </code></pre>
+            </p>
+          </section>
+
+          <section id="range-subscribe">
+            <h2>Range Subscribe</h2>
+            <p>
+            Subscription to a range of values, that can be either unbounded, or bounded as in the example below.
+            </p>
+            <p>
+              <b>Example:</b><br>
+              Request:
+              <pre><code>
+              {
+                "action": "subscribe",
+                "path": "Vehicle/Drivetrain/FuelSystem/Level",
+                "filter": "filter":{"type":"range","value":[{"logic-op":"gt","boundary":"50"},{"logic-op":"lt","boundary":"55"}]},
+                "requestId": "6578"
+              }
+               </code></pre>
+              Successful response:
+              <pre><code>
+              {
+                "action": "subscribe",
+                "subscriptionId": "12345",
+                "requestId": "6578",
+                "ts": "2020-04-15T13:37:00Z"
+              }
+               </code></pre>
+              Notification:
+              <pre><code>
+              {
+                "action": "subscription",
+                "subscriptionId": "12345",
+                “data”:{“path”: ”Vehicle/Drivetrain/FuelSystem/Level”, 
+                        “dp”:{“value”: ”51”, “ts”: ”2020-04-15T14:00:00Z”},
+                "ts": "2020-04-15T14:00:00Z"
               }
                </code></pre>
             </p>
