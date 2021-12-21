@@ -506,20 +506,17 @@
             </p>
           </section>
 
-          <section id="https-service-discovery-read">
-            <h2>Dynamic metadata Read</h2>
+          <section id="https-dynamic-metadata-read">
+            <h2>Dynamic Metadata Read</h2>
             <p>
               The dynamic metadata, i. e. any other metadata kept by the vehicle system, 
               is retrieved by the setting the "type" to  "dynamic-metadata".
-              If the value is set to an empty string, then all dynamic metadata is returned. 
-              If only specific metadata is desired, 
-              the "value" can be set to the domain names as specified in the CORE: Server Capabilities, 
-              e. g. "value":["filter", "access_ctrl"].<br>
+              The value MUST be set to one of the domain names as specified in the CORE: Dynamic Metadata Filter Operation chapter.
               <br>
               <b>Example:</b>
               Request:
               <pre><code>
-              GET /Vehicle?filter={"type":"dynamic-metadata", "value":""}   HTTP/1.1
+              GET /Vehicle?filter={"type":"dynamic-metadata", "value":"server_capabilities"}   HTTP/1.1
               Host: 127.0.0.1:1337
               Accept: application/json
 	      ...
@@ -530,7 +527,7 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                "metadata": {"filter":["timebased", "change", "paths", "curvelog", "dynamic_metadata"], "access_ctrl": ["short_term", "signalset_claim"], "transport_protocol": "https", "wss"},
+                "metadata": {"filter":["timebased", "change", "paths", "curvelog", "dynamic-metadata"], "access_ctrl": ["short_term", "signalset_claim"], "transport_protocol": "https", "wss"},
                 "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>
