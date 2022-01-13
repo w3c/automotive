@@ -127,15 +127,15 @@
       version. The first version of VISS only supported WebSocket as a
       transport protocol, the second version is generalized to work
       across different protocols as some are better suited for
-      different use cases. HTTP is now supported with additional
+      different use cases. HTTP and MQTT are now supported with additional
       protocols used within the automotive industry being evaluated
       for inclusion. Subscription capabilities have been improved and
       access control has been added.</p>
       
       <p>
-        There are two parts to this specification, Core and Transport. This document, the VISS version 2 CORE specification, 
+        There are two parts to this specification, CORE and TRANSPORT. This document, the VISS version 2 CORE specification, 
         describes the VISSv2 messaging layer. 
-        The companion specifications for the VISSv2 transport protocols detail the mapping of the messaging layer to selected transports.
+        The companion specification for the VISSv2 transport protocols detail the mapping of the messaging layer to selected transports.
         The ontologies based on the VISSv2 core specification are defined in documents for each specific domain
         (e.g. navigation, media, vehicle data). 
       </p>
@@ -147,7 +147,7 @@
       <p>
         This document describes the messaging API for VISS protocol. 
         This includes the messaging layer and set of rules for structuring data.
-        The separation between payload encoding (transport) and messaging API (core) improves adaptability. 
+        The separation between payload encoding (TRANSPORT) and messaging API (CORE) improves adaptability. 
         Extending and describing multiple transport protocols becomes possible.
       </p>     
       <p>
@@ -202,6 +202,10 @@
           <dd>A token providing a verifiable proof that the client may be authorized access to the requested value(s).</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-subscription-id">subscriptionId</dfn></dt>
           <dd>A handle identifying a subscription session.</dd>
+          <dt><b>requestId</b></dt>
+          <dd>Unique id value specified by the client. 
+          Returned by the server in the response and used by the client to link the request and response messages. 
+          The value MAY be an integer or a Universally Unique Identifier (UUID).</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-purpose-id">purpose</dfn></dt>
           <dd>A purpose is one of the short text entries from the <a href="#purpose-list"></a>.</dd>
         </dl>

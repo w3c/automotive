@@ -102,11 +102,9 @@
       service for accessing vehicle information, signals from sensors
       on control units within a vehicle's network. It exposes this
       information using a hierarchical tree like taxonomy defined in
-      GENIVI Vehicle Signal Specification (VSS). The service provides
-      this information in JSON format. The service may reside in the
-      vehicle for applications needing to analyse a high volume of
-      realtime data or on servers in the internet with information
-      already brought off the vehicle.
+      COVESA Vehicle Signal Specification (VSS). The service provides
+      this information in JSON format. The service may reside in the vehicle, 
+      or on servers in the internet with information already brought off the vehicle.
       </p>
 
       <p>This specification describes a second version of VISS which
@@ -115,14 +113,14 @@
       version. The first version of VISS only supported WebSocket as a
       transport protocol, the second version is generalized to work
       across different protocols as some are better suited for
-      different use cases. HTTP is now supported with additional
+      different use cases. HTTP and MQTT are now supported with additional
       protocols used within the automotive industry being evaluated
       for inclusion. Subscription capabilities have been improved and
       access control has been added.
       </p>
       
       <p>
-        There are two parts to this specification, Core and Transport. This document, the VISS version 2 TRANSPORT specification, 
+        There are two parts to this specification, CORE and TRANSPORT. This document, the VISS version 2 TRANSPORT specification, 
         describes the VISSv2 transport protocols, and the mapping of the message layer on these transports. 
         The companion specification VISSv2 CORE describes the messaging layer.
       </p>
@@ -143,7 +141,7 @@
     <section id="terminology">
       <h2>Terminology</h2>
       <p>The acronym 'VISSv2' is used to refer to this document, the VISS version 2 specification.
-         The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance.
+         The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the COVESA Alliance.
          The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.
       </p>
     </section>
@@ -295,9 +293,10 @@
 
       <section id="authorization">
         <h2>Authorization</h2>
-          <p>Clients must provide a token to the server in order to verify that it is correctly authorized for the service it requests 
+          <p>If authorization is enabled on a signal requested by the client, 
+          it MUST provide a token to the server in order to verify that it is correctly authorized for the service it requests 
           (see CORE document).Tokens are integrated in HTTP requests in the <code>Authorization</code> header. 
-          For WebSocket requests an optional <code>authorization</code> property in the payload can be used.
+          For WebSocket and MQTT requests an optional <code>authorization</code> property in the payload can be used.
           </p>
       </section>
     </section>
@@ -322,12 +321,12 @@
 
           <section id="https-initialisation">
             <h2>Initialization</h2>
-            <p>N/A?</p>
+            <p>HTTP long polling?</p>
           </section>
 
           <section id="https-closure">
             <h2>Closure</h2>
-            <p>N/A?</p>
+            <p>HTTP long polling?</p>
           </section>
         </section>
 
@@ -609,7 +608,7 @@
         <h2>Secure WebSocket</h2>
         <p>
         As the WebSocket protocol does not implicitly provide a logical association between the request and response messages 
-        described here a key-value pair with the keyname "requestId" is added to the data components described in the CORE document. 
+        described here a key-value pair with the keyname "requestId" is added to the data components described in the CORE document.<br>
         As the WebSocket protocol neither specifies a set of explicit methods, 
         another key-value pair with the keyname "action" is also added. See <a href='#action-def'></a> for the declaration of these new key-value pairs. 
         All data components are mapped to the payload.
@@ -1036,7 +1035,9 @@
             If the server is able to satisfy the request it SHALL return a 
             <a href="#dfn-subscribesuccessresponse" class="internalDFN" data-link-type="dfn">subscribeSuccessResponse</a> message. 
             If an error occurs e.g. because the client is not authorized to set the requested value, the server SHALL return a 
-            <a href="#dfn-subscribeerrorresponse" class="internalDFN" data-link-type="dfn">subscribeErrorResponse</a> message.<br>
+            <a href="#dfn-subscribeerrorresponse" class="internalDFN" data-link-type="dfn">subscribeErrorResponse</a> message. 
+            If an error occurs during the subscription session, the server shall return an 
+            <a href="#dfn-subscriptionerrornotification" class="internalDFN" data-link-type="dfn">subscriptionErrorNotification</a> message.<br>
             The subscription variants are, as described in the CORE document:
 	  <ul>
 	  <li>timebased: notifications are issued at a regular time interval,</li>
@@ -1249,7 +1250,8 @@
           <section id="range-subscribe">
             <h2>Range Subscribe</h2>
             <p>
-            Subscription to a range of values, that can be either unbounded, or bounded as in the example below.
+            Subscription to a range of values, that can be either unbounded, or bounded as in the example below. 
+            For a more information how to use range of values, refer the Range Filter Operation chapter in the CORE documentation.
             </p>
             <p>
               <b>Example:</b><br>
@@ -1369,10 +1371,10 @@
         </section>
       </section>
 
-      <section id="Defs">
+      <section id="mqtt">
         <h2>MQTT</h2>
 
-        <section id="term-def">
+        <section id="application-level-protocol">
           <h2>Application Level Protocol</h2>
           <p>
             For MQTT to support the complete VISSv2 interface, as decribed in the "Interface" chapter of the CORE specification, 
@@ -1414,7 +1416,7 @@
           </p>
         </section>
 
-        <section id="term-def">
+        <section id="security-aspects">
           <h2>Security Aspects</h2>
           <p>
             The MQTT architecture mandates a "broker" that acts as a middleman in between the client and server endpoints 
@@ -1424,12 +1426,13 @@
           </p>
         </section>
 
-        <section id="term-def">
+        <section id="transport-messages">
           <h2>Transport Messages</h2>
           <p>
             As mentioned in the "Application Level Protocol" chapter, the "request" messages issued to the broker contains two 
             JSON formatted key-value pairs, where the value of the "request" key is a string that contains the request the vehicle server 
-            will receive. The format of this request MUST follow the payload format that is specified in the Websocket chapter of this specification.
+            will respond to. 
+            The format of this request MUST follow the payload format that is specified in the Websocket chapter of this specification.
           </p>
         </section>
       </section>
@@ -1455,7 +1458,7 @@
 	    <td> <dfn data-dfn-type="dfn" id="dfn-path">path</dfn></td>
 	    <td>String</td>
 	    <td>The path to a node in the VSS tree, as defined by the
-	    <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification (VSS)</a>.</td>
+	    <a href="https://github.com/COVESA/vehicle_signal_specification">Vehicle Signal Specification (VSS)</a>.</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn data-dfn-type="dfn" id="dfn-requestid">requestId</dfn></td>
@@ -1476,12 +1479,12 @@
 	    <td>A JWT formatted security token.</td>
 	  </tr>
 	  <tr>
-	    <td><dfn data-dfn-type="dfn" id="dfn-data">data</dfn> </td>
+	    <td><b>data</b> </td>
 	    <td>object/array</td>
 	    <td>Contains a path and one or more data points.</td>
 	  </tr>
 	  <tr>
-	    <td><dfn data-dfn-type="dfn" id="dfn-dp">dp</dfn> </td>
+	    <td><b>dp</b> </td>
 	    <td>object/array</td>
 	    <td>The data point contains a value and a timestamp.</td>
 	  </tr>
@@ -1501,7 +1504,7 @@
       <td>Provides a filtering mechanism to reduce the demands of a subscription on the server. Query format, see CORE:Filter Request.</td>
     </tr>
     <tr>
-      <td> <dfn data-dfn-type="dfn" id="dfn-metadata">metadata</dfn> </td>
+      <td> <b>metadata</b> </td>
       <td> object </td>
       <td>Metadata describing the potentially available signal (sub)tree.</td>
     </tr>
@@ -1618,18 +1621,16 @@
 	<em class="rfc2119" title="MUST">MUST</em> be one of the values specified in the enumeration:</p>
 
 	<dl title="enum Action" class="idl">
-	  <dt><dfn data-dfn-type="dfn" id="dfn-get">get</dfn></dt>
+	  <dt><b>get</b></dt>
 	  <dd>Enables the client to read one or more values.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-set">set</dfn></dt>
+	  <dt><b>set</b></dt>
 	  <dd>Enables the client to update one value.</dd>
-    <dt><dfn data-dfn-type="dfn" id="dfn-subscribe">subscribe</dfn></dt>
-    <dd>Enables the client to request notifications containing a JSON data structure with values for one or more
-      vehicle signal.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-unsubscribe">unsubscribe</dfn></dt>
+	  <dt><b>subscribe</b></dt>
+	  <dd>Enables the client to request notifications containing a JSON data structure with values for one or more vehicle signal.</dd>
+	  <dt><b>unsubscribe</b></dt>
 	  <dd>Enables the client to request that it should no longer receive notifications based on that subscription.</dd>
-    <dt><dfn data-dfn-type="dfn" id="dfn-subscription">subscription</dfn></dt>
-    <dd>Enables the server to send notifications to the client containing a JSON data structure with values for one or more
-      vehicle signals.</dd>
+	  <dt><b>subscription</b></dt>
+	  <dd>Enables the server to send notifications to the client containing a JSON data structure with values for one or more vehicle signals.</dd>
 	  </dl>
         </section>
 
@@ -1645,7 +1646,7 @@
   </thead>
   <tbody>
     <tr>
-      <th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-error-0">Error</dfn></th>
+      <th rowspan="4"><b">Error</b></th>
       </tr><tr><td><a href="#status-codes">number</a></td><td>integer</td><td>Yes</td></tr>
       <tr><td><a href="#status-codes">reason</a></td><td>string</td><td>Yes</td></tr>
       <tr><td><a href="#status-codes">message</a></td><td>string</td><td>Yes</td></tr>
