@@ -133,7 +133,7 @@
       access control has been added.</p>
       
       <p>
-        There are two parts to this specification, CORE and TRANSPORT. This document, the VISS version 2 CORE specification, 
+        There are two parts to this specification, CORE and [[viss2-transport]]. This document, the VISS version 2 CORE specification, 
         describes the VISSv2 messaging layer. 
         The companion specification for the VISSv2 transport protocols detail the mapping of the messaging layer to selected transports.
         The ontologies based on the VISSv2 core specification are defined in documents for each specific domain
@@ -147,7 +147,7 @@
       <p>
         This document describes the messaging API for VISS protocol. 
         This includes the messaging layer and set of rules for structuring data.
-        The separation between payload encoding (TRANSPORT) and messaging API (CORE) improves adaptability. 
+        The separation between payload encoding ([[viss2-transport]]) and messaging API (CORE) improves adaptability. 
         Extending and describing multiple transport protocols becomes possible.
       </p>     
       <p>
@@ -230,7 +230,7 @@
         <p>Addressing of resources is done using URIs as defined in [[RFC3986]].<br>
         <blockquote><a>scheme</a>://<a>authority</a>/<a>path</a>?<a>query</a></blockquote>
         The <dfn>scheme</dfn> describes the protocol to use to reach the addressed resource.
-        For supported protocols, see the TRANSPORT specification.<br>
+        For supported protocols, see the [[viss2-transport]] specification.<br>
         The <dfn>authority</dfn> describes where to reach the resource, for more details see <a href="#authority-component"></a>.<br>
         The <dfn>path</dfn> addresses a specific service within the resource, for more details see <a href="#path-component"></a>.<br>
         The <dfn>query</dfn> contains further information related to the addressed service, see <a href="#filter-request"></a>.<br>
@@ -452,9 +452,9 @@
           <p>The error information has three components - a number, a reason, and a message. 
           The number MUST always be part of the error information, while the reason and message components MAY be a part of it.
             <ul>
-              <li><b>number</b> See VISSv2:TRANSPORT, "Status code" chapter.</li>
-              <li><b>reason</b> See VISSv2:TRANSPORT, "Status code" chapter.</li>
-              <li><b>message</b> See VISSv2:TRANSPORT, "Status code" chapter.</li>
+              <li><b>number</b> See [[viss2-transport]], Status Code chapter.</li>
+              <li><b>reason</b> See [[viss2-transport]], Status Code chapter.</li>
+              <li><b>message</b> See [[viss2-transport]], Status Code chapter.</li>
             </ul>
           </p>
           </section>
@@ -619,7 +619,7 @@
                 Every path element in an value array must address at least one node in the tree, or else an error response is returned.<br>
                 Different elements of the value array may address the same node, 
                 in which case it is the responsibility of the server to resolve this to a singleton in the notifications.<br>
-                Examples can be found in the TRANSPORT specification.
+                Examples can be found in the [[viss2-transport]] specification.
                 </p>
         </section>
 
@@ -640,7 +640,7 @@
                 The period must conform to the [[ISO8601]] duration format, expressed with days, hour, minute, 
                 and second data, i. e. "value": "PdddDThhHmmMssS".
                 The number of days shall be less than 999. Only a single period can be expressed.<br>
-                Examples can be found in the TRANSPORT specification.
+                Examples can be found in the [[viss2-transport]] specification.
                 </p>
         </section>
 
@@ -649,7 +649,7 @@
                 <p>
                 The value contains the period time X in between captures, {"period":"X"}.
                 X is an integer and represents the period time in milliseconds.
-                Examples can be found in the TRANSPORT specification.
+                Examples can be found in the [[viss2-transport]] specification.
                </p>
         </section>
  
@@ -664,7 +664,7 @@
                 (**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than", 
                 "lte" is "less than or equal".<br>
-                Examples can be found in the TRANSPORT specification.
+                Examples can be found in the [[viss2-transport]] specification.
                </p>
         </section>
  
@@ -681,7 +681,7 @@
                 (**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", 
                 "lt" is "less than", "lte" is "less than or equal".<br>
-                Examples can be found in the TRANSPORT specification.
+                Examples can be found in the [[viss2-transport]] specification.
                </p>
         </section>
  
@@ -692,7 +692,7 @@
                 where X is a float value setting the max allowed error between any data sample and the simplified curve, 
                 and Y is the number of buffer elements. Data is processed when the buffer becomes full, 
                 and the essential data points are returned as a time series per signal.<br>
-                Examples can be found in the TRANSPORT specification.
+                Examples can be found in the [[viss2-transport]] specification.
                </p>
         </section>
  
@@ -713,7 +713,7 @@
         but cannot be combined with any other filter type.<br>
         The response is a JSON formatted object with corresponding key-value pairs per addressed node. 
         The server MAY support the static metadata request.<br>
-        Examples can be found in the TRANSPORT specification.
+        Examples can be found in the [[viss2-transport]] specification.
         </p>
     </section>
  
@@ -742,7 +742,7 @@
         but not with any other filter type.<br>
         The server capabilities request MUST be supported, the others on the list are optional. 
         For the server capabilities request the vsspath SHALL be set to "Vehicle", and the paths filter MUST not be used.<br>
-        Examples can be found in the TRANSPORT specification.
+        Examples can be found in the [[viss2-transport]] specification.
         </p>
     </section>
  
@@ -1047,7 +1047,7 @@
           <p>
           This is a VISSv2 request including an <a href="#access-token-def">access token</a> as described in general in the 
           <a href="#methods"></a> chapter, 
-          and for different transport protocols in the VISSv2 TRANSPORT document.
+          and for different transport protocols in the [[viss2-transport]] document.
           </p>
         </section>
 
@@ -1055,7 +1055,7 @@
           <h2>Protected Resource Response</h2>
           <p>
           This is a VISSv2 response as described in general in the <a href="#methods"></a> chapter, 
-          and for different transport protocols in the VISSv2 TRANSPORT document.
+          and for different transport protocols in the [[viss2-transport]] document.
           It does not differ from the response to an unprotected resource request.
           </p>
         </section>
@@ -1698,7 +1698,7 @@
           </tr>
           <tr>
             <td>transport_protocol</td>
-            <td>TRANSPORT:Transport protocols</td>
+            <td>[[viss2-transport]],Transport Protocols chapter</td>
           </tr>
         </table><br>
         <table  style="width:50%">
@@ -1764,15 +1764,15 @@
           </tr>
           <tr>
             <td><u>https</u></td>
-            <td>TRANSPORT:Transport protocols:HTTPS</td>
+            <td>[[viss2-transport]], Transport Protocols:HTTPS chapter</td>
           </tr>
           <tr>
             <td><u>wss</u></td>
-            <td>TRANSPORT:Transport protocols:Secure Websocket</td>
+            <td>[[viss2-transport]], Transport Protocols:Secure Websocket chapter</td>
           </tr>
           <tr>
             <td>mqtts</td>
-            <td>TRANSPORT:Transport protocols:MQTT</td>
+            <td>[[viss2-transport]], Transport Protocols:MQTT chapter</td>
           </tr>
         </table>
 
