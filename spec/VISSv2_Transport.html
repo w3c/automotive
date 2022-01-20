@@ -102,11 +102,9 @@
       service for accessing vehicle information, signals from sensors
       on control units within a vehicle's network. It exposes this
       information using a hierarchical tree like taxonomy defined in
-      GENIVI Vehicle Signal Specification (VSS). The service provides
-      this information in JSON format. The service may reside in the
-      vehicle for applications needing to analyse a high volume of
-      realtime data or on servers in the internet with information
-      already brought off the vehicle.
+      COVESA Vehicle Signal Specification (VSS). The service provides
+      this information in JSON format. The service may reside in the vehicle, 
+      or on servers in the internet with information already brought off the vehicle.
       </p>
 
       <p>This specification describes a second version of VISS which
@@ -115,16 +113,16 @@
       version. The first version of VISS only supported WebSocket as a
       transport protocol, the second version is generalized to work
       across different protocols as some are better suited for
-      different use cases. HTTP is now supported with additional
+      different use cases. HTTP and MQTT are now supported with additional
       protocols used within the automotive industry being evaluated
       for inclusion. Subscription capabilities have been improved and
       access control has been added.
       </p>
       
       <p>
-        There are two parts to this specification, Core and Transport. This document, the VISS version 2 TRANSPORT specification, 
+        There are two parts to this specification, [[viss2-core]] and TRANSPORT. This document, the VISS version 2 TRANSPORT specification, 
         describes the VISSv2 transport protocols, and the mapping of the message layer on these transports. 
-        The companion specification VISSv2 CORE describes the messaging layer.
+        The companion specification [[viss2-core]] describes the messaging layer.
       </p>
     </section>
     <section id='sotd'></section>
@@ -143,7 +141,7 @@
     <section id="terminology">
       <h2>Terminology</h2>
       <p>The acronym 'VISSv2' is used to refer to this document, the VISS version 2 specification.
-         The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the GENIVI Alliance.
+         The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the COVESA Alliance.
          The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.
       </p>
     </section>
@@ -295,9 +293,10 @@
 
       <section id="authorization">
         <h2>Authorization</h2>
-          <p>Clients must provide a token to the server in order to verify that it is correctly authorized for the service it requests 
-          (see CORE document).Tokens are integrated in HTTP requests in the <code>Authorization</code> header. 
-          For WebSocket requests an optional <code>authorization</code> property in the payload can be used.
+          <p>If authorization is enabled on a signal requested by the client, 
+          it MUST provide a token to the server in order to verify that it is correctly authorized for the service it requests 
+          (see [[viss2-core]] document).Tokens are integrated in HTTP requests in the <code>Authorization</code> header. 
+          For WebSocket and MQTT requests an optional <code>authorization</code> property in the payload can be used.
           </p>
       </section>
     </section>
@@ -312,7 +311,7 @@
 
       <section id="https">
         <h2>HTTPS</h2>
-        <p>The message data components described in the CORE document are in the first hand mapped to required HTTP parameters, 
+        <p>The message data components described in the [[viss2-core]] document are in the first hand mapped to required HTTP parameters, 
         and only when there is no appropriate mapping it is mapped to the payload. 
         The subscribe/unsubscribe messages are not supported by this transport protocol.
         </p>
@@ -322,12 +321,12 @@
 
           <section id="https-initialisation">
             <h2>Initialization</h2>
-            <p>N/A?</p>
+            <p>HTTP long polling?</p>
           </section>
 
           <section id="https-closure">
             <h2>Closure</h2>
-            <p>N/A?</p>
+            <p>HTTP long polling?</p>
           </section>
         </section>
 
@@ -421,7 +420,7 @@
           <section id="https-search-read">
             <h2>Search Read</h2>
             <p>
-              The search read request uses the query pattern described in the CORE document to provide one or more path expressions, 
+              The search read request uses the query pattern described in the [[viss2-core]] document to provide one or more path expressions, 
               relative to the path in the GET URL.<br>
               <b>Example:</b>
               Request:
@@ -459,7 +458,7 @@
           <section id="https-history-read">
             <h2>History Read</h2>
             <p>
-              The history read request uses the query pattern described in the CORE document to read recorded values 
+              The history read request uses the query pattern described in the [[viss2-core]] document to read recorded values 
               for a given period backwards in time.<br>
               <b>Example:</b>
               Request:
@@ -484,7 +483,7 @@
           <section id="https-service-discovery-read">
             <h2>Signal Discovery Read</h2>
             <p>
-              The signal discovery request uses the URL fragment pattern as described in the CORE document to retrieve the static metadata, 
+              The signal discovery request uses the URL fragment pattern as described in the [[viss2-core]] document to retrieve the static metadata, 
               i. e. the metadata defined in the VSS tree.
               If the value is set to an empty string, then all metadata in the addressed VSS nodes is returned. 
               If only specific metadata is desired, the value can be set to this, e. g. "value":["type", "datatype"]. 
@@ -516,7 +515,7 @@
             <p>
               The dynamic metadata, i. e. any other metadata kept by the vehicle system, 
               is retrieved by the setting the "type" to  "dynamic-metadata".
-              The value MUST be set to one of the domain names as specified in the CORE: Dynamic Metadata Filter Operation chapter.
+              The value MUST be set to one of the domain names as specified in the [[viss2-core]], Dynamic Metadata Filter Operation chapter.
               <br>
               <b>Example:</b>
               Request:
@@ -609,7 +608,7 @@
         <h2>Secure WebSocket</h2>
         <p>
         As the WebSocket protocol does not implicitly provide a logical association between the request and response messages 
-        described here a key-value pair with the keyname "requestId" is added to the data components described in the CORE document. 
+        described here a key-value pair with the keyname "requestId" is added to the data components described in the [[viss2-core]] document.<br>
         As the WebSocket protocol neither specifies a set of explicit methods, 
         another key-value pair with the keyname "action" is also added. See <a href='#action-def'></a> for the declaration of these new key-value pairs. 
         All data components are mapped to the payload.
@@ -824,7 +823,7 @@
           <section id="wss-search-read">
             <h2>Search Read</h2>
             <p>A client may issue a search read request to access multiple values in one request message. 
-               This is realized by adding a "filter" object following the pattern described in the CORE spec, "Filtering" chapter.
+               This is realized by adding a "filter" object following the pattern described in the [[viss2-core]], Filtering chapter.
             </p>
             <p>
               <b>Example:</b><br>
@@ -855,7 +854,7 @@
           <section id="wss-history-read">
             <h2>History Read</h2>
             <p>A client may issue a history read request to access recorded data points. 
-               This is realized by adding a "filter" object following the pattern described in the CORE spec, "Filtering" chapter.
+               This is realized by adding a "filter" object following the pattern described in the [[viss2-core]], Filtering chapter.
             </p>
             <p>
               <b>Example:</b><br>
@@ -1029,15 +1028,17 @@
             The client may send a <a href="#dfn-subscriberequest" class="internalDFN" data-link-type="dfn">subscribeRequest</a> message 
             to request a subscription to one or more signals, 
             thereby requesting the server to repeatedly return subscription notification messages, as specified by the "filter" query 
-            (see CORE, "Filtering" chapter). 
+            (see [[viss2-core]], Filtering chapter). 
             The server <em class="rfc2119" title="MAY">MAY</em> reduce the number of 
             <a href="#dfn-subscriptionnotification" class="internalDFN" data-link-type="dfn">subcriptionNotification</a> 
             messages sent to the client in order to reduce processing demands.<br>
             If the server is able to satisfy the request it SHALL return a 
             <a href="#dfn-subscribesuccessresponse" class="internalDFN" data-link-type="dfn">subscribeSuccessResponse</a> message. 
-            If an error occurs e.g. because the client is not authorized to set the requested value, the server SHALL return a 
-            <a href="#dfn-subscribeerrorresponse" class="internalDFN" data-link-type="dfn">subscribeErrorResponse</a> message.<br>
-            The subscription variants are, as described in the CORE document:
+            If an error occurs e.g. because the client is not authorized to read the requested value, the server SHALL return a 
+            <a href="#dfn-subscribeerrorresponse" class="internalDFN" data-link-type="dfn">subscribeErrorResponse</a> message. 
+            If an error occurs during the subscription session, the server shall return an 
+            <a href="#dfn-subscriptionerrornotification" class="internalDFN" data-link-type="dfn">subscriptionErrorNotification</a> message.<br>
+            The subscription variants are, as described in the [[viss2-core]] document:
 	  <ul>
 	  <li>timebased: notifications are issued at a regular time interval,</li>
 	  <li>change: notifications are issued when the value has changed as specified,</li>
@@ -1249,7 +1250,8 @@
           <section id="range-subscribe">
             <h2>Range Subscribe</h2>
             <p>
-            Subscription to a range of values, that can be either unbounded, or bounded as in the example below.
+            Subscription to a range of values, that can be either unbounded, or bounded as in the example below. 
+            For a more information how to use range of values, refer the Range Filter Operation chapter in the [[viss2-core]] documentation.
             </p>
             <p>
               <b>Example:</b><br>
@@ -1369,16 +1371,16 @@
         </section>
       </section>
 
-      <section id="Defs">
+      <section id="mqtt">
         <h2>MQTT</h2>
 
-        <section id="term-def">
+        <section id="application-level-protocol">
           <h2>Application Level Protocol</h2>
           <p>
-            For MQTT to support the complete VISSv2 interface, as decribed in the "Interface" chapter of the CORE specification, 
+            For MQTT to support the complete VISSv2 interface, as decribed in the "Interface" chapter of the [[viss2-core]] specification, 
             an application level protocol that runs on top of MQTT is added. 
             It is described in the following, please also see the sequence diagram below. 
-            To emulate the client-server pattern that is described in the CORE specification, the vehicle server, via its vehicle client, 
+            To emulate the client-server pattern that is described in the [[viss2-core]] specification, the vehicle server, via its vehicle client, 
             issues a subscribe request to the broker on a topic named VID/Vehicle, 
             where VID is an identity that uniquely links to the vehicle in the access control ecosystem. 
             This vehicle identity is not necessarily the manufacturer's Vehicle Identification Number (VIN).<br>
@@ -1395,7 +1397,7 @@
             it publishes it to the broker associated with the topic name that was the string value of the "topic" key name in the 
             message it previously received from the broker.<br>
             The broker will then forward this message to the cloud side client that earlier subscribed to this topic name, 
-            which concludes the client-server based request-response as described in the CORE specification.<br>
+            which concludes the client-server based request-response as described in the [[viss2-core]] specification.<br>
             In the case of subscription requests the vehicle client needs to save the subscriptionId found in the subscribe response, 
             together with the topic name associated to the subscribe request. When the vehicle server later issues notifications, 
             the vehicle client must parse the subscriptionId from it, and retrieve the topic name associated to it. 
@@ -1414,7 +1416,7 @@
           </p>
         </section>
 
-        <section id="term-def">
+        <section id="security-aspects">
           <h2>Security Aspects</h2>
           <p>
             The MQTT architecture mandates a "broker" that acts as a middleman in between the client and server endpoints 
@@ -1424,12 +1426,13 @@
           </p>
         </section>
 
-        <section id="term-def">
+        <section id="transport-messages">
           <h2>Transport Messages</h2>
           <p>
             As mentioned in the "Application Level Protocol" chapter, the "request" messages issued to the broker contains two 
             JSON formatted key-value pairs, where the value of the "request" key is a string that contains the request the vehicle server 
-            will receive. The format of this request MUST follow the payload format that is specified in the Websocket chapter of this specification.
+            will respond to. 
+            The format of this request MUST follow the payload format that is specified in the Websocket chapter of this specification.
           </p>
         </section>
       </section>
@@ -1455,7 +1458,7 @@
 	    <td> <dfn data-dfn-type="dfn" id="dfn-path">path</dfn></td>
 	    <td>String</td>
 	    <td>The path to a node in the VSS tree, as defined by the
-	    <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification (VSS)</a>.</td>
+	    <a href="https://github.com/COVESA/vehicle_signal_specification">Vehicle Signal Specification (VSS)</a>.</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn data-dfn-type="dfn" id="dfn-requestid">requestId</dfn></td>
@@ -1476,12 +1479,12 @@
 	    <td>A JWT formatted security token.</td>
 	  </tr>
 	  <tr>
-	    <td><dfn data-dfn-type="dfn" id="dfn-data">data</dfn> </td>
+	    <td><b>data</b> </td>
 	    <td>object/array</td>
 	    <td>Contains a path and one or more data points.</td>
 	  </tr>
 	  <tr>
-	    <td><dfn data-dfn-type="dfn" id="dfn-dp">dp</dfn> </td>
+	    <td><b>dp</b> </td>
 	    <td>object/array</td>
 	    <td>The data point contains a value and a timestamp.</td>
 	  </tr>
@@ -1498,10 +1501,10 @@
     <tr>
       <td> <dfn data-dfn-type="dfn" id="dfn-filter">filter</dfn> </td>
       <td> string </td>
-      <td>Provides a filtering mechanism to reduce the demands of a subscription on the server. Query format, see CORE:Filter Request.</td>
+      <td>Provides a filtering mechanism to reduce the demands of a subscription on the server. Query format, see [[viss2-core]], Filter Request chapter.</td>
     </tr>
     <tr>
-      <td> <dfn data-dfn-type="dfn" id="dfn-metadata">metadata</dfn> </td>
+      <td> <b>metadata</b> </td>
       <td> object </td>
       <td>Metadata describing the potentially available signal (sub)tree.</td>
     </tr>
@@ -1529,15 +1532,15 @@
             "description": "The type of action requested by the client and/or delivered by the server",
         },
         "path": {
-            "description": "The path to the desired vehicle signal(s). It may require synthesis with additional path data, see CORE:Paths Filter Operation",
+            "description": "The path to the desired vehicle signal(s). It may require synthesis with additional path data, see [[viss2-core]], Paths Filter Operation chapter.",
             "type": "string"
         },
         "ts": {
-            "description": "The time of the issuance of the message. For its format, see CORE: Timestamps.",
+            "description": "The time of the issuance of the message. For its format, see [[viss2-core]], Timestamps chapter.",
             "type": "string"
         },
         "filter": {
-            "description": "May be specified in order to throttle the demands of subscriptions on the server. See CORE:Filter Request",
+            "description": "May be specified in order to throttle the demands of subscriptions on the server. See [[viss2-core]], Filter Request chapter.",
             "type": "object/array",
             "properties": {
                 "type": {
@@ -1567,7 +1570,7 @@
                             "type": "string"                    
                         },
                         "ts": {
-                            "description": "Time of the value capture. For its format, see CORE: Timestamps.",
+                            "description": "Time of the value capture. For its format, see [[viss2-core]], Timestamps chapter.",
                             "type": "string"                    
                         }
                     }
@@ -1618,18 +1621,16 @@
 	<em class="rfc2119" title="MUST">MUST</em> be one of the values specified in the enumeration:</p>
 
 	<dl title="enum Action" class="idl">
-	  <dt><dfn data-dfn-type="dfn" id="dfn-get">get</dfn></dt>
+	  <dt><b>get</b></dt>
 	  <dd>Enables the client to read one or more values.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-set">set</dfn></dt>
+	  <dt><b>set</b></dt>
 	  <dd>Enables the client to update one value.</dd>
-    <dt><dfn data-dfn-type="dfn" id="dfn-subscribe">subscribe</dfn></dt>
-    <dd>Enables the client to request notifications containing a JSON data structure with values for one or more
-      vehicle signal.</dd>
-	  <dt><dfn data-dfn-type="dfn" id="dfn-unsubscribe">unsubscribe</dfn></dt>
+	  <dt><b>subscribe</b></dt>
+	  <dd>Enables the client to request notifications containing a JSON data structure with values for one or more vehicle signal.</dd>
+	  <dt><b>unsubscribe</b></dt>
 	  <dd>Enables the client to request that it should no longer receive notifications based on that subscription.</dd>
-    <dt><dfn data-dfn-type="dfn" id="dfn-subscription">subscription</dfn></dt>
-    <dd>Enables the server to send notifications to the client containing a JSON data structure with values for one or more
-      vehicle signals.</dd>
+	  <dt><b>subscription</b></dt>
+	  <dd>Enables the server to send notifications to the client containing a JSON data structure with values for one or more vehicle signals.</dd>
 	  </dl>
         </section>
 
@@ -1645,7 +1646,7 @@
   </thead>
   <tbody>
     <tr>
-      <th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-error-0">Error</dfn></th>
+      <th rowspan="4"><b">Error</b></th>
       </tr><tr><td><a href="#status-codes">number</a></td><td>integer</td><td>Yes</td></tr>
       <tr><td><a href="#status-codes">reason</a></td><td>string</td><td>Yes</td></tr>
       <tr><td><a href="#status-codes">message</a></td><td>string</td><td>Yes</td></tr>

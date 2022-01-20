@@ -116,10 +116,9 @@
       service for accessing vehicle information, signals from sensors
       on control units within a vehicle's network. It exposes this
       information using a hierarchical tree like taxonomy defined in
-      GENIVI Vehicle Signal Specification (VSS). The service provides
+      COVESA Vehicle Signal Specification (VSS). The service provides
       this information in JSON format. The service may reside in the
-      vehicle for applications needing to analyse a high volume of
-      realtime data or on servers in the internet with information
+      vehicle, or on servers in the internet with information
       already brought off the vehicle.</p>
 
       <p>This specification describes a second version of VISS which
@@ -128,15 +127,15 @@
       version. The first version of VISS only supported WebSocket as a
       transport protocol, the second version is generalized to work
       across different protocols as some are better suited for
-      different use cases. HTTP is now supported with additional
+      different use cases. HTTP and MQTT are now supported with additional
       protocols used within the automotive industry being evaluated
       for inclusion. Subscription capabilities have been improved and
       access control has been added.</p>
       
       <p>
-        There are two parts to this specification, Core and Transport. This document, the VISS version 2 CORE specification, 
+        There are two parts to this specification, CORE and [[viss2-transport]]. This document, the VISS version 2 CORE specification, 
         describes the VISSv2 messaging layer. 
-        The companion specifications for the VISSv2 transport protocols detail the mapping of the messaging layer to selected transports.
+        The companion specification for the VISSv2 transport protocols detail the mapping of the messaging layer to selected transports.
         The ontologies based on the VISSv2 core specification are defined in documents for each specific domain
         (e.g. navigation, media, vehicle data). 
       </p>
@@ -148,7 +147,7 @@
       <p>
         This document describes the messaging API for VISS protocol. 
         This includes the messaging layer and set of rules for structuring data.
-        The separation between payload encoding (transport) and messaging API (core) improves adaptability. 
+        The separation between payload encoding ([[viss2-transport]]) and messaging API (CORE) improves adaptability. 
         Extending and describing multiple transport protocols becomes possible.
       </p>     
       <p>
@@ -159,7 +158,7 @@
         The VISSv2 messaging layer uses a RESTful design for all methods exchanged via the interface (<a href="#interface"></a>).
       </p>
       <p>
-        The VISSv2 data structuring rules (<a href="http://genivi.github.io/vehicle_signal_specification/">VSS Rule set</a>) 
+        The VISSv2 data structuring rules (<a href="https://covesa.github.io/vehicle_signal_specification/rule_set/">VSS Rule set</a>) 
         are the same through all transport protocols.
         The basis for structuring data hold by a server is a tree.
       </p>
@@ -170,7 +169,8 @@
     <section id="terms">
       <h2>Terminology</h2>
       <p>The acronym 'VISSv2' is used to refer to this document, the VISS version 2 specification. 
-      The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is hosted by the GENIVI Alliance. 
+      The acronym 'VSS' is used to refer to the <a href="https://github.com/COVESA/vehicle_signal_specification">'Vehicle Signal Specification'</a> 
+      which is hosted by COVESA. 
       The term 'WebSocket' when used in this document, is as defined in the 
       <a href="https://www.w3.org/TR/websockets/">W3C WebSocket API</a> and [[RFC6455]], the WebSocket Protocol.
       </p>
@@ -182,7 +182,7 @@
         <dl title="enum Defs" class="idl">
           <dt><b>client</b></dt>
           <dd>An entity that works with data managed by a server.</dd>
-          <dt><dfn data-dfn-type="dfn" id="dfn-server">server</dfn></dt>
+          <dt><b>server</b></dt>
           <dd>An entity that manages and offers access to data.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-success-response">success response</dfn></dt>
           <dd>The message being returned by the server to the client when no error is encountered. These are specific per request type</dd>
@@ -202,6 +202,10 @@
           <dd>A token providing a verifiable proof that the client may be authorized access to the requested value(s).</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-subscription-id">subscriptionId</dfn></dt>
           <dd>A handle identifying a subscription session.</dd>
+          <dt><b>requestId</b></dt>
+          <dd>Unique id value specified by the client. 
+          Returned by the server in the response and used by the client to link the request and response messages. 
+          The value MAY be an integer or a Universally Unique Identifier (UUID).</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-purpose-id">purpose</dfn></dt>
           <dd>A purpose is one of the short text entries from the <a href="#purpose-list"></a>.</dd>
         </dl>
@@ -213,8 +217,8 @@
                 <p>The service is intended for use with a tree-like logical taxonomy to represent the vehicle data. 
                 An illustrative example of such a tree structure is shown in <a href="#fig-example-vss-tree">Figure 1</a>. 
                 While it is meant to support conforming taxonomies it was created principally with the 
-                <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a> (VSS) in mind. 
-                For more details, see the <a href="http://genivi.github.io/vehicle_signal_specification/">VSS documentation</a>.
+                <a href="https://github.com/COVESA/vehicle_signal_specification">Vehicle Signal Specification</a> (VSS) in mind. 
+                For more details, see the <a href="http://covesa.github.io/vehicle_signal_specification/">VSS documentation</a>.
                 </p>
         <figure id="fig-example-vss-tree">
           <img src="images/vss-tree.jpg" alt="example-vss-tree">
@@ -226,7 +230,7 @@
         <p>Addressing of resources is done using URIs as defined in [[RFC3986]].<br>
         <blockquote><a>scheme</a>://<a>authority</a>/<a>path</a>?<a>query</a></blockquote>
         The <dfn>scheme</dfn> describes the protocol to use to reach the addressed resource.
-        For supported protocols, see the TRANSPORT specification.<br>
+        For supported protocols, see the [[viss2-transport]] specification.<br>
         The <dfn>authority</dfn> describes where to reach the resource, for more details see <a href="#authority-component"></a>.<br>
         The <dfn>path</dfn> addresses a specific service within the resource, for more details see <a href="#path-component"></a>.<br>
         The <dfn>query</dfn> contains further information related to the addressed service, see <a href="#filter-request"></a>.<br>
@@ -291,11 +295,14 @@
       <section id="data-representation">
         <h2>Data representation</h2>
         <p>
-          This specification excludes "number" and "null" from the list of supported values that [[RFC8259]] declares. 
-          The supported JSON value alternatives are thus:<br>
-          value = false / true / object / array / string<br>
-          A consequence of this is that number values MUST be represented as strings. 
-          The format of these number strings MUST follow the number formats as specified in [[RFC8259]].
+          A single data point is in the message payload represented by a value and an associated timestamp, 
+          in JSON represented by two key-value pairs with the key names "value" and "ts".<br>
+          The "ts" value MUST be a string as specified in <a href="#timestamp"></a>, while the "value" value MUST be a string, 
+          or an array of strings for array type signals, 
+          see <a href="https://covesa.github.io/vehicle_signal_specification/rule_set/data_entry/data_types/">VSS Data Types</a>.<br>
+          In the case of the value being a number, it MUST follow the number formats as specified in [[RFC8259]]. 
+          A boolean value is represented by "true" or "false".<br>
+          For representation of multiple data points, see <a href="#response-syntax"></a>.<br>
           If data is represented incorrectly, then an error message with number 400, and reason "Bad data" MUST be returned. 
           A specific case of this is if an array of data elements does not contain the number expected by the server. 
           The server MAY then respond successfully, and follow a proprietary recovery policy, 
@@ -317,8 +324,8 @@
           and MAY implement the Subscribe, Unsubscribe, and Subscription methods. 
         </p>
         <section id="read">
-          <h2><dfn>Read</dfn></h2>
-          <p><a>Purpose</a>: Get one or more values addressed by the given path.</p>
+          <h2>Read</h2>
+          <p>Purpose: Get one or more values addressed by the given path.</p>
           <p>The client MAY have to obtain an <a>authorization</a> token before being able to access the values.
              If the server is able to satisfy the request it MUST return a <a>success response</a>.
              If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error response</a>.</p>
@@ -343,9 +350,9 @@
         </section>
 
         <section id="update">
-          <h2><dfn>Update</dfn></h2>
-          <p><a>Purpose</a>: Provide altered value to the vehicle signal(s) addressed by the <a>path</a></p>
-          <p>The client MAY have to obtain an authorization token before being able to update the vehicle signal(s). 
+          <h2>Update</h2>
+          <p>Purpose: Provide altered value to the vehicle signal addressed by the <a>path</a></p>
+          <p>The client MAY have to obtain an authorization token before being able to update the vehicle signal. 
           If the server is able to satisfy the request it MUST return a <a>success response</a>, else it MUST return an <a>error message</a>. 
           Only actuator type signals can be updated.
           Please note that a success response does not guarantee that the actuation attempt to change to the updated target value has, or will, succeed. 
@@ -366,8 +373,8 @@
         </section>
 
         <section id="subscribe">
-          <h2><dfn>Subscribe</dfn></h2>
-          <p><a>Purpose</a>: Get asynchronous messages containing the value(s) addressed by the path. 
+          <h2>Subscribe</h2>
+          <p>Purpose: Get asynchronous messages containing the value(s) addressed by the path. 
           The triggering rules for issuing the notification messages are set by the filter data.</p>
           <p>The client MAY have to obtain an authorization token before being able to subscribe to the vehicle signal(s).
              The server MUST issue a notification if a trigger rule is fulfilled.
@@ -389,8 +396,8 @@
           </p>
         </section>
         <section id="unsubscribe">
-          <h2><dfn>Unsubscribe</dfn></h2>
-          <p><a>Purpose</a>: Termination of the subscription period started by a previous subscribe request.</p>
+          <h2>Unsubscribe</h2>
+          <p>Purpose: Termination of the subscription period started by a previous subscribe request.</p>
           <p>If the server is able to satisfy the request it MUST return a <a>success response</a>, 
           and it MUST stop issuing notifications associated to the subscription handle.
           If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error response</a>.</p>
@@ -407,8 +414,8 @@
           </p>
         </section>
         <section id="subscription">
-          <h2><dfn>Subscription</dfn></h2>
-          <p><a>Purpose</a>: Asynchronous client notification according to the subscribe request trigger rules.</p>
+          <h2>Subscription</h2>
+          <p>Purpose: Asynchronous client notification according to the subscribe request trigger rules.</p>
           <p>The server MUST issue a notification message when a triggering rule associated with the subscription is met.
              If the server cannot fulfill the triggering rules it MUST issue an error notification and terminate the subscription. 
           </p>
@@ -430,12 +437,12 @@
         <h2>Error Message</h2>
         <p>The server MUST inform a client about errors ocurring in interactions between the two, whether it is in a synchronous 
         error response, or an asynchronous error notification as a result of a previous subscribe. The error message has three arguments, 
-        of which subscriptionId is optional.
+        of which subscriptionId is mandatory only for error notifications.
         </p>
           <p>Arguments: 
             <ul>
               <li><a>error message</a> <a href="#error-information"></a></li>
-              <li><a>subscriptionId</a> The subscriptionId MUST be present in error notifications.</li>
+              <li><a>subscriptionId</a> The reference to the subscribe session.</li>
               <li><a>timestamp</a> The time of the server execution leading to the error.</li>
             </ul>
           </p>
@@ -445,9 +452,9 @@
           <p>The error information has three components - a number, a reason, and a message. 
           The number MUST always be part of the error information, while the reason and message components MAY be a part of it.
             <ul>
-              <li><b>number</b> See VISSv2:TRANSPORT, "Status code" chapter.</li>
-              <li><b>reason</b> See VISSv2:TRANSPORT, "Status code" chapter.</li>
-              <li><b>message</b> See VISSv2:TRANSPORT, "Status code" chapter.</li>
+              <li><b>number</b> See [[viss2-transport]], Status Code chapter.</li>
+              <li><b>reason</b> See [[viss2-transport]], Status Code chapter.</li>
+              <li><b>message</b> See [[viss2-transport]], Status Code chapter.</li>
             </ul>
           </p>
           </section>
@@ -466,14 +473,14 @@
     </section>
 
       <section id="security">
-        <h2>Security</h2>
+        <h2>Security Considerations</h2>
         <p>
         </p>
 
       <section id="transport-security">
         <h2>Transport security</h2>
         <p>
-        Transport protocols supported by this specification MUST make use of TLS as defined in [[RFC5246]].
+        Transport protocols supported by this specification MUST make use of TLS v1.2 as defined in [[RFC5246]].
         </p>
       </section>
 
@@ -486,7 +493,7 @@
       </section>
 
       <section id="privacy">
-        <h2>Privacy</h2>
+        <h2>Privacy Considerations</h2>
         <p>In addition to some privacy provisions within the
         specification itself, the W3C Automotive Working Group is
         creating an accompanying <a href="https://www.w3.org/community/autowebplatform/wiki/Best_Practices">In-Vehicle Application Best Practices</a>
@@ -513,7 +520,7 @@
         have consent from whoever is deemed authoritative for a given
         jurisdiction and ownership situation. That consent should be
         revocable. Consent and revoking it are outside the scope of
-        this specification, we expect that to be handled out of band
+        this specification, it is expected to be handled out of band
         and in some cases by regulations and contractual commitments. Future version of this specification however may provide
         mechanism for enabling and suspending application
         authorization to access information.</p>
@@ -530,11 +537,11 @@
           <ul>
           <li>for the HTTP protocol:
           <ul>
-          <li>GET /&lt;vsspath&gt;?filter=&lt;json-expression&gt;</li>
+          <li>GET /&lt;vsspath&gt;?filter=&lt;filter-expression&gt;</li>
           </ul></li>
           <li>for the Websocket protocol:
           <ul>
-          <li>{"action":"get", "path":"&lt;vsspath&gt;", "filter":"&lt;JSON-expression&gt;"}</li>
+          <li>{"action":"get", "path":"&lt;vsspath&gt;", "filter":"&lt;filter-expression&gt;"}</li>
           </ul></li>
           </ul>
           where<br>
@@ -542,7 +549,7 @@
           <li>Get is the transport protocol method,</li>
           <li>vsspath is the path starting from the tree root,</li>
           <li>filter is the key name for the filter expression,</li>
-          <li>json-expression contains the filter instructions.</li>
+          <li>filter-expression contains the filter instructions.</li>
           </ul>
           </ul>
           The JSON expression has the object format as shown below. For the case of an optional second object of this type, 
@@ -576,7 +583,7 @@
           </ul></li>
           <li><u>history</u>:
           <ul>
-          <li>the time period from current time and backwards in time.</li>
+          <li>captured data from a time period from current time and backwards in time.</li>
           </ul></li>
           <li><u>static-metadata</u>:
           <ul>
@@ -608,14 +615,11 @@
                 The vsspath shall point to the last node in the tree that is common for the relative paths in the filter value, 
                 that start off from this node. 
                 If the end point of a path in the filter value is a branch, then all leaf nodes in the sub-tree below this branch are addressed.
-                A path in the filter value may contain the wildcard character (*) as a representative for a path segment.<br>
+                A path in the filter value may contain the wildcard character (*) as a representative for a single path segment.<br>
                 Every path element in an value array must address at least one node in the tree, or else an error response is returned.<br>
-                If the path in the filter value ends with one or more wildcards, 
-                then only the leaf nodes with path segments matching the number of wildcards are addressed. 
                 Different elements of the value array may address the same node, 
                 in which case it is the responsibility of the server to resolve this to a singleton in the notifications.<br>
-                If the value contains a single path then it shall not be enclosed with JSON array brackets.<br>
-                Examples can be found in the TRANSPORT specification.
+                Examples can be found in the [[viss2-transport]] specification.
                 </p>
         </section>
 
@@ -628,7 +632,7 @@
                 maybe because it enters into a tunnel. Assuming that the vehicle detects the loss of connectivity, it may then start to record data. 
                 If recorded, this data may then be accessed using the history type. 
                 The vehicle system makes its own decision whether to record any data, and for how long this data will be kept in storage. 
-                The period goes from current time, excluding the current value, and backwards in time. 
+                The period in the filter expression goes from current time, excluding the current value, and backwards in time. 
                 The number of data points in the response depends on the period size, and the sample frequency. 
                 The latter can not be set by the client, 
                 so the client should have some understanding of its value to estimate the amount of data it may receive. 
@@ -636,7 +640,7 @@
                 The period must conform to the [[ISO8601]] duration format, expressed with days, hour, minute, 
                 and second data, i. e. "value": "PdddDThhHmmMssS".
                 The number of days shall be less than 999. Only a single period can be expressed.<br>
-                Examples can be found in the TRANSPORT specification.
+                Examples can be found in the [[viss2-transport]] specification.
                 </p>
         </section>
 
@@ -645,7 +649,7 @@
                 <p>
                 The value contains the period time X in between captures, {"period":"X"}.
                 X is an integer and represents the period time in milliseconds.
-                Examples can be found in the TRANSPORT specification.
+                Examples can be found in the [[viss2-transport]] specification.
                </p>
         </section>
  
@@ -654,12 +658,13 @@
                 <p>
                 The value contains the range boundary, and the logical operator, {"logic-op":"X", "boundary": "Y"}, 
                 where X is one of the supported logical operators (**), and Y is the boundary of the range.
-                The value may be an array of two of these objects, combined through a logical AND to support expressions of a bounded range. 
-                A range event is triggered both when the filter expression becomes "true", and when it becomes "false".<br><br>
+                The value may be an array of two of these objects, 
+                which will then be combined through a logical AND to support expressions of a bounded range. 
+                A range event is triggered whenever a signal is updated, and fulfilling the range expression.<br><br>
                 (**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than", 
                 "lte" is "less than or equal".<br>
-                Examples can be found in the TRANSPORT specification.
+                Examples can be found in the [[viss2-transport]] specification.
                </p>
         </section>
  
@@ -667,11 +672,16 @@
           <h2>Change Filter Operation</h2>
                 <p>
                 The value contains the logical operator for comparison of previous and current values, {"logic-op":"X", "diff":"Y"}, 
-                where X is one of the supported logical operators (**), and Y is the value of the required change.<br><br>
+                where X is one of the supported logical operators (**), and Y is the value of the required change.<br>
+                For boolean values the following expressions shall be supported:<br>
+                "value":{"logic-op":"gt", "diff": "0"} This leads to a trigger event when the value goes false->true.<br>
+                "value":{"logic-op":"lt", "diff": "0"} This leads to a trigger event when the value goes true->false.<br>
+                "value":{"logic-op":"ne", "diff": "0"} This leads to a trigger event when the value goes true->false OR false->true.
+                <br><br>
                 (**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", 
                 "lt" is "less than", "lte" is "less than or equal".<br>
-                Examples can be found in the TRANSPORT specification.
+                Examples can be found in the [[viss2-transport]] specification.
                </p>
         </section>
  
@@ -682,7 +692,7 @@
                 where X is a float value setting the max allowed error between any data sample and the simplified curve, 
                 and Y is the number of buffer elements. Data is processed when the buffer becomes full, 
                 and the essential data points are returned as a time series per signal.<br>
-                Examples can be found in the TRANSPORT specification.
+                Examples can be found in the [[viss2-transport]] specification.
                </p>
         </section>
  
@@ -694,17 +704,16 @@
         The metadata is retrieved from the VSS tree that is deployed in the vehicle.
         This type of request is sometimes referred to as a signal discovery request.
         If the "value" key contains an empty string, then all metadata that the server can retrieve for the for the addressed node(s) are returned, 
-        while if it contains metadata key name(s) then only the selected metadata is returned. 
-        If the expression contains multiple metadata types, then they are represented as array elements. <br><br>
+        while if it contains a metadata key name, or an array of key names, then only the selected metadata is returned.<br>
         For the set of static metadata key names, 
-        see the <a href="https://github.com/GENIVI/vehicle_signal_specification">Vehicle Signal Specification</a>.<br>
+        see the <a href="https://github.com/COVESA/vehicle_signal_specification">Vehicle Signal Specification</a>.<br>
         The vsspath in the request may point to either a leaf node, or to a branch node. 
         In the latter case then the response will contain static metadata from the entire sub-tree having this branch as the root.<br>
         A static metadata request can be combined with a paths filter operation to address multiple nodes, 
         but cannot be combined with any other filter type.<br>
         The response is a JSON formatted object with corresponding key-value pairs per addressed node. 
         The server MAY support the static metadata request.<br>
-        Examples can be found in the TRANSPORT specification.
+        Examples can be found in the [[viss2-transport]] specification.
         </p>
     </section>
  
@@ -731,9 +740,9 @@
         </ul>
         A dynamic metadata request can be combined with a paths filter operation to address multiple nodes, 
         but not with any other filter type.<br>
-        The server capabilities request MUST be supported, the others on the list are optional.. 
+        The server capabilities request MUST be supported, the others on the list are optional. 
         For the server capabilities request the vsspath SHALL be set to "Vehicle", and the paths filter MUST not be used.<br>
-        Examples can be found in the TRANSPORT specification.
+        Examples can be found in the [[viss2-transport]] specification.
         </p>
     </section>
  
@@ -873,7 +882,7 @@
       Access control MUST be supported. However, in this chapter only the sections that describe the interactions between the 
       <a href="#client-def">client</a> and the VISSv2 server are normative.<br>
       Access control SHALL not be applied to the VSS nodes containing the VSS version data, 
-      and not to client requests for dynamic metadata about the server optional capabilities, 
+      and not to client requests for dynamic metadata about the server capabilities, 
       or about the access control selection tags applied to the VSS tree.
       </p>
 
@@ -1038,7 +1047,7 @@
           <p>
           This is a VISSv2 request including an <a href="#access-token-def">access token</a> as described in general in the 
           <a href="#methods"></a> chapter, 
-          and for different transport protocols in the VISSv2 TRANSPORT document.
+          and for different transport protocols in the [[viss2-transport]] document.
           </p>
         </section>
 
@@ -1046,7 +1055,7 @@
           <h2>Protected Resource Response</h2>
           <p>
           This is a VISSv2 response as described in general in the <a href="#methods"></a> chapter, 
-          and for different transport protocols in the VISSv2 TRANSPORT document.
+          and for different transport protocols in the [[viss2-transport]] document.
           It does not differ from the response to an unprotected resource request.
           </p>
         </section>
@@ -1211,7 +1220,7 @@
           </thead>
           <tbody>
             <tr>
-              <th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-getrequest">get<br>set<br>subscribe</dfn></th>
+              <th rowspan="4">get<br>set<br>subscribe</th>
             </tr>
             <tr><td>Ok</td><td>Ok</td></tr>
             <tr><td>Nok</td><td>Ok</td></tr>  
@@ -1431,7 +1440,7 @@
             Long term <a href="#access-grant-token-def">access grant tokens</a> need to be accompanied by a Proof of Possession (PoP) 
             for the private key corresponding to the public key included in the <a href="#access-grant-token-def">access grant token</a>. 
             This requirement enables a longer validity for this kind of tokens, ranging from a few days to a even a year.
-            By adding the PoP, we prevent an eavesdropper to reuse an <a href="#access-token-def">access token</a> request, 
+            By adding the PoP, an eavesdropper is prevented to reuse an <a href="#access-token-def">access token</a> request, 
             impersonating the client. Without a PoP, the longer the validity of an <a href="#access-grant-token-def">access grant token</a>, 
             the higher the risk an attacker could intercept and reuse it.
             PoP for JWT are defined in [[RFC7800]], but in essence, 
@@ -1443,11 +1452,11 @@
           </p><p>
             In order to avoid this extra step, the client can generate the nonce itself. The server would need to check that nonces are not reused. 
             Although logging previous nonces at the server side would work for small environments, 
-            we propose the use of an incremental nonce in the form of a timestamp. 
+            the use of an incremental nonce in the form of a timestamp is proposed. 
             One of the drawbacks of this proposal is that the server has no means to check whether the PoP has been precomputed or not. 
             However, this is irrelevant from the eavesdropper point of view.
           </p><p>
-            In case freshness of the PoP was a critical requirement, we could use a public source of randomness to obtain the nonce, 
+            In case freshness of the PoP was a critical requirement, a public source of randomness to obtain the nonce could be used, 
             e.g. <a href="https://www.cloudflare.com/leagueofentropy/">Leage of Entropy</a> or 
             <a href="https://csrc.nist.gov/projects/interoperable-randomness-beacons">Interoperable Randomness Beacons</a>. 
             That would provide the server a mean to check freshness of the PoP but on the other hand, 
@@ -1672,8 +1681,6 @@
         On receiving a dynamic-metadata request on server capabilities the server SHALL respond with a JSON object that for each of the keys
         in the list below contains the associated values in the list that the server supports. 
         Both the keys and the values are represented as strings, if a key has more than one value, these are represented as an array.<br>
-        The "value" key in a request may have an empty string, 
-        in which case the response shall contain metadata for all the key names in the table below, or it may have one or more of the key names. 
         A key name refers to a functional domain of the specification, and the tables below contain the capabilities of these domains. 
         The ones marked as underlined are mandatory, the others are optional. 
         <table  style="width:60%">
@@ -1691,7 +1698,7 @@
           </tr>
           <tr>
             <td>transport_protocol</td>
-            <td>TRANSPORT:Transport protocols</td>
+            <td>[[viss2-transport]],Transport Protocols chapter</td>
           </tr>
         </table><br>
         <table  style="width:50%">
@@ -1757,15 +1764,15 @@
           </tr>
           <tr>
             <td><u>https</u></td>
-            <td>TRANSPORT:Transport protocols:HTTPS</td>
+            <td>[[viss2-transport]], Transport Protocols:HTTPS chapter</td>
           </tr>
           <tr>
             <td><u>wss</u></td>
-            <td>TRANSPORT:Transport protocols:Secure Websocket</td>
+            <td>[[viss2-transport]], Transport Protocols:Secure Websocket chapter</td>
           </tr>
           <tr>
             <td>mqtts</td>
-            <td>TRANSPORT:Transport protocols:MQTT</td>
+            <td>[[viss2-transport]], Transport Protocols:MQTT chapter</td>
           </tr>
         </table>
 
