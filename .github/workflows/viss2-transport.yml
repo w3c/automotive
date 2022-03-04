@@ -1,0 +1,27 @@
+# .github/workflows/viss2-transport.yml
+name: VISS 2 Transport
+on:
+  pull_request:
+    paths: 
+      - "spec/**"
+      - "spec/images/**"
+  push:
+    branches: [gh-pages]
+    paths: 
+      - "spec/**"
+      - "spec/images/**"
+jobs:
+  main:
+    name: Publish VISS 2 Transport 
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: w3c/spec-prod@v2
+        with:
+          SOURCE: spec/VISSv2_Transport.html
+          TOOLCHAIN: respec
+          W3C_ECHIDNA_TOKEN: ${{ secrets.ECHIDNA_TOKEN_VISS2TRANSPORT }}
+          W3C_WG_DECISION_URL: https://lists.w3.org/Archives/Public/public-automotive/2022Feb/0005.html
+          W3C_BUILD_OVERRIDE: |
+             shortName: viss2-transport
+             specStatus: WD
