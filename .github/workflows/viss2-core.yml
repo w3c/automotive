@@ -1,0 +1,27 @@
+# .github/workflows/viss2-core.yml
+name: VISS 2 Core
+on:
+  pull_request:
+    paths: 
+      - "spec/**"
+      - "spec/images/**"
+  push:
+    branches: [gh-pages]
+    paths: 
+      - "spec/**"
+      - "spec/images/**"
+jobs:
+  main:
+    name: Publish VISS 2 Core 
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: w3c/spec-prod@v2
+        with:
+          SOURCE: spec/VISSv2_Core.html
+          TOOLCHAIN: respec
+          W3C_ECHIDNA_TOKEN: ${{ secrets.W3C_TR_TOKEN }}
+          W3C_WG_DECISION_URL: https://lists.w3.org/Archives/Public/public-automotive/2022Feb/0005.html
+          W3C_BUILD_OVERRIDE: |
+             shortName: viss2-core
+             specStatus: WD
