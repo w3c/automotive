@@ -623,7 +623,8 @@
                 Every path element in an value array must address at least one node in the tree, or else an error response is returned.<br>
                 Different elements of the value array may address the same node, 
                 in which case it is the responsibility of the server to resolve this to a singleton in the notifications.<br>
-                Examples can be found in the [[viss2-transport]] specification.
+                Examples can be found in the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-transport/#https-search-read">search read on HTTPS</a> and 
+                <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-transport/#wss-search-read">search read on WebSocket</a> in [[viss2-transport]] specification.
                 </p>
         </section>
 
@@ -644,7 +645,8 @@
                 The period must conform to the [[ISO8601]] duration format, expressed with days, hour, minute, 
                 and second data, i. e. "value": "PdddDThhHmmMssS".
                 The number of days shall be less than 999. Only a single period can be expressed.<br>
-                Examples can be found in the [[viss2-transport]] specification.
+                Examples can be found in the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-transport/#https-history-read">history read on HTTPS</a> and 
+                <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-transport/#wss-history-read">history read on WebSocket</a> in [[viss2-transport]] specification.
                 </p>
         </section>
 
@@ -653,7 +655,7 @@
                 <p>
                 The value contains the period time X in between captures, {"period":"X"}.
                 X is an integer and represents the period time in milliseconds.
-                Examples can be found in the [[viss2-transport]] specification.
+                Example can be found in the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-transport/#subscribe">subscribe section</a> in [[viss2-transport]] specification.
                </p>
         </section>
  
@@ -668,7 +670,8 @@
                 (**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than", 
                 "lte" is "less than or equal".<br>
-                Examples can be found in the [[viss2-transport]] specification.
+                Examples can be found in the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-transport/#authorized-subscribe">authorized subscribe</a> and 
+                <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-transport/#range-subscribe">range subscribe</a> in [[viss2-transport]] specification.
                </p>
         </section>
  
@@ -696,7 +699,8 @@
                 where X is a float value setting the max allowed error between any data sample and the simplified curve, 
                 and Y is the number of buffer elements. Data is processed when the buffer becomes full, 
                 and the essential data points are returned as a time series per signal.<br>
-                Examples can be found in the [[viss2-transport]] specification.
+                Example can be found in the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-transport/#curve-logging-subscribe">curve logging subscribe</a>
+                 in [[viss2-transport]] specification.
                </p>
         </section>
  
@@ -717,7 +721,7 @@
         but cannot be combined with any other filter type.<br>
         The response is a JSON formatted object with corresponding key-value pairs per addressed node. 
         The server MAY support the static metadata request.<br>
-        Examples can be found in the [[viss2-transport]] specification.
+        Example can be found in the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-transport/#https-service-discovery-read">signal discovery read on HTTPS</a> in [[viss2-transport]] specification.
         </p>
     </section>
  
@@ -746,7 +750,8 @@
         but not with any other filter type.<br>
         The server capabilities request MUST be supported, the others on the list are optional. 
         For the server capabilities request the vsspath SHALL be set to "Vehicle", and the paths filter MUST not be used.<br>
-        Examples can be found in the [[viss2-transport]] specification.
+        Examples can be found in the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-transport/#https-dynamic-metadata-read">dynamic metadata read on HTTPS</a> 
+        and <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-transport/#wss-service-discovery-read">signal discovery read on WebSocket</a> in [[viss2-transport]] specification.
         </p>
     </section>
  
