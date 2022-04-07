@@ -662,11 +662,22 @@
      <section id="range-filter-operation">
           <h2>Range Filter Operation</h2>
                 <p>
-                The value contains the range boundary, and the logical operator, {"logic-op":"X", "boundary": "Y"}, 
-                where X is one of the supported logical operators (**), and Y is the boundary of the range.
-                The value may be an array of two of these objects, 
-                which will then be combined through a logical AND to support expressions of a bounded range. 
-                A range event is triggered whenever a signal is updated, and fulfilling the range expression.<br><br>
+                The range filter operation supports three types of ranges:<br>
+                1. Unbounded range<br>
+                2. Bounded range<br>
+                3. Inverse of bounded range<br>
+                The range operation issues notifications to the client when the logical expression defined in the "value" key-value pair evaluation is true, and the signal is updated.<br>
+                For the unbounded range, the "value" consists of one JSON object that contains the range boundary, and the logical operator for the boundary, 
+                {"boundary-op":"X", "boundary": "Y"}, 
+                where X is one of the supported logical operators (**), and Y is the boundary of the range.<br>
+                For the other two types, the value consists of an array of two JSON objects, that each contains the same key-value pairs as for the unbounded case, 
+                but where the first object may have an optional key-value pair, "combination-op":"Z". Its value Z MUST be either "AND" or "OR", 
+                and it defines the logical operation that combines the logical expressions of the first and the second objects. 
+                If this key-value pair is left out, the two expressions are combined using the AND logical operator.<br>
+                Example "value" objects of the three types:<br>
+                1. {"boundary-op":"gt", "boundary": "5"}   // x > 5<br>
+                2. [{"boundary-op":"gt", "boundary": "5"},{"boundary-op":"lt", "boundary": "10"}]   // x > 5 AND x < 10<br>
+                3. [{"boundary-op":"lt", "boundary": "5", "combination-op":"OR"},{"boundary-op":"gt", "boundary": "10"}]   // x < 5 OR x > 10<br><br>
                 (**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than", 
                 "lte" is "less than or equal".<br>
