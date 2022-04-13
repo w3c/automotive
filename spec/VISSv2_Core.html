@@ -605,7 +605,7 @@
           The server MUST support the timebased and change types, the other types are optional.<br>
           In the JSON object, the key-value pairs "type" and "value" must always be present.
           The JSON expression may consist of maximum one object with type "paths", plus maximum one object with any other supported type, 
-          which are then logically combined as with an AND operator.<br>
+          which are then logically combined as with an AND operand.<br>
           The types timebased, range, change, and curvelog are only applicable for subscription requests. 
           Subscription requests are supported by the websocket and the MQTT transport protocols.<br>
           The restriction on how many objects that can be combined is also set by the URL size restriction on 1k characters (*).<br>
@@ -662,23 +662,35 @@
      <section id="range-filter-operation">
           <h2>Range Filter Operation</h2>
                 <p>
-                The range filter operation supports three types of ranges:<br>
-                1. Unbounded range<br>
-                2. Bounded range<br>
-                3. Inverse of bounded range<br>
-                The range operation issues notifications to the client when the logical expression defined in the "value" key-value pair evaluation is true, and the signal is updated.<br>
-                For the unbounded range, the "value" consists of one JSON object that contains the range boundary, and the logical operator for the boundary, 
-                {"boundary-op":"X", "boundary": "Y"}, 
-                where X is one of the supported logical operators (**), and Y is the boundary of the range.<br>
-                For the other two types, the value consists of an array of two JSON objects, that each contains the same key-value pairs as for the unbounded case, 
-                but where the first object may have an optional key-value pair, "combination-op":"Z". Its value Z MUST be either "AND" or "OR", 
-                and it defines the logical operation that combines the logical expressions of the first and the second objects. 
-                If this key-value pair is left out, the two expressions are combined using the AND logical operator.<br>
-                Example "value" objects of the three types:<br>
-                1. {"boundary-op":"gt", "boundary": "5"}   // x > 5<br>
-                2. [{"boundary-op":"gt", "boundary": "5"},{"boundary-op":"lt", "boundary": "10"}]   // x > 5 AND x < 10<br>
-                3. [{"boundary-op":"lt", "boundary": "5", "combination-op":"OR"},{"boundary-op":"gt", "boundary": "10"}]   // x < 5 OR x > 10<br><br>
-                (**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
+                The range filter operation supports two types of ranges, see the following sub chapters.<br>
+                <section id="single-boundary-range">
+                  <h2>Single Boundary Range</h2>
+                  <p>
+                  One logical "boundary operand" evaluates the current signal value in relation to the boundary. 
+                  If evaluated to true, the server issues a notification message containing the signal value to the subscribing client. 
+                  The boundary operand MUST be one of the values shown in the footer (**).<br>
+                  Examples<br>
+                  {"boundary-op":"gt", "boundary": "5"}   // x > 5<br>
+                  {"boundary-op":"eq", "boundary": "5"}   // x == 5
+                  </p>
+                </section>
+                <section id="multi-boundary-range">
+                  <h2>Multi Boundary Range</h2>
+                  <p>
+                  Two boundaries with respective boundary operands are evaluated relative to the current signal value. 
+                  The logical outcome of the two evaluations are applied as input to a logical AND/OR operation. 
+                  If evaluated to true, the server issues a notification message containing the signal value to the subscribing client. 
+                  Besides the mandatory "boundary-op", and "boundary" key-value pairs in each JSON object, 
+                  the first object may contain a "combination-op" key value pair, which then MUST have either the value "AND", or the value "OR". 
+                  If omitted, the result of the two boundary evaluations is per default applied to an AND operation. 
+                  The JSON array MUST contain two objects. 
+                  The boundary operand MUST be one of the values shown in the footer (**).<br>
+                  Examples<br>
+                  [{"boundary-op":"gt", "boundary": "5"},{"boundary-op":"lt", "boundary": "10"}]   // x > 5 AND x < 10<br>
+                  [{"boundary-op":"lt", "boundary": "5", "combination-op":"OR"},{"boundary-op":"gt", "boundary": "10"}]   // x < 5 OR x > 10
+                  </p>
+                </section>
+                (**)The supported boundary operands are ["eq", "ne", "gt", "gte", "lt", "lte"], 
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than", 
                 "lte" is "less than or equal".<br>
                 Examples can be found in the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-transport/#authorized-subscribe">authorized subscribe</a> and 
@@ -689,14 +701,14 @@
      <section id="change-filter-operation">
           <h2>Change Filter Operation</h2>
                 <p>
-                The value contains the logical operator for comparison of previous and current values, {"logic-op":"X", "diff":"Y"}, 
-                where X is one of the supported logical operators (**), and Y is the value of the required change.<br>
+                The value contains the logical operand for comparison of previous and current values, {"logic-op":"X", "diff":"Y"}, 
+                where X is one of the supported logical operands (**), and Y is the value of the required change.<br>
                 For boolean values the following expressions shall be supported:<br>
                 "value":{"logic-op":"gt", "diff": "0"} This leads to a trigger event when the value goes false->true.<br>
                 "value":{"logic-op":"lt", "diff": "0"} This leads to a trigger event when the value goes true->false.<br>
                 "value":{"logic-op":"ne", "diff": "0"} This leads to a trigger event when the value goes true->false OR false->true.
                 <br><br>
-                (**)The supported logical operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
+                (**)The supported logic operands are ["eq", "ne", "gt", "gte", "lt", "lte"], 
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", 
                 "lt" is "less than", "lte" is "less than or equal".<br>
                 Examples can be found in the [[viss2-transport]] specification.

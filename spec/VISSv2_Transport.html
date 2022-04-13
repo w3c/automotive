@@ -1168,7 +1168,7 @@
               {
                 "action": "subscribe",
                 "path": "Vehicle/Drivetrain/FuelSystem/Level",
-                "filter": {"type":"range", "value":[{"logic-op":"gt", "boundary":"49"}, {"logic-op":"lt", "boundary":"51"}]},
+                "filter": {"type":"range", "value":[{"boundary-op":"gt", "boundary":"49"}, {"boundary-op":"lt", "boundary":"51"}]},
                 "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds",
                 "requestId": "6578"
               }
@@ -1249,7 +1249,7 @@
               {
                 "action": "subscribe",
                 "path": "Vehicle/Drivetrain/FuelSystem/Level",
-                "filter": "filter":{"type":"range","value":[{"logic-op":"gt","boundary":"50"},{"logic-op":"lt","boundary":"55"}]},
+                "filter": "filter":{"type":"range","value":[{"boundary-op":"lt","boundary":"50","combination-op":"OR"},{"boundary-op":"gt","boundary":"55"}]},
                 "requestId": "6578"
               }
                </code></pre>
