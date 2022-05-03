@@ -1168,7 +1168,7 @@
               {
                 "action": "subscribe",
                 "path": "Vehicle/Drivetrain/FuelSystem/Level",
-                "filter": {"type":"range", "value":[{"logic-op":"gt", "boundary":"49"}, {"logic-op":"lt", "boundary":"51"}]},
+                "filter": {"type":"range", "value":[{"boundary-op":"gt", "boundary":"49"}, {"boundary-op":"lt", "boundary":"51"}]},
                 "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds",
                 "requestId": "6578"
               }
@@ -1239,7 +1239,7 @@
           <section id="range-subscribe">
             <h2>Range Subscribe</h2>
             <p>
-            Subscription to a range of values, that can be either unbounded, or bounded as in the example below. 
+            Subscription to a range of values, that can have either a single boundary, or multipe boundaries as in the example below. 
             For a more information how to use range of values, refer the Range Filter Operation chapter in the [[viss2-core]] documentation.
             </p>
             <p>
@@ -1249,7 +1249,7 @@
               {
                 "action": "subscribe",
                 "path": "Vehicle/Drivetrain/FuelSystem/Level",
-                "filter": "filter":{"type":"range","value":[{"logic-op":"gt","boundary":"50"},{"logic-op":"lt","boundary":"55"}]},
+                "filter": "filter":{"type":"range","value":[{"boundary-op":"lt","boundary":"50","combination-op":"OR"},{"boundary-op":"gt","boundary":"55"}]},
                 "requestId": "6578"
               }
                </code></pre>
@@ -1269,6 +1269,45 @@
                 "subscriptionId": "12345",
                 “data”:{“path”: ”Vehicle/Drivetrain/FuelSystem/Level”, 
                         “dp”:{“value”: ”51”, “ts”: ”2020-04-15T14:00:00Z”},
+                "ts": "2020-04-15T14:00:00Z"
+              }
+               </code></pre>
+            </p>
+          </section>
+
+          <section id="change-subscribe">
+            <h2>Change Subscribe</h2>
+            <p>
+            Subscription to when a signal has changed between two sequential captures. 
+            For a more information how to use change of values, refer the Change Filter Operation chapter in the [[viss2-core]] documentation.
+            </p>
+            <p>
+              <b>Example:</b><br>
+              Request:
+              <pre><code>
+              {
+                "action": "subscribe",
+                "path": "Vehicle/Drivetrain/FuelSystem/Level",
+                "filter": "filter":{"type":"change","value":{"logic-op":"gt","diff":"10"}},
+                "requestId": "6578"
+              }
+               </code></pre>
+              Successful response:
+              <pre><code>
+              {
+                "action": "subscribe",
+                "subscriptionId": "12345",
+                "requestId": "6578",
+                "ts": "2020-04-15T13:37:00Z"
+              }
+               </code></pre>
+              Notification:
+              <pre><code>
+              {
+                "action": "subscription",
+                "subscriptionId": "12345",
+                “data”:{“path”: ”Vehicle/Drivetrain/FuelSystem/Level”, 
+                        “dp”:{“value”: ”101”, “ts”: ”2020-04-15T14:00:00Z”},
                 "ts": "2020-04-15T14:00:00Z"
               }
                </code></pre>
