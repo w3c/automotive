@@ -467,7 +467,7 @@
       <section id="timestamp">
         <h2>Timestamps</h2>
         <p>
-           Timestamps in transport payloads MUST conform to the ISO8601 standard, using the UTC format with a trailing Z. 
+           Timestamps in transport payloads MUST conform to the [[ISO8601]] standard, using the UTC format with a trailing Z. 
            Time resolution SHALL at least be seconds, with subsecond resolution as an optional degree of precision when desired.
            The time and date format shall be as shown below, where the sub-second data and delimiter is optional.<br>
            YYYY-MM-DDTHH:MM:SS.ssssssZ<br>
@@ -711,7 +711,8 @@
                 (**)The supported logic operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", 
                 "lt" is "less than", "lte" is "less than or equal".<br>
-                Examples can be found in the [[viss2-transport]] specification.
+                Example can be found in the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-transport/#change-subscribe">Change Subscribe</a>
+                 in [[viss2-transport]] specification.
                </p>
         </section>
  
@@ -767,7 +768,7 @@
         The response uses the same syntax as for ordinary data responses, with "value" representing the validate tag. 
         The server applies the validate data according to the inheritance rules described in the access control selection chapter.</li>
         <li><u>server_capabilities</u>: The capabilities that the server supports. 
-        See Appendix: Server Capabilities for how this is expressed in the response.</li>
+        See <a href="#server-capabilities">B. Server Capabilities</a> for how this is expressed in the response.</li>
         </ul>
         A dynamic metadata request can be combined with a paths filter operation to address multiple nodes, 
         but not with any other filter type.<br>
