@@ -396,7 +396,7 @@
             Content-Type: application/json; charset=utf-8
 	    ...
             {
-              “data”:{“path”:”Vehicle/Drivetrain/InternalCombustionEngine/RPM”, 
+              “data”:{“path”:”Vehicle.Drivetrain.InternalCombustionEngine.RPM”, 
                       “dp”:{“value”:”2372”, “ts”:”2020-04-15T13:37:00Z”}
                      }
             }
@@ -436,9 +436,9 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                “data”:[{“path”:”Vehicle/Cabin/Door/Row1/Left/IsOpen”, “dp”:{“value”:”false”, “ts”:”2020-04-15T13:37:00Z”}}, 
+                “data”:[{“path”:”Vehicle.Cabin.Door.Row1.Left.IsOpen”, “dp”:{“value”:”false”, “ts”:”2020-04-15T13:37:00Z”}}, 
                         {...},… 
-                        {“path”:”Vehicle/Cabin/Door/Row4/Right/IsOpen”, “dp”:{“value”:”true”, “ts”:”2020-04-15T13:37:00Z”}}
+                        {“path”:”Vehicle.Cabin.Door.Row4.Right.IsOpen”, “dp”:{“value”:”true”, “ts”:”2020-04-15T13:37:00Z”}}
                        ]
               }
               </code></pre>
@@ -759,7 +759,7 @@
               <pre><code>
               {
                 "action": "get",
-                "path": "Vehicle/Drivetrain/InternalCombustionEngine/RPM",
+                "path": "Vehicle.Drivetrain.InternalCombustionEngine.RPM",
                 "requestId": "8756"
               }
               </code></pre>
@@ -768,7 +768,7 @@
               {
                 "action": "get",
                 "requestId": "8756",
-                “data”:{“path”:”Vehicle/Drivetrain/InternalCombustionEngine/RPM”, 
+                “data”:{“path”:”Vehicle.Drivetrain.InternalCombustionEngine/RPM”, 
                         “dp”:{“value”:”2372”, “ts”:”2020-04-15T13:37:00Z”}
                        }
               }
@@ -799,7 +799,7 @@
               <pre><code>
               {
                 "action": "get",
-                "path": "Vehicle/Drivetrain/InternalCombustionEngine/RPM",
+                "path": "Vehicle.Drivetrain.InternalCombustionEngine.RPM",
                 "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds"
                 "requestId": "8657"
               }
@@ -809,7 +809,7 @@
               {
                 "action": "get",
                 "requestId": "8657",
-                “data”:{“path”:”Vehicle/Drivetrain/InternalCombustionEngine/RPM”, 
+                “data”:{“path”:”Vehicle.Drivetrain.InternalCombustionEngine.RPM”, 
                         “dp”:{“value”:”2372”, “ts”:”2020-04-15T13:37:00Z”}
                        }
               }
@@ -828,8 +828,8 @@
               <pre><code>
               {
                 "action": "get",
-                "path": "Vehicle/Cabin",
-                "filter": {"type":"paths", "value":["Door/*/*/IsOpen", "DriverPosition"]}
+                "path": "Vehicle.Cabin",
+                "filter": {"type":"paths", "value":["Door.*.*.IsOpen", "DriverPosition"]}
                 "requestId": "5688"
               }
               </code></pre>
@@ -837,10 +837,10 @@
               <pre><code>
               {
                 "action": "get",
-                “data”:[{“path”:”Vehicle/Cabin/Door/Row1/Left/IsOpen”, “dp”:{“value”:”false”, “ts”:”2020-04-15T13:37:00Z”}}, 
+                “data”:[{“path”:”Vehicle.Cabin.Door.Row1.Left.IsOpen”, “dp”:{“value”:”false”, “ts”:”2020-04-15T13:37:00Z”}}, 
                         {...},… 
-                        {“path”:”Vehicle/Cabin/Door/Row4/Right/IsOpen”, “dp”:{“value”:”true”, “ts”:”2020-04-15T13:37:00Z”}},
-                        {“path”:”Vehicle/Cabin/DriverPosition”, “dp”:{“value”:”1”, “ts”:”2020-04-15T07:00:00Z”}}
+                        {“path”:”Vehicle.Cabin.Door.Row4.Right.IsOpen”, “dp”:{“value”:”true”, “ts”:”2020-04-15T13:37:00Z”}},
+                        {“path”:”Vehicle.Cabin.DriverPosition”, “dp”:{“value”:”1”, “ts”:”2020-04-15T07:00:00Z”}}
                        ]
                 "requestId": "5688",
               }
@@ -889,7 +889,7 @@
               <pre><code>
               {
                 "action": "get",
-                "path": "Vehicle/Drivetrain/FuelSystem",
+                "path": "Vehicle.Drivetrain.FuelSystem",
                 "filter":{"type":"dynamic-metadata", "value":["availability", "validate"]}
                 "requestId": "5687"
               }
@@ -960,7 +960,7 @@
               <pre><code>
               {
                 "action": "set",
-                "path": "Vehicle/Drivetrain/Transmission/PerformanceMode",
+                "path": "Vehicle.Drivetrain.Transmission.PerformanceMode",
                 "value": "sport",
                 "requestId": "5687"
               }
@@ -998,7 +998,7 @@
               <pre><code>
               {
                 "action": "set",
-                "path": "Vehicle/Drivetrain/Transmission/PerformanceMode",
+                "path": "Vehicle.Drivetrain.Transmission.PerformanceMode",
                 "value": "sport",
                 "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds"
                 "requestId": "5687"
@@ -1107,7 +1107,7 @@
               <pre><code>
               {
                 "action": "subscribe",
-                "path": "Vehicle/Drivetrain/FuelSystem/Level",
+                "path": "Vehicle.Drivetrain.FuelSystem.Level",
                 "filter": {"type":"timebased", "value":{"period":"500"}}
                 "requestId": "6578"
               }
@@ -1135,7 +1135,7 @@
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                “data”: {“path”: ”Vehicle/Drivetrain/FuelSystem/Level”, 
+                “data”: {“path”: ”Vehicle.Drivetrain.FuelSystem.Level”, 
                         “dp”: {“value”: ”50”, “ts”: ”2020-04-15T13:37:00Z”}
                 },
                 "ts": "2020-04-15T13:37:00Z"
@@ -1169,7 +1169,7 @@
               <pre><code>
               {
                 "action": "subscribe",
-                "path": "Vehicle/Drivetrain/FuelSystem/Level",
+                "path": "Vehicle.Drivetrain.FuelSystem.Level",
                 "filter": {"type":"range", "value":[{"boundary-op":"gt", "boundary":"49"}, {"boundary-op":"lt", "boundary":"51"}]},
                 "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds",
                 "requestId": "6578"
@@ -1189,7 +1189,7 @@
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                “data”: {“path”: ”Vehicle/Drivetrain/FuelSystem/Level”, 
+                “data”: {“path”: ”Vehicle.Drivetrain.FuelSystem.Level”, 
                         “dp”: {“value”: ”50”, “ts”: ”2020-04-15T13:37:00Z”}
                 },
                 "ts": "2020-04-15T13:37:00Z"
@@ -1211,7 +1211,7 @@
               <pre><code>
               {
                 "action": "subscribe",
-                "path": "Vehicle/Drivetrain/FuelSystem/Level",
+                "path": "Vehicle.Drivetrain.FuelSystem.Level",
                 "filter": {"type":"curvelog", "value":{"maxerr":"0.5", "bufsize":"100"}},
                 "requestId": "6578"
               }
@@ -1230,7 +1230,7 @@
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                “data”:{“path”: ”Vehicle/Drivetrain/FuelSystem/Level”, 
+                “data”:{“path”: ”Vehicle.Drivetrain.FuelSystem.Level”, 
                         “dp”:[{“value”: ”50”, “ts”: ”2020-04-15T13:38:00Z”}, ..., {“value”: ”25”, “ts”: ”2020-04-15T13:39:30Z”}]
                 },
                 "ts": "2020-04-15T13:37:00Z"
@@ -1251,7 +1251,7 @@
               <pre><code>
               {
                 "action": "subscribe",
-                "path": "Vehicle/Drivetrain/FuelSystem/Level",
+                "path": "Vehicle.Drivetrain.FuelSystem.Level",
                 "filter": "filter":{"type":"range","value":[{"boundary-op":"lt","boundary":"50","combination-op":"OR"},{"boundary-op":"gt","boundary":"55"}]},
                 "requestId": "6578"
               }
@@ -1270,7 +1270,7 @@
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                “data”:{“path”: ”Vehicle/Drivetrain/FuelSystem/Level”, 
+                “data”:{“path”: ”Vehicle.Drivetrain.FuelSystem.Level”, 
                         “dp”:{“value”: ”51”, “ts”: ”2020-04-15T14:00:00Z”},
                 "ts": "2020-04-15T14:00:00Z"
               }
@@ -1290,7 +1290,7 @@
               <pre><code>
               {
                 "action": "subscribe",
-                "path": "Vehicle/Drivetrain/FuelSystem/Level",
+                "path": "Vehicle.Drivetrain.FuelSystem.Level",
                 "filter": "filter":{"type":"change","value":{"logic-op":"gt","diff":"10"}},
                 "requestId": "6578"
               }
@@ -1309,7 +1309,7 @@
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                “data”:{“path”: ”Vehicle/Drivetrain/FuelSystem/Level”, 
+                “data”:{“path”: ”Vehicle.Drivetrain.FuelSystem.Level”, 
                         “dp”:{“value”: ”101”, “ts”: ”2020-04-15T14:00:00Z”},
                 "ts": "2020-04-15T14:00:00Z"
               }
