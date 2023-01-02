@@ -663,7 +663,7 @@
 
         <p>If more than one WebSocket connection is established between a client application and the server then each connection
         <em class="rfc2119" title="MUST">MUST</em> be managed independently. For example, subscriptions created using a particular 
-        WebSocket connection shall only trigger notifications via that connection and the client 
+        WebSocket connection shall only trigger event messages via that connection and the client 
         <em class="rfc2119" title="MUST">MUST</em> use that WebSocket connection to unsubscribe. 
         </p>
 
@@ -1021,26 +1021,26 @@
             <p>
             The client may send a <a href="#dfn-subscriberequest" class="internalDFN" data-link-type="dfn">subscribeRequest</a> message 
             to request a subscription to one or more signals, 
-            thereby requesting the server to repeatedly return subscription notification messages, as specified by 
+            thereby requesting the server to repeatedly return subscription event messages, as specified by 
 	    the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-core/#filter-request">filter request</a> described in the [[viss2-core]]. 
             The server <em class="rfc2119" title="MAY">MAY</em> reduce the number of 
-            <a href="#dfn-subscriptionnotification" class="internalDFN" data-link-type="dfn">subcriptionNotification</a> 
+            <a href="#dfn-subscriptionevent" class="internalDFN" data-link-type="dfn">subcriptionEvent</a> 
             messages sent to the client in order to reduce processing demands.<br>
             If the server is able to satisfy the request it SHALL return a 
             <a href="#dfn-subscribesuccessresponse" class="internalDFN" data-link-type="dfn">subscribeSuccessResponse</a> message. 
             If an error occurs e.g. because the client is not authorized to read the requested value, the server SHALL return a 
             <a href="#dfn-subscribeerrorresponse" class="internalDFN" data-link-type="dfn">subscribeErrorResponse</a> message. 
             If an error occurs during the subscription session, the server shall return an 
-            <a href="#dfn-subscriptionerrornotification" class="internalDFN" data-link-type="dfn">subscriptionErrorNotification</a> message.<br>
+            <a href="#dfn-subscriptionerrorevent" class="internalDFN" data-link-type="dfn">subscriptionErrorEvent</a> message.<br>
             The subscription variants are, as described in the [[viss2-core]] document:
 	  <ul>
-	  <li>timebased: notifications are issued at a regular time interval,</li>
-	  <li>change: notifications are issued when the value has changed as specified,</li>
-	  <li>range: notifications are issued when the value is in the specified range,</li>
-	  <li>curvelog: notifications are issued when the buffer is full, and then processed according to the curve logging algorithm.</li>
+	  <li>timebased: event messages are issued at a regular time interval,</li>
+	  <li>change: event messages are issued when the value has changed as specified,</li>
+	  <li>range: event messages are issued when the value is in the specified range,</li>
+	  <li>curvelog: event messages are issued when the buffer is full, and then processed according to the curve logging algorithm.</li>
 	  </ul>
 	  If none of the above trigger condition variants is specified, 
-	  then a notification will be issued whenever the underlying vehicle system supplies a new data point to the server. 
+	  then an event message will be issued whenever the underlying vehicle system supplies a new data point to the server. 
             </p>
 	<table class="simple">
  	<thead>
@@ -1084,7 +1084,7 @@
 	  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
 	</thead>
 	<tbody>
-	  <tr><th rowspan="3"><dfn data-dfn-type="dfn" id="dfn-subscriptionnotification">subscriptionNotification</dfn></th><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+	  <tr><th rowspan="3"><dfn data-dfn-type="dfn" id="dfn-subscriptionevent">subscriptionEvent</dfn></th><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
 	  <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
 	  <tr><td><a href="#dfn-value">data</a></td><td>object/array</td><td>Yes</td></tr>
 	</tbody>
@@ -1095,7 +1095,7 @@
 	  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
 	</thead>
 	<tbody>
-	  <tr><th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-subscriptionerrornotification">subscriptionErrorNotification</dfn></th><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+	  <tr><th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-subscriptionerrorevent">subscriptionErrorEvent</dfn></th><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
 	  <tr><td><a href="#dfn-subscriptionid">subscriptionId</a></td><td>string</td><td>Yes</td></tr>
 	  <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
 	  <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
@@ -1130,7 +1130,7 @@
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
-              Notification:
+              Event:
               <pre><code>
               {
                 "action": "subscription",
@@ -1141,7 +1141,7 @@
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
-              Error notification:
+              Error event:
               <pre><code>
               {
                 "action": "subscription",
@@ -1184,7 +1184,7 @@
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
-              Notification:
+              Event:
               <pre><code>
               {
                 "action": "subscription",
@@ -1202,7 +1202,7 @@
             <h2>Curve Logging Subscribe</h2>
             <p>
             Curve logging data compression by eliminating data points that are within a set error margin is activated via a subscription request. 
-            Notifications will be issued when the buffer becomes full, after insignificant data points have been eliminated, 
+            Event messages will be issued when the buffer becomes full, after insignificant data points have been eliminated, 
             refer the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-core/#curvelog-filter-operation">Curve logging Filter Operation</a> chapter in the [[viss2-core]] documentation.
             </p>
             <p>
@@ -1225,7 +1225,7 @@
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
-              Notification:
+              Event:
               <pre><code>
               {
                 "action": "subscription",
@@ -1265,7 +1265,7 @@
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
-              Notification:
+              Event:
               <pre><code>
               {
                 "action": "subscription",
@@ -1304,7 +1304,7 @@
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
-              Notification:
+              Event:
               <pre><code>
               {
                 "action": "subscription",
@@ -1427,14 +1427,14 @@
             The broker will then forward this message to the cloud side client that earlier subscribed to this topic name, 
             which concludes the client-server based request-response as described in the [[viss2-core]] specification.<br>
             In the case of subscription requests the vehicle client needs to save the subscriptionId found in the subscribe response, 
-            together with the topic name associated to the subscribe request. When the vehicle server later issues notifications, 
+            together with the topic name associated to the subscribe request. When the vehicle server later issues event messages, 
             the vehicle client must parse the subscriptionId from it, and retrieve the topic name associated to it. 
             The vehicle client shall delete the saved topic name and subscriptionId when it receives 
             an unsubscribe request in a message from the broker.<br>
             In following requests from the cloud side client, the unique topic name may be reused from the previous request-response cycle, 
             or a new unique topic name may be generated. If a new topic name is generated, an unsubscribe should be issued on the old topic name. 
             The vehicle client can continue to use the topic name it subscribes to.<br>
-            The payload format of the responses/notifications SHALL follow the payload format that is specified 
+            The payload format of the response/event messages SHALL follow the payload format that is specified 
             in the Websocket chapter of this specification. 
             The access control model is applicable also over this transport alternative. 
             The Access Token server should then implement its own version of the application level protocol described here, 
@@ -1654,11 +1654,11 @@
 	  <dt><b>set</b></dt>
 	  <dd>Enables the client to update one value.</dd>
 	  <dt><b>subscribe</b></dt>
-	  <dd>Enables the client to request notifications containing a JSON data structure with values for one or more vehicle signal.</dd>
+	  <dd>Enables the client to request event messages containing a JSON data structure with values for one or more vehicle signal.</dd>
 	  <dt><b>unsubscribe</b></dt>
-	  <dd>Enables the client to request that it should no longer receive notifications based on that subscription.</dd>
+	  <dd>Enables the client to request that it should no longer receive event messages based on that subscription.</dd>
 	  <dt><b>subscription</b></dt>
-	  <dd>Enables the server to send notifications to the client containing a JSON data structure with values for one or more vehicle signals.</dd>
+	  <dd>Enables the server to send event messages to the client containing a JSON data structure with values for one or more vehicle signals.</dd>
 	  </dl>
         </section>
 
