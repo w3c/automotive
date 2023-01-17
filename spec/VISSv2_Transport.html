@@ -425,7 +425,7 @@
               <b>Example:</b>
               Request:
               <pre><code>
-              GET /Vehicle/Cabin/Door?filter={"type":"paths", "value":"*/*/IsOpen"}   HTTP/1.1
+              GET /Vehicle/Cabin/Door?filter={"type":"paths", "parameter":"*/*/IsOpen"}   HTTP/1.1
               Host: 127.0.0.1:1337
               Accept: application/json
 	      ...
@@ -463,7 +463,7 @@
               <b>Example:</b>
               Request:
               <pre><code>
-              GET /Vehicle.Acceleration.Longitudinal?filter={"type":"history", "value":"P2DT12H"}   HTTP/1.1
+              GET /Vehicle.Acceleration.Longitudinal?filter={"type":"history", "parameter":"P2DT12H"}   HTTP/1.1
               Host: 127.0.0.1:1337
               Accept: application/json
 	      ...
@@ -483,16 +483,15 @@
           <section id="https-service-discovery-read">
             <h2>Signal Discovery Read</h2>
             <p>
-              The signal discovery request uses the URL fragment pattern as described in the [[viss2-core]] document to retrieve the static metadata, 
-              i. e. the metadata defined in the VSS tree.
-              If the value is set to an empty string, then all metadata in the addressed VSS nodes is returned. 
-              If only specific metadata is desired, the value can be set to this, e. g. "value":["type", "datatype"]. 
+              The signal discovery request uses the static metadata filtering type as described in the [[viss2-core]] document to retrieve metadata in the VSS tree.
+              If the parameter object is set to an empty string, then all metadata in the addressed VSS nodes is returned. 
+              If only specific metadata is desired, the value can be set to this, e. g. "parameter":["type", "datatype"]. 
               The values must be the names as defined in the VSS specification.<br>
               <br>
               <b>Example:</b>
               Request:
               <pre><code>
-              GET /Vehicle/Drivetrain/FuelSystem?filter={"type":"static-metadata", "value":""}   HTTP/1.1
+              GET /Vehicle/Drivetrain/FuelSystem?filter={"type":"static-metadata", "parameter":""}   HTTP/1.1
               Host: 127.0.0.1:1337
               Accept: application/json
 	      ...
@@ -520,7 +519,7 @@
               <b>Example:</b>
               Request:
               <pre><code>
-              GET /Vehicle?filter={"type":"dynamic-metadata", "value":"server_capabilities"}   HTTP/1.1
+              GET /Vehicle?filter={"type":"dynamic-metadata", "parameter":"server_capabilities"}   HTTP/1.1
               Host: 127.0.0.1:1337
               Accept: application/json
 	      ...
@@ -829,7 +828,7 @@
               {
                 "action": "get",
                 "path": "Vehicle.Cabin",
-                "filter": {"type":"paths", "value":["Door.*.*.IsOpen", "DriverPosition"]}
+                "filter": {"type":"paths", "parameter":["Door.*.*.IsOpen", "DriverPosition"]}value
                 "requestId": "5688"
               }
               </code></pre>
@@ -860,7 +859,7 @@
               {
                 "action": "get",
                 "path": "Vehicle.Acceleration.Longitudinal",
-                "filter": {"type":"history", "value":"P2DT12H"},
+                "filter": {"type":"history", "parameter":"P2DT12H"},
                 "requestId": "5688"
               }
               </code></pre>
@@ -881,7 +880,7 @@
                A successful response will contain the requested metadata from all nodes of the subtree defined by 
                the subtree root node that is addressed by the path.
               The static metadata, i. e. the metadata in the VSS tree, is retrieved by the setting the "type" to  "static-metadata", 
-              and the "value" to relevant static metadata.<br>
+              and the parameter object to relevant static metadata.<br>
             </p>
             <p>
               <b>Example:</b><br>
@@ -890,7 +889,7 @@
               {
                 "action": "get",
                 "path": "Vehicle.Drivetrain.FuelSystem",
-                "filter":{"type":"dynamic-metadata", "value":["availability", "validate"]}
+                "filter":{"type":"dynamic-metadata", "parameter":["availability", "validate"]}
                 "requestId": "5687"
               }
               </code></pre>
@@ -1108,7 +1107,7 @@
               {
                 "action": "subscribe",
                 "path": "Vehicle.Drivetrain.FuelSystem.Level",
-                "filter": {"type":"timebased", "value":{"period":"500"}}
+                "filter": {"type":"timebased", "parameter":{"period":"500"}}
                 "requestId": "6578"
               }
                </code></pre>
@@ -1170,7 +1169,7 @@
               {
                 "action": "subscribe",
                 "path": "Vehicle.Drivetrain.FuelSystem.Level",
-                "filter": {"type":"range", "value":[{"boundary-op":"gt", "boundary":"49"}, {"boundary-op":"lt", "boundary":"51"}]},
+                "filter": {"type":"range", "parameter":[{"boundary-op":"gt", "boundary":"49"}, {"boundary-op":"lt", "boundary":"51"}]},
                 "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds",
                 "requestId": "6578"
               }
@@ -1212,7 +1211,7 @@
               {
                 "action": "subscribe",
                 "path": "Vehicle.Drivetrain.FuelSystem.Level",
-                "filter": {"type":"curvelog", "value":{"maxerr":"0.5", "bufsize":"100"}},
+                "filter": {"type":"curvelog", "parameter":{"maxerr":"0.5", "bufsize":"100"}},
                 "requestId": "6578"
               }
                </code></pre>
@@ -1252,7 +1251,7 @@
               {
                 "action": "subscribe",
                 "path": "Vehicle.Drivetrain.FuelSystem.Level",
-                "filter": "filter":{"type":"range","value":[{"boundary-op":"lt","boundary":"50","combination-op":"OR"},{"boundary-op":"gt","boundary":"55"}]},
+                "filter": "filter":{"type":"range","parameter":[{"boundary-op":"lt","boundary":"50","combination-op":"OR"},{"boundary-op":"gt","boundary":"55"}]},
                 "requestId": "6578"
               }
                </code></pre>
@@ -1291,7 +1290,7 @@
               {
                 "action": "subscribe",
                 "path": "Vehicle.Drivetrain.FuelSystem.Level",
-                "filter": "filter":{"type":"change","value":{"logic-op":"gt","diff":"10"}},
+                "filter": "filter":{"type":"change","parameter":{"logic-op":"gt","diff":"10"}},
                 "requestId": "6578"
               }
                </code></pre>
@@ -1575,7 +1574,7 @@
                     "description": "The different filter types.",
                     "type": "string"
                 },
-                "value": {
+                "parameter": {
                     "description": "Parameter(s) for the different filter types",
                     "type": "object/array",
                 }
