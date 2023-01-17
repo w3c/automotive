@@ -2,6 +2,10 @@
 ## Status: PUBLIC
 ## Last Updated: 2018-07-27
 
+## Status
+
+Deprecated, [updated or supplemental explainer](https://github.com/w3c/automotive/blob/gh-pages/viss2-explainer.md)
+
 ## Introduction:
 
 The W3C Automotive Working Group is creating standards to expose services within vehicles using Web Technology. Specifically we areworking on signals, media (services and library), navigation, notifications with potentially others to follow.
