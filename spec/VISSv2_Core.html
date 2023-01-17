@@ -188,7 +188,7 @@
           <dd>The message being returned by the server to the client when no error is encountered. These are specific per request type</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-error-message">error message</dfn></dt>
           <dd>The message being returned by the server to the client when an error is encountered. It can be a synchronous response message, 
-          or an asynchrounous notification message.</dd>
+          or an asynchrounous event message.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-data-point">data point</dfn></dt>
           <dd>A structure containing one or more value, timestamp tuplets.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-value">value</dfn></dt>
@@ -379,22 +379,22 @@
         <section id="subscribe">
           <h2>Subscribe</h2>
           <p>Purpose: Get asynchronous messages containing the value(s) addressed by the path. 
-          The triggering rules for issuing the notification messages are set by the filter data.</p>
+          The triggering rules for issuing the event messages are set by the filter data.</p>
           <p>The client MAY have to obtain an authorization token before being able to subscribe to the vehicle signal(s).
-             The server MUST issue a notification if a trigger rule is fulfilled.
+             The server MUST issue an event message if a trigger rule is fulfilled.
              If the server is able to satisfy the request it MUST return a <a>success response</a>.
              If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error response</a>.
-             If an error occurs during the subscription period, the server SHOULD return an <a href="#error-message">error notification</a>.</p>
+             If an error occurs during the subscription period, the server SHOULD return an <a href="#error-message">error event</a>.</p>
           <p>Arguments, of which path and filter are mandatory: 
             <ul>
               <li><a>path</a> The path as defined in VSS to one or more nodes in the VSS tree.</li>
-              <li><a>filter</a> The rule set describing triggering criterias for issuance of asynchronous notification messages.</li>
+              <li><a>filter</a> The rule set describing triggering criterias for issuance of asynchronous event messages.</li>
               <li><a>authorization</a> The authorization token.</li>
             </ul>
           </p>
           <p>Success response:
             <ul>  
-              <li><a>subscriptionId</a> A handle identifying notification messages associated with the subscription.</li>
+              <li><a>subscriptionId</a> A handle identifying event messages associated with the subscription.</li>
               <li><a>timestamp</a> The start time for the subscription period.</li>
             </ul>
           </p>
@@ -403,7 +403,7 @@
           <h2>Unsubscribe</h2>
           <p>Purpose: Termination of the subscription period started by a previous subscribe request.</p>
           <p>If the server is able to satisfy the request it MUST return a <a>success response</a>, 
-          and it MUST stop issuing notifications associated to the subscription handle.
+          and it MUST stop issuing event messages associated to the subscription handle.
           If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error response</a>.</p>
           <p>Arguments, of which subscriptionId is mandatory: 
             <ul>
@@ -419,9 +419,9 @@
         </section>
         <section id="subscription">
           <h2>Subscription</h2>
-          <p>Purpose: Asynchronous client notification according to the subscribe request trigger rules.</p>
-          <p>The server MUST issue a notification message when a triggering rule associated with the subscription is met.
-             If the server cannot fulfill the triggering rules it MUST issue an error notification and terminate the subscription. 
+          <p>Purpose: Asynchronous client event message according to the subscribe request trigger rules.</p>
+          <p>The server MUST issue an event message when a triggering rule associated with the subscription is met.
+             If the server cannot fulfill the triggering rules it MUST issue an error event message and terminate the subscription. 
           </p>
           <p>Arguments: 
             <ul>
@@ -440,8 +440,8 @@
       <section id="error-message">
         <h2>Error Message</h2>
         <p>The server MUST inform a client about errors ocurring in interactions between the two, whether it is in a synchronous 
-        error response, or an asynchronous error notification as a result of a previous subscribe. The error message has three arguments, 
-        of which subscriptionId is mandatory only for error notifications.
+        error response, or an asynchronous error event message as a result of a previous subscribe. The error message has three arguments, 
+        of which subscriptionId is mandatory only for error event messages.
         </p>
           <p>Arguments: 
             <ul>
@@ -622,7 +622,7 @@
                 A path in the filter value may contain the wildcard character (*) as a representative for a single path segment.<br>
                 Every path element in an value array must address at least one node in the tree, or else an error response is returned.<br>
                 Different elements of the value array may address the same node, 
-                in which case it is the responsibility of the server to resolve this to a singleton in the notifications.<br>
+                in which case it is the responsibility of the server to resolve this to a singleton in the event messages.<br>
                 Examples can be found in the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-transport/#https-search-read">search read on HTTPS</a> and 
                 <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-transport/#wss-search-read">search read on WebSocket</a> in [[viss2-transport]] specification.
                 </p>
@@ -667,7 +667,7 @@
                   <h2>Single Boundary Range</h2>
                   <p>
                   One logical "boundary operator" evaluates the current signal value in relation to the boundary. 
-                  If evaluated to true, the server issues a notification message containing the signal value to the subscribing client. 
+                  If evaluated to true, the server issues an event message containing the signal value to the subscribing client. 
                   The boundary operator MUST be one of the values shown in the footer (**).<br>
                   Examples<br>
                   {"boundary-op":"gt", "boundary": "5"}   // x > 5<br>
@@ -679,7 +679,7 @@
                   <p>
                   Two boundaries with respective boundary operators are evaluated relative to the current signal value. 
                   The logical outcome of the two evaluations are applied as input to a logical AND/OR operation. 
-                  If evaluated to true, the server issues a notification message containing the signal value to the subscribing client. 
+                  If evaluated to true, the server issues an event message containing the signal value to the subscribing client. 
                   Besides the mandatory "boundary-op", and "boundary" key-value pairs in each JSON object, 
                   the first object may contain a "combination-op" key value pair, which then MUST have either the value "AND", or the value "OR". 
                   If omitted, the result of the two boundary evaluations is per default applied to an AND operation. 
@@ -892,18 +892,18 @@
             </p>
      </section>
 
-     <section id="subscription-notification-triggering">
-          <h2>Subscription Notification Triggering</h2>
+     <section id="subscription-event-triggering">
+          <h2>Subscription Event Triggering</h2>
             <p>
             A subscription request must always contain a filter operation that describes the trigger event that leads to 
-            that the server dispatches an asynchronous notification message.
+            that the server dispatches an asynchronous event message.
             For the filter types "range" or "change", the triggering is dependent on the signal value. 
             When the request addresses multiple signals, the triggering condition shall only be evaluated on one of the signals, 
             which is the first signal in the value array of paths. 
             The first path in the array must therefore not contain wildcards to address multiple signals. 
             In this case one of the path addresses in the wildcard expression must be selected as the first array element, 
             which can then be followed by the wildcard expression. 
-            The duplicate reference to one signal that this leads to shall be resolved by the server to a singleton in the notifications.
+            The duplicate reference to one signal that this leads to shall be resolved by the server to a singleton in the event messages.
             </p>
      </section>
      </section>
