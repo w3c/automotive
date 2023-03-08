@@ -440,8 +440,10 @@
       <section id="error-message">
         <h2>Error Message</h2>
         <p>The server MUST inform a client about errors ocurring in interactions between the two, whether it is in a synchronous 
-        error response, or an asynchronous error notification as a result of a previous subscribe. The error message has three arguments, 
-        of which subscriptionId is mandatory only for error notifications.
+        error response, or an asynchronous error notification as a result of a previous subscribe. 
+        For transport protocols which do not control the logical linking between request and response messages it may not be possible to link an error message to the correct client request. 
+        In cases like this the server may omit sending an error message. 
+        The error message has three arguments, of which subscriptionId is mandatory only for error notifications.
         </p>
           <p>Arguments: 
             <ul>
