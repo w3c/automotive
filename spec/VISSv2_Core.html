@@ -428,7 +428,7 @@
               <li><a>subscriptionId</a> Handle identifying the subscription.</li>
               <li><a>data</a> The data structure contains one or more sets of a path and a data point structure.</li>
               <li style="margin-left: 40px"><a>path</a> The path for the associated data point structure.</li>
-              <li style="margin-left: 40px"><a>data point</a> A structure containing one or more tuplets of value and timestamp.</li>
+              <li style="margin-left: 40px"><a>data point</a> A structure containing one or more tuplets of value and timestamp.</li
               <li style="margin-left: 80px"><a>value</a> The value associated with the filter expression.</li>
               <li style="margin-left: 80px"><a>timestamp</a> The capture time of the value.</li>
               <li><a>timestamp</a> The time of the server subscription execution.</li>
@@ -440,10 +440,11 @@
       <section id="error-message">
         <h2>Error Message</h2>
         <p>The server MUST inform a client about errors ocurring in interactions between the two, whether it is in a synchronous 
-        error response, or an asynchronous error notification as a result of a previous subscribe. 
+        error response, or an asynchronous error event as a result of a previous subscribe. 
         For transport protocols which do not control the logical linking between request and response messages it may not be possible to link an error message to the correct client request. 
         In cases like this the server may omit sending an error message. 
-        The error message has three arguments, of which subscriptionId is mandatory only for error notifications.
+        The error message has three arguments, of which subscriptionId is mandatory only for error events.
+        In the case of an error event being issued by the server, the associated subscription session SHALL thereafter be terminated by the server.
         </p>
           <p>Arguments: 
             <ul>
