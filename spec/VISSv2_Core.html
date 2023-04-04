@@ -916,7 +916,7 @@
       <h2>Access Control Model</h2>
       <p>
       Access control MUST be supported. However, in this chapter only the sections that describe the interactions between the 
-      <a href="#client-def">client</a> and the VISSv2 server are normative.<br>
+      <a href="#client-def">client</a> and the VISSv2 server are mandatory.<br>
       Access control SHALL not be applied to the VSS nodes containing the VSS version data, 
       and not to client requests for dynamic metadata about the server capabilities, 
       or about the access control selection tags applied to the VSS tree.
@@ -988,7 +988,8 @@
           <p>
           The request shall contain the Context and Proof parameters below, the other two are optional:
           <ul>
-            <li>VIN: The vehicle identification number. This may be a pseudo-VIN, 
+            <li>VIN: The vehicle identification number. Instead of the
+	    assigned VIN a generated hash can be used as a pseudo VIN, 
             or any other identity that uniquely links to the vehicle in the access control ecosystem.</li>
             <li><a href="#client-context-def">Context</a>: The context associated to the <a href="#client-def">client</a>. 
             The context consists of a triplet of roles for <a href="#user-roles-def">user</a>, <a href="#application-roles-def">app </a>permissions, 
@@ -1567,7 +1568,8 @@
             <li>Third party</li>
           </ul>
           An OEM application role is used for applications that are pre-installed in the vehicle by the OEM, or later OEM-provisioned to the vehicle.<br>
-          A Third party application role is used for applications that are "certified" for vehicle deployment, but developed by a third party.<br>
+          A Third party application role is used for applications that
+	  are approved by automotive manufacturer for vehicle deployment, but developed by a third party.<br>
           </p>
         </section>
 
