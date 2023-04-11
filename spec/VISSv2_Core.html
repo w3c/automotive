@@ -302,10 +302,22 @@
           A single data point is in the message payload represented by a value and an associated timestamp, 
           in JSON represented by two key-value pairs with the key names "value" and "ts".<br>
           The "ts" value MUST be a string as specified in <a href="#timestamp"></a>, while the "value" value MUST be a string, 
-          or an array of strings for array type signals, 
+          an array of strings for array type signals, or an object for complex datatypes, 
           see <a href="https://covesa.github.io/vehicle_signal_specification/rule_set/data_entry/data_types/">VSS Data Types</a>.<br>
           In the case of the value being a number, it MUST follow the number formats as specified in [[RFC8259]]. 
           A boolean value is represented by "true" or "false".<br>
+          In the case of the value being a complex datatype represented by a struct, it is represented as a JSON object as shown below. 
+          A struct with the following declaration<br>
+          ```
+          struct {
+              field1 <datatype>
+              field2 <datatype>
+          }
+          ```
+          is represented by the following JSON object<br>
+          {"field1":"X", "field2":"Y"}<br>
+          where X and Y are the actual values of respective datatype, here represented for simplicity as string values. 
+          The datatype of a field of the struct may be any datatype suported by VSS, including a struct.<br>
           For representation of multiple data points, see <a href="#response-syntax"></a>.<br>
           If data is represented incorrectly, then an error message with number 400, and reason "Bad data" MUST be returned. 
           A specific case of this is if an array of data elements does not contain the number expected by the server. 
