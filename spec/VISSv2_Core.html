@@ -308,12 +308,10 @@
           A boolean value is represented by "true" or "false".<br>
           In the case of the value being a complex datatype represented by a struct, it is represented as a JSON object as shown below. 
           A struct with the following declaration<br>
-          ```
-          struct {
-              field1 <datatype>
-              field2 <datatype>
-          }
-          ```
+          struct {<br>
+              field1 <datatype><br>
+              field2 <datatype><br>
+          }<br>
           is represented by the following JSON object<br>
           {"field1":"X", "field2":"Y"}<br>
           where X and Y are the actual values of respective datatype, here represented for simplicity as string values. 
