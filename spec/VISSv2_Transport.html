@@ -925,7 +925,7 @@
 	<tbody>
 	  <tr><th rowspan="5"><dfn data-dfn-type="dfn" id="dfn-setrequest">setRequest</dfn></th><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
 	  <tr><td><a href="#dfn-path">path</a></td><td>string</td><td>Yes</td></tr>
-          <tr><td><a href="#dfn-value">value</a></td><td>string</td><td>Yes</td></tr>
+          <tr><td><a href="#dfn-value">value</a></td><td>string/array/object</td><td>Yes</td></tr>
 	  <tr><td><a href="#dfn-authorization">authorization</a></td><td>string</td><td>Optional</td></tr>
 	  <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>  
 	</tbody>
@@ -1594,7 +1594,7 @@
                     "properties": {
                         "value": {
                             "description": "The value related to the associated path.",
-                            "type": "string"                    
+                            "type": "string/array/object"                    
                         },
                         "ts": {
                             "description": "Time of the value capture. For its format, see [[viss2-core]], Timestamps chapter.",
