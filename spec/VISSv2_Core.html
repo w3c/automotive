@@ -998,7 +998,7 @@
         <section id="access-grant-request">
           <h2>Access Grant Request</h2>
           <p>
-          The request shall contain the Context and Proof parameters below, the other two are optional:
+          The request shall contain the Context and Proof parameters below, the others are optional:
           <ul>
             <li>VIN: The vehicle identification number. Instead of the
 	    assigned VIN a generated hash can be used as a pseudo VIN, 
@@ -1012,6 +1012,7 @@
             and <a href="#device-roles-def">device</a> characteristics.</li>
             <li>Public key: If this parameter is present, the client will receive a long term 
             <a href="#access-grant-token-def">access grant token</a> in return.</li>
+            <li>Client Id: If this parameter is present, it will be provided to the External Consent Framework.</li>
           </ul> 
           </p>
           <p>
@@ -1020,7 +1021,9 @@
             The protocol may involve also third parties, such as the <a href="#ecosystem-manager-def">ecosystem manager</a> or the 
             <a href="#resource-owner-def">resource owner</a>. The protocol is out of scope for this specification.<br>
             In scenarios where both the client and the <a href="#access-grant-server-def">access grant token server</a> 
-            are deployed in-vehicle the VIN parameter may be omitted, in all other deployment scenarios it shall be present.
+            are deployed in-vehicle the VIN parameter may be omitted, in all other deployment scenarios it shall be present.<br>
+            The purpose of the Client Id is to provide additional information to the consent end point that takes the decision on
+            granting consent or not. A too uninformative description may lead to consents being denied.
           </p>
         </section>
 
@@ -1123,7 +1126,14 @@
             <li>The <a href="#device-roles-def">device</a>. It is in charge of running the Apps that make requests to the VISSv2 server</li>
             <li>The <a href="#application-roles-def">app. </a>It runs requests on behalf of the user.</li>
             <li>The <a href="#user-roles-def">user</a>. It delegates access rights to the app.</li>
-          </ul> 
+          </ul>
+          Besides the three sub-acor roles the client is also characterized by a
+          <ul>
+             <li>client identity.</li>
+          </ul>
+          The client identity is needed when obtaining consent, and it meant to provide "personalization" information related to the thre sub-actor roles.
+          It could e. g. be a name of a user, together with a name of an app, and some device description.
+          For more information see the <a href="#access-grant-request">Access Grant Request</a> chapter where it is set.<br>
           All the information regarding the client is encoded in the <a href="#client-context-def">context</a> of the request.
         </p>
       </section>
@@ -1383,7 +1393,7 @@
             "vin": "vehicle-id",
             "iat": 1609452095,
             "exp": 1609459199,
-            "clx": "user+app+dev",
+            "clx": "user+app+dev+clientId",
             "aud": "w3.org/VISSv2",
             "jti": "5967e92e-40e8-5f39-892d-cc0da890db1d"
           }
@@ -1394,7 +1404,7 @@
           <a href="#access-grant-server-def">access grant token server</a>.<br>
           The issued at (iat) claim shall be set to the time of token issuance, in Unix time.<br>
           The expiry (exp) claim shall be set to the time when the token expires, in Unix time.<br>
-          The <a href="#client-context-def">Client context</a> (clx) claim shall be set to the role triplet the client has been assigned. 
+          The <a href="#client-context-def">Client context</a> (clx) claim shall be set to the role triplet plus the client Id that the client has been assigned. 
           The delimiter separating the roles is a plus sign (+).<br>
           The audience (aud) claim shall be set to the URL "w3.org/VISSv2".<br>
           The JSON Web Token identity (jti) claim shall be set to a UUID that is unique within the domain controlled by the 
@@ -1416,7 +1426,7 @@
             "vin": "vehicle-id",
             "iat": 1609452095,
             "exp": 1609459199,
-            "clx": "user+app+dev",
+            "clx": "user+app+dev+clientId",
             "pub": client_pub_key,
             "aud": "w3.org/VISSv2",
             "jti": "5967e92e-40e8-5f39-892d-cc0da890db1d"
@@ -1428,7 +1438,7 @@
           <a href="#access-grant-server-def">access grant token server</a>.<br>
           The issued at (iat) claim shall be set to the time of token issuance, in Unix time.<br>
           The expiry (exp) claim shall be set to the time when the token expires, in Unix time.<br>
-          The <a href="#client-context-def">Client context</a> (clx) claim shall be set to the role triplet the client has been assigned. 
+          The <a href="#client-context-def">Client context</a> (clx) claim shall be set to the role triplet plus the client Id that the client has been assigned. 
           The delimiter separating the roles is a plus sign (+).<br>
           The public key (pub) claim shall be set to the public key that the <a href="#client-def">client</a> provided in the 
           <a href="#access-grant-request-def">access grant request</a>, using the JSON Web Key (JWK) data structure [[RFC7517]].<br>
@@ -1455,7 +1465,7 @@
             "iat": 1609452095,
             "exp": 1609459199,
             "scp": "PurposeX" || signal-set,
-            "clx": "user+app+dev",
+            "clx": "user+app+dev+clientId",
             "aud": "w3.org/VISSv2",
             "jti": "5967e93f-40f9-5f39-893e-cc0da890db2e"
           }
@@ -1472,7 +1482,7 @@
           Each signal is defined as a JSON object containing the signal path, and the signal permission as shown below.<br>
           {"path":"vss-path", "access_permission":"permission"}<br>
           If the scope claim is set to a purpose, the client context claim MUST be present in the token.<br>
-          The <a href="#client-context-def">Client context</a> (clx) claim shall be set to the role triplet the client has been assigned. 
+          The <a href="#client-context-def">Client context</a> (clx) claim shall be set to the role triplet plus the client Id that the client has been assigned. 
           The delimiter separating the roles is a plus sign (+).<br>
           The audience (aud) claim shall be set to the URL "w3.org/VISSv2".<br>
           The JSON Web Token identity (jti) claim shall be set to an unguessable UUID that is unique within the domain controlled by the 
@@ -1522,6 +1532,7 @@
         <h2>Client Context</h2>
         <p>
         <em>This section is non-normative.</em><br>
+        The client context contains a client actor and a client Id.
         The <a href="#client-def">client</a> actor is characterized by three subactors:
           <ul>
             <li>The <a href="#user-roles-def">user</a> of the application.</li>
@@ -1719,6 +1730,71 @@
         If the VSS tree used by a VISSv2 server contains access control selection tags, 
         then the server MUST support their usage as described in this chapter.<br>
         If it is not used, then a server may implement access control for the entire tree.<br>
+        </p>
+      </section>
+    </section>
+
+    <section id="consent-support">
+      <h2>Consent support</h2>
+      <p>
+      Handling of consent involves vehicle and cloud architectural subsystems that is out of scope in VISSv2.
+      However, a VISSv2 vehicle server has a capability to enforce consent results, i. e. to allow or block access to requested data.
+      This can be leveraged in a model where the server receives consent results from an “External Consent Framework” (ECF) and uses that information to either grant client requests, 
+      or not, for data that is consent protected. How the ECF obtains the consent status is out-of-scope in this specification.
+      A secure, local communication channel exits between the in-vehicle ECF and the server as shown in the figure below, 
+      over which the server can inquire about the consent status for data requested by a client.
+      <figure id="fig-consent-architecture">
+        <img src="images/consent-architecture.jpg" alt="Consent architecture.">
+        <figcaption> <span class="fig-title">Consent architecture.</span></figcaption>
+      </figure>
+      The ECF is responsible for the lifetime management of the consent status for all data that is managed by the server, which may involve initialization,
+      expiry update, event based update, consent status removal.
+      The consent status that the ECF provides to the server is associated with an expiry time, which when reached leads to that the status shall be treated as NOT_SET,
+      which must be enforced by the server.<br>
+      The consent status can be set to any of the following values:<br>
+        <ul>
+            <li>NOT_SET // the server must request the ECF for the status. Unless an immediate ECF response is given,
+            the server must deny any client request with an error code that shows the reason.</li>
+            <li>NO  // the server must deny any client request with an error code that shows the reason.</li>
+            <li>IN_VEHICLE // the server shall serve the client request. The client is not allowed to off-board the data.</li>
+            <li>YES // the server shall serve the client request. The client is allowed to off-board the data.</li>
+        </ul>
+      Regardless of the value of the consent status, if the associated expiry time is exceeded, the server shall treat the consent status as if it had the value NOT_SET.
+      The expiry time shall have the timestamp format defined in chapter 5.3 Timestamps.
+
+      The following information shall be provided to the end point where the consent decision is taken:
+        <ul>
+            <li>Requested data.</li>
+            <li>Purpose of the request.</li>
+            <li>Identity of the client making the request.</li>
+        </ul>
+      This information is mandatory in an access control token, which imply that access control should be applied on the data,
+      or else the server will not have access to the required information.<br>
+      The server must store the consent status that it receives from the ECF, together with the data from the request, for the duration set by the expiry time.
+      How this is done is implementation specific and thus it is out of scope for this specification.<br>
+      Whether a server shall take action to obtain a consent or not shall be signalled in the VSS tree.
+      This is done by tagging appropriate nodes in the VSS tree following the model used for access control selection.
+      The tag shall have the format:
+        <ul>
+            <li>"consent":"required"</li>
+        </ul>
+      This is inherited in any subtree of the node where it is set, so setting it in the root node leads to that all nodes in the tree require consent.
+      </p>
+
+      <section id="external-consent-framework-interface">
+        <h2>External Consent Framework Interface</h2>
+        <p>
+         A server receiving a client request that involves obtaining a consent status shall send a request to the ECF
+         on which it shall receive a response cintaining the consent status.
+
+         The request shall contain the data from the list in the previous chapter.
+
+         The response shall contain the following data:
+        <ul>
+            <li>The consent status.</li>
+            <li>The expiry time of the consent status.</li>
+        </ul>
+        This communication shall be carried out on a confidentiality protected channel.
         </p>
       </section>
     </section>
