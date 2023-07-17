@@ -199,7 +199,8 @@
           <dt><dfn data-dfn-type="dfn" id="dfn-filter">filter</dfn></dt>
           <dd>Additional to help the server in the selection of data for the client.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-authorization">authorization</dfn></dt>
-          <dd>A token providing a verifiable proof that the client may be authorized access to the requested value(s).</dd>
+          <dd>A token providing a verifiable proof that the client may be authorized access to the requested data.
+          This may be represented by a token handle provided by the server.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-subscription-id">subscriptionId</dfn></dt>
           <dd>A handle identifying a subscription session.</dd>
           <dt><b>requestId</b></dt>
@@ -352,7 +353,7 @@
             <li><a>authorization</a> The authorization token.</li>
           </ul>
           </p>
-          <p>Success response:
+          <p>Success response, of which authorization is optional:
             <ul>
               <li><a>data</a> The data structure contains one or more sets of a path and a data point structure.</li>
               <li style="margin-left: 40px"><a>path</a> The path for the associated data point structure.</li>
@@ -360,6 +361,7 @@
               <li style="margin-left: 80px"><a>value</a> The latest available value. 
               Please note that also for actuators this returns the current value, and not a target value that might have been set.</li>
               <li style="margin-left: 80px"><a>timestamp</a> The capture time of the value.</li>
+              <li><a>authorization</a> A handle representing the authorization token.</li>
               <li><a>timestamp</a> The time of the server request execution.</li>
             </ul>
           </p>
@@ -381,8 +383,9 @@
               <li><a>authorization</a> The authorization token.</li>
             </ul>
           </p>
-          <p>Success response:
+          <p>Success response, of which authorization is optional:
             <ul>  
+              <li><a>authorization</a> A handle representing the authorization token.</li>
               <li><a>timestamp</a> The time of the server request execution. This may not be the same as the final update time of the signal.</li>
             </ul>
           </p>
@@ -404,8 +407,9 @@
               <li><a>authorization</a> The authorization token.</li>
             </ul>
           </p>
-          <p>Success response:
+          <p>Success response, of which authorization is optional:
             <ul>  
+              <li><a>authorization</a> A handle representing the authorization token.</li>
               <li><a>subscriptionId</a> A handle identifying event messages associated with the subscription.</li>
               <li><a>timestamp</a> The start time for the subscription period.</li>
             </ul>
@@ -1097,6 +1101,8 @@
           This is a VISSv2 request including an <a href="#access-token-def">access token</a> as described in general in the 
           <a href="#methods"></a> chapter, 
           and for different <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-transport/#transport-protocols">transport protocols</a> in the [[viss2-transport]] document.
+          The first time a token is submitted in a request it must be provided in its entirety. If a server supports caching of access tokens and returns a token hanle to the client,
+          then any following requests may provide the token handle instead of the complete access token.
           </p>
         </section>
 
@@ -1105,7 +1111,7 @@
           <p>
           This is a VISSv2 response as described in general in the <a href="#methods"></a> chapter, 
           and for different <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-transport/#transport-protocols">transport protocols</a> in the [[viss2-transport]] document.
-          It does not differ from the response to an unprotected resource request.
+          This is a VISSv2 response that optionally may include an access token handle.
           </p>
         </section>
       </section>
@@ -1288,9 +1294,13 @@
           before revisiting the <a href="#access-token-server-def">access token server</a>.<br>
           The server SHOULD support caching of a limited number of <a href="#access-token-def">access tokens</a>. 
           The <a href="#access-token-def">access token</a> MUST be included in the cache after a first successful request and 
-          MUST be removed once they expire. 
-          The client can decide to include only the jti claim in following requests in order to save bandwith. 
-          At any point the server might decide to remove any token from the cache. In this case the client will get a "401, 
+          MUST be removed once they expire.
+          If an access token is cached then the server shall compute a <a href="https://en.wikipedia.org/wiki/SHA-1">SHA-1</a> hash of the access token, which is then base64 encoded,
+          and return that in the response to the client. The client may then use this instead of the complete access token in following
+          requests that require this access token.
+          If the client decides to include the access token handle in a request, the server must then fetch the corresponding access token from the cache,
+          and verify its validity before deciding to grant the request.<br>
+          The server might decide to remove any token from the cache. In the case this token is then referred to with a token handle the client will get a "401, 
           missing_token" error and will be forced to send the whole <a href="#access-token-def">access token</a> again.
           For <a href="#client-def">client</a> requests that are not granted due to access control, 
           the VISSv2 server MUST return one of the error codes shown in the table below.<br>
