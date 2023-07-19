@@ -1023,7 +1023,9 @@
             In scenarios where both the client and the <a href="#access-grant-server-def">access grant token server</a> 
             are deployed in-vehicle the VIN parameter may be omitted, in all other deployment scenarios it shall be present.<br>
             The purpose of the Client Id is to provide additional information to the consent end point that takes the decision on
-            granting consent or not. A too uninformative description may lead to consents being denied.
+            granting consent or not. A too uninformative description may lead to consents being denied,
+            see the <a href="#client-def">Client</a> chapter for more information about the description.
+            The client Id must be unique within the Ecosystem.
           </p>
         </section>
 
@@ -1127,7 +1129,7 @@
             <li>The <a href="#application-roles-def">app. </a>It runs requests on behalf of the user.</li>
             <li>The <a href="#user-roles-def">user</a>. It delegates access rights to the app.</li>
           </ul>
-          Besides the three sub-acor roles the client is also characterized by a
+          Besides the three sub-actor roles the client is also characterized by a
           <ul>
              <li>client identity.</li>
           </ul>
@@ -1736,12 +1738,13 @@
 
     <section id="consent-support">
       <h2>Consent support</h2>
+      <em>This section is non-normative.</em><br>
       <p>
       Handling of consent involves vehicle and cloud architectural subsystems that is out of scope in VISSv2.
       However, a VISSv2 vehicle server has a capability to enforce consent results, i. e. to allow or block access to requested data.
       This can be leveraged in a model where the server receives consent results from an “External Consent Framework” (ECF) and uses that information to either grant client requests, 
       or not, for data that is consent protected. How the ECF obtains the consent status is out-of-scope in this specification.
-      A secure, local communication channel exits between the in-vehicle ECF and the server as shown in the figure below, 
+      A secure, local communication channel exists between the in-vehicle ECF and the server as shown in the figure below, 
       over which the server can inquire about the consent status for data requested by a client.
       <figure id="fig-consent-architecture">
         <img src="images/consent-architecture.jpg" alt="Consent architecture.">
