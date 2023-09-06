@@ -326,7 +326,8 @@
                To initialize a secure session, the client sends a request to the server using the HTTPS protocol. 
                This is achieved by connecting to the server's designated URL using the 'https://' scheme. 
                The client can use a web browser, a native application, or a suitable library in the case of programmatically managed sessions.<br>
-               The client connects to the server using the specified hostname, which often includes the "www" prefix. 
+               While the client typically connects to the server using the specified hostname, which often includes the "www" prefix, 
+               it's important to note that this convention may not apply in situations where VISS operates within a local, in-vehicle network or if remote vehicle connections are allowed. 
                The communication typically takes place over port 443, the default port for secure HTTPS connections. 
                The hostname resolution can be done via DNS or configured through local settings.
             </p>
