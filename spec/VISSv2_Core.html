@@ -1295,8 +1295,7 @@
           The server SHOULD support caching of a limited number of <a href="#access-token-def">access tokens</a>. 
           The <a href="#access-token-def">access token</a> MUST be included in the cache after a first successful request and 
           MUST be removed once they expire.
-          If an access token is cached then the server shall copy the signature part of the JWT formatted access token and return that in the response to the client.
-          The server may truncate the signature in order to reduce the size of the handle, but it must be at least 24 bytes long.
+          If an access token is cached then the server shall return a token handle of at least 24 bytes long.
           The client may then use this instead of the complete access token in following requests that require this access token.
           If the client decides to include the access token handle in a request, the server must then fetch the corresponding access token from the cache,
           and verify its validity before deciding to grant the request.<br>
