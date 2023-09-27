@@ -321,12 +321,25 @@
 
           <section id="https-initialisation">
             <h2>Initialization</h2>
-            <p>HTTP long polling?</p>
+            <p>Initialization involves setting up a secure HTTPS session between the client and the server. 
+               This ensures encrypted communication for data transmission.
+               To initialize a secure session, the client sends a request to the server using the HTTPS protocol. 
+               This is achieved by connecting to the server's designated URL using the 'https://' scheme. 
+               The client can use a web browser, a native application, or a suitable library in the case of programmatically managed sessions.<br>
+               While the client typically connects to the server using the specified hostname, which often includes the "www" prefix, 
+               it's important to note that this convention may not apply in situations where VISS operates within a local, in-vehicle network or if remote vehicle connections are allowed. 
+               The communication typically takes place over port 443, the default port for secure HTTPS connections. 
+               The hostname resolution can be done via DNS or configured through local settings.
+            </p>
           </section>
 
           <section id="https-closure">
             <h2>Closure</h2>
-            <p>HTTP long polling?</p>
+            <p>Closure entails ending the established HTTPS session when the communication is complete or when the client no longer requires the connection.
+              Either the client or the server can initiate the session closure. The client can signal the end of the session by sending an appropriate request to the server, 
+              indicating the intent to close the connection.<br>
+              Upon session closure, any allocated resources, such as server-side threads or memory, are released, improving overall system efficiency.
+            </p>
           </section>
         </section>
 
@@ -507,13 +520,8 @@
               }
               </code></pre>
             </p>
-          </section>
-
-          <section id="https-dynamic-metadata-read">
-            <h2>Dynamic Metadata Read</h2>
             <p>
-              The dynamic metadata, i. e. any other metadata kept by the vehicle system, 
-              is retrieved by the setting the "type" to  "dynamic-metadata".
+              The dynamic metadata, i. e. any other metadata kept by the vehicle system, is retrieved by the setting the "type" to  "dynamic-metadata".
               The value MUST be set to one of the domain names as specified in the [[viss2-core]], <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-core/#dynamic-metadata-request">Dynamic Metadata Filter Operation</a> chapter.
               <br>
               <b>Example:</b>
