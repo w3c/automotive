@@ -49,7 +49,7 @@ This spec can be used to expose vehicle data to a user that can either
 be in the vehicle, in proximity of the vehicle, or remote to the
 vehicle, see figure below.
 
-![](vertopal_5343ab36c42849449ba7c0fc578dbb90/media/image1.png){width="3.3402777777777777in"
+![VISS2 server](image1.png){width="3.3402777777777777in"
 height="2.701388888888889in"}
 
 The API defined by the spec is implemented in the vehicle server, a user
