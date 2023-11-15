@@ -1,9 +1,7 @@
-## 2. Questions to Consider
 
 **https://www.w3.org/TR/security-privacy-questionnaire/**
 
-**2.1. What information might this feature expose to Web sites or other
-parties, and for what purposes is that exposure necessary?**
+## What information might this feature expose to Web sites or other parties, and for what purposes is that exposure necessary?
 
 User Agents should only expose information to the web when doing so is
 necessary to serve a clear user need. Does your feature expose
@@ -11,10 +9,7 @@ information to origins? If so, how does exposing this information serve
 user needs? Are the risks to the user outweighed by the benefits to the
 user? If so, how?
 
-See also
-
--   [[Web Platform Design Principles
-    > § priority-of-constituencies]{.underline}](https://www.w3.org/TR/design-principles/#priority-of-constituencies)
+See also [Web Platform Design Principles § priority-of-constituencies](https://www.w3.org/TR/design-principles/#priority-of-constituencies)
 
 When answering this question, please consider each of these four
 possible areas of information disclosure / sharing.
@@ -28,20 +23,13 @@ browser configuration, hardware capabilities), and the user's prior
 activities and interests (e.g., browsing history, purchasing
 preferences, personal characteristics).
 
-1.  What information does your spec expose to the **first party** that
-    > the **first party** cannot currently easily determine.
+1.  What information does your spec expose to the **first party** that the **first party** cannot currently easily determine.
 
-2.  What information does your spec expose to **third
-    > parties** that **third parties** cannot currently easily
-    > determine.
+2.  What information does your spec expose to **third parties** that **third parties** cannot currently easily determine.
 
-3.  What *potentially identifying information* does your spec expose to
-    > the **first party** that the **first party** can already access
-    > (i.e., what identifying information does your spec duplicate or
-    > mirror).
+3.  What *potentially identifying information* does your spec expose to the **first party** that the **first party** can already access (i.e., what identifying information does your spec duplicate or mirror).
 
-4.  What *potentially identifying information* does your spec expose
-    > to **third parties** that **third parties** can already access.
+4.  What *potentially identifying information* does your spec expose to **third parties** that **third parties** can already access.
 
 **Answer:**
 
@@ -49,8 +37,7 @@ This spec can be used to expose vehicle data to a user that can either
 be in the vehicle, in proximity of the vehicle, or remote to the
 vehicle, see figure below.
 
-![VISS2 server](image1.png){width="3.3402777777777777in"
-height="2.701388888888889in"}
+![VISS2 server](image1.png)
 
 The API defined by the spec is implemented in the vehicle server, a user
 (client) accessing this API may use a native app developed for this
@@ -66,8 +53,7 @@ the server implementing the API as the vehicle data being returned to
 the user is agnostic to such information and is delivered in a fixed
 format to all users.
 
-**2.2. Do features in your specification expose the minimum amount of
-information necessary to enable their intended uses?**
+## Do features in your specification expose the minimum amount of information necessary to enable their intended uses?
 
 Features should only expose information when it's absolutely necessary
 to satisfy use cases. If a feature exposes more information than is
@@ -79,22 +65,17 @@ A user request for vehicle data must specify exactly what vehicle data
 is requested, and the spec mandates that the response shall contain
 exactly this and no more.
 
-See also
-
--   [[§ 4.1 Data
-    > Minimization]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#data-minimization)
+See also [§ 4.1 Data Minimization](https://www.w3.org/TR/security-privacy-questionnaire/#data-minimization)
 
 Content Security
-Policy [[\[CSP\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-csp) unintentionally
+Policy [\[CSP\]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-csp) unintentionally
 exposed redirect targets cross-origin by allowing one origin to infer
 details about another origin through violation reports
-(see [[\[HOMAKOV\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-homakov)).
+(see [\[HOMAKOV\]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-homakov)).
 The working group eventually mitigated the risk by reducing a policy's
 granularity after a redirect.
 
-**2.3. How do the features in your specification deal with personal
-information, personally-identifiable information (PII), or information
-derived from them?**
+## How do the features in your specification deal with personal information, personally-identifiable information (PII), or information derived from them?
 
 **Answer:**
 
@@ -122,19 +103,19 @@ scans) for authentication should not directly expose this biometric data
 to the web. Instead, it can use the biometric data to look up or
 generate some temporary key which is not shared across origins which can
 then be safely exposed to the
-origin. [[\[WEBAUTHN\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-webauthn)
+origin. [WEBAUTHN](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-webauthn)
 
 Personal information, PII, or their derivatives should not be exposed to
-origins without [[meaningful user
-consent]{.underline}](https://w3ctag.github.io/design-principles/#consent).
+origins without [meaningful user
+consent](https://w3ctag.github.io/design-principles/#consent).
 Many APIs use the Permissions API to acquire meaningful user
-consent. [[\[PERMISSIONS\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-permissions)
+consent. [\[PERMISSIONS\]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-permissions)
 
 Keep in mind that each permission prompt added to the web platform
 increases the risk that users will ignore the contents of all permission
 prompts. Before adding a permission prompt, consider your options for
 using a less obtrusive way to gain meaningful user
-consent. [[\[ADDING-PERMISSION\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-adding-permission)
+consent. [\[ADDING-PERMISSION\]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-adding-permission)
 
 \<input type=file\> can be used to upload documents containing personal
 information to websites. It makes use of the underlying native
@@ -144,14 +125,11 @@ permissions prompt.
 
 See also
 
--   [[§ 4.3 Explicit user
-    > mediation]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#user-mediation)
+-   [§ 4.3 Explicit user mediation](https://www.w3.org/TR/security-privacy-questionnaire/#user-mediation)
 
--   [[Web Platform Design Principles
-    > § consent]{.underline}](https://www.w3.org/TR/design-principles/#consent)
+-   [Web Platform Design Principles § consent](https://www.w3.org/TR/design-principles/#consent)
 
-    **2.4. How do the features in your specification deal with sensitive
-    information?**
+  ## How do the features in your specification deal with sensitive information?
 
 **Answer:**
 
@@ -179,19 +157,19 @@ must take steps to mitigate the risk of exposing the information.
 
 The Credential Management API allows sites to request a user's
 credentials from a password
-manager. [[\[CREDENTIAL-MANAGEMENT-1\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-credential-management-1) If
+manager. [\[CREDENTIAL-MANAGEMENT-1\]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-credential-management-1) If
 it exposed the user's credentials to JavaScript, and if the page using
 the API were vulnerable
-to [[XSS]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#cross-site-scripting-attacks) attacks,
+to [[XSS]](https://www.w3.org/TR/security-privacy-questionnaire/#cross-site-scripting-attacks) attacks,
 the user's credentials could be leaked to attackers.
 
 The Credential Management API mitigates this risk by not exposing the
 credentials to JavaScript. Instead, it exposes an
-opaque [[FormData]{.underline}](https://xhr.spec.whatwg.org/#formdata) object
+opaque [[FormData]](https://xhr.spec.whatwg.org/#formdata) object
 which cannot be read by JavaScript. The spec also recommends that sites
 configure Content Security
-Policy [[\[CSP\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-csp) with
-reasonable [[connect-src]{.underline}](https://www.w3.org/TR/CSP3/#connect-src) and [[form-action]{.underline}](https://www.w3.org/TR/CSP3/#form-action) values
+Policy [[\[CSP\]]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-csp) with
+reasonable [[connect-src]](https://www.w3.org/TR/CSP3/#connect-src) and [[form-action]](https://www.w3.org/TR/CSP3/#form-action) values
 to further mitigate the risk of exfiltration.
 
 Many use cases which require location information can be adequately
@@ -199,13 +177,9 @@ served with very coarse location data. For instance, a site which
 recommends restaurants could adequately serve its users with city-level
 location information instead of exposing the user's precise location.
 
-See also
+See also [[Web Platform Design Principles § do-not-expose-use-of-assistive-tech]](https://www.w3.org/TR/design-principles/#do-not-expose-use-of-assistive-tech)
 
--   [[Web Platform Design Principles
-    > § do-not-expose-use-of-assistive-tech]{.underline}](https://www.w3.org/TR/design-principles/#do-not-expose-use-of-assistive-tech)
-
-    **2.5. Do the features in your specification introduce new state for
-    an origin that persists across browsing sessions?**
+## Do the features in your specification introduce new state for an origin that persists across browsing sessions?
 
 **Answer:**
 
@@ -215,14 +189,14 @@ information in order to create the reply to a user request.
 
 There are many existing mechanisms origins can use to store information
 about a user. Cookies, ETag, Last
-Modified, [[localStorage]{.underline}](https://html.spec.whatwg.org/multipage/webstorage.html#dom-localstorage),
-and [[indexedDB]{.underline}](https://w3c.github.io/IndexedDB/#dom-windoworworkerglobalscope-indexeddb) are
+Modified, [[localStorage]](https://html.spec.whatwg.org/multipage/webstorage.html#dom-localstorage),
+and [[indexedDB]](https://w3c.github.io/IndexedDB/#dom-windoworworkerglobalscope-indexeddb) are
 just a few examples.
 
 Allowing an origin to store data on a user's device in a way that
 persists across browsing sessions introduces the risk that this state
 may be used to track a user without their knowledge or control, either
-in [[first-]{.underline}](https://privacycg.github.io/storage-access/#first-party-site-context) or [[third-party]{.underline}](https://privacycg.github.io/storage-access/#third-party-context) contexts.
+in [[first-]](https://privacycg.github.io/storage-access/#first-party-site-context) or [[third-party]](https://privacycg.github.io/storage-access/#third-party-context) contexts.
 
 One of the ways user agents mitigate the risk that client-side storage
 mechanisms will form a persistent identifier is by providing users with
@@ -241,28 +215,25 @@ mitigations necessary?
 Service Workers intercept all requests made by an origin, which enables
 sites to continue to function when the browser goes offline. Because of
 this, a maliciously-injected service worker could compromise the user
-(as documented in [[*Service
-Workers*](https://www.w3.org/TR/service-workers-1/#security-considerations) § 6
-Security Considerations]{.underline}).
+(as documented in [[*Service Workers*](https://www.w3.org/TR/service-workers-1/#security-considerations) § 6 Security Considerations]).
 
 The spec mitigates the risks an [[active network
-attacker]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#active-network-attacker) or [[XSS]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#cross-site-scripting-attacks) vulnerability
+attacker]](https://www.w3.org/TR/security-privacy-questionnaire/#active-network-attacker) or [[XSS]](https://www.w3.org/TR/security-privacy-questionnaire/#cross-site-scripting-attacks) vulnerability
 present by limiting service worker registration to [[secure
-contexts]{.underline}](https://html.spec.whatwg.org/multipage/webappapis.html#secure-context). [[\[SERVICE-WORKERS\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-service-workers)
+contexts]](https://html.spec.whatwg.org/multipage/webappapis.html#secure-context). [[\[SERVICE-WORKERS\]]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-service-workers)
 
 Platform-specific DRM implementations (such as [[content decryption
-modules]{.underline}](https://www.w3.org/TR/encrypted-media/#cdm) in [[\[ENCRYPTED-MEDIA\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-encrypted-media))
+modules]](https://www.w3.org/TR/encrypted-media/#cdm) in [[\[ENCRYPTED-MEDIA\]]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-encrypted-media))
 might expose origin-specific information in order to help identify users
 and determine whether they ought to be granted access to a specific
 piece of media. These kinds of identifiers should be carefully evaluated
 to determine how abuse can be mitigated; identifiers which a user cannot
 easily change are very valuable from a tracking perspective, and
 protecting such identifiers from an [[active network
-attacker]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#active-network-attacker) is
+attacker]](https://www.w3.org/TR/security-privacy-questionnaire/#active-network-attacker) is
 vital.
 
-**2.6. Do the features in your specification expose information about
-the underlying platform to origins?**
+## Do the features in your specification expose information about the underlying platform to origins?
 
 **Answer:**
 
@@ -295,18 +266,18 @@ mitigate the harm of such exposure.
 
 Sometimes the right answer is to not expose the data in the first place
 (see [[§ 4.6 Drop the
-feature]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#drop-feature)).
+feature]](https://www.w3.org/TR/security-privacy-questionnaire/#drop-feature)).
 In other cases, reducing fingerprintability may be as simple as ensuring
 consistency---for instance, by ordering a list of available
 resources---but sometimes, more complex mitigations may be necessary.
 See [[§ 4 Mitigation
-Strategies]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#mitigations) for
+Strategies]](https://www.w3.org/TR/security-privacy-questionnaire/#mitigations) for
 more.
 
 If features in your spec expose such data and does not define adequate
 mitigations, you should ensure that such information is not revealed to
 origins without [[meaningful user
-consent]{.underline}](https://www.w3.org/TR/design-principles/#consent),
+consent]](https://www.w3.org/TR/design-principles/#consent),
 and you should clearly describe this in your specification's Security
 and Privacy Considerations sections.
 
@@ -315,22 +286,19 @@ performance. It's also valuable fingerprinting data. This privacy risk
 must be carefully weighed when considering exposing such data to
 origins.
 
-The [[NavigatorPlugins]{.underline}](https://html.spec.whatwg.org/multipage/system-state.html#navigatorplugins) list
+The [[NavigatorPlugins]](https://html.spec.whatwg.org/multipage/system-state.html#navigatorplugins) list
 almost never changes. Some user agents have [[disabled direct
 enumeration of the plugin
-list]{.underline}](https://bugzilla.mozilla.org/show_bug.cgi?id=757726) to
+list]](https://bugzilla.mozilla.org/show_bug.cgi?id=757726) to
 reduce the fingerprinting harm of this interface.
 
 See also:
 
--   [[Use care when exposing identifying information about
-    > devices]{.underline}](https://www.w3.org/TR/design-principles/#device-ids)
+-   [[Use care when exposing identifying information about devices]](https://www.w3.org/TR/design-principles/#device-ids)
 
--   [[Use care when exposing APIs for selecting or enumerating
-    > devices]{.underline}](https://www.w3.org/TR/design-principles/#device-enumeration)
+-   [[Use care when exposing APIs for selecting or enumerating devices]](https://www.w3.org/TR/design-principles/#device-enumeration)
 
-    **2.7. Does this specification allow an origin to send data to the
-    underlying platform?**
+  ##  Does this specification allow an origin to send data to the underlying platform?
 
 **Answer:**
 
@@ -357,11 +325,10 @@ directly form the user's hard disk or from memory.
 
 Even if your API only allows http: and https: URLs, such URLs may be
 vulnerable
-to [[CSRF]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#cross-site-request-forgery-attacks) attacks,
+to [[CSRF]](https://www.w3.org/TR/security-privacy-questionnaire/#cross-site-request-forgery-attacks) attacks,
 or be redirected to file:, data:, or blob: URLs.
 
-**2.8. Do features in this specification enable access to device
-sensors?**
+## Do features in this specification enable access to device sensors?
 
 **Answer:**
 
@@ -394,8 +361,7 @@ Even relatively short lived data, like the battery status, may be able
 to serve as an
 identifier [[\[OLEJNIK-BATTERY\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-olejnik-battery).
 
-**2.9. Do features in this specification enable new script
-execution/loading mechanisms?**
+## Do features in this specification enable new script execution/loading mechanisms?
 
 **Answer:**
 
@@ -413,8 +379,7 @@ adversary to swap it out with code without the user knowing. [[Import
 assertions]{.underline}](https://github.com/tc39/proposal-import-assertions) were
 implemented as a mitigation for this vulnerability.
 
-**2.10. Do features in this specification allow an origin to access
-other devices?**
+## Do features in this specification allow an origin to access other devices?
 
 **Answer:**
 
@@ -451,28 +416,27 @@ privacy risk:
     > that other APIs would provide. For example, attackers used the
     > WebUSB API to access others sites\' credentials on a hardware
     > security, bypassing same-origin checks in an early U2F
-    > API. [[\[YUBIKEY-ATTACK\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-yubikey-attack)
+    > API. [[\[YUBIKEY-ATTACK\]]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-yubikey-attack)
 
 The Network Service Discovery
-API [[\[DISCOVERY-API\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-discovery-api) recommended
+API [[\[DISCOVERY-API\]]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-discovery-api) recommended
 CORS preflights before granting access to a device, and requires user
 agents to involve the user with a permission request of some kind.
 
 Likewise, the Web
-Bluetooth [[\[WEB-BLUETOOTH\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-web-bluetooth) has
+Bluetooth [[\[WEB-BLUETOOTH\]]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-web-bluetooth) has
 an extensive discussion of such issues in [[*Web
 Bluetooth*](https://webbluetoothcg.github.io/web-bluetooth/#security-and-privacy) § 2
 Security and privacy considerations]{.underline}, which is worth reading
 as an example for similar work.
 
-[[\[WEBUSB\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-webusb) addresses
+[[\[WEBUSB\]]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-webusb) addresses
 these risks through a combination of user mediation / prompting, secure
 origins, and feature policy.
 See [[*WebUSB*](https://wicg.github.io/webusb/#security-and-privacy) § 3
 Security and Privacy Considerations]{.underline} for more.
 
-**2.11. Do features in this specification allow an origin some measure
-of control over a user agent's native UI?**
+## Do features in this specification allow an origin some measure of control over a user agent's native UI?
 
 **Answer:**
 
@@ -485,8 +449,7 @@ controls. To the extent that your feature does allow for the changing of
 a user agent's UI, can it effect security / privacy controls? What
 analysis confirmed this conclusion?
 
-**2.12. What temporary identifiers do the features in this specification
-create or expose to the web?**
+## What temporary identifiers do the features in this specification create or expose to the web?
 
 **Answer:**
 
@@ -507,12 +470,11 @@ Example temporary identifiers include TLS Channel ID, Session Tickets,
 and IPv6 addresses.
 
 The index attribute in the Gamepad
-API [[\[GAMEPAD\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-gamepad) ---
+API [[\[GAMEPAD\]]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-gamepad) ---
 an integer that starts at zero, increments, and is reset --- is a good
 example of a privacy friendly temporary identifier.
 
-**2.13. How does this specification distinguish between behavior in
-first-party and third-party contexts?**
+ ## How does this specification distinguish between behavior in first-party and third-party contexts?
 
 **Answer:**
 
@@ -533,8 +495,7 @@ agents may take steps to reduce the availability or functionality of
 certain features to third parties if the third parties are found to be
 abusing the functionality.
 
-**2.14. How do the features in this specification work in the context of
-a browser's Private Browsing or Incognito mode?**
+## How do the features in this specification work in the context of a browser's Private Browsing or Incognito mode?
 
 **Answer:**
 
@@ -545,7 +506,7 @@ to access control and consent restrictions.
 Most browsers implement a private browsing or incognito mode, though
 they vary significantly in what functionality they provide and how that
 protection is described to
-users [[\[WU-PRIVATE-BROWSING\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-wu-private-browsing).
+users [[\[WU-PRIVATE-BROWSING\]]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-wu-private-browsing).
 
 One commonality is that they provide a different set of state than the
 browser's \'normal\' state.
@@ -559,16 +520,15 @@ a private browsing / incognito mode session ending?
 There has been research into both:
 
 -   Detecting whether a user agent is in private browsing
-    > mode [[\[RIVERA\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-rivera) using
+    > mode [[\[RIVERA\]]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-rivera) using
     > non-standardized methods such
-    > as [[window.requestFileSystem()]{.underline}](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestFileSystem).
+    > as [[window.requestFileSystem()]](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestFileSystem).
 
 -   Using features to fingerprint a browser and correlate private and
     > non-private mode sessions for a given
-    > user. [[\[OLEJNIK-PAYMENTS\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-olejnik-payments)
+    > user. [[\[OLEJNIK-PAYMENTS\]]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-olejnik-payments)
 
-    **2.15. Does this specification have both \"Security
-    Considerations\" and \"Privacy Considerations\" sections?**
+## Does this specification have both \"Security Considerations\" and \"Privacy Considerations\" sections?
 
 **Answer:**
 
@@ -585,10 +545,10 @@ do not merely copy this questionnaire into those sections. Instead,
 craft language specific to your specification that will be helpful to
 implementers and web developers.
 
-[[\[RFC6973\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-rfc6973) is
+[[\[RFC6973\]]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-rfc6973) is
 an excellent resource to consult when considering privacy impacts of
 your specification, particularly Section 7 of
-RFC6973. [[\[RFC3552\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-rfc3552) provides
+RFC6973. [[\[RFC3552\]]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-rfc3552) provides
 general advice as to writing Security Consideration sections, and
 Section 5 of RFC3552 has specific requirements.
 
@@ -609,8 +569,7 @@ least some impact on the fingerprinting surface of the browser. If you
 believe your specification in an outlier, justifying that claim is in
 order.
 
-**2.16. Do features in your specification enable origins to downgrade
-default security protections?**
+## Do features in your specification enable origins to downgrade default security protections?
 
 **Answer:**
 
@@ -628,12 +587,12 @@ these features allow such downgrading, and why?
 Can this be avoided in the first place? If not, are mitigations in place
 to make sure this downgrading doesn't dramatically increase risk to
 users? For
-instance, [[\[PERMISSIONS-POLICY\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-permissions-policy) defines
+instance, [[\[PERMISSIONS-POLICY\]]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-permissions-policy) defines
 a mechanism that can be used by sites to prevent
 untrusted [[iframe]{.underline}](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element)s
 from using such a feature.
 
-The [[document.domain]{.underline}](https://html.spec.whatwg.org/multipage/origin.html#dom-document-domain) setter
+The [[document.domain]](https://html.spec.whatwg.org/multipage/origin.html#dom-document-domain) setter
 can be used to relax the [[same-origin
 policy]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#same-origin-policy).
 The most effective mitigation would be to remove it from the platform
@@ -645,25 +604,25 @@ compatibility reasons.
 
 The Fullscreen API enables a (portion of a) web page to expand to fill
 the
-display. [[\[FULLSCREEN\]]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-fullscreen) This
+display. [[\[FULLSCREEN\]]](https://www.w3.org/TR/security-privacy-questionnaire/#biblio-fullscreen) This
 can hide several User Agent user interface elements which help users to
 understand what web page they are visiting and whether or not the User
 Agent believes they
-are [[safe]{.underline}](https://w3ctag.github.io/design-principles/#safe-to-browse).
+are [[safe]](https://w3ctag.github.io/design-principles/#safe-to-browse).
 
 Several mitigations are defined in the specification and are widely
 deployed in implementations. For instance, the Fullscreen API is
 a [[policy-controlled
-feature]{.underline}](https://www.w3.org/TR/permissions-policy/#policy-controlled-feature),
+feature]](https://www.w3.org/TR/permissions-policy/#policy-controlled-feature),
 which enables sites to disable the API
-in [[iframe]{.underline}](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element)s. [[*Fullscreen
+in [[iframe]](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element)s. [[*Fullscreen
 API*](https://fullscreen.spec.whatwg.org/#security-and-privacy-considerations) § 7
 Security and Privacy Considerations]{.underline} encourages
 implementations to display an overlay which informs the user that they
 have entered fullscreen, and to advertise a simple mechanism to exit
 fullscreen (typically the Esc key).
 
-**2.17. How does your feature handle non-\"fully active\" documents?**
+## How does your feature handle non-\"fully active\" documents?
 
 **Answer:**
 
@@ -671,38 +630,37 @@ Not applicable????
 
 After a user navigates away from a document, the document might stay
 around in a non-\"[[fully
-active]{.underline}](https://html.spec.whatwg.org/multipage/browsers.html#fully-active)\"
+active]](https://html.spec.whatwg.org/multipage/browsers.html#fully-active)\"
 state, and might be reused when the user navigates back to the document.
 From the user's perspective, the non-[[fully
-active]{.underline}](https://html.spec.whatwg.org/multipage/browsers.html#fully-active) document
+active]](https://html.spec.whatwg.org/multipage/browsers.html#fully-active) document
 is already discarded and thus should not get updates/events that happen
 after they navigated away from it, especially privacy-sensitive
 information (e.g. geolocation). Also, as a document might be reused even
 after navigation, be aware that tying something to a document's lifetime
 also means reusing it after navigations. If this is not desirable,
 consider listening to changes to the [[fully
-active]{.underline}](https://html.spec.whatwg.org/multipage/browsers.html#fully-active) state
+active]](https://html.spec.whatwg.org/multipage/browsers.html#fully-active) state
 and doing cleanup as necessary.
 
 For more detailed guidance on how to handle non-[[fully
-active]{.underline}](https://html.spec.whatwg.org/multipage/browsers.html#fully-active) documents,
+active]](https://html.spec.whatwg.org/multipage/browsers.html#fully-active) documents,
 see [[Web Platform Design Principles
-§ non-fully-active]{.underline}](https://www.w3.org/TR/design-principles/#non-fully-active).
+§ non-fully-active]](https://www.w3.org/TR/design-principles/#non-fully-active).
 
 Screen WakeLock API [[releases the wake
-lock]{.underline}](https://w3c.github.io/screen-wake-lock/#handling-document-loss-of-full-activity) when
+lock]](https://w3c.github.io/screen-wake-lock/#handling-document-loss-of-full-activity) when
 a document becomes no longer fully active.
 
-[[Sticky
-activation]{.underline}](https://html.spec.whatwg.org/multipage/interaction.html#sticky-activation) is
+[[Sticky activation]](https://html.spec.whatwg.org/multipage/interaction.html#sticky-activation) is
 determined by the \"last activation timestamp\", which is tied to a
 document. This means after a user triggers activation once on a
 document, the document will have sticky activation forever, even after
 the user navigated away and back to it again. Whether this should
 actually be reset when full activity is lost or not is still [[under
-discussion]{.underline}](https://github.com/whatwg/html/issues/6588).
+discussion]](https://github.com/whatwg/html/issues/6588).
 
-**2.18. What should this questionnaire have asked?**
+## What should this questionnaire have asked?
 
 **Answer:**
 
@@ -716,5 +674,5 @@ indicate if you can think of improved or new questions that would have
 covered this aspect.
 
 Please consider [[filing an
-issue]{.underline}](https://github.com/w3ctag/security-questionnaire/issues/new) to
+issue]](https://github.com/w3ctag/security-questionnaire/issues/new) to
 let us know what the questionnaire should have asked.
