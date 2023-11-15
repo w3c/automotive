@@ -49,8 +49,6 @@ mitigations do you have in place?
 
 **Answer:**
 
-???
-
 Are there other use cases that can be met by your feature(s) that were
 not part of your original plans? People who use, build and author on the
 web platform can be very creative and use features in unexpected ways.
