@@ -1,6 +1,6 @@
 <https://w3ctag.github.io/societal-impact-questionnaire/>
 
-1.  2. Questions to consider
+Questions to consider
 
 When answering the questions in this document, we encourage you to
 discuss the data or feedback you are collecting about the impact of your
@@ -19,7 +19,7 @@ use of bicycles. They can measure that by collecting automated
 non-identified traffic data and by monitoring published statistics about
 bicycle accidents.
 
-1.  2.1 What kinds of activities do you anticipate your specification
+1. What kinds of activities do you anticipate your specification
     becoming a critical part of?
 
 **Answer:**
@@ -44,7 +44,7 @@ In this context, if access to the features in your specification become
 unavailable, what problems might this cause to end users? What
 mitigations do you have in place?
 
-2.  2.2 What kinds of activities could your specification become a part
+2. What kinds of activities could your specification become a part
     of that you are not designing for?
 
 **Answer:**
@@ -59,7 +59,7 @@ How might they be useful in other problem spaces or ecosystems? Are
 there any other groups you could reach out to to discuss this potential
 further?
 
-3.  2.3 What risks do you see in features of your specification being
+3. What risks do you see in features of your specification being
     misused, or used differently from how you intended?
 
 **Answer:**
@@ -88,7 +88,7 @@ from the problems you set out to solve when designing your feature(s).
 How does the threat model change? What unexpected consequences could
 arise?
 
-4.  2.4 Can users of the Web Platform choose not to use features of your
+4. Can users of the Web Platform choose not to use features of your
     specification?
 
 **Answer:**
@@ -109,7 +109,7 @@ people be coerced into using these features, for example by a malicious
 party; through the use of manipulative design features; through strong
 social or cultural expectations, etc?
 
-5.  2.5 What groups of people are excluded from using features of your
+5. What groups of people are excluded from using features of your
     specification?
 
 **Answer:**
@@ -128,7 +128,7 @@ wider ecosystem to improve access and inclusivity of these features?
 If certain groups are deliberately excluded from using these features,
 explain why.
 
-6.  2.6 What effect may features of your specification have on minority
+6. What effect may features of your specification have on minority
     groups?
 
 **Answer:**
@@ -154,7 +154,7 @@ society which may be widened (or closed)?
 Think also about the broader ecosystem in which your feature(s) will be
 deployed. What is in place to mitigate negative effects?
 
-7.  2.7 What are the power dynamics at play in implementations of your
+7. What are the power dynamics at play in implementations of your
     specification?
 
 **Answer:**
@@ -178,7 +178,7 @@ concentration of power?
 What structural inequalities may be reinforced by the ecosystem your
 specification is part of, and which may be reduced?
 
-8.  2.8 What points of centralization does your feature bring to the web
+8. What points of centralization does your feature bring to the web
     platform?
 
 **Answer:**
@@ -191,7 +191,7 @@ controlling flows of information? Does it make use of any existing
 gatekeepers on the web, and does it bring any new ones? If so, what are
 the benefits and disadvantages?
 
-9.  2.9 To what extent do the features in your specification impact the
+9. To what extent do the features in your specification impact the
     natural environment?
 
 **Answer:**
@@ -224,7 +224,7 @@ Do features of your specification enable or facilitate interactions
 which would have a positive impact on the environment compared with how
 similar things are achieved without these features?
 
-10. 2.10 What is the expected lifetime of your specification feature(s)?
+10. What is the expected lifetime of your specification feature(s)?
 
 **Answer:**
 
@@ -241,7 +241,7 @@ in a need to deprecate these features? Do you have a strategy for
 deprecation, replacement or improvement? Remember that you may not have
 control over deprecating or removing a feature.
 
-11. 2.11 Have you completed the [Security & Privacy Self-review
+11. Have you completed the [Security & Privacy Self-review
     Questionnaire](https://www.w3.org/TR/security-privacy-questionnaire/)?
 
 **Answer:**
