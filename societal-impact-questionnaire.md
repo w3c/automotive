@@ -241,8 +241,8 @@ in a need to deprecate these features? Do you have a strategy for
 deprecation, replacement or improvement? Remember that you may not have
 control over deprecating or removing a feature.
 
-11. 2.11 Have you completed the [[Security & Privacy Self-review
-    Questionnaire]{.underline}](https://www.w3.org/TR/security-privacy-questionnaire/)?
+11. 2.11 Have you completed the [Security & Privacy Self-review
+    Questionnaire](https://www.w3.org/TR/security-privacy-questionnaire/)?
 
 **Answer:**
 
