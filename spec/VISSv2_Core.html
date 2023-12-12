@@ -1747,9 +1747,7 @@
         <figcaption> <span class="fig-title">Consent architecture.</span></figcaption>
       </figure>
       The ECF is responsible for the lifetime management of the consent status for all data that is managed by the server, which may involve initialization,
-      expiry update, event based update, consent status removal.
-      The consent status that the ECF provides to the server is associated with an expiry time, which when reached leads to that the status shall be treated as NOT_SET,
-      which must be enforced by the server.<br>
+      event based update, consent status removal.<br>
       The consent status can be set to any of the following values:<br>
         <ul>
             <li>NOT_SET // the server must request the ECF for the status. Unless an immediate ECF response is given,
@@ -1758,10 +1756,8 @@
             <li>IN_VEHICLE // the server shall serve the client request. The client is not allowed to off-board the data.</li>
             <li>YES // the server shall serve the client request. The client is allowed to off-board the data.</li>
         </ul>
-      Regardless of the value of the consent status, if the associated expiry time is exceeded, the server shall treat the consent status as if it had the value NOT_SET.
       It shall be possible for the ECF to cancel a valid consent, which shall lead to the consent status being set to NOT_SET.
-      Any consequences to the data provided to the client prior to the cancelling is out of scope.
-      The expiry time shall have the timestamp format defined in chapter 5.3 Timestamps.<br>
+      Any consequences to the data provided to the client prior to the cancelling is out of scope.<br>
       In the case of a client request requiring a consent for data to be returned, it is the responsibility of the
       <a href="#access-token-server-def">access token server</a> to obtain it from the ECF during the dialogue with a client requesting an access token.
       This is done by issuing a request to the ECF which shall contain the following information:
@@ -1773,10 +1769,10 @@
       The response from the ECF shall contain:
         <ul>
             <li>Consent status.</li>
-            <li>Expiry time of the consent.</li>
         </ul>
       If the received consent status is set to NO or NOT_SET, then the access token server must not provide a valid access token to the requesting client.
-      The server must store the consent status that it receives from the ECF, together with the data from the request, for the duration set by the expiry time.<br>
+      The server must store the consent status that it receives from the ECF, together with the data from the request for the duration of the associated service,
+      or until a consent cancellation is received.<br>
       Whether a server shall take action to obtain a consent or not shall be signalled in the VSS tree.
       This is done by tagging appropriate nodes in the VSS tree extending the model used for access control selection.
       The key-value pair used for tagging of access control is suffixed with "+consent" as shown in the example below:
@@ -1794,12 +1790,9 @@
 
          The request shall contain the data from the list in the previous chapter.
 
-         The response shall contain the following data:
-        <ul>
-            <li>The consent status.</li>
-            <li>The expiry time of the consent status.</li>
-        </ul>
-        This communication shall be carried out using a secure channel (e.g. TLS).
+         The response shall contain the data shown in the table above.
+
+         This communication shall be carried out using a secure channel (e.g. TLS).
         </p>
       </section>
     </section>
