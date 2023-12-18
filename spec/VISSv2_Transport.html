@@ -1573,7 +1573,7 @@
         },
         "filter": {
             "description": "May be specified in order to throttle the demands of subscriptions on the server. See [[viss2-core]], Filter Request chapter.",
-            "type": "object/array",
+            "type": "object",
             "properties": {
                 "type": {
                     "description": "The different filter types.",
@@ -1581,13 +1581,13 @@
                 },
                 "parameter": {
                     "description": "Parameter(s) for the different filter types",
-                    "type": "object/array"
+                    "type": "object"
                 }
             }
         },
         "data": {
             "description": "Data including path(s) and one or more data point(s).",
-            "type": "object/array",
+            "type": "object",
             "properties": {
                 "path": {
                     "description": "The path to the vehicle signal.",
@@ -1595,11 +1595,11 @@
                 },
                 "dp": {
                     "description": "Data point including one or more value and time samp",
-                    "type": "object/array",
+                    "type": "object",
                     "properties": {
                         "value": {
                             "description": "The value related to the associated path.",
-                            "type": "string/array/object"                    
+                            "type": "object"                    
                         },
                         "ts": {
                             "description": "Time of the value capture. For its format, see [[viss2-core]], Timestamps chapter.",
