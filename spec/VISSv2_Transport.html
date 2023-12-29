@@ -103,7 +103,7 @@
       on control units within a vehicle's network. It exposes this
       information using a hierarchical tree like taxonomy defined in
       COVESA Vehicle Signal Specification (VSS). The service provides
-      this information in JSON format. The service may reside in the vehicle, 
+      this information in JSON format ([[RFC8259]]). The service may reside in the vehicle, 
       or on servers in the internet with information already brought off the vehicle.
       </p>
 
@@ -132,7 +132,8 @@
       <p>This document describes the transport bindings of the Vehicle Information Service Specification, version 2. 
       The split between transport bindings and messaging layer specifications improves readability and simplifies 
       extending the specification to further transports in the future. 
-      This specification supports multiple transport bindings, the secure versions of HTTP, WebSocket, and MQTT.
+      This specification supports multiple transport bindings, the secure versions of HTTP ([[RFC9112]]),
+      WebSocket ([[RFC6455]]), and MQTT ([[MQTT]]).
       </p>
     </section>
 
@@ -1560,7 +1561,7 @@
           <p>
           The payload that is sent over the supported transport protocols SHALL use the JSON definitions in this appendix, 
           unless otherwise specified in the VISSv2 TRANSPORT specification.<br>
-          The definitions within this section describe the datatypes referenced within the JSON Schema for the VISSv2 WebSocket interfaces, 
+          The definitions within this section describe the datatypes referenced within the JSON Schema ([[json-schema]]) for the VISSv2 WebSocket interfaces, 
           and for the VISSv2 HTTP payloads.
           </p>
               <pre><code>
@@ -1580,7 +1581,7 @@
         },
         "filter": {
             "description": "May be specified in order to throttle the demands of subscriptions on the server. See [[viss2-core]], Filter Request chapter.",
-            "type": "object/array",
+            "type": "object",
             "properties": {
                 "type": {
                     "description": "The different filter types.",
@@ -1588,13 +1589,13 @@
                 },
                 "parameter": {
                     "description": "Parameter(s) for the different filter types",
-                    "type": "object/array"
+                    "type": "object"
                 }
             }
         },
         "data": {
             "description": "Data including path(s) and one or more data point(s).",
-            "type": "object/array",
+            "type": "object",
             "properties": {
                 "path": {
                     "description": "The path to the vehicle signal.",
@@ -1602,11 +1603,11 @@
                 },
                 "dp": {
                     "description": "Data point including one or more value and time samp",
-                    "type": "object/array",
+                    "type": "object",
                     "properties": {
                         "value": {
                             "description": "The value related to the associated path.",
-                            "type": "string/array/object"                    
+                            "type": "object"                    
                         },
                         "ts": {
                             "description": "Time of the value capture. For its format, see [[viss2-core]], Timestamps chapter.",
