@@ -1060,6 +1060,16 @@
         <section id="access-token-request">
           <h2>Access Token Request</h2>
           <p>
+          The client may have to issue several requests before an access token can be obtained, even in the case of having a valid access grant token. 
+          The reason for this is that if a consent is required, the ATS will forward the consent request to the External Consent Framework,
+          and it is likely that there will not be an immediate response from the ECF.
+          The ATS will then on the initial access token request respond to the client with a session handle that the client must use in subsequent requests for the access token.
+          When the ATS has obtained a consent reply from the ECF it can in the thereafter following client inquiry request in the case of a positive consent
+          respond with the access token, or in the case of a negative consent respond with only the negative consent result.
+
+        <section id="initial-access-token-request">
+          <h2>Initial Access Token Request</h2>
+          <p>
           The request shall contain at least these two parameters below:
           <ul>
             <li><a href="#access-grant-token-def">Access grant token</a>: A signed token with claims needed for the validation of the 
@@ -1076,13 +1086,29 @@
             making decisions on whether to grant access to the protected resource based on the provided 
             <a href="#access-grant-token-def">access grant token</a> and <a>purpose</a>.
           </p>
+        </section>
 
+        <section id="inquiry-access-token-request">
+          <h2>Inquiry Access Token Request</h2>
+          <p>
+          This request can be issued by the client after a session handle has been received in a response to an initial access token request.<br>
+          The request shall contain at least the parameter below:
+          <ul>
+            <li><a>Session handle</a>: The handle logically links the request to a previously issued initial access token request.</li>
+          </ul> 
+          </p>
+        </section>
         </section>
 
         <section id="access-token-response">
           <h2>Access Token Response</h2>
           <p>
-          A successful response shall contain the parameter:
+          
+        <section id="access-token-response-consent-not-required">
+          <h2>Access Token Response Consent Not Required</h2>
+          <p>
+          In the case that the access control is not combined with a requirement for obtaining consent from the data owner, 
+          an immediate response is possible, and in the case of a successful response it shall contain the parameter:
           <ul>
             <li><a href="#access-token-def">Access token</a>: The token to be used in <a href="#client-def">client</a> 
             requests to the VISSv2 server for Protected Resources.</li>
@@ -1093,6 +1119,42 @@
             to understand what it needs to correct to become successful.</li>
           </ul> 
           </p>
+        </section>
+
+        <section id="access-token-response-consent-required">
+          <h2>Access Token Response Consent Required</h2>
+          <p>
+ 
+        <section id="access-token-response-to-initial-access-token-request">
+          <h2>Access Token Response To Initial Access Token Request</h2>
+          <p>
+          In the case that the access control is combined with a requirement for obtaining consent from the data owner, 
+          an immediate response is not possible, and the response to an initial access token request shall contain the parameter:
+          <ul>
+            <li>Session handle: A reference to the initial access token request that can be used by the client in subsequent inquiry requests.</li>
+            <li>Consent status: There is at this point not any consent status eceived from the EF, so consent status is set to NOT_SET.</li>
+          </ul> 
+          </p>
+        </section>
+
+        <section id="access-token-response-to-inquiry-access-token-request">
+          <h2>Access Token Response To Inquiry Access Token Request</h2>
+          <p>
+          There are three different responses possible to an inquiry access token request.<br>
+          In the case that there is still no consent reply availablefrom the ECF, the response is identical to the response to the initial access token response, see above.<b>
+          In the case that there is a negative consent reply from the ECF, the response shall contain the parameter:
+          <ul>
+            <li>Consent status: The consent reply was negative, so consent status is set to NO.</li>
+          </ul> 
+          In the case that there is a positive consent reply from the ECF, the response shall contain the parameters:
+          <ul>
+            <li><a href="#access-token-def">Access token</a>: The token to be used in <a href="#client-def">client</a> 
+            requests to the VISSv2 server for Protected Resources.</li>
+            <li>Consent status: The consent reply was positive, so consent status is set to YES.</li>
+          </ul> 
+          </p>
+        </section>
+        </section>
         </section>
 
         <section id="protected-resource-request">
