@@ -1732,7 +1732,8 @@
             <a href="#client-context-def">client contexts</a>, i. e. the sub-actor role triplet, 
             for which this exclusion should be made.<br>
             The scope list may contain an entry for a context with all three Roles set to "Undefined". 
-            The no-access scope of this entry shall then be used for signal discovery requests where no token is included.<br>
+            The no-access scope of this entry shall then be used for signal discovery requests where no token is included.
+            An entry in the no_access array that addresses a branch results in no access to the subtree of this branch.<br>
             The list shall use a JSON format as shown in the example below.
         <pre><code>
         {"scope":
