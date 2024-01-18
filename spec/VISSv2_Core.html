@@ -207,8 +207,10 @@
           <dd>Unique id value specified by the client. 
           Returned by the server in the response and used by the client to link the request and response messages. 
           The value MAY be an integer or a Universally Unique Identifier (UUID).</dd>
-          <dt><dfn data-dfn-type="dfn" id="dfn-purpose-id">purpose</dfn></dt>
+          <dt><dfn data-dfn-type="dfn" id="dfn-purpose">purpose</dfn></dt>
           <dd>A purpose is one of the short text entries from the <a href="#purpose-list"></a>.</dd>
+          <dt><dfn data-dfn-type="dfn" id="dfn-ecf">ECF</dfn></dt>
+          <dd>External Consent Framework. An agent that is responsible for inquiring a data owner about consent.</dd>
         </dl>
       </section>
     </section>
@@ -1060,6 +1062,16 @@
         <section id="access-token-request">
           <h2>Access Token Request</h2>
           <p>
+          The client may have to issue several requests before an access token can be obtained, even in the case of having a valid access grant token. 
+          The reason for this is that if consent is required, the ATS will forward the consent request to the External Consent Framework,
+          and it is likely that there will not be an immediate response from the <a>ECF</a>.
+          The ATS will then on the initial access token request respond to the client with a session handle that the client must use in subsequent requests for the access token.
+          When the ATS has obtained a consent reply from the <a>ECF</a> it can thereafter following client inquiry request in the case of a positive consent
+          respond with the access token, or in the case of a negative consent respond with only the negative consent result.
+
+        <section id="initial-access-token-request">
+          <h2>Initial Access Token Request</h2>
+          <p>
           The request shall contain at least these two parameters below:
           <ul>
             <li><a href="#access-grant-token-def">Access grant token</a>: A signed token with claims needed for the validation of the 
@@ -1076,13 +1088,29 @@
             making decisions on whether to grant access to the protected resource based on the provided 
             <a href="#access-grant-token-def">access grant token</a> and <a>purpose</a>.
           </p>
+        </section>
 
+        <section id="inquiry-access-token-request">
+          <h2>Inquiry Access Token Request</h2>
+          <p>
+          This request can be issued by the client after a session handle has been received in a response to an initial access token request.<br>
+          The request shall contain at least the parameter below:
+          <ul>
+            <li>Session handle: The handle logically links the request to a previously issued initial access token request.</li>
+          </ul> 
+          </p>
+        </section>
         </section>
 
         <section id="access-token-response">
           <h2>Access Token Response</h2>
           <p>
-          A successful response shall contain the parameter:
+          
+        <section id="access-token-response-consent-not-required">
+          <h2>Access Token Response Consent Not Required</h2>
+          <p>
+          In the case that the access control is not combined with a requirement for obtaining consent from the data owner, 
+          an immediate response is possible, and in the case of a successful response it shall contain the parameter:
           <ul>
             <li><a href="#access-token-def">Access token</a>: The token to be used in <a href="#client-def">client</a> 
             requests to the VISSv2 server for Protected Resources.</li>
@@ -1093,6 +1121,42 @@
             to understand what it needs to correct to become successful.</li>
           </ul> 
           </p>
+        </section>
+
+        <section id="access-token-response-consent-required">
+          <h2>Access Token Response Consent Required</h2>
+          <p>
+ 
+        <section id="access-token-response-to-initial-access-token-request">
+          <h2>Access Token Response To Initial Access Token Request</h2>
+          <p>
+          In the case that the access control is combined with a requirement for obtaining consent from the data owner, 
+          an immediate response is not possible, and the response to an initial access token request shall contain the parameter:
+          <ul>
+            <li>Session handle: A reference to the initial access token request that can be used by the client in subsequent inquiry requests.</li>
+            <li>Consent status: There is at this point not any consent status received from the <a>ECF</a>, so consent status is set to NOT_SET.</li>
+          </ul> 
+          </p>
+        </section>
+
+        <section id="access-token-response-to-inquiry-access-token-request">
+          <h2>Access Token Response To Inquiry Access Token Request</h2>
+          <p>
+          There are three different responses possible to an inquiry access token request.<br>
+          In the case that there is still no consent reply available from the <a>ECF</a>, the response is identical to the response to the initial access token response, see above.<br>
+          In the case that there is a negative consent reply from the <a>ECF</a>, the response shall contain the parameter:
+          <ul>
+            <li>Consent status: The consent reply was negative, so consent status is set to NO.</li>
+          </ul> 
+          In the case that there is a positive consent reply from the <a>ECF</a>, the response shall contain the parameters:
+          <ul>
+            <li><a href="#access-token-def">Access token</a>: The token to be used in <a href="#client-def">client</a> 
+            requests to the VISSv2 server for Protected Resources.</li>
+            <li>Consent status: The consent reply was positive, so consent status is set to YES.</li>
+          </ul> 
+          </p>
+        </section>
+        </section>
         </section>
 
         <section id="protected-resource-request">
@@ -1668,7 +1732,8 @@
             <a href="#client-context-def">client contexts</a>, i. e. the sub-actor role triplet, 
             for which this exclusion should be made.<br>
             The scope list may contain an entry for a context with all three Roles set to "Undefined". 
-            The no-access scope of this entry shall then be used for signal discovery requests where no token is included.<br>
+            The no-access scope of this entry shall then be used for signal discovery requests where no token is included.
+            An entry in the no_access array that addresses a branch results in no access to the subtree of this branch.<br>
             The list shall use a JSON format as shown in the example below.
         <pre><code>
         {"scope":
@@ -1738,40 +1803,40 @@
       <p>
       Handling of consent involves vehicle and cloud architectural subsystems that is out of scope in VISSv2.
       However, a VISSv2 vehicle server has a capability to enforce consent results, i. e. to allow or block access to requested data.
-      This can be leveraged in a model where the server receives consent results from an “External Consent Framework” (ECF) and uses that information to either grant client requests,
-      or not, for data that is consent protected. How the ECF obtains the consent status is out-of-scope in this specification.
-      A secure, local communication channel exists between the in-vehicle ECF and the server as shown in the figure below,
+      This can be leveraged in a model where the server receives consent results from an <a>ECF</a> and uses that information to either grant client requests,
+      or not, for data that is consent protected. How the <a>ECF</a> obtains the consent status is out-of-scope in this specification.
+      A secure, local communication channel exists between the in-vehicle <a>ECF</a> and the server as shown in the figure below,
       over which the server can inquire about the consent status for data requested by a client.
       <figure id="fig-consent-architecture">
         <img src="images/consent-architecture.jpg" alt="Consent architecture.">
         <figcaption> <span class="fig-title">Consent architecture.</span></figcaption>
       </figure>
-      The ECF is responsible for the lifetime management of the consent status for all data that is managed by the server, which may involve initialization,
+      The <a>ECF</a> is responsible for the lifetime management of the consent status for all data that is managed by the server, which may involve initialization,
       event based update, consent status removal.<br>
       The consent status can be set to any of the following values:<br>
         <ul>
-            <li>NOT_SET // the server must request the ECF for the status. Unless an immediate ECF response is given,
+            <li>NOT_SET // the server must request the <a>ECF</a> for the status. Unless an immediate <a>ECF</a> response is given,
             the server must deny any client request with an error code that shows the reason.</li>
             <li>NO  // the server must deny any client request with an error code that shows the reason.</li>
             <li>IN_VEHICLE // the server shall serve the client request. The client is not allowed to off-board the data.</li>
             <li>YES // the server shall serve the client request. The client is allowed to off-board the data.</li>
         </ul>
-      It shall be possible for the ECF to cancel a valid consent, which shall lead to the consent status being set to NOT_SET.
+      It shall be possible for the <a>ECF</a> to cancel a valid consent, which shall lead to the consent status being set to NOT_SET.
       Any consequences to the data provided to the client prior to the cancelling is out of scope.<br>
       In the case of a client request requiring a consent for data to be returned, it is the responsibility of the
-      <a href="#access-token-server-def">access token server</a> to obtain it from the ECF during the dialogue with a client requesting an access token.
-      This is done by issuing a request to the ECF which shall contain the following information:
+      <a href="#access-token-server-def">access token server</a> to obtain it from the <a>ECF</a> during the dialogue with a client requesting an access token.
+      This is done by issuing a request to the <a>ECF</a> which shall contain the following information:
         <ul>
             <li>The requested data.</li>
             <li>The purpose of the request.</li>
             <li>The client context.</li>
         </ul>
-      The response from the ECF shall contain:
+      The response from the <a>ECF</a> shall contain:
         <ul>
             <li>Consent status.</li>
         </ul>
       If the received consent status is set to NO or NOT_SET, then the access token server must not provide a valid access token to the requesting client.
-      The server must store the consent status that it receives from the ECF, together with the data from the request for the duration of the associated service,
+      The server must store the consent status that it receives from the <a>ECF</a>, together with the data from the request for the duration of the associated service,
       or until a consent cancellation is received.<br>
       Whether a server shall take action to obtain a consent or not shall be signalled in the VSS tree.
       This is done by tagging appropriate nodes in the VSS tree extending the model used for access control selection.
@@ -1785,7 +1850,7 @@
       <section id="external-consent-framework-interface">
         <h2>External Consent Framework Interface</h2>
         <p>
-         A server receiving a client request that involves obtaining a consent status shall send a request to the ECF
+         A server receiving a client request that involves obtaining a consent status shall send a request to the <a>ECF</a>
          on which it shall receive a response cintaining the consent status.
 
          The request shall contain the data from the list in the previous chapter.
