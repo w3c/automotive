@@ -163,124 +163,44 @@
 	    <th>Error Message</th>
 	  </tr>
 	  <tr>
-	    <td>304 (Not Modified)</td>
-        <td>not_modified</td>
-	    <td>No changes have been made by the server.</td>
-	  </tr>
-	  <tr>
 	    <td>400 (Bad Request)</td>
 	    <td>bad_request	</td>
-	    <td>The server is unable to fulfil the client request because the request is malformed.</td>
+	    <td>The request is malformed.</td>
 	  </tr>
 	  <tr>
 	    <td>400 (Bad Request)</td>
-	    <td>filter_invalid</td>
-	    <td>Filter requested on non-primitive type.</td>
-	  </tr>
-    <tr>
-	    <td>400 (Bad Request)</td>
-	    <td>invalid_duration</td>
-	    <td>Time duration is invalid.</td>
-	  </tr>
-    <tr>
-	    <td>400 (Bad Request)</td>
-	    <td>invalid_value</td>
-	    <td>The requested set value is invalid.</td>
+	    <td>invalid_data</td>
+	    <td>Data present in the request is invalid.</td>
 	  </tr>    
 	  <tr>
 	    <td>401 (Unauthorized)</td>
-	    <td>token_expired</td>
+	    <td>expired_token</td>
 	    <td>Access token has expired.</td>
 	  </tr>
 	  <tr>
 	    <td>401 (Unauthorized)</td>
-	    <td>token_invalid</td>
+	    <td>invalid_token</td>
 	    <td>Access token is invalid.</td>
 	  </tr>
 	  <tr>
 	    <td>401 (Unauthorized)</td>
-	    <td>token_missing</td>
+	    <td>missing_token</td>
 	    <td>Access token is missing.</td>
 	  </tr>
 	  <tr>
-	    <td>401 (Unauthorized)</td>
-	    <td>too_many_attempts</td>
-	    <td>The client has failed to authenticate too many times.</td>
-	  </tr>	  
-	  <tr>
-	    <td>401 (Unauthorized)</td>
-	    <td>read_only</td>
-	    <td>The desired signal cannot be set since it is a read only signal.</td>
-	  </tr>	
-	  <tr>
 	    <td>403 (Forbidden)</td>
-	    <td>user_forbidden</td>
-	    <td>The user is not permitted to access the requested resource. Retrying does not help.</td>
+	    <td>forbidden_request</td>
+	    <td>The server refuses to carry out the request.</td>
 	  </tr>
 	  <tr>
-	    <td>403 (Forbidden)</td>
-	    <td>user_unknown</td>
-	    <td>The user is unknown. Retrying does not help.</td>
-	  </tr>
-	  <tr>
-	    <td>403 (Forbidden)</td>
-	    <td>device_forbidden</td>
-	    <td>The device is not permitted to access the requested resource. Retrying does not help.</td>
-	  </tr>
-	  <tr>
-	    <td>403 (Forbidden)</td>
-	    <td>device_unknown</td>
-	    <td>The device is unknown. Retrying does not help.</td>
-	  </tr>
-	  <tr>
-	    <td>404 (Not Found)</td>
-	    <td>invalid_path</td>
-	    <td>The specified data path does not exist.</td>
-	  </tr>
-	  <tr>
-	    <td>404 (Not Found)</td>
-	    <td>private_path</td>
-	    <td>The specified data path is private and the request is not authorized to access signals on this path.</td>
-	  </tr>
-    <tr>
 	    <td>404 (Not Found)</td>
 	    <td>unavailable_data</td>
 	    <td>The requested data was not found.</td>
 	  </tr>
 	  <tr>
-	    <td>404 (Not Found)</td>
-	    <td>invalid_subscriptionId</td>
-	    <td>The specified subscription was not found.</td>
-	  </tr>
-	  <tr>
-	    <td>406 (Not Acceptable)</td>
-	    <td>insufficient_priviledges</td>
-	    <td>The priviledges represented by the access token are not sufficient.</td>
-	  </tr>
-	  <tr>
-	    <td>406 (Not Acceptable)</td>
-	    <td>not_acceptable</td>
-	    <td>The server is unable to generate content that is acceptable to the client</td>
-	  </tr>
-	  <tr>
-	    <td>429 (Too Many Requests)</td>
-	    <td>too_many_requests</td>
-	    <td>The client has sent the server too many requests in a given amount of time.</td>
-	  </tr>
-	  <tr>
-	    <td>502 (Bad Gateway)</td>
-	    <td>bad_gateway</td>
-	    <td>The server was acting as a gateway or proxy and received an invalid response from an upstream server.</td>
-	  </tr>
-	  <tr>
 	    <td>503 (Service Unavailable)</td>
 	    <td>service_unavailable</td>
-	    <td>The server is currently unable to handle the request due to a temporary overload or scheduled maintenance (which may be alleviated after some delay).</td>
-	  </tr>
-	  <tr>
-	    <td>504 (Gateway Timeout)</td>
-	    <td>gateway_timeout</td>
-	    <td>The server did not receive a timely response from an upstream server it needed to access in order to complete the request.</td>
+	    <td>The server is temporarily unable to handle the request.</td>
 	  </tr>
 	</tbody></table>
       </section>
@@ -1677,7 +1597,8 @@
         <section id="error-def">
           <h2>Error Definitions</h2>
           <p>The error number SHOULD be a status code defined in [[RFC2616]], c. f. chapter "Status codes". 
-          The error reason SHOULD be the corresponding reason-phrase from [[RFC2616]]. 
+          The error reason SHOULD be short. two or three words connected by underscor.
+          It SHOULD relate to the reason-phrase from [[RFC2616]] for the corresponding status code. 
           The error message is meant to give a more precise description of the error.
           </p>
 <table class="simple">
