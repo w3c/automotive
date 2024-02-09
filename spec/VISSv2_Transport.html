@@ -301,7 +301,7 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."},
+                "error": {"number": 404, "reason": "unavailable_data", "message": "The requested data was not found."},
                 "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>
@@ -344,7 +344,7 @@
             Content-Type: application/json; charset=utf-8
 	    ...
             {
-              "error": {"number": 401, "reason": "token_invalid", "message": "Access token is invalid."},
+              "error": {"number": 401, "reason": "invalid_token", "message": "Access token is invalid."},
               "ts": "2020-04-15T13:37:00Z"
             }
             </code></pre>
@@ -382,7 +382,7 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."},
+                "error": {"number": 404, "reason": "unavailable_data", "message": "The requested data was not found."},
                 "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>		  
@@ -503,7 +503,7 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."},
+                "error": {"number": 404, "reason": "unavailable_data", "message": "The requested data was not found."},
                 "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>
@@ -706,7 +706,7 @@
               {
                 "action": "get",
                 "requestId": "8756",
-                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."},
+                "error": {"number": 404, "reason": "unavailable_data", "message": "The requested data was not found."},
                 "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>
@@ -906,7 +906,7 @@
               {
                 "action": "set",
                 "requestId": "5687",
-                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."},
+                "error": {"number": 404, "reason": "unavailable_data", "message": "The requested data was not found."},
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
@@ -1055,7 +1055,7 @@
               {
                 "action": "subscribe",
                 "requestId": "6578",
-                "error": {"number": 404, "reason": "invalid_path", "message": "The specified data path does not exist."},
+                "error": {"number": 404, "reason": "unavailable_data", "message": "The requested data was not found."},
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
@@ -1319,7 +1319,7 @@
               {
                 "action": "unsubscribe",
                 "requestId": "6578",
-                "error": {"number": 404, "reason": "invalid_subscriptionId", "message": "The specified subscription was not found"},
+                "error": {"number": 400, "reason": "invalid_data", "message": "Data present in the request is invalid."},
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
